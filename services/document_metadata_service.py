@@ -9,6 +9,7 @@ from configuration.app_settings import LLM_MODEL
 
 from common.logger import logger
 from common.custom_exceptions import ValidationException
+from configuration.context import DOCUMENT_METADATA_PROMPT
 
 load_dotenv()
 
@@ -36,36 +37,15 @@ def extract_document_metadata(text: str) -> dict:
 
     try:
 
-        if not text.strip():
+        if not text or not text.strip():
 
             raise ValidationException(
                 "Document text cannot be empty."
             )
 
-        prompt = f"""
-You are an intelligent document classifier.
-
-Return ONLY valid JSON.
-
-Format:
-
-{{
-    "title":"",
-    "document_type":"",
-    "tag":"",
-    "summary":""
-}}
-
-Rules:
-
-- No markdown
-- No explanation
-- Only JSON
-
-Document:
-
-{text[:4000]}
-"""
+        prompt = DOCUMENT_METADATA_PROMPT.format(
+            text=text[:4000]
+        )
 
         logger.info(
             "Calling metadata extraction LLM."
@@ -76,7 +56,6 @@ Document:
         content = response.content.strip()
 
         # Remove markdown if present
-
         content = re.sub(
             r"^```json|```$",
             "",
@@ -91,6 +70,16 @@ Document:
         )
 
         return metadata
+
+    except json.JSONDecodeError:
+
+        logger.exception(
+            "Invalid JSON returned by LLM."
+        )
+
+        raise ValidationException(
+            "Unable to parse metadata returned by the LLM."
+        )
 
     except Exception as e:
 

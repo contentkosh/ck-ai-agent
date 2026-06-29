@@ -74,46 +74,12 @@ def build_context(results: List) -> str:
 # Build Prompt
 # ==========================================================
 
-def build_prompt(
-    context: str,
-    query: str
-) -> str:
-    """
-    Build the prompt for the LLM.
-    """
+from configuration.context import CHAT_PROMPT
 
-    return f"""
-You are an AI Knowledge Base Assistant.
-
-Answer ONLY using the information provided in the context.
-
-Rules:
-
-1. Use ONLY the context below.
-2. Do NOT use your own knowledge.
-3. If the answer cannot be found, respond exactly:
-
-Answer not found in the Knowledge Base.
-
-4. Keep the answer concise and factual.
-5. Do not mention the context or the document.
-
---------------------------------------------------
-
-Context:
-
-{context}
-
---------------------------------------------------
-
-Question:
-
-{query}
-
---------------------------------------------------
-
-Answer:
-"""
+prompt = CHAT_PROMPT.format(
+    context=context,
+    query=query
+)
 # ==========================================================
 # Ask Question
 # ==========================================================
