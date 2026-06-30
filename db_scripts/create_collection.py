@@ -25,7 +25,7 @@ try:
 
             vectors_config=VectorParams(
 
-                 size=EMBEDDING_DIMENSION,
+                 size=384,
 
                 distance=Distance.COSINE
 
