@@ -10,17 +10,18 @@ from contextvars import ContextVar
 # ==========================================================
 # REQUEST CONTEXT
 # ==========================================================
-
 request_id_context: ContextVar[str] = ContextVar(
     "request_id",
-    default=None
+    default=None,
 )
-
 
 class RequestContext:
     """
     Handles request-specific information.
     """
+
+    def __init__(self) -> None:
+        self.request_id = self.generate_request_id()
 
     @staticmethod
     def generate_request_id() -> str:
@@ -31,7 +32,6 @@ class RequestContext:
     @staticmethod
     def get_request_id() -> str:
         return request_id_context.get()
-
 
 # ==========================================================
 # CHAT PROMPT

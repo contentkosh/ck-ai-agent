@@ -1,5 +1,5 @@
-from typing import List, Optional
-
+from typing import Any
+from typing import Optional
 from qdrant_client.models import (
     Filter,
     FieldCondition,
@@ -16,87 +16,99 @@ from configuration.app_settings import (
 from common.logger import logger
 from common.custom_exceptions import DatabaseException
 
+Payload = dict[str, Any]
+
 
 # ==========================================================
 # Internal Helper
 # ==========================================================
 
 def _scroll_records():
-    """
-    Retrieve all records from Qdrant.
-    """
+    """Return all records from Qdrant."""
 
     records, _ = client.scroll(
         collection_name=COLLECTION_NAME,
         limit=SCROLL_LIMIT,
-        with_payload=True
+        with_payload=True,
     )
 
     return records
+
+
+def build_document_payload(payload: Payload) -> Payload:
+    """Build document metadata."""
+
+    return {
+        "document_id": payload.get("document_id"),
+        "title": payload.get("title"),
+        "document_type": payload.get("document_type"),
+        "tag": payload.get("tag"),
+        "summary": payload.get("summary"),
+        "source": payload.get("source"),
+    }
 
 
 # ==========================================================
 # Save Chunks
 # ==========================================================
 
-def save_chunks(points: List):
-    """
-    Save vectors into Qdrant.
-    """
+def save_chunks(points: list) -> None:
+    """Save vectors to Qdrant."""
 
     try:
-
         client.upsert(
             collection_name=COLLECTION_NAME,
-            points=points
+            points=points,
         )
 
         logger.info(
-            f"{len(points)} vectors inserted."
+            "Inserted %d vectors.",
+            len(points),
         )
 
-    except Exception as e:
-
+    except Exception as ex:
         logger.exception(
-            "Unable to insert vectors."
+            "Vector insertion failed: %s",
+            ex,
         )
 
-        raise DatabaseException(str(e))
-
+        raise DatabaseException(
+            "Unable to insert vectors."
+        ) from ex
 
 # ==========================================================
 # Semantic Search
 # ==========================================================
 
 def search_chunks(
-    query_embedding: List[float],
-    limit: int = 5
+    query_embedding: list[float],
+    limit: int = 5,
 ):
-    """
-    Search similar chunks.
-    """
+    """Search similar chunks."""
 
     try:
-
         result = client.query_points(
             collection_name=COLLECTION_NAME,
             query=query_embedding,
-            limit=limit
+            limit=limit,
         )
 
         logger.info(
-            f"{len(result.points)} chunks retrieved."
+            "Retrieved %d chunks.",
+            len(result.points),
         )
 
         return result.points
 
-    except Exception as e:
-
+    except Exception as ex:
         logger.exception(
-            "Semantic search failed."
+            "Semantic search failed: %s",
+            ex,
         )
 
-        raise DatabaseException(str(e))
+        raise DatabaseException(
+            "Semantic search failed."
+        ) from ex
 
 
 # ==========================================================
@@ -123,55 +135,29 @@ def get_all_records(
             if tag and payload.get("tag") != tag:
                 continue
 
-            response.append({
+            record = build_document_payload(payload)
 
-                "document_id": payload.get(
-                    "document_id"
-                ),
+            record["page"] = payload.get("page")
+            record["text"] = payload.get("text")
 
-                "title": payload.get(
-                    "title"
-                ),
-
-                "document_type": payload.get(
-                    "document_type"
-                ),
-
-                "tag": payload.get(
-                    "tag"
-                ),
-
-                "summary": payload.get(
-                    "summary"
-                ),
-
-                "source": payload.get(
-                    "source"
-                ),
-
-                "page": payload.get(
-                    "page"
-                ),
-
-                "text": payload.get(
-                    "text"
-                )
-
-            })
-
+            response.append(record)
+        
         logger.info(
-            f"{len(response)} records fetched."
+            "Fetched %d records.",
+            len(response),
         )
 
         return response
 
-    except Exception as e:
+    except Exception as ex:
 
         logger.exception(
             "Unable to fetch records."
         )
 
-        raise DatabaseException(str(e))
+        raise DatabaseException(
+            "Unable to fetch records."
+        ) from ex
 
 
 # ==========================================================
@@ -203,45 +189,26 @@ def get_uploaded_files():
 
             if document_id not in documents:
 
-                documents[document_id] = {
-
-                    "document_id": document_id,
-
-                    "title": payload.get(
-                        "title"
-                    ),
-
-                    "document_type": payload.get(
-                        "document_type"
-                    ),
-
-                    "tag": payload.get(
-                        "tag"
-                    ),
-
-                    "summary": payload.get(
-                        "summary"
-                    ),
-
-                    "source": payload.get(
-                        "source"
-                    )
-
-                }
+                documents[document_id] = build_document_payload(
+                    payload
+            )
 
         logger.info(
-            f"{len(documents)} document(s) found."
+            "Found %d document(s).",
+            len(documents),
         )
 
         return list(documents.values())
 
-    except Exception as e:
+    except Exception as ex:
 
         logger.exception(
             "Unable to fetch uploaded documents."
         )
 
-        raise DatabaseException(str(e))
+        raise DatabaseException(
+            "Unable to fetch records."
+        ) from ex
 
 
 # ==========================================================
@@ -282,18 +249,21 @@ def delete_document(
         )
 
         logger.info(
-            f"{document_id} deleted."
+            "Deleted document %s.",
+            document_id,
         )
 
         return True
 
-    except Exception as e:
+    except Exception as ex:
 
         logger.exception(
             "Unable to delete document."
         )
 
-        raise DatabaseException(str(e))
+        raise DatabaseException(
+            "Unable to fetch records."
+        ) from ex
 
 
 # ==========================================================
@@ -321,10 +291,12 @@ def delete_all_documents():
 
         return True
 
-    except Exception as e:
+    except Exception as ex:
 
         logger.exception(
             "Unable to clear Knowledge Base."
         )
 
-        raise DatabaseException(str(e))
+        raise DatabaseException(
+            "Unable to clear Knowledge Base."
+        ) from ex

@@ -26,27 +26,43 @@ load_dotenv()
 # ==========================================================
 # Embedding Model
 # ==========================================================
+_embedding_model: SentenceTransformer | None = None
 
-embedding_model = SentenceTransformer(
-    EMBEDDING_MODEL
-)
 
+def get_embedding_model() -> SentenceTransformer:
+    """Return the singleton embedding model."""
+
+    global _embedding_model
+
+    if _embedding_model is None:
+        logger.info("Loading embedding model.")
+        _embedding_model = SentenceTransformer(
+            EMBEDDING_MODEL
+        )
+
+    return _embedding_model
 
 # ==========================================================
 # LLM
 # ==========================================================
 
-llm = ChatOpenAI(
+_llm: ChatOpenAI | None = None
 
-    model=LLM_MODEL,
 
-    base_url="https://openrouter.ai/api/v1",
+def get_llm() -> ChatOpenAI:
+    """Return the singleton LLM."""
 
-    api_key=os.getenv("OPENROUTER_API_KEY"),
+    global _llm
 
-    temperature=0
+    if _llm is None:
+        _llm = ChatOpenAI(
+            model=LLM_MODEL,
+            base_url="https://openrouter.ai/api/v1",
+            api_key=os.getenv("OPENROUTER_API_KEY"),
+            temperature=0,
+        )
 
-)
+    return _llm
 
 
 # ==========================================================
@@ -73,13 +89,20 @@ def build_context(results: List) -> str:
 # ==========================================================
 # Build Prompt
 # ==========================================================
-
 from configuration.context import CHAT_PROMPT
 
-prompt = CHAT_PROMPT.format(
-    context=context,
-    query=query
-)
+
+def build_prompt(
+    *,
+    context: str,
+    query: str,
+) -> str:
+    """Build the LLM prompt."""
+
+    return CHAT_PROMPT.format(
+        context=context,
+        query=query,
+    )
 # ==========================================================
 # Ask Question
 # ==========================================================
@@ -92,21 +115,17 @@ def ask_question(query: str) -> Dict:
     try:
 
         logger.info(
-            f"Received query: {query}"
+            "Received query:%s",
         )
 
         # --------------------------------------------------
         # Generate Query Embedding
         # --------------------------------------------------
-
-        query_embedding = embedding_model.encode(
-            query
-        ).tolist()
-
-        logger.info(
-            "Query embedding generated."
+        query_embedding = (
+            get_embedding_model()
+            .encode(query)
+            .tolist()
         )
-
         # --------------------------------------------------
         # Search Knowledge Base
         # --------------------------------------------------
@@ -141,9 +160,9 @@ def ask_question(query: str) -> Dict:
                 "page": None
 
             }
-
         logger.info(
-            f"{len(results)} relevant chunk(s) retrieved."
+            "Retrieved %d chunk(s).",
+            len(results),
         )
 
         # --------------------------------------------------
@@ -157,9 +176,9 @@ def ask_question(query: str) -> Dict:
         payload = results[0].payload
 
         logger.info(
-            f"Top matching document: {payload.get('source')}"
+            "Top matching source: %s",
+            payload.get("source"),
         )
-
         # --------------------------------------------------
         # Generate Answer
         # --------------------------------------------------
@@ -173,7 +192,7 @@ def ask_question(query: str) -> Dict:
             "Sending prompt to LLM."
         )
 
-        response = llm.invoke(
+        response = get_llm().invoke(
             prompt
         )
 
@@ -219,12 +238,13 @@ def ask_question(query: str) -> Dict:
 
         }
 
-    except Exception as e:
+    except Exception as ex:
 
         logger.exception(
-            "Chat Service Error."
+            "Chat service failed: %s",
+            ex,
         )
-
+        
         raise DatabaseException(
-            f"Unable to process user query. {str(e)}"
-        )
+            "Unable to process user query."
+        ) from ex

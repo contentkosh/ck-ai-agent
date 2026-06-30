@@ -1,92 +1,89 @@
 import json
 import os
 import re
+from typing import Any
 
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 
-from configuration.app_settings import LLM_MODEL
-
-from common.logger import logger
 from common.custom_exceptions import ValidationException
+from common.logger import logger
+
+from configuration.app_settings import LLM_MODEL
 from configuration.context import DOCUMENT_METADATA_PROMPT
 
 load_dotenv()
 
+_llm: ChatOpenAI | None = None
 
-# ==========================================================
-# LLM
-# ==========================================================
 
-llm = ChatOpenAI(
-    api_key=os.getenv("OPENROUTER_API_KEY"),
-    base_url="https://openrouter.ai/api/v1",
-    model=LLM_MODEL,
-    temperature=0
-)
+def get_llm() -> ChatOpenAI:
+    """Return the singleton LLM instance."""
 
+    global _llm
+
+    if _llm is None:
+        _llm = ChatOpenAI(
+            api_key=os.getenv("OPENROUTER_API_KEY"),
+            base_url="https://openrouter.ai/api/v1",
+            model=LLM_MODEL,
+            temperature=0,
+        )
+
+    return _llm
 
 # ==========================================================
 # Extract Metadata
 # ==========================================================
 
-def extract_document_metadata(text: str) -> dict:
-    """
-    Extract document metadata using the LLM.
-    """
+def extract_document_metadata(text: str) -> dict[str, Any]:
+    """Extract document metadata using the configured LLM."""
 
     try:
-
-        if not text or not text.strip():
-
+        if not text.strip():
             raise ValidationException(
                 "Document text cannot be empty."
             )
+
+        logger.info("Extracting document metadata.")
 
         prompt = DOCUMENT_METADATA_PROMPT.format(
             text=text[:4000]
         )
 
-        logger.info(
-            "Calling metadata extraction LLM."
-        )
+        response = get_llm().invoke(prompt)
 
-        response = llm.invoke(prompt)
-
-        content = response.content.strip()
-
-        # Remove markdown if present
         content = re.sub(
             r"^```json|```$",
             "",
-            content,
-            flags=re.MULTILINE
+            response.content.strip(),
+            flags=re.MULTILINE,
         ).strip()
 
         metadata = json.loads(content)
 
-        logger.info(
-            "Metadata extracted successfully."
-        )
+        logger.info("Metadata extracted successfully.")
 
         return metadata
 
-    except json.JSONDecodeError:
-
+    except json.JSONDecodeError as ex:
         logger.exception(
-            "Invalid JSON returned by LLM."
+            "Invalid metadata JSON returned by LLM."
         )
 
         raise ValidationException(
-            "Unable to parse metadata returned by the LLM."
-        )
+            "Invalid JSON returned by the LLM."
+        ) from ex
 
-    except Exception as e:
+    except ValidationException:
+        raise
 
+    except Exception as ex:
         logger.exception(
-            "Metadata extraction failed."
+            "Metadata extraction failed: %s",
+            ex,
         )
 
         raise ValidationException(
-            f"Unable to extract metadata. {str(e)}"
-        )
+            "Unable to extract document metadata."
+        ) from ex

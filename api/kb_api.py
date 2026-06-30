@@ -49,6 +49,14 @@ app = FastAPI(
 
 )
 
+# ==========================================================
+# Request Context
+# ==========================================================
+
+def get_request_context() -> RequestContext:
+    """Create a request context."""
+
+    return RequestContext()
 
 # ==========================================================
 # Health Check
@@ -81,11 +89,12 @@ def get_knowledge_base(
 
 ):
 
-    context = RequestContext()
+    context = get_request_context()
 
     logger.info(
 
-        f"[{context.request_id}] Fetching Knowledge Base."
+        "[%s] Fetching Knowledge Base.",
+        context.request_id,
 
     )
 
@@ -97,9 +106,8 @@ def get_knowledge_base(
 
         logger.info(
 
-            f"[{context.request_id}] "
-
-            f"{len(records)} record(s) retrieved."
+            "[%s] record(s) retrieved.",
+            context.request_id,
 
         )
 
@@ -113,23 +121,18 @@ def get_knowledge_base(
 
         }
 
-    except Exception as e:
+    except Exception as ex:
 
         logger.exception(
-
-            f"[{context.request_id}] "
-
-            f"Failed to fetch Knowledge Base."
-
+            "[%s] Upload failed: %s",
+            context.request_id,
+            ex,
         )
 
-        raise HTTPException(
-
-            status_code=500,
-
-            detail=str(e)
-
-        )
+    raise HTTPException(
+        status_code=500,
+        detail="Internal Server Error",
+    )
 
 
 # ==========================================================
@@ -149,13 +152,12 @@ def query_knowledge_base(
 
 ):
 
-    context = RequestContext()
+    context = get_request_context()
 
     logger.info(
 
-        f"[{context.request_id}] "
-
-        f"Question received."
+        "[%s] Question received.",
+        context.request_id,
 
     )
 
@@ -175,9 +177,8 @@ def query_knowledge_base(
 
         logger.info(
 
-            f"[{context.request_id}] "
-
-            f"Question answered successfully."
+            "[%s] Question answered successfully.",
+            context.request_id
 
         )
 
@@ -209,24 +210,20 @@ def query_knowledge_base(
 
         )
 
-    except Exception as e:
+    except Exception as ex:
 
         logger.exception(
-
-            f"[{context.request_id}] "
-
-            f"Query failed."
-
-        )
+        "[%s] Upload failed: %s",
+        context.request_id,
+        ex,
+    )
 
         raise HTTPException(
-
             status_code=500,
-
-            detail=str(e)
-
+            detail="Internal Server Error",
         )
-    # ==========================================================
+
+# ==========================================================
 # Upload Documents
 # ==========================================================
 
@@ -237,11 +234,12 @@ def upload_documents(
 
 ):
 
-    context = RequestContext()
+    context = get_request_context()
 
     logger.info(
 
-        f"[{context.request_id}] Upload request received."
+        "[%s] Upload request received.",
+        context.request_id
 
     )
 
@@ -269,9 +267,8 @@ def upload_documents(
 
         logger.info(
 
-            f"[{context.request_id}] "
-
-            f"Upload completed successfully."
+            "[%s] Upload completed successfully.",
+            context.request_id,
 
         )
 
@@ -287,22 +284,18 @@ def upload_documents(
 
         raise
 
-    except Exception as e:
+    except Exception as ex:
 
         logger.exception(
-
-            f"[{context.request_id}] Upload failed."
-
-        )
+        "[%s] Upload failed: %s",
+        context.request_id,
+        ex,
+    )
 
         raise HTTPException(
-
             status_code=500,
-
-            detail=str(e)
-
+            detail="Internal Server Error",
         )
-
 
 # ==========================================================
 # Get Uploaded Documents
@@ -311,12 +304,13 @@ def upload_documents(
 @app.get("/llm/files")
 def get_uploaded_documents():
 
-    context = RequestContext()
+    context = get_request_context()
 
     logger.info(
 
-        f"[{context.request_id}] Fetching uploaded documents."
-
+        "[%s] Fetching uploaded documents.",
+        context.request_id
+    
     )
 
     try:
@@ -325,10 +319,9 @@ def get_uploaded_documents():
 
         logger.info(
 
-            f"[{context.request_id}] "
-
-            f"{len(documents)} document(s) found."
-
+            "[%s] %d document(s) found.",
+            context.request_id,
+            len(documents)
         )
 
         return {
@@ -341,22 +334,17 @@ def get_uploaded_documents():
 
         }
 
-    except Exception as e:
+    except Exception as ex:
 
         logger.exception(
-
-            f"[{context.request_id}] "
-
-            f"Unable to retrieve uploaded documents."
-
+            "[%s] Upload failed: %s",
+            context.request_id,
+            ex,
         )
 
         raise HTTPException(
-
             status_code=500,
-
-            detail=str(e)
-
+            detail="Internal Server Error",
         )
     # ==========================================================
 # Delete One Document
@@ -367,10 +355,12 @@ def delete_uploaded_document(
     document_id: str
 ):
 
-    context = RequestContext()
+    context = get_request_context()
 
     logger.info(
-        f"[{context.request_id}] Delete request for document: {document_id}"
+        "[%s] Delete request for document: %s",
+        context.request_id,
+        document_id
     )
 
     try:
@@ -378,7 +368,8 @@ def delete_uploaded_document(
         delete_document(document_id)
 
         logger.info(
-            f"[{context.request_id}] Document deleted successfully."
+            "[%s] Document deleted successfully.",
+            context.request_id
         )
 
         return {
@@ -393,19 +384,18 @@ def delete_uploaded_document(
 
         }
 
-    except Exception as e:
+    except Exception as ex:
 
         logger.exception(
-            f"[{context.request_id}] Failed to delete document."
+            "[%s] Upload failed: %s",
+            context.request_id,
+            ex,
         )
 
-        raise HTTPException(
-
-            status_code=500,
-
-            detail=str(e)
-
-        )
+    raise HTTPException(
+        status_code=500,
+        detail="Internal Server Error",
+    )
 
 
 # ==========================================================
@@ -415,10 +405,10 @@ def delete_uploaded_document(
 @app.delete("/llm/files")
 def clear_knowledge_base():
 
-    context = RequestContext()
-
+    context = get_request_context()
     logger.info(
-        f"[{context.request_id}] Clearing Knowledge Base."
+        "[%s] Clearing Knowledge Base.",
+        context.request_id
     )
 
     try:
@@ -426,7 +416,8 @@ def clear_knowledge_base():
         delete_all_documents()
 
         logger.info(
-            f"[{context.request_id}] Knowledge Base cleared."
+            "[%s] Knowledge Base cleared.",
+            context.request_id,
         )
 
         return {
@@ -439,16 +430,15 @@ def clear_knowledge_base():
 
         }
 
-    except Exception as e:
+    except Exception as ex:
 
         logger.exception(
-            f"[{context.request_id}] Failed to clear Knowledge Base."
+            "[%s] Upload failed: %s",
+            context.request_id,
+            ex,
         )
 
-        raise HTTPException(
-
-            status_code=500,
-
-            detail=str(e)
-
-        )
+    raise HTTPException(
+        status_code=500,
+        detail="Internal Server Error",
+    )
