@@ -1,46 +1,37 @@
 import gradio as gr
 
-from service.kb_ingest import ingest_documents
+from services.kb_ingestion_service import ingest_documents
 
 
 # -------------------------
 # UI FUNCTION
 # -------------------------
-
 def upload_knowledge_base(files, tag):
+    """
+    Upload PDF documents to the Knowledge Base.
+    """
 
     if not files:
-        return "Please upload PDFs"
+        return "Please upload at least one PDF."
 
-    if not tag:
-        return "Please enter a tag"
+    if not tag or not tag.strip():
+        return "Please enter a metadata tag."
 
-    result = ingest_documents(
-        files,
-        tag
-    )
-
-    return result
+    return ingest_documents(files, tag.strip())
 
 
 # -------------------------
 # GRADIO UI
 # -------------------------
+with gr.Blocks(title="Knowledge Base Management System") as app:
 
-with gr.Blocks() as app:
-
-    gr.Markdown(
-        "# Knowledge Base Management System"
-    )
-
-    gr.Markdown(
-        "Upload PDFs into Qdrant Vector Database"
-    )
+    gr.Markdown("# Knowledge Base Management System")
+    gr.Markdown("Upload PDF documents into the Qdrant Vector Database.")
 
     pdf_upload = gr.File(
-        file_count="multiple",
+        label="Upload PDFs",
         file_types=[".pdf"],
-        label="Upload PDFs"
+        file_count="multiple"
     )
 
     tag_input = gr.Textbox(
@@ -48,9 +39,7 @@ with gr.Blocks() as app:
         placeholder="Example: cyber, healthcare, finance"
     )
 
-    upload_button = gr.Button(
-        "Upload to Knowledge Base"
-    )
+    upload_button = gr.Button("Upload to Knowledge Base")
 
     output_box = gr.Textbox(
         label="Upload Status",
@@ -59,11 +48,13 @@ with gr.Blocks() as app:
 
     upload_button.click(
         fn=upload_knowledge_base,
-        inputs=[
-            pdf_upload,
-            tag_input
-        ],
+        inputs=[pdf_upload, tag_input],
         outputs=output_box
     )
 
-app.launch()
+
+if __name__ == "__main__":
+    app.launch(
+        server_name="127.0.0.1",
+        server_port=7860
+    )
