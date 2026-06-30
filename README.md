@@ -2,13 +2,14 @@
 
 ## Overview
 
-CK AI Agent is a Knowledge Base service that enables semantic document search using Large Language Models (LLMs) and the Qdrant vector database. It allows users to upload PDF documents, automatically extract document metadata, generate embeddings, store them in a vector database, and query the documents using natural language.
+CK AI Agent is a Knowledge Base service that enables semantic document search using Large Language Models (LLMs) and the Qdrant vector database. Users can upload PDF documents, automatically extract metadata using an LLM, generate embeddings, store them in Qdrant, and query the knowledge base using natural language through REST APIs.
 
---------------------
+---
+
 # Features
 
 - PDF document upload
-- Automatic document metadata extraction using LLM
+- Automatic metadata extraction using LLM
 - Semantic document chunking
 - Embedding generation using Sentence Transformers
 - Vector storage using Qdrant
@@ -18,7 +19,8 @@ CK AI Agent is a Knowledge Base service that enables semantic document search us
 - Structured logging
 - Custom exception handling
 - Input validation
-- Modular project architecture
+- Modular layered architecture
+- Optional Gradio UI for Knowledge Base ingestion
 
 ---
 
@@ -28,6 +30,7 @@ CK AI Agent is a Knowledge Base service that enables semantic document search us
 |-----------|------------|
 | Language | Python 3.12 |
 | Framework | FastAPI |
+| UI | Gradio (Optional) |
 | LLM | OpenRouter (NVIDIA Nemotron) |
 | Embeddings | Sentence Transformers |
 | Vector Database | Qdrant |
@@ -38,8 +41,8 @@ CK AI Agent is a Knowledge Base service that enables semantic document search us
 
 # Project Structure
 
-```
-Knowledge_Base_Project/
+```text
+CK-AI-Agent/
 
 ├── api/
 │   ├── app.py
@@ -74,6 +77,10 @@ Knowledge_Base_Project/
 ├── uploads/
 ├── logs/
 ├── changelog/
+├── validators/
+│
+├── kb_ui.py
+├── main.py
 ├── requirements.txt
 ├── .env
 └── README.md
@@ -83,8 +90,11 @@ Knowledge_Base_Project/
 
 # System Workflow
 
-```
+```text
 User Uploads PDF
+        │
+        ▼
+Validate Request
         │
         ▼
 Save Uploaded File
@@ -112,7 +122,7 @@ Knowledge Base Ready
 
 # Question Answering Flow
 
-```
+```text
 User Question
       │
       ▼
@@ -140,7 +150,7 @@ Return Response
 
 ## Health Check
 
-```
+```http
 GET /
 ```
 
@@ -148,7 +158,7 @@ GET /
 
 ## Upload Documents
 
-```
+```http
 POST /llm/upload
 ```
 
@@ -158,7 +168,7 @@ Uploads one or more PDF documents into the Knowledge Base.
 
 ## Query Knowledge Base
 
-```
+```http
 POST /llm/kb
 ```
 
@@ -168,7 +178,7 @@ Returns an AI-generated answer based on the uploaded documents.
 
 ## View Knowledge Base
 
-```
+```http
 GET /llm/kb
 ```
 
@@ -178,7 +188,7 @@ Returns all stored document chunks.
 
 ## View Uploaded Documents
 
-```
+```http
 GET /llm/files
 ```
 
@@ -188,7 +198,7 @@ Returns uploaded document metadata.
 
 ## Delete Document
 
-```
+```http
 DELETE /llm/files/{document_id}
 ```
 
@@ -198,7 +208,7 @@ Deletes all chunks belonging to a document.
 
 ## Clear Knowledge Base
 
-```
+```http
 DELETE /llm/files
 ```
 
@@ -212,7 +222,7 @@ Clone the repository
 
 ```bash
 git clone <repository-url>
-cd Knowledge_Base_Project
+cd ck-ai-agent
 ```
 
 Create a virtual environment
@@ -221,18 +231,24 @@ Create a virtual environment
 python -m venv .venv
 ```
 
-Activate the environment
+Activate the virtual environment
 
-Windows
+### Windows
 
 ```bash
 .venv\Scripts\activate
 ```
 
+### Linux / macOS
+
+```bash
+source .venv/bin/activate
+```
+
 Install dependencies
 
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ---
@@ -262,10 +278,20 @@ MAX_FILE_SIZE=20971520
 
 ---
 
-# Run the Application
+# Running the Application
+
+## FastAPI Server
+
+Using the entry point:
 
 ```bash
-uvicorn api.app:app --reload
+python main.py
+```
+
+or directly with Uvicorn:
+
+```bash
+python -m uvicorn api.app:app --reload
 ```
 
 Application URL
@@ -280,22 +306,68 @@ Swagger Documentation
 http://127.0.0.1:8000/docs
 ```
 
+ReDoc Documentation
+
+```
+http://127.0.0.1:8000/redoc
+```
+
+---
+
+## Optional Knowledge Base UI
+
+To launch the Gradio interface for uploading PDF documents:
+
+```bash
+python kb_ui.py
+```
+
+Default URL:
+
+```
+http://127.0.0.1:7860
+```
+
+---
+
+# Architecture
+
+```text
+                Client
+                   │
+        ┌──────────┴──────────┐
+        │                     │
+        ▼                     ▼
+   FastAPI APIs          Gradio UI (Optional)
+        │                     │
+        └──────────┬──────────┘
+                   ▼
+              Service Layer
+                   │
+                   ▼
+            Repository Layer
+                   │
+                   ▼
+         Qdrant Vector Database
+```
+
 ---
 
 # Coding Standards
 
 This project follows the Engineering Team Coding Standards:
 
-- Modular architecture
+- Layered architecture
 - SOLID principles
 - DRY principle
 - Structured logging
 - Custom exception handling
+- Input validation
 - Environment-based configuration
 - Type hints
 - No hardcoded values
 - Feature branch workflow
-- Pull Request based development
+- Pull Request-based development
 
 ---
 
@@ -308,7 +380,8 @@ This project follows the Engineering Team Coding Standards:
 - Authentication & Authorization
 - Streaming responses
 - Docker deployment
-- Unit and integration tests
+- Unit tests
+- Integration tests
 
 ---
 
