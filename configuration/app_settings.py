@@ -91,3 +91,38 @@ MAX_FILE_SIZE = int(
         20971520
     )
 )
+
+# ==========================================================
+# CACHE
+# ==========================================================
+
+CACHE_ENABLED = os.getenv(
+    "CACHE_ENABLED",
+    "True"
+).lower() == "true"
+
+CACHE_COLLECTION_NAME = os.getenv(
+    "CACHE_COLLECTION_NAME",
+    "answer_cache"
+)
+
+CACHE_SIMILARITY_THRESHOLD = float(
+    os.getenv(
+        "CACHE_SIMILARITY_THRESHOLD",
+        0.90
+    )
+)
+
+CACHE_TOP_K = int(
+    os.getenv(
+        "CACHE_TOP_K",
+        1
+    )
+)
+
+MAX_CACHE_SIZE = int(
+    os.getenv(
+        "MAX_CACHE_SIZE",
+        5000
+    )
+)

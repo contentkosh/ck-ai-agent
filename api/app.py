@@ -136,6 +136,7 @@ def get_knowledge_base(
 @app.post(
     "/llm/kb",
     response_model=QueryResponse,
+    response_model_exclude_none=True,
 )
 def query_knowledge_base(
     request: QueryRequest,
@@ -170,6 +171,7 @@ def query_knowledge_base(
             summary=result.get("summary"),
             source=result.get("source"),
             page=result.get("page"),
+            similarity_score=result.get("similarity_score"),
         )
 
     except HTTPException:
