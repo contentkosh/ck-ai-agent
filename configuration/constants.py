@@ -17,6 +17,12 @@ SUPPORTED_FILE_TYPES = [
 
 SUPPORTED_CONTENT_TYPE = "application/pdf"
 
+# ==========================================
+# FILE VALIDATION
+# ==========================================
+
+MAX_FILE_SIZE = 20 * 1024 * 1024  # 20 MB
+
 
 # ==========================================
 # DEFAULT VALUES
