@@ -9,11 +9,10 @@ from fastapi import (
 )
 
 from common.logger import logger
-from common.validators import (
-    validate_pdf,
-    validate_query,
-    validate_tag,
-)
+from validators.file_validator import validate_pdf_file
+from validators.query_validator import validate_query
+from validators.tag_validator import validate_tag
+from validators.upload_validator import validate_upload
 
 from configuration.constants import (
     API_TITLE,
@@ -208,14 +207,7 @@ def upload_documents(
 
     try:
 
-        if not files:
-            raise HTTPException(
-                status_code=400,
-                detail="No files uploaded.",
-            )
-
-        for file in files:
-            validate_pdf(file)
+        validate_upload(files)
 
         result = ingest_documents(files)
 

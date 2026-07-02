@@ -13,7 +13,7 @@ from common.custom_exceptions import (
 )
 from common.file_utils import save_uploaded_file
 from common.logger import logger
-from common.validators import validate_file_size
+from validators.file_validator import validate_saved_file
 
 from configuration.app_settings import (
     CHUNK_OVERLAP,
@@ -121,7 +121,8 @@ def read_pdf(file: UploadFile) -> tuple[PdfReader, str]:
         logger.info("Saving file: %s", filename)
 
         saved_file = save_uploaded_file(file)
-        validate_file_size(saved_file)
+
+        validate_saved_file(saved_file)
 
         return PdfReader(saved_file), saved_file
 
