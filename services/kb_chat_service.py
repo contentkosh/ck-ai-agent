@@ -120,7 +120,7 @@ def ask_question(query: str) -> Dict:
     try:
 
         logger.info(
-            "Received query:%s",
+            "Received user query: %s",
         )
 
         # --------------------------------------------------
@@ -189,7 +189,7 @@ def ask_question(query: str) -> Dict:
 
             }
         logger.info(
-            "Retrieved %d chunk(s).",
+            "Knowledge Base search returned %d results.",
             len(results),
         )
 
