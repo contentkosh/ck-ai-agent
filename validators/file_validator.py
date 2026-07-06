@@ -1,8 +1,22 @@
 
 from pathlib import Path
+<<<<<<< HEAD
 from configuration.config import MAX_FILE_SIZE
 from configuration.constants import (PDF_EXTENSION,SUPPORTED_CONTENT_TYPE,)
 from exceptions.validation_exception import (EmptyFileException,InvalidFileException,)
+=======
+from configuration.app_settings import (
+    MAX_FILE_SIZE,
+)
+from configuration.constants import (
+    PDF_EXTENSION,
+    SUPPORTED_CONTENT_TYPE,
+)
+from exceptions.validation_exception import (
+    EmptyFileException,
+    InvalidFileException,
+)
+>>>>>>> e1cf2f1 (Implement semantic answer cache using Qdrant)
 
 def validate_pdf_file(file) -> None:
     """

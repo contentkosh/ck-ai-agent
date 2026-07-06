@@ -1,8 +1,6 @@
 from database.qdrant_client_manager import client
-from configuration.config import (
-    COLLECTION_NAME,
-    SCROLL_LIMIT,
-)
+from configuration.app_settings import COLLECTION_NAME
+
 records, _ = client.scroll(
     collection_name=COLLECTION_NAME,
     limit=SCROLL_LIMIT,

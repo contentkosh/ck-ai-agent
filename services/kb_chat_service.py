@@ -3,10 +3,15 @@ from typing import Dict, List
 from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 from langchain_openai import ChatOpenAI
-from configuration.config import (
+
+from services.cache_service import (
+    get_cached_answer,
+    cache_answer,
+)
+
+from configuration.app_settings import (
     EMBEDDING_MODEL,
-    LLM_MODEL,
-    SEARCH_LIMIT
+    LLM_MODEL
 )
 from repositories.kb_repository import search_chunks
 from common.logger import logger
@@ -72,6 +77,7 @@ def build_context(results: List) -> str:
 # Build Prompt
 # ==========================================================
 from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
+
 def build_prompt(
     *,
     context: str,
@@ -106,9 +112,32 @@ def ask_question(query: str) -> Dict:
         # Search Knowledge Base
         # --------------------------------------------------
 
+        cached = get_cached_answer(
+            query_embedding
+        )
+
+        if cached:
+
+            logger.info(
+                "Returning cached answer."
+            )
+
+            return {
+
+                "answer": cached.get("answer"),
+
+                "source": "CACHE",
+
+                "similarity_score": round(
+                    cached.get("score"),
+                    3,
+                ),
+
+            }
+
         results = search_chunks(
             query_embedding=query_embedding,
-            limit=SEARCH_LIMIT,
+            limit=5
         )
 
         if not results:
@@ -124,7 +153,7 @@ def ask_question(query: str) -> Dict:
                 "source": None,
                 "page": None
             }
-        logger.info("Retrieved %d chunk(s).",len(results),)
+        logger.info("Knowledge Base search returned %d results.",len(results),)
 
         # --------------------------------------------------
         # Build Context
@@ -148,11 +177,16 @@ def ask_question(query: str) -> Dict:
             prompt
         )
         logger.info("LLM response generated successfully.")
-
+        cache_answer(
+            question=query,
+            embedding=query_embedding,
+            context=context,
+            answer=response.content.strip(),
+        )
+        logger.info("LLM response generated successfully.")
         # --------------------------------------------------
         # Return Response
         # --------------------------------------------------
-
         return {
 
             "answer": response.content.strip(),

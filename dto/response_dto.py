@@ -27,4 +27,7 @@ class KnowledgeBaseResponse(BaseModel):
     """
     request_id: str
     total_records: int
+
     records: list[Any]
+
+    similarity_score: Optional[float] = None

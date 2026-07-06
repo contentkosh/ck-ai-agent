@@ -1,23 +1,24 @@
-from qdrant_client.models import Distance, VectorParams
+from qdrant_client.models import (
+    Distance,
+    VectorParams,
+)
 from database.qdrant_client_manager import client
-from configuration.config import (COLLECTION_NAME,EMBEDDING_DIMENSION)
-
+from configuration.app_settings import (
+    COLLECTION_NAME,
+    EMBEDDING_DIMENSION,
+)
 try:
-
     collections = client.get_collections()
     existing = [
         collection.name
         for collection in collections.collections
-
     ]
-
     if COLLECTION_NAME not in existing:
         client.create_collection(
             collection_name=COLLECTION_NAME,
             vectors_config=VectorParams(
                  size=EMBEDDING_DIMENSION,
                 distance=Distance.COSINE
-
             )
         )
         print("Collection created successfully.")

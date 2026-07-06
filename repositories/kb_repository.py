@@ -6,11 +6,12 @@ from qdrant_client.models import (
     MatchValue
 )
 from database.qdrant_client_manager import client
-from configuration.config import (
+
+from configuration.app_settings import (
     COLLECTION_NAME,
     SCROLL_LIMIT
 )
-from common.logger import logger
+import common.logger
 from common.custom_exceptions import DatabaseException
 Payload = dict[str, Any]
 
@@ -52,10 +53,10 @@ def save_chunks(points: list) -> None:
             points=points,
         )
 
-        logger.info("Inserted %d vectors.",len(points),)
+        common.logger.logger.info("Inserted %d vectors.",len(points),)
 
     except Exception as ex:
-        logger.exception("Vector insertion failed: %s",ex,)
+        common.logger.logger.exception("Vector insertion failed: %s",ex,)
         raise DatabaseException(
             "Unable to insert vectors."
         ) from ex
@@ -77,11 +78,11 @@ def search_chunks(
             limit=limit,
         )
 
-        logger.info("Retrieved %d chunks.",len(result.points),)
+        common.logger.logger.info("Retrieved %d chunks.",len(result.points),)
         return result.points
 
     except Exception as ex:
-        logger.exception("Semantic search failed: %s",ex,)
+        common.logger.logger.exception("Semantic search failed: %s",ex,)
 
         raise DatabaseException(
             "Semantic search failed."
@@ -109,11 +110,11 @@ def get_all_records(
             record["text"] = payload.get("text")
             response.append(record)
         
-        logger.info("Fetched %d records.",len(response),)
+        common.logger.logger.info("Fetched %d records.",len(response),)
         return response
     
     except Exception as ex:
-        logger.exception("Unable to fetch records.")
+        common.logger.logger.exception("Unable to fetch records.")
         raise DatabaseException(
             "Unable to fetch records."
         ) from ex
@@ -140,11 +141,11 @@ def get_uploaded_files():
                 documents[document_id] = build_document_payload(
                     payload
             )
-        logger.info("Found %d document(s).",len(documents),)
+        common.logger.logger.info("Found %d document(s).",len(documents),)
         return list(documents.values())
 
     except Exception as ex:
-        logger.exception("Unable to fetch uploaded documents.")
+        common.logger.logger.exception("Unable to fetch uploaded documents.")
         raise DatabaseException(
             "Unable to fetch uploaded documents."
         ) from ex
@@ -178,11 +179,11 @@ def delete_document(
 
         )
 
-        logger.info("Deleted document %s.",document_id,)
+        common.logger.logger.info("Deleted document %s.",document_id,)
         return True
     
     except Exception as ex:
-        logger.exception("Unable to delete document.")
+        common.logger.logger.exception("Unable to delete document.")
         raise DatabaseException(
             "Unable to delete document."
         ) from ex
@@ -201,11 +202,11 @@ def delete_all_documents():
             points_selector=Filter()
 
         )
-        logger.info("Knowledge Base cleared.")
+        common.logger.logger.info("Knowledge Base cleared.")
         return True
 
     except Exception as ex:
-        logger.exception("Unable to clear Knowledge Base.")
+        common.logger.logger.exception("Unable to clear Knowledge Base.")
         raise DatabaseException(
             "Unable to clear Knowledge Base."
         ) from ex

@@ -12,7 +12,8 @@ from common.custom_exceptions import (
 from common.file_utils import save_uploaded_file
 from common.logger import logger
 from validators.file_validator import validate_saved_file
-from configuration.config import (
+
+from configuration.app_settings import (
     CHUNK_OVERLAP,
     CHUNK_SIZE,
     EMBEDDING_MODEL,
