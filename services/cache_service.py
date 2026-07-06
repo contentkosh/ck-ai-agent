@@ -8,6 +8,10 @@ from configuration.app_settings import (
     CACHE_SIMILARITY_THRESHOLD,
 )
 
+from configuration.constants import (
+    INVALID_CACHE_RESPONSES,
+)
+
 from common.logger import logger
 
 
@@ -23,25 +27,16 @@ def get_cached_answer(
     """
 
     if not CACHE_ENABLED:
-
         return None
 
     results = search_cache(query_embedding)
 
-    print("\n========== CACHE DEBUG ==========")
-    print("Results Found:", len(results))
-
     if not results:
-
         logger.info("Cache Miss")
-
         return None
 
     result = results[0]
-
     score = result.score
-
-    print("Similarity Score:", score)
 
     logger.info(
         "Cache similarity score: %.3f",
@@ -52,17 +47,12 @@ def get_cached_answer(
 
         logger.info("Cache Hit")
 
-        print("CACHE HIT")
-
-        return{
+        return {
             "answer": result.payload.get("answer"),
             "score": score,
         }
 
     logger.info("Cache Miss")
-
-    print("CACHE MISS")
-    print("================================\n")
 
     return None
 
@@ -79,29 +69,16 @@ def should_cache(
     """
 
     if not answer:
-
         return False
 
     answer = answer.strip()
 
     if not answer:
-
         return False
 
-    invalid_answers = [
-
-        "I don't know",
-
-        "Answer not found",
-
-        "No relevant context found",
-
-    ]
-
-    for text in invalid_answers:
+    for text in INVALID_CACHE_RESPONSES:
 
         if text.lower() in answer.lower():
-
             return False
 
     return True
@@ -112,24 +89,17 @@ def should_cache(
 # ==========================================================
 
 def cache_answer(
-
     *,
-
     question: str,
-
     embedding: list[float],
-
     context: str,
-
     answer: str,
-
 ):
     """
     Store a successful answer in the cache.
     """
 
     if not CACHE_ENABLED:
-
         return
 
     if not should_cache(answer):
@@ -141,13 +111,8 @@ def cache_answer(
         return
 
     save_cache(
-
         question=question,
-
         embedding=embedding,
-
         context=context,
-
         answer=answer,
-
     )

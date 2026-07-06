@@ -3,6 +3,8 @@ from typing import Optional
 
 from qdrant_client.models import PointStruct
 
+from common.logger import logger
+
 from database.qdrant_client_manager import client
 
 from configuration.app_settings import (
@@ -78,7 +80,10 @@ def save_cache(
     Store an answer in the semantic cache.
     """
 
-    print("CACHE SAVED:", question),
+    logger.info(
+        "Cache saved for question: %s",
+        question,  
+    )
 
     try:
 
@@ -115,8 +120,7 @@ def save_cache(
     except Exception as ex:
 
         logger.exception(
-            "Failed to save cache: %s",
-            ex,
+            "Failed to save cache."
         )
 
         raise DatabaseException(

@@ -109,7 +109,7 @@ CACHE_COLLECTION_NAME = os.getenv(
 CACHE_SIMILARITY_THRESHOLD = float(
     os.getenv(
         "CACHE_SIMILARITY_THRESHOLD",
-        0.90
+        0.80
     )
 )
 

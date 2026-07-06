@@ -110,3 +110,9 @@ DEFAULT_TOP_K = 5
 API_TITLE = "Knowledge Base API"
 
 API_VERSION = "1.0.0"
+
+INVALID_CACHE_RESPONSES = [
+    "I don't know",
+    "Answer not found",
+    "No relevant context found",
+]
