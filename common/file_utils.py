@@ -3,7 +3,7 @@ import shutil
 
 from fastapi import UploadFile
 
-from configuration.config import UPLOAD_FOLDER
+from configuration.app_settings import UPLOAD_FOLDER
 
 
 def save_uploaded_file(file: UploadFile) -> str:

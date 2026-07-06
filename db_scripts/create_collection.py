@@ -1,7 +1,7 @@
 from qdrant_client.models import Distance, VectorParams
 
 from database.qdrant_client_manager import client
-from configuration.config import (
+from configuration.app_settings import (
     COLLECTION_NAME
 )
 
@@ -25,7 +25,7 @@ try:
 
             vectors_config=VectorParams(
 
-                 size=EMBEDDING_DIMENSION,
+                 size=384,
 
                 distance=Distance.COSINE
 

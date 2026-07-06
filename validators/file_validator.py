@@ -6,9 +6,9 @@ for uploaded PDF documents.
 """
 
 from pathlib import Path
-from configuration.config import MAX_FILE_SIZE
 
 from configuration.constants import (
+    MAX_FILE_SIZE,
     PDF_EXTENSION,
     SUPPORTED_CONTENT_TYPE,
 )

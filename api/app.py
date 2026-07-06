@@ -9,6 +9,9 @@ from fastapi import (
 )
 
 from common.logger import logger
+
+
+from validators.file_validator import validate_pdf_file
 from validators.query_validator import validate_query
 from validators.tag_validator import validate_tag
 from validators.upload_validator import validate_upload
@@ -134,6 +137,7 @@ def get_knowledge_base(
 @app.post(
     "/llm/kb",
     response_model=QueryResponse,
+    response_model_exclude_none=True,
 )
 def query_knowledge_base(
     request: QueryRequest,
@@ -168,6 +172,7 @@ def query_knowledge_base(
             summary=result.get("summary"),
             source=result.get("source"),
             page=result.get("page"),
+            similarity_score=result.get("similarity_score"),
         )
 
     except HTTPException:

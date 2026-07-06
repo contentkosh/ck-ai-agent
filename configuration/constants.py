@@ -17,6 +17,12 @@ SUPPORTED_FILE_TYPES = [
 
 SUPPORTED_CONTENT_TYPE = "application/pdf"
 
+# ==========================================
+# FILE VALIDATION
+# ==========================================
+
+MAX_FILE_SIZE = 20 * 1024 * 1024  # 20 MB
+
 
 # ==========================================
 # DEFAULT VALUES
@@ -104,12 +110,9 @@ DEFAULT_TOP_K = 5
 API_TITLE = "Knowledge Base API"
 
 API_VERSION = "1.0.0"
-# ==========================================================
-# VALIDATION MESSAGES
-# ==========================================================
 
-EMPTY_QUERY_ERROR = "Query cannot be empty."
-
-QUERY_LENGTH_ERROR = (
-    "Query cannot exceed {} characters."
-)
+INVALID_CACHE_RESPONSES = [
+    "I don't know",
+    "Answer not found",
+    "No relevant context found",
+]

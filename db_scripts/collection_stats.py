@@ -1,5 +1,5 @@
 from database.qdrant_client_manager import client
-from configuration.config import COLLECTION_NAME
+from configuration.app_settings import COLLECTION_NAME
 
 info = client.get_collection(
     COLLECTION_NAME

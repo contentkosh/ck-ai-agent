@@ -1,6 +1,6 @@
 from qdrant_client import QdrantClient
 
-from configuration.config import COLLECTION_NAME
+from configuration.app_settings import COLLECTION_NAME
 
 client = QdrantClient(
     host="localhost",
