@@ -1,5 +1,6 @@
 from dto.knowledge_base_record_dto import KnowledgeBaseRecordDto
 from common.logger import logger
+
 from configuration.config import (
     COLLECTION_NAME,
     SCROLL_LIMIT,
@@ -20,7 +21,6 @@ from configuration.constants import (
     METADATA_TITLE,
 )
 from database.qdrant_client_manager import client
-
 def print_all_documents() -> None:
     """
     Print every stored chunk's metadata, paginating through

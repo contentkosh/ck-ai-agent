@@ -19,10 +19,12 @@ def create_collection_if_missing() -> None:
     Create the Qdrant collection if it does not already exist.
     """
     collections = client.get_collections()
+
     existingCollections = [
         collection.name
         for collection in collections.collections
     ]
+
     if COLLECTION_NAME not in existingCollections:
         client.create_collection(
             collection_name=COLLECTION_NAME,
@@ -31,12 +33,12 @@ def create_collection_if_missing() -> None:
                 distance=Distance.COSINE,
             ),
         )
-        logger.info(COLLECTION_CREATED_SUCCESS_LOG)
+        logger.info(COLLECTION_CREATED_SUCCESS_LOG,)
     else:
-        logger.info(COLLECTION_ALREADY_EXISTS_SCRIPT_LOG)
+        logger.info(COLLECTION_ALREADY_EXISTS_SCRIPT_LOG,)
 if __name__ == "__main__":
     try:
         create_collection_if_missing()
 
     except Exception as exception:
-        logger.exception(COLLECTION_CREATION_FAILED_LOG)
+        logger.exception(COLLECTION_CREATION_FAILED_LOG,exception)

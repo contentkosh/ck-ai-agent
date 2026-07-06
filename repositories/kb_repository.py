@@ -4,7 +4,8 @@
 # searching, retrieving, and deleting knowledge base documents.
 # ==========================================================
 
-from typing import Optional
+from sys import exception
+from typing import Any, Optional
 from qdrant_client.models import (
     FieldCondition,
     Filter,
@@ -161,20 +162,38 @@ def saveChunks(
             collection_name=COLLECTION_NAME,
             points=points,
         )
-        logger.info("%s: %s",VECTOR_INSERTION_LOG,len(points),)
-    except Exception as ex:
-        logger.exception("%s: %s",VECTOR_INSERTION_FAILED_LOG,ex,)
 
-        if isQdrantConnectionError(ex):
+        logger.info(
+            VECTOR_INSERTION_LOG,
+            len(points),
+        )
+
+        client.upsert(
+            collection_name=COLLECTION_NAME,
+            points=points,
+        )
+
+        logger.info(
+            VECTOR_INSERTION_LOG,
+            len(points),
+        )
+
+    except Exception as exception:
+        logger.exception(
+            VECTOR_INSERTION_FAILED_LOG,
+            exception,
+        )
+
+        if isQdrantConnectionError(exception):
             raise ContentKoshException(
                 DATABASE_INSERT_ERROR_MESSAGE,
                 cause=QdrantConnectionException(),
-            ) from ex
+            ) from exception
 
         raise ContentKoshException(
             DATABASE_INSERT_ERROR_MESSAGE,
             cause=QdrantInsertException(),
-        ) from ex
+        ) from exception
 
 # ==========================================================
 # Semantic Search
@@ -198,6 +217,7 @@ def searchChunks(
         )
         logger.info("%s: %s",SEMANTIC_SEARCH_LOG,len(searchResult.points))
         return searchResult.points
+    
     except Exception as ex:
         logger.exception("%s: %s",SEMANTIC_SEARCH_FAILED_LOG,ex,)
 
@@ -257,13 +277,17 @@ def getUploadedFiles() -> list[UploadedDocumentDto]:
     try:
         records = _scrollRecords()
         documents: dict[str, UploadedDocumentDto] = {}
+
         for point in records:
             payload = point.payload
+
             documentId = payload.get(
                 METADATA_DOCUMENT_ID,
             )
+
             if not documentId:
                 continue
+
             if documentId not in documents:
                 documents[documentId] = buildUploadedDocument(
                     payload,
@@ -348,17 +372,29 @@ def deleteAllDocuments() -> bool:
             points_selector=Filter(),
         )
 
-        logger.info("%s",CLEAR_KB_LOG,)
-        return True
-    except Exception as ex:
-        logger.exception("%s: %s",CLEAR_KB_FAILED_LOG,ex,)
+        logger.info(
+            CLEAR_KB_LOG,
+        )
 
-        if isQdrantConnectionError(ex):
+        return True
+
+    except Exception as exception:
+        logger.exception(
+            "%s: %s",
+            CLEAR_KB_FAILED_LOG,
+            exception,
+        )
+
+        if isQdrantConnectionError(exception):
             raise ContentKoshException(
                 DATABASE_CLEAR_ERROR_MESSAGE,
                 cause=QdrantConnectionException(),
-            ) from ex
+            ) from exception
 
         raise ContentKoshException(
             DATABASE_CLEAR_ERROR_MESSAGE,
-            cause=QdrantDeleteException(DATABASE_CLEAR_ERROR_MESSAGE,),) from ex
+            cause=QdrantDeleteException(
+                DATABASE_CLEAR_ERROR_MESSAGE,
+            ),
+        ) from exception
+       

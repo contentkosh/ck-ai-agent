@@ -6,7 +6,11 @@
 # ==========================================================
 
 from pathlib import Path
-from configuration.config import MAX_FILE_SIZE
+
+from configuration.config import (
+    MAX_FILE_SIZE,
+)
+
 from configuration.constants import (
     BYTES_PER_MB,
     PDF_EXTENSION,

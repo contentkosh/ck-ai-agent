@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Optional
 from pydantic import BaseModel
 from configuration.constants import (
     METADATA_DOCUMENT_ID,
@@ -62,3 +62,4 @@ class KnowledgeBaseResponse(BaseModel):
     request_id: str
     total_records: int
     records: list[KnowledgeBaseRecordDto]
+    similarity_score: Optional[float] = None

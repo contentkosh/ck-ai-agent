@@ -5,6 +5,18 @@
 # to produce context-aware responses.
 # ==========================================================
 
+import os
+from typing import Dict, List
+from dotenv import load_dotenv
+
+from services.cache_service import (
+    get_cached_answer,
+    cache_answer,
+)
+from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
+from common.logger import logger
+from common.custom_exceptions import DatabaseException
+
 from typing import List
 from dotenv import load_dotenv
 from common.embedding_client import get_embedding_model
@@ -21,6 +33,7 @@ from configuration.constants import (
     QUERY_RECEIVED_LOG,
     RETRIEVED_CHUNKS_LOG,
     TOP_MATCHING_SOURCE_LOG,
+    CACHE_SOURCE,
 )
 from configuration.error_constants import(
     ANSWER_NOT_FOUND_MESSAGE,
@@ -80,7 +93,10 @@ def ask_question(
     Search the Knowledge Base and generate an answer.
     """
     try:
-        logger.info(QUERY_RECEIVED_LOG, query)
+        logger.info(
+            QUERY_RECEIVED_LOG,
+            query,
+        )
 
         # --------------------------------------------------
         # Generate Query Embedding
@@ -93,6 +109,30 @@ def ask_question(
         )
 
         # --------------------------------------------------
+        # Check Semantic Cache
+        # --------------------------------------------------
+
+        cached = get_cached_answer(
+            queryEmbedding,
+        )
+
+        if cached:
+            logger.info(
+                "Returning cached answer.",
+            )
+
+            return QueryResponse(
+                answer=cached.get("answer"),
+                document_id=None,
+                title=None,
+                document_type=None,
+                tag=None,
+                summary=None,
+                source=CACHE_SOURCE,
+                page=None,
+            )
+
+        # --------------------------------------------------
         # Search Knowledge Base
         # --------------------------------------------------
 
@@ -101,17 +141,29 @@ def ask_question(
                 queryEmbedding=queryEmbedding,
                 limit=SEARCH_LIMIT,
             )
-        except ContentKoshException as ex:
-            logger.exception(CHAT_SERVICE_FAILED_LOG,ex,)
+
+        except ContentKoshException as exception:
+            logger.exception(
+                CHAT_SERVICE_FAILED_LOG,
+                exception,
+            )
+
             if isinstance(
-                ex.cause,
+                exception.cause,
                 QdrantConnectionException,
             ):
-                raise ex.cause
-            raise KnowledgeBaseException() from ex
+                raise exception.cause
+
+            raise KnowledgeBaseException() from exception
+
+        # --------------------------------------------------
+        # No Relevant Chunks
+        # --------------------------------------------------
 
         if not searchResults:
-            logger.warning(NO_RELEVANT_CHUNKS_LOG)
+            logger.warning(
+                NO_RELEVANT_CHUNKS_LOG,
+            )
 
             return QueryResponse(
                 answer=ANSWER_NOT_FOUND_MESSAGE,
@@ -120,19 +172,30 @@ def ask_question(
                 document_type=None,
                 tag=None,
                 summary=None,
-                source=None,
+                source=CACHE_SOURCE,
                 page=None,
             )
 
-        logger.info(RETRIEVED_CHUNKS_LOG,len(searchResults))
+        logger.info(
+            RETRIEVED_CHUNKS_LOG,
+            len(searchResults),
+        )
 
         # --------------------------------------------------
         # Build Context
         # --------------------------------------------------
 
-        contextText = build_context(searchResults)
-        documentPayload = searchResults[0].payload
-        logger.info(TOP_MATCHING_SOURCE_LOG,documentPayload.get(
+        contextText = build_context(
+            searchResults,
+        )
+
+        documentPayload = (
+            searchResults[0].payload or {}
+        )
+
+        logger.info(
+            TOP_MATCHING_SOURCE_LOG,
+            documentPayload.get(
                 METADATA_SOURCE,
             ),
         )
@@ -150,16 +213,34 @@ def ask_question(
             llmResponse = get_llm().invoke(
                 prompt,
             )
+
         except Exception as exception:
-            logger.exception("%s: %s", LLM_INVOCATION_FAILED_LOG, exception)
+            logger.exception(
+                "%s: %s",
+                LLM_INVOCATION_FAILED_LOG,
+                exception,
+            )
             raise LLMResponseException() from exception
+
+        answer = llmResponse.content.strip()
+
+        # --------------------------------------------------
+        # Save to Cache
+        # --------------------------------------------------
+
+        cache_answer(
+            question=query,
+            embedding=queryEmbedding,
+            context=contextText,
+            answer=answer,
+        )
 
         # --------------------------------------------------
         # Return Response
         # --------------------------------------------------
 
         return QueryResponse.from_payload(
-            answer=llmResponse.content.strip(),
+            answer=answer,
             payload=documentPayload,
         )
 
@@ -168,7 +249,12 @@ def ask_question(
 
     except KnowledgeBaseException:
         raise
-    except Exception as exception:
-        logger.exception(CHAT_SERVICE_FAILED_LOG,exception,)
-        raise KnowledgeBaseException(CHAT_SERVICE_ERROR_MESSAGE,) from exception
 
+    except Exception as exception:
+        logger.exception(
+            CHAT_SERVICE_FAILED_LOG,
+            exception,
+        )
+        raise KnowledgeBaseException(
+            CHAT_SERVICE_ERROR_MESSAGE,
+        ) from exception

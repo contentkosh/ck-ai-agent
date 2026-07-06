@@ -116,3 +116,38 @@ SUPPORTED_FILE_TYPES = [PDF_EXTENSION]
 SUPPORTED_CONTENT_TYPE = "application/pdf"
 PDF_MAGIC_BYTES = b"%PDF-"
 MAX_SCROLL_ITERATIONS = 1000
+
+# ==========================================================
+# CACHE
+# ==========================================================
+
+CACHE_ENABLED = os.getenv(
+    "CACHE_ENABLED",
+    "True",
+).lower() == "true"
+
+CACHE_COLLECTION_NAME = os.getenv(
+    "CACHE_COLLECTION_NAME",
+    "answer_cache"
+)
+
+CACHE_SIMILARITY_THRESHOLD = float(
+    os.getenv(
+        "CACHE_SIMILARITY_THRESHOLD",
+        0.80
+    )
+)
+
+CACHE_TOP_K = int(
+    os.getenv(
+        "CACHE_TOP_K",
+        1
+    )
+)
+
+MAX_CACHE_SIZE = int(
+    os.getenv(
+        "MAX_CACHE_SIZE",
+        5000
+    )
+)

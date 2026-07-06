@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.0.2] - Semantic Cache & LLM Optimization
+
+**JIRA:** CK-351
+**Author:** Mukund Upadhyay
+
+### Features
+
+#### Semantic Answer Cache
+
+- Implemented semantic answer caching using Qdrant.
+- Added embedding-based cache retrieval before Knowledge Base search and LLM invocation.
+- Added configurable semantic similarity threshold for cache matching.
+- Added cache storage for user questions, embeddings, retrieved context, and generated answers.
+- Added cache hit and cache miss handling to reduce unnecessary LLM calls.
+
+#### LLM Context Optimization
+
+- Integrated LLMLingua for context compression before LLM invocation.
+- Added query-aware context compression to reduce the amount of retrieved context sent to the LLM.
+
+### Improvements
+
+- Improved Knowledge Base query flow by checking the semantic cache before performing vector retrieval and LLM inference.
+- Improved configuration by adding configurable semantic cache settings.
+- Improved code organization for cache-related services, repositories, and database utilities.
+
+---
+
+
 ## [0.0.1] - Initial Release
 
 **JIRA:** CK-350  

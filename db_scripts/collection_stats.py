@@ -9,8 +9,10 @@ def print_collection_stats() -> None:
     """
     Print basic stats for the configured Qdrant collection.
     """
-    collectionInfo = client.get_collection(COLLECTION_NAME)
-    logger.info(COLLECTION_STATS_HEADER_LOG)
+    collectionInfo = client.get_collection(
+        COLLECTION_NAME,
+    )
+    logger.info(COLLECTION_STATS_HEADER_LOG,)
     logger.info(
         COLLECTION_STATS_LOG,
         COLLECTION_NAME,
