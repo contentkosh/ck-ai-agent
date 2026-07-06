@@ -9,7 +9,7 @@ from langchain_openai import ChatOpenAI
 from common.custom_exceptions import ValidationException
 from common.logger import logger
 
-from configuration.config import LLM_MODEL
+from configuration.app_settings import LLM_MODEL
 from configuration.context import DOCUMENT_METADATA_PROMPT
 
 load_dotenv()

@@ -4,10 +4,6 @@ from pydantic import BaseModel
 
 
 class QueryResponse(BaseModel):
-    """
-    Response returned by the Knowledge Base.
-    """
-
     answer: str
 
     document_id: Optional[str] = None
@@ -23,3 +19,5 @@ class QueryResponse(BaseModel):
     source: Optional[str] = None
 
     page: Optional[int] = None
+
+    similarity_score: Optional[float] = None

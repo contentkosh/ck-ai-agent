@@ -5,6 +5,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # ==========================================================
+# OPENROUTER
+# ==========================================================
+
+OPENROUTER_API_KEY = os.getenv(
+    "OPENROUTER_API_KEY"
+)
+
+# ==========================================================
 # QDRANT
 # ==========================================================
 
@@ -25,31 +33,20 @@ COLLECTION_NAME = os.getenv(
     "knowledge_base"
 )
 
+SCROLL_LIMIT = int(
+    os.getenv(
+        "SCROLL_LIMIT",
+        5000
+    )
+)
+
 # ==========================================================
-# EMBEDDINGS
+# EMBEDDING
 # ==========================================================
 
 EMBEDDING_MODEL = os.getenv(
     "EMBEDDING_MODEL",
     "sentence-transformers/all-MiniLM-L6-v2"
-)
-
-EMBEDDING_DIMENSION = int(
-    os.getenv(
-        "EMBEDDING_DIMENSION",
-        384
-    )
-)
-
-# ==========================================================
-# QUERY VALIDATION
-# ==========================================================
-
-MAX_QUERY_LENGTH = int(
-    os.getenv(
-        "MAX_QUERY_LENGTH",
-        1000,
-    )
 )
 
 # ==========================================================
@@ -59,10 +56,6 @@ MAX_QUERY_LENGTH = int(
 LLM_MODEL = os.getenv(
     "LLM_MODEL",
     "nvidia/nemotron-3-super-120b-a12b:free"
-)
-
-OPENROUTER_API_KEY = os.getenv(
-    "OPENROUTER_API_KEY"
 )
 
 # ==========================================================
@@ -84,7 +77,7 @@ CHUNK_OVERLAP = int(
 )
 
 # ==========================================================
-# FILE STORAGE
+# FILES
 # ==========================================================
 
 UPLOAD_FOLDER = os.getenv(
@@ -96,5 +89,40 @@ MAX_FILE_SIZE = int(
     os.getenv(
         "MAX_FILE_SIZE",
         20971520
+    )
+)
+
+# ==========================================================
+# CACHE
+# ==========================================================
+
+CACHE_ENABLED = os.getenv(
+    "CACHE_ENABLED",
+    "True"
+).lower() == "true"
+
+CACHE_COLLECTION_NAME = os.getenv(
+    "CACHE_COLLECTION_NAME",
+    "answer_cache"
+)
+
+CACHE_SIMILARITY_THRESHOLD = float(
+    os.getenv(
+        "CACHE_SIMILARITY_THRESHOLD",
+        0.80
+    )
+)
+
+CACHE_TOP_K = int(
+    os.getenv(
+        "CACHE_TOP_K",
+        1
+    )
+)
+
+MAX_CACHE_SIZE = int(
+    os.getenv(
+        "MAX_CACHE_SIZE",
+        5000
     )
 )

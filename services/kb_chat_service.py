@@ -5,10 +5,14 @@ from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 from langchain_openai import ChatOpenAI
 
-from configuration.config import (
+from services.cache_service import (
+    get_cached_answer,
+    cache_answer,
+)
+
+from configuration.app_settings import (
     EMBEDDING_MODEL,
-    LLM_MODEL,
-    SEARCH_LIMIT
+    LLM_MODEL
 )
 
 from repositories.kb_repository import search_chunks
@@ -116,8 +120,7 @@ def ask_question(query: str) -> Dict:
     try:
 
         logger.info(
-            "Received query: %s",
-            query
+            "Received user query: %s",
         )
 
         # --------------------------------------------------
@@ -132,9 +135,32 @@ def ask_question(query: str) -> Dict:
         # Search Knowledge Base
         # --------------------------------------------------
 
+        cached = get_cached_answer(
+            query_embedding
+        )
+
+        if cached:
+
+            logger.info(
+                "Returning cached answer."
+            )
+
+            return {
+
+                "answer": cached.get("answer"),
+
+                "source": "CACHE",
+
+                "similarity_score": round(
+                    cached.get("score"),
+                    3,
+                ),
+
+            }
+
         results = search_chunks(
             query_embedding=query_embedding,
-            limit=SEARCH_LIMIT,
+            limit=5
         )
 
         if not results:
@@ -163,7 +189,7 @@ def ask_question(query: str) -> Dict:
 
             }
         logger.info(
-            "Retrieved %d chunk(s).",
+            "Knowledge Base search returned %d results.",
             len(results),
         )
 
@@ -196,6 +222,18 @@ def ask_question(query: str) -> Dict:
 
         response = get_llm().invoke(
             prompt
+        )
+
+        cache_answer(
+
+            question=query,
+
+            embedding=query_embedding,
+
+            context=context,
+
+            answer=response.content.strip(),
+
         )
 
         logger.info(

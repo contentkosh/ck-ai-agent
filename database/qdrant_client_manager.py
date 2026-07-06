@@ -2,7 +2,7 @@ from qdrant_client import QdrantClient
 
 from common.logger import logger
 
-from configuration.config import (
+from configuration.app_settings import (
     QDRANT_HOST,
     QDRANT_PORT,
 )

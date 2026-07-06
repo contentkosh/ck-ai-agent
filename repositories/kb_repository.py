@@ -8,7 +8,7 @@ from qdrant_client.models import (
 
 from database.qdrant_client_manager import client
 
-from configuration.config import (
+from configuration.app_settings import (
     COLLECTION_NAME,
     SCROLL_LIMIT
 )
