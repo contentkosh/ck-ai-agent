@@ -63,17 +63,12 @@ def search_cache(
 # ==========================================================
 
 def save_cache(
-
     *,
-
     question: str,
-
     embedding: list[float],
-
     context: str,
-
     answer: str,
-
+    metadata: dict,
 ):
 
     """
@@ -94,15 +89,18 @@ def save_cache(
             vector=embedding,
 
             payload={
-
                 "question": question,
-
                 "context": context,
-
                 "answer": answer,
 
-            },
-
+                "document_id": metadata.get("document_id"),
+                "title": metadata.get("title"),
+                "document_type": metadata.get("document_type"),
+                "tag": metadata.get("tag"),
+                "summary": metadata.get("summary"),
+                "source": metadata.get("source"),
+                "page": metadata.get("page"),
+            }
         )
 
         client.upsert(

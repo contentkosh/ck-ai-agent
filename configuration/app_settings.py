@@ -49,6 +49,10 @@ EMBEDDING_MODEL = os.getenv(
     "sentence-transformers/all-MiniLM-L6-v2"
 )
 
+EMBEDDING_DIMENSION = int(
+    os.getenv("EMBEDDING_DIMENSION")
+)
+
 # ==========================================================
 # LLM
 # ==========================================================

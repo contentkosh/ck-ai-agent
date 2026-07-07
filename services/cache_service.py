@@ -13,6 +13,9 @@ from configuration.constants import (
 )
 
 from common.logger import logger
+from common.custom_exceptions import DatabaseException
+
+from dto.response_dto import CacheResponse
 
 
 # ==========================================================
@@ -29,30 +32,64 @@ def get_cached_answer(
     if not CACHE_ENABLED:
         return None
 
-    results = search_cache(query_embedding)
+    try: 
 
-    if not results:
-        logger.info("Cache Miss")
+        cache_results = search_cache(query_embedding)
+
+    except DatabaseException:
+
+        logger.exception(
+            "Cache lookup failed."
+        )
+
         return None
 
-    result = results[0]
-    score = result.score
+    if not cache_results:
+
+        logger.info(
+            "Cache Miss"
+        )
+
+        return None
+
+    cached_result = cache_results[0]
+
+    similarity_score = cached_result.score
 
     logger.info(
         "Cache similarity score: %.3f",
-        score,
+        similarity_score,
     )
 
-    if score >= CACHE_SIMILARITY_THRESHOLD:
+    if similarity_score >= CACHE_SIMILARITY_THRESHOLD:
 
-        logger.info("Cache Hit")
+        logger.info(
+            "Cache Hit"
+        )
 
-        return {
-            "answer": result.payload.get("answer"),
-            "score": score,
-        }
+        return CacheResponse(
+            answer=cached_result.payload.get("answer"),
 
-    logger.info("Cache Miss")
+            document_id=cached_result.payload.get("document_id"),
+
+            title=cached_result.payload.get("title"),
+
+            document_type=cached_result.payload.get("document_type"),
+
+            tag=cached_result.payload.get("tag"),
+
+            summary=cached_result.payload.get("summary"),
+
+            source=cached_result.payload.get("source"),
+
+            page=cached_result.payload.get("page"),
+
+            similarity_score=similarity_score,
+        )
+
+    logger.info(
+        "Cache Miss"
+    )
 
     return None
 
@@ -71,14 +108,15 @@ def should_cache(
     if not answer:
         return False
 
-    answer = answer.strip()
+    normalized_answer = answer.strip().lower()
 
-    if not answer:
+    if not normalized_answer:
         return False
 
-    for text in INVALID_CACHE_RESPONSES:
+    for invalid_response in INVALID_CACHE_RESPONSES:
 
-        if text.lower() in answer.lower():
+        if invalid_response.lower() in normalized_answer:
+
             return False
 
     return True
@@ -94,6 +132,7 @@ def cache_answer(
     embedding: list[float],
     context: str,
     answer: str,
+    metadata: dict,
 ):
     """
     Store a successful answer in the cache.
@@ -110,9 +149,32 @@ def cache_answer(
 
         return
 
-    save_cache(
-        question=question,
-        embedding=embedding,
-        context=context,
-        answer=answer,
-    )
+    try:
+
+        existing_cache = search_cache(embedding)
+
+        if existing_cache:
+
+            similarity_score = existing_cache[0].score
+
+            if similarity_score >= CACHE_SIMILARITY_THRESHOLD:
+
+                logger.info(
+                    "Duplicate cache entry found. Skipping cache save."
+                )
+
+                return
+
+        save_cache(
+            question=question,
+            embedding=embedding,
+            context=context,
+            answer=answer,
+            metadata=metadata
+        )
+
+    except DatabaseException:
+
+        logger.exception(
+            "Failed to save answer in cache."
+        )
