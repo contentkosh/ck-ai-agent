@@ -53,6 +53,10 @@ def extract_document_metadata(text: str) -> dict[str, Any]:
 
         response = get_llm().invoke(prompt)
 
+        print("\n===== LLM RESPONSE =====")
+        print(response.content)
+        print("========================\n")
+
         content = re.sub(
             r"^```json|```$",
             "",

@@ -121,6 +121,7 @@ def ask_question(query: str) -> Dict:
 
         logger.info(
             "Received user query: %s",
+            query,
         )
 
         # --------------------------------------------------
@@ -147,12 +148,24 @@ def ask_question(query: str) -> Dict:
 
             return {
 
-                "answer": cached.get("answer"),
+                "answer": cached.answer,
 
-                "source": "CACHE",
+                "document_id": cached.document_id,
+
+                "title": cached.title,
+
+                "document_type": cached.document_type,
+
+                "tag": cached.tag,
+
+                "summary": cached.summary,
+
+                "source": cached.source,
+
+                "page": cached.page,
 
                 "similarity_score": round(
-                    cached.get("score"),
+                    cached.similarity_score,
                     3,
                 ),
 
@@ -233,6 +246,8 @@ def ask_question(query: str) -> Dict:
             context=context,
 
             answer=response.content.strip(),
+
+            metadata=payload,
 
         )
 
