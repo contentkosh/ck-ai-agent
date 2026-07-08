@@ -25,6 +25,7 @@ class QueryResponse(BaseModel):
 class CacheResponse(BaseModel):
 
     answer: str
+    
     document_id: Optional[str] = None
     title: Optional[str] = None
     document_type: Optional[str] = None

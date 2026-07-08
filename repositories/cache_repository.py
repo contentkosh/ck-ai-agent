@@ -4,14 +4,8 @@ from typing import Optional
 from qdrant_client.models import PointStruct
 
 from common.logger import logger
-
 from database.qdrant_client_manager import client
-
-from configuration.app_settings import (
-    CACHE_COLLECTION_NAME,
-)
-
-from common.logger import logger
+from configuration.app_settings import CACHE_COLLECTION_NAME
 from common.custom_exceptions import DatabaseException
 
 
@@ -26,33 +20,16 @@ def search_cache(
     """
     Search the semantic answer cache.
     """
-
     try:
-
         result = client.query_points(
-
             collection_name=CACHE_COLLECTION_NAME,
-
             query=query_embedding,
-
             limit=limit,
-
         )
-
-        logger.info(
-            "Cache search returned %d result(s).",
-            len(result.points),
-        )
-
+        logger.info("Cache search returned %d result(s).", len(result.points))
         return result.points
-
     except Exception as ex:
-
-        logger.exception(
-            "Cache search failed: %s",
-            ex,
-        )
-
+        logger.exception("Cache search failed: %s", ex)
         raise DatabaseException(
             "Unable to search cache."
         ) from ex
@@ -62,6 +39,7 @@ def search_cache(
 # Save Cache
 # ==========================================================
 
+
 def save_cache(
     *,
     question: str,
@@ -70,29 +48,18 @@ def save_cache(
     answer: str,
     metadata: dict,
 ):
-
     """
     Store an answer in the semantic cache.
     """
-
-    logger.info(
-        "Cache saved for question: %s",
-        question,  
-    )
-
+    logger.info("Cache saved for question: %s", question)
     try:
-
         point = PointStruct(
-
             id=str(uuid.uuid4()),
-
             vector=embedding,
-
             payload={
                 "question": question,
                 "context": context,
                 "answer": answer,
-
                 "document_id": metadata.get("document_id"),
                 "title": metadata.get("title"),
                 "document_type": metadata.get("document_type"),
@@ -102,25 +69,11 @@ def save_cache(
                 "page": metadata.get("page"),
             }
         )
-
         client.upsert(
-
             collection_name=CACHE_COLLECTION_NAME,
-
             points=[point],
-
         )
-
-        logger.info(
-            "Answer cached successfully."
-        )
-
+        logger.info("Answer cached successfully.")
     except Exception as ex:
-
-        logger.exception(
-            "Failed to save cache."
-        )
-
-        raise DatabaseException(
-            "Unable to save cache."
-        ) from ex
+        logger.exception("Failed to save cache.")
+        raise DatabaseException("Unable to save cache.") from ex

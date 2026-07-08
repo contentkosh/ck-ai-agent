@@ -9,8 +9,6 @@ from fastapi import (
 )
 
 from common.logger import logger
-
-
 from validators.file_validator import validate_pdf_file
 from validators.query_validator import validate_query
 from validators.tag_validator import validate_tag
@@ -55,7 +53,6 @@ def get_request_context() -> RequestContext:
     """
     Create a request context for every API request.
     """
-
     return RequestContext()
 
 
@@ -68,14 +65,14 @@ def health_check():
     """
     Health Check API.
     """
-
     logger.info("Health Check API called.")
-
     return {
         "status": "Running",
         "service": API_TITLE,
         "version": API_VERSION,
     }
+
+
 # ==========================================================
 # Get Knowledge Base
 # ==========================================================
@@ -87,43 +84,21 @@ def get_knowledge_base(
     """
     Retrieve all Knowledge Base records.
     """
-
     context = get_request_context()
-
-    logger.info(
-        "[%s] Fetching Knowledge Base.",
-        context.request_id,
-    )
-
+    logger.info("[%s] Fetching Knowledge Base.", context.request_id)
     try:
-
         validate_tag(tag)
-
         records = get_all_records(tag)
-
-        logger.info(
-            "[%s] Retrieved %d record(s).",
-            context.request_id,
-            len(records),
-        )
-
+        logger.info("[%s] Retrieved %d record(s).", context.request_id, len(records))
         return {
             "request_id": context.request_id,
             "total_records": len(records),
             "records": records,
         }
-
     except HTTPException:
         raise
-
     except Exception as ex:
-
-        logger.exception(
-            "[%s] Failed to fetch Knowledge Base: %s",
-            context.request_id,
-            ex,
-        )
-
+        logger.exception("[%s] Failed to fetch Knowledge Base: %s", context.request_id, ex)
         raise HTTPException(
             status_code=500,
             detail="Internal Server Error",
@@ -145,25 +120,12 @@ def query_knowledge_base(
     """
     Answer a user query using the Knowledge Base.
     """
-
     context = get_request_context()
-
-    logger.info(
-        "[%s] Question received.",
-        context.request_id,
-    )
-
+    logger.info("[%s] Question received.", context.request_id)
     try:
-
         validate_query(request.query)
-
         result = ask_question(request.query)
-
-        logger.info(
-            "[%s] Question answered successfully.",
-            context.request_id,
-        )
-
+        logger.info("[%s] Question answered successfully.", context.request_id)
         return QueryResponse(
             answer=result.get("answer"),
             title=result.get("title"),
@@ -174,23 +136,17 @@ def query_knowledge_base(
             page=result.get("page"),
             similarity_score=result.get("similarity_score"),
         )
-
     except HTTPException:
         raise
-
     except Exception as ex:
-
-        logger.exception(
-            "[%s] Failed to process question: %s",
-            context.request_id,
-            ex,
-        )
-
+        logger.exception("[%s] Failed to process question: %s", context.request_id, ex)
         raise HTTPException(
             status_code=500,
             detail="Internal Server Error",
         )
-    # ==========================================================
+
+
+# ==========================================================
 # Upload Documents
 # ==========================================================
 
@@ -201,42 +157,20 @@ def upload_documents(
     """
     Upload one or more PDF documents into the Knowledge Base.
     """
-
     context = get_request_context()
-
-    logger.info(
-        "[%s] Upload request received.",
-        context.request_id,
-    )
-
+    logger.info("[%s] Upload request received.", context.request_id)
     try:
-
         validate_upload(files)
-
         result = ingest_documents(files)
-
-        logger.info(
-            "[%s] Uploaded %d document(s) successfully.",
-            context.request_id,
-            len(files),
-        )
-
+        logger.info("[%s] Uploaded %d document(s) successfully.", context.request_id, len(files))
         return {
             "request_id": context.request_id,
             "message": result,
         }
-
     except HTTPException:
         raise
-
     except Exception as ex:
-
-        logger.exception(
-            "[%s] Upload failed: %s",
-            context.request_id,
-            ex,
-        )
-
+        logger.exception("[%s] Upload failed: %s", context.request_id, ex)
         raise HTTPException(
             status_code=500,
             detail="Internal Server Error",
@@ -252,43 +186,25 @@ def get_uploaded_documents():
     """
     Retrieve all uploaded documents.
     """
-
     context = get_request_context()
-
-    logger.info(
-        "[%s] Fetching uploaded documents.",
-        context.request_id,
-    )
-
+    logger.info("[%s] Fetching uploaded documents.", context.request_id)
     try:
-
         documents = get_uploaded_files()
-
-        logger.info(
-            "[%s] Retrieved %d uploaded document(s).",
-            context.request_id,
-            len(documents),
-        )
-
+        logger.info("[%s] Retrieved %d uploaded document(s).", context.request_id, len(documents))
         return {
             "request_id": context.request_id,
             "total_documents": len(documents),
             "documents": documents,
         }
-
     except Exception as ex:
-
-        logger.exception(
-            "[%s] Failed to retrieve uploaded documents: %s",
-            context.request_id,
-            ex,
-        )
-
+        logger.exception("[%s] Failed to retrieve uploaded documents: %s", context.request_id, ex)
         raise HTTPException(
             status_code=500,
             detail="Internal Server Error",
         )
-    # ==========================================================
+
+
+# ==========================================================
 # Delete Uploaded Document
 # ==========================================================
 
@@ -299,39 +215,19 @@ def delete_uploaded_document(
     """
     Delete a document and all its associated chunks.
     """
-
     context = get_request_context()
-
-    logger.info(
-        "[%s] Delete request received. Document ID=%s",
-        context.request_id,
-        document_id,
-    )
-
+    logger.info("[%s] Delete request received. Document ID=%s", context.request_id, document_id)
     try:
-
         delete_document(document_id)
-
-        logger.info(
-            "[%s] Document deleted successfully.",
-            context.request_id,
-        )
-
+        logger.info("[%s] Document deleted successfully.", context.request_id)
         return {
             "request_id": context.request_id,
             "status": "success",
             "message": "Document deleted successfully.",
             "document_id": document_id,
         }
-
     except Exception as ex:
-
-        logger.exception(
-            "[%s] Failed to delete document: %s",
-            context.request_id,
-            ex,
-        )
-
+        logger.exception("[%s] Failed to delete document: %s", context.request_id, ex)
         raise HTTPException(
             status_code=500,
             detail="Internal Server Error",
@@ -347,37 +243,18 @@ def clear_knowledge_base():
     """
     Delete all documents from the Knowledge Base.
     """
-
     context = get_request_context()
-
-    logger.info(
-        "[%s] Clearing Knowledge Base.",
-        context.request_id,
-    )
-
+    logger.info("[%s] Clearing Knowledge Base.", context.request_id)
     try:
-
         delete_all_documents()
-
-        logger.info(
-            "[%s] Knowledge Base cleared successfully.",
-            context.request_id,
-        )
-
+        logger.info("[%s] Knowledge Base cleared successfully.", context.request_id)
         return {
             "request_id": context.request_id,
             "status": "success",
             "message": "Knowledge Base cleared successfully.",
         }
-
     except Exception as ex:
-
-        logger.exception(
-            "[%s] Failed to clear Knowledge Base: %s",
-            context.request_id,
-            ex,
-        )
-
+        logger.exception("[%s] Failed to clear Knowledge Base: %s", context.request_id, ex)
         raise HTTPException(
             status_code=500,
             detail="Internal Server Error",
