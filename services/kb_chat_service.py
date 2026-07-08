@@ -21,6 +21,7 @@ from common.logger import logger
 from common.custom_exceptions import DatabaseException
 
 
+
 # ==========================================================
 # Load Environment Variables
 # ==========================================================
@@ -31,21 +32,20 @@ load_dotenv()
 # ==========================================================
 # Embedding Model
 # ==========================================================
+
 _embedding_model: SentenceTransformer | None = None
 
 
 def get_embedding_model() -> SentenceTransformer:
     """Return the singleton embedding model."""
-
     global _embedding_model
-
     if _embedding_model is None:
         logger.info("Loading embedding model.")
         _embedding_model = SentenceTransformer(
             EMBEDDING_MODEL
         )
-
     return _embedding_model
+
 
 # ==========================================================
 # LLM
@@ -56,9 +56,7 @@ _llm: ChatOpenAI | None = None
 
 def get_llm() -> ChatOpenAI:
     """Return the singleton LLM."""
-
     global _llm
-
     if _llm is None:
         _llm = ChatOpenAI(
             model=LLM_MODEL,
@@ -66,7 +64,6 @@ def get_llm() -> ChatOpenAI:
             api_key=os.getenv("OPENROUTER_API_KEY"),
             temperature=0,
         )
-
     return _llm
 
 
@@ -78,22 +75,19 @@ def build_context(results: List) -> str:
     """
     Combine retrieved chunks into a single context string.
     """
-
     return "\n\n".join(
-
         result.payload.get(
             "text",
             ""
         )
-
         for result in results
-
     )
 
 
 # ==========================================================
 # Build Prompt
 # ==========================================================
+
 from configuration.context import CHAT_PROMPT
 
 
@@ -103,11 +97,12 @@ def build_prompt(
     query: str,
 ) -> str:
     """Build the LLM prompt."""
-
     return CHAT_PROMPT.format(
         context=context,
         query=query,
     )
+
+
 # ==========================================================
 # Ask Question
 # ==========================================================
@@ -116,14 +111,8 @@ def ask_question(query: str) -> Dict:
     """
     Search the Knowledge Base and generate an answer.
     """
-
     try:
-
-        logger.info(
-            "Received user query: %s",
-            query,
-        )
-
+        logger.info("Received user query: %s", query)
         # --------------------------------------------------
         # Generate Query Embedding
         # --------------------------------------------------
@@ -135,171 +124,87 @@ def ask_question(query: str) -> Dict:
         # --------------------------------------------------
         # Search Knowledge Base
         # --------------------------------------------------
-
         cached = get_cached_answer(
             query_embedding
         )
-
         if cached:
-
-            logger.info(
-                "Returning cached answer."
-            )
-
+            logger.info("Returning cached answer.")
             return {
-
                 "answer": cached.answer,
-
                 "document_id": cached.document_id,
-
                 "title": cached.title,
-
                 "document_type": cached.document_type,
-
                 "tag": cached.tag,
-
                 "summary": cached.summary,
-
                 "source": cached.source,
-
                 "page": cached.page,
-
                 "similarity_score": round(
                     cached.similarity_score,
                     3,
                 ),
-
             }
-
         results = search_chunks(
             query_embedding=query_embedding,
             limit=5
         )
-
         if not results:
-
-            logger.warning(
-                "No relevant chunks found."
-            )
-
+            logger.warning("No relevant chunks found.")
             return {
-
                 "answer": "Answer not found in the Knowledge Base.",
-
                 "document_id": None,
-
                 "title": None,
-
                 "document_type": None,
-
                 "tag": None,
-
                 "summary": None,
-
                 "source": None,
-
                 "page": None
-
             }
-        logger.info(
-            "Knowledge Base search returned %d results.",
-            len(results),
-        )
-
+        logger.info("Knowledge Base search returned %d results.", len(results))
         # --------------------------------------------------
         # Build Context
         # --------------------------------------------------
-
         context = build_context(
             results
         )
-
         payload = results[0].payload
-
-        logger.info(
-            "Top matching source: %s",
-            payload.get("source"),
-        )
+        logger.info("Top matching source: %s", payload.get("source"))
         # --------------------------------------------------
         # Generate Answer
         # --------------------------------------------------
-
         prompt = build_prompt(
             context=context,
             query=query
         )
-
-        logger.info(
-            "Sending prompt to LLM."
-        )
-
+        logger.info("Sending prompt to LLM.")
         response = get_llm().invoke(
             prompt
         )
-
         cache_answer(
-
             question=query,
-
             embedding=query_embedding,
-
             context=context,
-
             answer=response.content.strip(),
-
             metadata=payload,
-
         )
-
-        logger.info(
-            "LLM response generated successfully."
-        )
-
+        logger.info("LLM response generated successfully.")
         # --------------------------------------------------
         # Return Response
         # --------------------------------------------------
-
         return {
-
             "answer": response.content.strip(),
-
-            "document_id": payload.get(
-                "document_id"
-            ),
-
-            "title": payload.get(
-                "title"
-            ),
-
-            "document_type": payload.get(
-                "document_type"
-            ),
-
-            "tag": payload.get(
-                "tag"
-            ),
-
-            "summary": payload.get(
-                "summary"
-            ),
-
-            "source": payload.get(
-                "source"
-            ),
-
-            "page": payload.get(
-                "page"
-            )
-
+            "document_id": payload.get("document_id"),
+            "title": payload.get("title"),
+            "document_type": payload.get("document_type"),
+            "tag": payload.get("tag"),
+            "summary": payload.get("summary"),
+            "source": payload.get("source"),
+            "page": payload.get("page")
         }
-
     except Exception as ex:
-
         logger.exception(
             "Chat service failed: %s",
             ex,
         )
-        
         raise DatabaseException(
             "Unable to process user query."
         ) from ex
