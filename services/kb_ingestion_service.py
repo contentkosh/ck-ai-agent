@@ -261,13 +261,10 @@ def process_document(
     except PDFProcessingException:
         raise
     except Exception as ex:
-        logger.exception(
-            "Document processing failed: %s",
-            ex,
-        )
-        raise PDFProcessingException(
-            f"Failed to process '{filename}'."
-        ) from ex
+        logger.exception("Metadata extraction failed")
+
+        # TEMPORARY DEBUG
+        raise
 
 
 def ingest_documents(

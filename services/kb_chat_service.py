@@ -88,7 +88,7 @@ def build_context(results: List) -> str:
 # Build Prompt
 # ==========================================================
 
-from configuration.context import CHAT_PROMPT
+from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
 
 
 def build_prompt(
@@ -97,7 +97,7 @@ def build_prompt(
     query: str,
 ) -> str:
     """Build the LLM prompt."""
-    return CHAT_PROMPT.format(
+    return KNOWLEDGE_BASE_QA_PROMPT.format(
         context=context,
         query=query,
     )

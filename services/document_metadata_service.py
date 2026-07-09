@@ -2,6 +2,7 @@ import json
 import os
 import re
 from typing import Any
+from urllib import response
 
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
@@ -10,7 +11,7 @@ from common.custom_exceptions import ValidationException
 from common.logger import logger
 
 from configuration.app_settings import LLM_MODEL
-from configuration.context import DOCUMENT_METADATA_PROMPT
+from configuration.context import DOCUMENT_METADATA_EXTRACTION_PROMPT
 
 load_dotenv()
 
@@ -43,13 +44,15 @@ def extract_document_metadata(text: str) -> dict[str, Any]:
                 "Document text cannot be empty."
             )
         logger.info("Extracting document metadata.")
-        prompt = DOCUMENT_METADATA_PROMPT.format(
-            text=text[:4000]
+        prompt = DOCUMENT_METADATA_EXTRACTION_PROMPT.format(
+            text=text,
         )
         response = get_llm().invoke(prompt)
-        print("\n===== LLM RESPONSE =====")
-        print(response.content)
-        print("========================\n")
+        
+        logger.info("===== LLM RESPONSE =====")
+        logger.info(response.content)
+        logger.info("========================")
+
         content = re.sub(
             r"^```json|```$",
             "",

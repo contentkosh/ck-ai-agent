@@ -138,12 +138,12 @@ or any additional text.
 OUTPUT FORMAT
 ==================================================
 
-{
-    "title": "",
+{{
+   "title": "",
     "document_type": "",
     "tag": "",
     "summary": ""
-}
+}}
 
 ==================================================
 FIELD DEFINITIONS
