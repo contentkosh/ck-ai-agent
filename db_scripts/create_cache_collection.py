@@ -25,19 +25,11 @@ try:
             ),
         )
 
-        logger.info(
-            "Collection '%s' created successfully.",
-            CACHE_COLLECTION_NAME,
-        )
+        logger.info("Collection '%s' created successfully.",CACHE_COLLECTION_NAME,)
 
     else:
 
-        logger.info(
-            "Collection '%s' already exists.",
-            CACHE_COLLECTION_NAME,
-        )
+        logger.info("Collection '%s' already exists.", CACHE_COLLECTION_NAME,)
 
 except Exception:
-    logger.exception(
-        "Failed to create cache collection."
-    )
+    logger.exception("Failed to create cache collection.")

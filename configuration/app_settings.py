@@ -41,7 +41,7 @@ SCROLL_LIMIT = int(
 )
 
 # ==========================================================
-# EMBEDDING
+# EMBEDDINGS
 # ==========================================================
 
 EMBEDDING_MODEL = os.getenv(
@@ -50,7 +50,21 @@ EMBEDDING_MODEL = os.getenv(
 )
 
 EMBEDDING_DIMENSION = int(
-    os.getenv("EMBEDDING_DIMENSION")
+    os.getenv(
+        "EMBEDDING_DIMENSION",
+        384
+    )
+)
+
+# ==========================================================
+# QUERY VALIDATION
+# ==========================================================
+
+MAX_QUERY_LENGTH = int(
+    os.getenv(
+        "MAX_QUERY_LENGTH",
+        1000
+    )
 )
 
 # ==========================================================
@@ -81,7 +95,7 @@ CHUNK_OVERLAP = int(
 )
 
 # ==========================================================
-# FILES
+# FILE STORAGE
 # ==========================================================
 
 UPLOAD_FOLDER = os.getenv(
