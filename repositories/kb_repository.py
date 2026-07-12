@@ -48,8 +48,8 @@ from configuration.error_constants import(
     DATABASE_SEARCH_ERROR_MESSAGE,
     DATABASE_DELETE_ERROR_MESSAGE,
     DATABASE_CLEAR_ERROR_MESSAGE,
-
 )
+
 from dto.file_response_dto import UploadedDocumentDto
 from database.qdrant_client_manager import client
 from exceptions.qdrant_exception import (

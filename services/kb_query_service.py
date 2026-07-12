@@ -7,8 +7,8 @@
 
 import os
 from typing import Dict, List
+from urllib import response
 from dotenv import load_dotenv
-
 from services.cache_service import (
     get_cached_answer,
     cache_answer,
@@ -16,7 +16,6 @@ from services.cache_service import (
 from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
 from common.logger import logger
 from common.custom_exceptions import DatabaseException
-
 from typing import List
 from dotenv import load_dotenv
 from common.embedding_client import get_embedding_model
@@ -228,6 +227,7 @@ def ask_question(
         # Save to Cache
         # --------------------------------------------------
 
+        
         cache_answer(
             question=query,
             embedding=queryEmbedding,
