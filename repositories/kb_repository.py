@@ -1,15 +1,16 @@
 from typing import Any
 from typing import Optional
+
 from qdrant_client.models import (
     Filter,
     FieldCondition,
-    MatchValue
+    MatchValue,
 )
 from database.qdrant_client_manager import client
 
 from configuration.app_settings import (
     COLLECTION_NAME,
-    SCROLL_LIMIT
+    SCROLL_LIMIT,
 )
 import common.logger
 from common.custom_exceptions import DatabaseException

@@ -1,14 +1,13 @@
 import os
 from typing import Dict, List
+from urllib import response
 from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 from langchain_openai import ChatOpenAI
-
 from services.cache_service import (
     get_cached_answer,
     cache_answer,
 )
-
 from configuration.app_settings import (
     EMBEDDING_MODEL,
     LLM_MODEL
@@ -172,11 +171,7 @@ def ask_question(query: str) -> Dict:
             context=context,
             query=query
         )
-        logger.info("Sending prompt to LLM.")
-        response = get_llm().invoke(
-            prompt
-        )
-        logger.info("LLM response generated successfully.")
+        
         cache_answer(
             question=query,
             embedding=query_embedding,
