@@ -4,9 +4,7 @@ from configuration.constants import (
     API_TITLE,
     API_VERSION,
 )
-
 from dto.health_response_dto import HealthResponse
-
 router = APIRouter()
 
 # ==========================================================
@@ -17,12 +15,11 @@ router = APIRouter()
     "/",
     response_model=HealthResponse,
 )
-def health_check():
+def health():
     """
-    Health Check API.
+    Health API.
     """
-    logger.info("[%s] Health Check API called.", API_TITLE)
-
+    logger.info("[%s] Health API called.", API_TITLE)
     return HealthResponse(
         status="Running",
         service=API_TITLE,

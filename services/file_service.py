@@ -24,9 +24,7 @@ def delete_uploaded_document(
     """
     Delete a single uploaded document.
     """
-
     deleted = delete_document(document_id)
-
     if not deleted:
         raise ValidationException(
             f"Document '{document_id}' does not exist."
@@ -40,5 +38,4 @@ def clear_knowledge_base():
     """
     Remove all uploaded documents.
     """
-
     delete_all_documents()

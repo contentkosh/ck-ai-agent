@@ -1,16 +1,9 @@
-"""
-Application Request Context
-
-Stores request-specific data and centralized LLM prompts
-used throughout the Knowledge Base application.
-"""
 import uuid
 from contextvars import ContextVar
 
 # ==========================================================
 # REQUEST CONTEXT
 # ==========================================================
-
 request_id_context: ContextVar[str] = ContextVar(
     "request_id",
     default=None,
@@ -20,7 +13,6 @@ class RequestContext:
     Manages request-specific information throughout the
     application lifecycle.
     """
-
     def __init__(self) -> None:
         self.request_id = self.generate_request_id()
 
@@ -29,10 +21,8 @@ class RequestContext:
         """
         Generate and store a unique request ID.
         """
-
         request_id = str(uuid.uuid4())
         request_id_context.set(request_id)
-
         return request_id
 
     @staticmethod
@@ -40,7 +30,6 @@ class RequestContext:
         """
         Return the current request ID.
         """
-
         return request_id_context.get()
 
 # ==========================================================

@@ -1,6 +1,3 @@
-"""
-Custom exceptions related to metadata extraction.
-"""
 from common.error_codes import ErrorCodes
 from exceptions.base_exception import KBBaseException
 

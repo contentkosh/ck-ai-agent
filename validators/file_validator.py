@@ -1,18 +1,10 @@
-"""
-File validation utilities.
-
-This module contains reusable validation functions
-for uploaded PDF documents.
-"""
 
 from pathlib import Path
 from configuration.config import MAX_FILE_SIZE
-
 from configuration.constants import (
     PDF_EXTENSION,
     SUPPORTED_CONTENT_TYPE,
 )
-
 from exceptions.validation_exception import (
     EmptyFileException,
     InvalidFileException,
@@ -21,42 +13,33 @@ from exceptions.validation_exception import (
 def validate_pdf_file(file) -> None:
     """
     Validate an uploaded PDF file.
-
     Args:
         file:
             Uploaded file object.
-
     Raises:
         EmptyFileException
         InvalidFileException
     """
-
     if file is None:
         raise EmptyFileException()
-
     filename = (
         getattr(file, "filename", None)
         or getattr(file, "name", None)
     )
-
     if not filename:
         raise InvalidFileException(
             "Uploaded file has no filename."
         )
-
     extension = Path(filename).suffix.lower()
-
     if extension != PDF_EXTENSION:
         raise InvalidFileException(
             "Only PDF files are allowed."
         )
-
     content_type = getattr(
         file,
         "content_type",
         None,
     )
-
     if (
         content_type
         and content_type != SUPPORTED_CONTENT_TYPE
@@ -73,7 +56,7 @@ def validate_pdf_file(file) -> None:
         raise EmptyFileException(
             "Uploaded file is empty."
         )
-
+    
     validate_file_size(file_size)
 
 def validate_file_size(
@@ -81,15 +64,12 @@ def validate_file_size(
 ) -> None:
     """
     Validate uploaded file size.
-
     Args:
         file_size:
             File size in bytes.
-
     Raises:
         InvalidFileException
     """
-
     if file_size > MAX_FILE_SIZE:
         raise InvalidFileException(
             f"File size exceeds the maximum allowed "
@@ -101,22 +81,17 @@ def validate_saved_file(
 ) -> None:
     """
     Validate a saved file on disk.
-
     Args:
         file_path:
             Path to the saved file.
-
     Raises:
         InvalidFileException
     """
-
     path = Path(file_path)
-
     if not path.exists():
         raise InvalidFileException(
             "Uploaded file could not be found."
         )
-
     validate_file_size(
         path.stat().st_size
     )

@@ -6,9 +6,6 @@ info = client.get_collection(
 )
 
 print("\nCollection Statistics\n")
-
 print(f"Name : {COLLECTION_NAME}")
-
 print(f"Vectors : {info.points_count}")
-
 print(f"Status : {info.status}")

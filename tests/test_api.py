@@ -1,6 +1,5 @@
 from io import BytesIO
 from unittest.mock import patch
-
 from fastapi import status
 from tests.conftest import client
 
@@ -10,15 +9,11 @@ from tests.conftest import client
 
 def test_health_check(client):
     """
-    Verify that the Health Check API is reachable.
+    Verify that the Health API is reachable.
     """
-
     response = client.get("/")
-
     assert response.status_code == status.HTTP_200_OK
-
     data = response.json()
-
     assert data["status"] == "Running"
     assert "service" in data
     assert "version" in data
@@ -35,7 +30,6 @@ def test_get_knowledge_base(
     """
     Verify fetching all Knowledge Base records.
     """
-
     mock_get_knowledge_base_records.return_value = [
         {
             "title": "AI Notes",
@@ -44,11 +38,8 @@ def test_get_knowledge_base(
     ]
 
     response = client.get("/llm/kb")
-
     assert response.status_code == status.HTTP_200_OK
-
     data = response.json()
-
     assert data["total_records"] == 1
     assert len(data["records"]) == 1
     assert data["records"][0]["title"] == "AI Notes"
@@ -65,7 +56,6 @@ def test_query_knowledge_base(
     """
     Verify that the Knowledge Base returns an answer.
     """
-
     mock_ask_question.return_value = {
         "answer": "Artificial Intelligence is the simulation of human intelligence.",
         "document_id": "123",
@@ -76,18 +66,14 @@ def test_query_knowledge_base(
         "source": "ai_notes.pdf",
         "page": 12,
     }
-
     response = client.post(
-        "/llm/kb",
+        "/llm/kb/query",
         json={
-            "query": "What is Artificial Intelligence?"
+            "query": "What is Artificial Intelligence?",
         },
     )
-
     assert response.status_code == status.HTTP_200_OK
-
     data = response.json()
-
     assert (
         data["answer"]
         == "Artificial Intelligence is the simulation of human intelligence."
@@ -96,7 +82,6 @@ def test_query_knowledge_base(
     assert data["tag"] == "artificial_intelligence"
     assert data["source"] == "ai_notes.pdf"
     assert data["page"] == 12
-
 
 # ==========================================================
 # Upload Documents API Tests
@@ -110,11 +95,9 @@ def test_upload_document(
     """
     Verify document upload.
     """
-
     mock_ingest_documents.return_value = (
         "Document uploaded successfully."
     )
-
     response = client.post(
         "/llm/upload",
         files=[
@@ -130,9 +113,7 @@ def test_upload_document(
     )
 
     assert response.status_code == status.HTTP_200_OK
-
     data = response.json()
-
     assert (
         data["message"]
         == "Document uploaded successfully."
@@ -150,7 +131,6 @@ def test_get_uploaded_documents(
     """
     Verify uploaded documents retrieval.
     """
-
     mock_get_uploaded_documents_service.return_value = [
         {
             "document_id": "123",
@@ -159,15 +139,11 @@ def test_get_uploaded_documents(
         }
     ]
 
-    response = client.get("/llm/files")
-
+    response = client.get("/llm/doc")
     assert response.status_code == status.HTTP_200_OK
-
     data = response.json()
-
     assert data["total_documents"] == 1
     assert data["documents"][0]["title"] == "AI Notes"
-
 
 # ==========================================================
 # Delete Document API Tests
@@ -181,16 +157,15 @@ def test_delete_document(
     """
     Verify deleting one document.
     """
-
-    response = client.delete("/llm/files/123")
-
+    response = client.delete(
+        "/llm/files/delete/123",
+    )
     assert response.status_code == status.HTTP_200_OK
-
     data = response.json()
-
     assert data["status"] == "success"
-
-    mock_delete_document_service.assert_called_once_with("123")
+    mock_delete_document_service.assert_called_once_with(
+        "123",
+    )
 
 
 # ==========================================================
@@ -205,13 +180,10 @@ def test_clear_knowledge_base(
     """
     Verify clearing the Knowledge Base.
     """
-
-    response = client.delete("/llm/files")
-
+    response = client.delete(
+        "/llm/files/delete",
+    )
     assert response.status_code == status.HTTP_200_OK
-
     data = response.json()
-
     assert data["status"] == "success"
-
     mock_clear_kb_service.assert_called_once()

@@ -113,6 +113,11 @@ OPENROUTER_API_KEY = os.getenv(
     "OPENROUTER_API_KEY",
 )
 
+OPENROUTER_BASE_URL = os.getenv(
+    "OPENROUTER_BASE_URL",
+    "https://openrouter.ai/api/v1",
+)
+
 # ==========================================================
 # CHUNKING
 # ==========================================================
@@ -141,7 +146,6 @@ UPLOAD_FOLDER = os.getenv(
 )
 
 DEFAULT_MAX_FILE_SIZE = 50 * 1024 * 1024
-
 MAX_FILE_SIZE = int(
     os.getenv(
         "MAX_FILE_SIZE",

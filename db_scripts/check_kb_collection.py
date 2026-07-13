@@ -10,32 +10,25 @@ records, _ = client.scroll(
 print("\nDOCUMENTS\n")
 
 for point in records:
-
     payload = point.payload
-
     print(
 
         f"Title : {payload.get('title')}"
     )
-
     print(
 
         f"Type : {payload.get('document_type')}"
     )
-
     print(
 
         f"Tag : {payload.get('tag')}"
     )
-
     print(
 
         f"Source : {payload.get('source')}"
     )
-
     print(
 
         f"Page : {payload.get('page')}"
     )
-
     print("-" * 40)

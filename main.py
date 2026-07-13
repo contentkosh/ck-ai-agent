@@ -1,10 +1,7 @@
 import uvicorn
 from dotenv import load_dotenv
-
 load_dotenv()
-
 from api.app import app
-
 from configuration.config import (
     API_HOST,
     API_PORT,
