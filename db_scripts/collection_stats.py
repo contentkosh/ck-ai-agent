@@ -5,6 +5,10 @@ from configuration.constants import (
     COLLECTION_STATS_LOG,
 )
 from database.qdrant_client_manager import client
+info = client.get_collection(
+    COLLECTION_NAME
+)
+from database.qdrant_client_manager import client
 def print_collection_stats() -> None:
     """
     Print basic stats for the configured Qdrant collection.

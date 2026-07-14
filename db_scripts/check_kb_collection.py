@@ -1,4 +1,5 @@
 from dto.knowledge_base_record_dto import KnowledgeBaseRecordDto
+
 from common.logger import logger
 
 from configuration.config import (
