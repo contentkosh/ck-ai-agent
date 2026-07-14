@@ -226,7 +226,6 @@ def ask_question(
         # --------------------------------------------------
         # Save to Cache
         # --------------------------------------------------
-
         cache_answer(
             question=query,
             embedding=queryEmbedding,
