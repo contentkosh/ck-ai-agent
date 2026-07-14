@@ -1,11 +1,7 @@
 
 from fastapi import UploadFile
-from exceptions.validation_exception import (
-    EmptyFileException,
-)
-from validators.file_validator import (
-    validate_pdf_file,
-)
+from exceptions.validation_exception import (EmptyFileException,)
+from validators.file_validator import (validate_pdf_file,)
 
 def validate_upload(
     files: list[UploadFile],
@@ -20,9 +16,7 @@ def validate_upload(
         InvalidFileException
     """
     if not files:
-        raise EmptyFileException(
-            "No files were uploaded."
-        )
+        raise EmptyFileException("No files were uploaded.")
     
     for file in files:
         validate_pdf_file(file)

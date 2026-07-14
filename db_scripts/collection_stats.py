@@ -4,7 +4,6 @@ from configuration.config import COLLECTION_NAME
 info = client.get_collection(
     COLLECTION_NAME
 )
-
 print("\nCollection Statistics\n")
 print(f"Name : {COLLECTION_NAME}")
 print(f"Vectors : {info.points_count}")

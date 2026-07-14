@@ -8,23 +8,11 @@ from exceptions.validation_exception import (
     InvalidFileException,
     InvalidTagException,
 )
-from validators.file_validator import (
-    validate_file_size,
-    validate_pdf_file,
-)
-from validators.query_validator import (
-    validate_query,
-)
-from validators.tag_validator import (
-    validate_tag,
-)
-from validators.upload_validator import (
-    validate_upload,
-)
-from configuration.config import (
-    MAX_FILE_SIZE,
-    MAX_QUERY_LENGTH,
-)
+from validators.file_validator import (validate_file_size,validate_pdf_file,)
+from validators.query_validator import (validate_query,)
+from validators.tag_validator import (validate_tag,)
+from validators.upload_validator import (validate_upload,)
+from configuration.config import (MAX_FILE_SIZE,MAX_QUERY_LENGTH,)
 
 # ==========================================================
 # Query Validator Tests
@@ -85,26 +73,18 @@ def test_validate_pdf_success():
     validate_pdf_file(file)
 
 def test_validate_pdf_wrong_extension():
-    file = FakeUploadFile(
-        filename="sample.txt"
-    )
-
+    file = FakeUploadFile(filename="sample.txt")
     with pytest.raises(InvalidFileException):
         validate_pdf_file(file)
 
 def test_validate_pdf_empty():
-    file = FakeUploadFile(
-        content=b""
-    )
+    file = FakeUploadFile(content=b"")
     with pytest.raises(EmptyFileException):
         validate_pdf_file(file)
 
-
 def test_validate_file_size():
     with pytest.raises(InvalidFileException):
-        validate_file_size(
-            MAX_FILE_SIZE + 1
-        )
+        validate_file_size(MAX_FILE_SIZE + 1)
 
 # ==========================================================
 # Upload Validator Tests

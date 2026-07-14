@@ -1,14 +1,8 @@
 
 from pathlib import Path
 from configuration.config import MAX_FILE_SIZE
-from configuration.constants import (
-    PDF_EXTENSION,
-    SUPPORTED_CONTENT_TYPE,
-)
-from exceptions.validation_exception import (
-    EmptyFileException,
-    InvalidFileException,
-)
+from configuration.constants import (PDF_EXTENSION,SUPPORTED_CONTENT_TYPE,)
+from exceptions.validation_exception import (EmptyFileException,InvalidFileException,)
 
 def validate_pdf_file(file) -> None:
     """
@@ -27,14 +21,10 @@ def validate_pdf_file(file) -> None:
         or getattr(file, "name", None)
     )
     if not filename:
-        raise InvalidFileException(
-            "Uploaded file has no filename."
-        )
+        raise InvalidFileException("Uploaded file has no filename.")
     extension = Path(filename).suffix.lower()
     if extension != PDF_EXTENSION:
-        raise InvalidFileException(
-            "Only PDF files are allowed."
-        )
+        raise InvalidFileException("Only PDF files are allowed.")
     content_type = getattr(
         file,
         "content_type",
@@ -44,18 +34,14 @@ def validate_pdf_file(file) -> None:
         content_type
         and content_type != SUPPORTED_CONTENT_TYPE
     ):
-        raise InvalidFileException(
-            "Invalid file type. Only PDF files are allowed."
-        )
+        raise InvalidFileException("Invalid file type. Only PDF files are allowed.")
 
     file.file.seek(0, 2)
     file_size = file.file.tell()
     file.file.seek(0)
 
     if file_size == 0:
-        raise EmptyFileException(
-            "Uploaded file is empty."
-        )
+        raise EmptyFileException("Uploaded file is empty.")
     
     validate_file_size(file_size)
 
@@ -89,9 +75,5 @@ def validate_saved_file(
     """
     path = Path(file_path)
     if not path.exists():
-        raise InvalidFileException(
-            "Uploaded file could not be found."
-        )
-    validate_file_size(
-        path.stat().st_size
-    )
+        raise InvalidFileException("Uploaded file could not be found.")
+    validate_file_size(path.stat().st_size)

@@ -16,7 +16,9 @@ from api.routes.upload_routes import (
 from api.routes.file_routes import (
     router as file_router,
 )
-
+from configuration.middleware import (
+    RequestContextMiddleware,
+)
 # ==========================================================
 # Create FastAPI Application
 # ==========================================================
@@ -26,6 +28,7 @@ def create_app() -> FastAPI:
     Create and configure the FastAPI application.
     """
     app = FastAPI(title=API_TITLE, version=API_VERSION)
+    app.add_middleware(RequestContextMiddleware)
     register_exception_handlers(app)
     app.include_router(health_router)
     app.include_router(kb_router)

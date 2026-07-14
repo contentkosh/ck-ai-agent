@@ -1,9 +1,6 @@
 from qdrant_client.models import Distance, VectorParams
 from database.qdrant_client_manager import client
-from configuration.config import (
-    COLLECTION_NAME,
-    EMBEDDING_DIMENSION
-)
+from configuration.config import (COLLECTION_NAME,EMBEDDING_DIMENSION)
 
 try:
 
@@ -22,9 +19,7 @@ try:
                 distance=Distance.COSINE
 
             )
-
         )
-
         print("Collection created successfully.")
     else:
         print("Collection already exists.")

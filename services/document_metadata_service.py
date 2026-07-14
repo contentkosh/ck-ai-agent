@@ -8,6 +8,7 @@ from common.logger import logger
 from configuration.config import (
     LLM_MODEL,
     OPENROUTER_BASE_URL,
+    METADATA_EXTRACTION_TEXT_LIMIT,
 )
 from configuration.context import DOCUMENT_METADATA_EXTRACTION_PROMPT
 
@@ -36,13 +37,10 @@ def extract_document_metadata(text: str) -> dict[str, Any]:
 
     try:
         if not text.strip():
-            raise ValidationException(
-                "Document text cannot be empty."
-            )
-
+            raise ValidationException("Document text cannot be empty.")
         logger.info("Extracting document metadata.")
         prompt = DOCUMENT_METADATA_EXTRACTION_PROMPT.format(
-            text=text[:4000]
+            text=text[:METADATA_EXTRACTION_TEXT_LIMIT]
         )
         response = get_llm().invoke(prompt)
         metadata = json.loads(response.content)
@@ -51,15 +49,10 @@ def extract_document_metadata(text: str) -> dict[str, Any]:
 
     except json.JSONDecodeError as ex:
         logger.exception("Invalid metadata JSON returned by LLM.")
-        raise ValidationException(
-            "Invalid JSON returned by the LLM."
-        ) from ex
+        raise ValidationException("Invalid JSON returned by the LLM.") from ex
 
     except ValidationException:
         raise
     except Exception as ex:
         logger.exception("Metadata extraction failed: %s",ex,)
-
-        raise ValidationException(
-            "Unable to extract document metadata."
-        ) from ex
+        raise ValidationException("Unable to extract document metadata.") from ex

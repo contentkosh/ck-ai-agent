@@ -12,24 +12,12 @@ from services.kb_chat_service import (
 def test_build_context():
 
     chunk1 = MagicMock()
-    chunk1.payload = {
-        "text": "Artificial Intelligence"
-    }
+    chunk1.payload = {"text": "Artificial Intelligence"}
     chunk2 = MagicMock()
-    chunk2.payload = {
-        "text": "Machine Learning"
-    }
-    context = build_context(
-        [chunk1, chunk2]
-    )
-    assert (
-        "Artificial Intelligence"
-        in context
-    )
-    assert (
-        "Machine Learning"
-        in context
-    )
+    chunk2.payload = {"text": "Machine Learning"}
+    context = build_context([chunk1, chunk2])
+    assert ("Artificial Intelligence"in context)
+    assert ("Machine Learning"in context)
 
 # ==========================================================
 # Build Prompt Tests
@@ -48,15 +36,9 @@ def test_build_prompt():
 # Ask Question Tests
 # ==========================================================
 
-@patch(
-    "services.kb_chat_service.search_chunks"
-)
-@patch(
-    "services.kb_chat_service.get_embedding_model"
-)
-@patch(
-    "services.kb_chat_service.get_llm"
-)
+@patch("services.kb_chat_service.search_chunks")
+@patch("services.kb_chat_service.get_embedding_model")
+@patch("services.kb_chat_service.get_llm")
 def test_ask_question(
     mock_llm,
     mock_embedding,
@@ -82,29 +64,11 @@ def test_ask_question(
         "page": 5,
 
     }
-    mock_search.return_value = [
-        chunk
-    ]
-
+    mock_search.return_value = [chunk]
     response = MagicMock()
-    response.content = (
-        "Artificial Intelligence is..."
-    )
-    mock_llm.return_value.invoke.return_value = (
-        response
-    )
-    result = ask_question(
-        "What is AI?"
-    )
-    assert (
-        result["answer"]
-        == "Artificial Intelligence is..."
-    )
-    assert (
-        result["title"]
-        == "AI Notes"
-    )
-    assert (
-        result["tag"]
-        == "ai"
-    )
+    response.content = ("Artificial Intelligence is...")
+    mock_llm.return_value.invoke.return_value = (response)
+    result = ask_question("What is AI?")
+    assert (result["answer"]== "Artificial Intelligence is...")
+    assert (result["title"]== "AI Notes")
+    assert (result["tag"]== "ai")

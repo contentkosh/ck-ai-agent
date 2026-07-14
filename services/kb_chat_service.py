@@ -156,33 +156,13 @@ def ask_question(query: str) -> Dict:
         return {
 
             "answer": response.content.strip(),
-            "document_id": payload.get(
-                "document_id"
-            ),
-
-            "title": payload.get(
-                "title"
-            ),
-
-            "document_type": payload.get(
-                "document_type"
-            ),
-
-            "tag": payload.get(
-                "tag"
-            ),
-
-            "summary": payload.get(
-                "summary"
-            ),
-
-            "source": payload.get(
-                "source"
-            ),
-
-            "page": payload.get(
-                "page"
-            )
+            "document_id": payload.get("document_id"),
+            "title": payload.get("title"),
+            "document_type": payload.get("document_type"),
+            "tag": payload.get("tag"),
+            "summary": payload.get("summary"),
+            "source": payload.get("source"),
+            "page": payload.get("page")
         }
 
     except Exception as ex:
