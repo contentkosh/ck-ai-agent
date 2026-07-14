@@ -1,5 +1,42 @@
 # Changelog
 
+## [0.0.2] - Semantic Cache Enhancement
+
+**JIRA:** CK-351
+**Author:** Mukund Upadhyay
+
+### Features
+- Implemented semantic answer caching using Qdrant to reduce redundant LLM calls.
+- Added cache repository and service layers for cache retrieval and storage.
+- Introduced automatic cache hit detection using embedding similarity.
+- Added cache collection creation script for Qdrant.
+- Configured cache behaviour through environment-based settings.
+- Added cache similarity threshold and cache management configuration.
+
+### Improvements
+- Merged configuration files into a single `app_settings.py` module.
+- Refactored project imports to use centralized application settings.
+- Improved document metadata extraction by handling JSON responses wrapped in Markdown code blocks.
+- Updated Qdrant utility scripts to use centralized configuration.
+- Cleaned and resolved merge conflicts after rebasing onto the latest `feature/knowledge-base-refactor-v2` branch.
+- Improved project organization by removing duplicate configuration logic.
+- Enhanced logging around Knowledge Base query processing and cache operations.
+
+### Bug Fixes
+- Fixed import inconsistencies introduced during branch rebasing.
+- Resolved configuration and constant conflicts after merging application settings.
+- Fixed metadata extraction failures caused by invalid JSON parsing.
+- Corrected cache configuration and response validation.
+- Updated Knowledge Base services to use centralized application configuration.
+- Fixed Qdrant collection creation scripts after configuration refactoring.
+
+### Future Enhancements
+- Add cache expiration (TTL) support.
+- Introduce cache invalidation on Knowledge Base updates.
+- Implement cache analytics and monitoring.
+- Support configurable cache replacement strategies.
+- Optimize semantic cache retrieval with hybrid search.
+
 ## [0.0.1] - Initial Release
 
 **JIRA:** CK-350  

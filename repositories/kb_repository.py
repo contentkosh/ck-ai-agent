@@ -53,9 +53,7 @@ def save_chunks(points: list) -> None:
             collection_name=COLLECTION_NAME,
             points=points,
         )
-
         common.logger.logger.info("Inserted %d vectors.",len(points),)
-
     except Exception as ex:
         common.logger.logger.exception("Vector insertion failed: %s",ex,)
         raise DatabaseException(
@@ -179,10 +177,8 @@ def delete_document(
             )
 
         )
-
         common.logger.logger.info("Deleted document %s.",document_id,)
         return True
-    
     except Exception as ex:
         common.logger.logger.exception("Unable to delete document.")
         raise DatabaseException(
@@ -201,11 +197,9 @@ def delete_all_documents():
         client.delete(
             collection_name=COLLECTION_NAME,
             points_selector=Filter()
-
         )
         common.logger.logger.info("Knowledge Base cleared.")
         return True
-
     except Exception as ex:
         common.logger.logger.exception("Unable to clear Knowledge Base.")
         raise DatabaseException(

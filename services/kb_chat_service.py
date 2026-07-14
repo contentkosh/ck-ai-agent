@@ -111,29 +111,17 @@ def ask_question(query: str) -> Dict:
         # Search Knowledge Base
         # --------------------------------------------------
 
-        cached = get_cached_answer(
-            query_embedding
-        )
-
+        cached = get_cached_answer(query_embedding)
         if cached:
-
-            logger.info(
-                "Returning cached answer."
-            )
-
+            logger.info("Returning cached answer.")
             return {
-
                 "answer": cached.get("answer"),
-
                 "source": "CACHE",
-
                 "similarity_score": round(
                     cached.get("score"),
                     3,
                 ),
-
             }
-
         results = search_chunks(
             query_embedding=query_embedding,
             limit=5
@@ -142,7 +130,6 @@ def ask_question(query: str) -> Dict:
         if not results:
             logger.warning("No relevant chunks found.")
             return {
-
                 "answer": "Answer not found in the Knowledge Base.",
                 "document_id": None,
                 "title": None,
@@ -185,6 +172,7 @@ def ask_question(query: str) -> Dict:
         return {
 
             "answer": response.content.strip(),
+<<<<<<< HEAD
             "document_id": payload.get("document_id"),
             "title": payload.get("title"),
             "document_type": payload.get("document_type"),
@@ -192,10 +180,30 @@ def ask_question(query: str) -> Dict:
             "summary": payload.get("summary"),
             "source": payload.get("source"),
             "page": payload.get("page")
+=======
+            "document_id": payload.get(
+                "document_id"
+            ),
+            "title": payload.get(
+                "title"
+            ),
+            "document_type": payload.get(
+                "document_type"
+            ),
+            "tag": payload.get(
+                "tag"
+            ),
+            "summary": payload.get(
+                "summary"
+            ),
+            "source": payload.get(
+                "source"
+            ),
+            "page": payload.get(
+                "page"
+            )
+>>>>>>> 8fbd911 (resolved comments and updated the CHANGELOG.MD)
         }
-
     except Exception as ex:
         logger.exception("Chat service failed: %s",ex,)
-        raise DatabaseException(
-            "Unable to process user query."
-        ) from ex
+        raise DatabaseException("Unable to process user query.") from ex
