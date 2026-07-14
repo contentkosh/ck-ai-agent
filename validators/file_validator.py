@@ -5,11 +5,16 @@
 # document processing begins.
 # ==========================================================
 
+# ==========================================================
+# File Validation Utilities
+# Validates uploaded and saved PDF files by checking their
+# type, size, existence, and basic file integrity before
+# document processing begins.
+# ==========================================================
+
 from pathlib import Path
 
-from configuration.config import (
-    MAX_FILE_SIZE,
-)
+from configuration.config import MAX_FILE_SIZE
 
 from configuration.constants import (
     BYTES_PER_MB,

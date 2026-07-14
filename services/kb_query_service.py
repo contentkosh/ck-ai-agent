@@ -232,7 +232,6 @@ def ask_question(
             context=contextText,
             answer=answer,
         )
-
         # --------------------------------------------------
         # Return Response
         # --------------------------------------------------
