@@ -1,6 +1,5 @@
-from qdrant_client import QdrantClient
-from configuration.config import COLLECTION_NAME
+from database.qdrant_client_manager import client
+from configuration.config import (COLLECTION_NAME,)
 
-client = QdrantClient(host="localhost",port=6333)
 client.delete_collection(COLLECTION_NAME)
 print(f"Collection '{COLLECTION_NAME}' deleted successfully.")

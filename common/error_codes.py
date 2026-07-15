@@ -1,7 +1,10 @@
-class ErrorCodes:
+from enum import Enum
+
+class ErrorCode(str, Enum):
     """
     Centralized application error codes.
     """
+
     # ==========================================
     # Document Errors (DOC)
     # ==========================================

@@ -1,21 +1,16 @@
-from fastapi import (
-    FastAPI,
-    Request,
-    status,
-)
-
+from fastapi import (FastAPI,Request,status,)
 from fastapi.responses import JSONResponse
-
 from common.logger import logger
-
-from common.custom_exceptions import (
-    DatabaseException,
-    PDFProcessingException,
-    ValidationException,
+from common.custom_exceptions import (ApplicationException,)
+from common.error_codes import (ErrorCode,)
+from configuration.constants import (
+    INTERNAL_SERVER_ERROR_MESSAGE,
+    UNHANDLED_EXCEPTION_LOG,
 )
 
-from common.error_codes import ErrorCodes
-
+# ==========================================================
+# Error Response Builder
+# ==========================================================
 
 def build_error_response(
     request: Request,
@@ -26,7 +21,6 @@ def build_error_response(
     """
     Build a standard error response.
     """
-
     return JSONResponse(
         status_code=status_code,
         content={
@@ -43,46 +37,29 @@ def build_error_response(
         },
     )
 
+# ==========================================================
+# Register Exception Handlers
+# ==========================================================
 
-def register_exception_handlers(app: FastAPI) -> None:
+def register_exception_handlers(
+    app: FastAPI,
+) -> None:
     """
     Register global exception handlers.
     """
-
-    @app.exception_handler(ValidationException)
-    async def validation_exception_handler(
+    @app.exception_handler(ApplicationException)
+    async def application_exception_handler(
         request: Request,
-        exc: ValidationException,
+        exc: ApplicationException,
     ):
+        """
+        Handle all application-specific exceptions.
+        """
         return build_error_response(
             request=request,
-            status_code=status.HTTP_400_BAD_REQUEST,
-            code=ErrorCodes.BAD_REQUEST,
-            message=str(exc),
-        )
-
-    @app.exception_handler(PDFProcessingException)
-    async def pdf_exception_handler(
-        request: Request,
-        exc: PDFProcessingException,
-    ):
-        return build_error_response(
-            request=request,
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            code=ErrorCodes.DOCUMENT_PROCESSING_FAILED,
-            message=str(exc),
-        )
-
-    @app.exception_handler(DatabaseException)
-    async def database_exception_handler(
-        request: Request,
-        exc: DatabaseException,
-    ):
-        return build_error_response(
-            request=request,
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            code=ErrorCodes.QDRANT_CONNECTION_FAILED,
-            message=str(exc),
+            status_code=exc.status_code,
+            code=exc.error_code.value,
+            message=exc.message,
         )
 
     @app.exception_handler(Exception)
@@ -90,14 +67,13 @@ def register_exception_handlers(app: FastAPI) -> None:
         request: Request,
         exc: Exception,
     ):
-        logger.exception(
-            "Unhandled Exception: %s",
-            exc,
-        )
-
+        """
+        Handle unexpected exceptions.
+        """
+        logger.exception(UNHANDLED_EXCEPTION_LOG,exc,)
         return build_error_response(
             request=request,
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            code=ErrorCodes.INTERNAL_SERVER_ERROR,
-            message="Internal Server Error",
+            code=ErrorCode.INTERNAL_SERVER_ERROR.value,
+            message=INTERNAL_SERVER_ERROR_MESSAGE,
         )

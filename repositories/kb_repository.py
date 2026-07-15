@@ -1,25 +1,57 @@
 from typing import Any
 from typing import Optional
 from qdrant_client.models import (
-    Filter,
     FieldCondition,
-    MatchValue
+    Filter,
+    MatchValue,
 )
-from database.qdrant_client_manager import client
+from common.custom_exceptions import DatabaseException
+from common.logger import logger
 from configuration.config import (
     COLLECTION_NAME,
-    SCROLL_LIMIT
+    SCROLL_LIMIT,
+    SEARCH_LIMIT,
 )
-from common.logger import logger
-from common.custom_exceptions import DatabaseException
+
+from configuration.constants import (
+    METADATA_DOCUMENT_ID,
+    METADATA_DOCUMENT_TYPE,
+    METADATA_PAGE,
+    METADATA_SOURCE,
+    METADATA_SUMMARY,
+    METADATA_TAG,
+    METADATA_TEXT,
+    METADATA_TITLE,
+    DATABASE_DELETE_ERROR_MESSAGE,
+    DATABASE_CLEAR_ERROR_MESSAGE,
+    DELETE_DOCUMENT_LOG,
+    DELETE_DOCUMENT_FAILED_LOG,
+    CLEAR_KB_LOG,
+    CLEAR_KB_FAILED_LOG,
+    DATABASE_FETCH_DOCUMENTS_ERROR_MESSAGE,
+    DATABASE_FETCH_ERROR_MESSAGE,
+    DATABASE_INSERT_ERROR_MESSAGE,
+    DATABASE_SEARCH_ERROR_MESSAGE,
+    FETCH_DOCUMENTS_FAILED_LOG,
+    FETCH_DOCUMENTS_LOG,
+    FETCH_RECORDS_FAILED_LOG,
+    FETCH_RECORDS_LOG,
+    SEMANTIC_SEARCH_FAILED_LOG,
+    SEMANTIC_SEARCH_LOG,
+    VECTOR_INSERTION_FAILED_LOG,
+    VECTOR_INSERTION_LOG,
+)
+from database.qdrant_client_manager import client
 Payload = dict[str, Any]
 
 # ==========================================================
 # Internal Helper
 # ==========================================================
 
-def _scroll_records():
-    """Return all records from Qdrant."""
+def _scroll_records() -> list:
+    """
+    Return all records from Qdrant.
+    """
     records, _ = client.scroll(
         collection_name=COLLECTION_NAME,
         limit=SCROLL_LIMIT,
@@ -27,38 +59,51 @@ def _scroll_records():
     )
     return records
 
-def build_document_payload(payload: Payload) -> Payload:
-    """Build document metadata."""
-
+def build_document_payload(
+    payload: Payload,
+) -> Payload:
+    """
+    Build document metadata.
+    """
     return {
-        "document_id": payload.get("document_id"),
-        "title": payload.get("title"),
-        "document_type": payload.get("document_type"),
-        "tag": payload.get("tag"),
-        "summary": payload.get("summary"),
-        "source": payload.get("source"),
+        METADATA_DOCUMENT_ID: payload.get(
+            METADATA_DOCUMENT_ID
+        ),
+        METADATA_TITLE: payload.get(
+            METADATA_TITLE
+        ),
+        METADATA_DOCUMENT_TYPE: payload.get(
+            METADATA_DOCUMENT_TYPE
+        ),
+        METADATA_TAG: payload.get(
+            METADATA_TAG
+        ),
+        METADATA_SUMMARY: payload.get(
+            METADATA_SUMMARY
+        ),
+        METADATA_SOURCE: payload.get(
+            METADATA_SOURCE
+        ),
     }
 
 # ==========================================================
 # Save Chunks
 # ==========================================================
 
-def save_chunks(points: list) -> None:
-    """Save vectors to Qdrant."""
-
+def save_chunks(
+    points: list,
+) -> None:
+    """
+    Save vectors to Qdrant.
+    """
     try:
-        client.upsert(
-            collection_name=COLLECTION_NAME,
-            points=points,
-        )
 
-        logger.info("Inserted %d vectors.",len(points),)
+        client.upsert(collection_name=COLLECTION_NAME,points=points,)
+        logger.info(VECTOR_INSERTION_LOG,len(points),)
 
     except Exception as ex:
-        logger.exception("Vector insertion failed: %s",ex,)
-        raise DatabaseException(
-            "Unable to insert vectors."
-        ) from ex
+        logger.exception(VECTOR_INSERTION_FAILED_LOG,ex,)
+        raise DatabaseException(DATABASE_INSERT_ERROR_MESSAGE,) from ex
 
 # ==========================================================
 # Semantic Search
@@ -66,146 +111,133 @@ def save_chunks(points: list) -> None:
 
 def search_chunks(
     query_embedding: list[float],
-    limit: int = 5,
+    limit: int = SEARCH_LIMIT,
 ):
-    """Search similar chunks."""
-
+    """
+    Search similar chunks.
+    """
     try:
+
         result = client.query_points(
             collection_name=COLLECTION_NAME,
             query=query_embedding,
             limit=limit,
         )
-
-        logger.info("Retrieved %d chunks.",len(result.points),)
+        logger.info(SEMANTIC_SEARCH_LOG,len(result.points),)
         return result.points
 
     except Exception as ex:
-        logger.exception("Semantic search failed: %s",ex,)
-
-        raise DatabaseException(
-            "Semantic search failed."
-        ) from ex
-
+        logger.exception(SEMANTIC_SEARCH_FAILED_LOG,ex,)
+        raise DatabaseException(DATABASE_SEARCH_ERROR_MESSAGE,) from ex
+    
 # ==========================================================
 # Get All Records
 # ==========================================================
 
 def get_all_records(
-    tag: Optional[str] = None
-):
+    tag: Optional[str] = None,
+) -> list[Payload]:
     """
     Retrieve all stored chunks.
     """
     try:
+
         records = _scroll_records()
-        response = []
+        response: list[Payload] = []
         for point in records:
             payload = point.payload
-            if tag and payload.get("tag") != tag:
+            if (tag and payload.get(METADATA_TAG) != tag
+            ):
                 continue
-            record = build_document_payload(payload)
-            record["page"] = payload.get("page")
-            record["text"] = payload.get("text")
+            record = build_document_payload(payload,)
+            record[METADATA_PAGE] = payload.get(METADATA_PAGE)
+            record[METADATA_TEXT] = payload.get(METADATA_TEXT)
             response.append(record)
-        
-        logger.info("Fetched %d records.",len(response),)
+
+        logger.info(FETCH_RECORDS_LOG,len(response),)
         return response
-    
+
     except Exception as ex:
-        logger.exception("Unable to fetch records.")
-        raise DatabaseException(
-            "Unable to fetch records."
-        ) from ex
+        logger.exception(FETCH_RECORDS_FAILED_LOG,ex,)
+        raise DatabaseException(DATABASE_FETCH_ERROR_MESSAGE,) from ex
 
 # ==========================================================
 # Get Uploaded Documents
 # ==========================================================
 
-def get_uploaded_files():
+def get_uploaded_files() -> list[Payload]:
     """
     Return one entry per uploaded document.
     """
     try:
+
         records = _scroll_records()
-        documents = {}
+        documents: dict[str, Payload] = {}
         for point in records:
             payload = point.payload
-            document_id = payload.get(
-                "document_id"
-            )
+            document_id = payload.get(METADATA_DOCUMENT_ID,)
             if not document_id:
                 continue
             if document_id not in documents:
-                documents[document_id] = build_document_payload(
-                    payload
-            )
-        logger.info("Found %d document(s).",len(documents),)
-        return list(documents.values())
+                documents[
+                    document_id
+                ] = build_document_payload(
+                    payload,
+                )
 
+        logger.info(FETCH_DOCUMENTS_LOG,len(documents),)
+        return list(documents.values())
+    
     except Exception as ex:
-        logger.exception("Unable to fetch uploaded documents.")
-        raise DatabaseException(
-            "Unable to fetch uploaded documents."
-        ) from ex
+        logger.exception(FETCH_DOCUMENTS_FAILED_LOG,ex,)
+        raise DatabaseException(DATABASE_FETCH_DOCUMENTS_ERROR_MESSAGE,) from ex
 
 # ==========================================================
 # Delete One Document
 # ==========================================================
 
 def delete_document(
-    document_id: str
-):
+    document_id: str,
+) -> bool:
     """
     Delete all chunks belonging to one document.
     """
     try:
+
         client.delete(
             collection_name=COLLECTION_NAME,
             points_selector=Filter(
                 must=[
                     FieldCondition(
-                        key="document_id",
+                        key=METADATA_DOCUMENT_ID,
                         match=MatchValue(
-                            value=document_id
-                        )
-
-                    )
-
-                ]
-
-            )
-
+                            value=document_id,)
+                    ),
+                ],
+            ),
         )
-
-        logger.info("Deleted document %s.",document_id,)
+        logger.info(DELETE_DOCUMENT_LOG,document_id,)
         return True
-    
-    except Exception as ex:
-        logger.exception("Unable to delete document.")
-        raise DatabaseException(
-            "Unable to delete document."
-        ) from ex
 
+    except Exception as ex:
+        logger.exception(DELETE_DOCUMENT_FAILED_LOG,ex,)
+        raise DatabaseException(DATABASE_DELETE_ERROR_MESSAGE,) from ex
+    
 # ==========================================================
 # Delete Entire Knowledge Base
 # ==========================================================
 
-def delete_all_documents():
+def delete_all_documents() -> bool:
     """
     Remove every vector from Qdrant.
     """
     try:
-        client.delete(
-            collection_name=COLLECTION_NAME,
-            points_selector=Filter()
 
-        )
-        logger.info("Knowledge Base cleared.")
+        client.delete(collection_name=COLLECTION_NAME,points_selector=Filter(),)
+        logger.info(CLEAR_KB_LOG,)
         return True
 
     except Exception as ex:
-        logger.exception("Unable to clear Knowledge Base.")
-        raise DatabaseException(
-            "Unable to clear Knowledge Base."
-        ) from ex
+        logger.exception(CLEAR_KB_FAILED_LOG,ex,)
+        raise DatabaseException(DATABASE_CLEAR_ERROR_MESSAGE,) from ex
+

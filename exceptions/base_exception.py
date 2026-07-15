@@ -1,7 +1,3 @@
-"""
-Base exception for the Knowledge Base application.
-All custom exceptions should inherit from this class.
-"""
 class KBBaseException(Exception):
     """
     Base exception class for all application-specific exceptions.
