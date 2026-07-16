@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.3] - LLMLingua Prompt Compression
+
+**JIRA:** CK-
+**Author:** Mukund Upadhyay
+
+### Features
+- Integrated LLMLingua-2 for prompt compression before LLM inference.
+- Added a dedicated `llmlingua_service.py` for context compression.
+
+### Improvements
+- Reduced prompt size by compressing retrieved Knowledge Base context.
+- Preserved the original context for semantic cache storage while sending the compressed context to the LLM.
+- Improved LLM efficiency without changing the existing RAG workflow.
+
 ## [0.0.2] - Semantic Cache Enhancement
 
 **JIRA:** CK-351

@@ -1,5 +1,6 @@
 import os
 from typing import Dict, List
+from services.llmlingua_service import compress_context
 from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 from langchain_openai import ChatOpenAI
@@ -147,6 +148,10 @@ def ask_question(query: str) -> Dict:
         context = build_context(
             results
         )
+        compressed_context = compress_context(
+            context=context,
+            query=query,
+        )
         payload = results[0].payload
         logger.info("Top matching source: %s",payload.get("source"),)
         # --------------------------------------------------
@@ -154,7 +159,7 @@ def ask_question(query: str) -> Dict:
         # --------------------------------------------------
 
         prompt = build_prompt(
-            context=context,
+            context=compressed_context,
             query=query
         )
         
