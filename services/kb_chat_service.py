@@ -1,6 +1,5 @@
 import os
 from typing import Dict, List
-from urllib import response
 from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 from langchain_openai import ChatOpenAI
@@ -158,6 +157,8 @@ def ask_question(query: str) -> Dict:
             context=context,
             query=query
         )
+        
+        response = get_llm().invoke(prompt)
         
         cache_answer(
             question=query,
