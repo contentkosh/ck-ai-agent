@@ -7,7 +7,7 @@
 
 import os
 from typing import Dict, List
-from urllib import response
+from services.llmlingua_service import compress_context
 from dotenv import load_dotenv
 from services.cache_service import (
     get_cached_answer,
@@ -188,6 +188,15 @@ def ask_question(
             searchResults,
         )
 
+        # --------------------------------------------------
+        # Compress Context using LLMLingua
+        # --------------------------------------------------
+
+        compressedContext = compress_context(
+            context=contextText,
+            query=query,
+        )
+
         documentPayload = (
             searchResults[0].payload or {}
         )
@@ -204,7 +213,7 @@ def ask_question(
         # --------------------------------------------------
 
         prompt = build_prompt(
-            context=contextText,
+            context=compressedContext,
             query=query,
         )
 
@@ -224,14 +233,16 @@ def ask_question(
         answer = llmResponse.content.strip()
 
         # --------------------------------------------------
-        # Save to Cache
+        # Save to Semantic Cache
         # --------------------------------------------------
+
         cache_answer(
             question=query,
             embedding=queryEmbedding,
             context=contextText,
             answer=answer,
         )
+
         # --------------------------------------------------
         # Return Response
         # --------------------------------------------------
