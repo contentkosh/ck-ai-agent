@@ -23,10 +23,7 @@ def search_cache(
             query=query_embedding,
             limit=limit,
         )
-        logger.info(
-            "Cache search returned %d result(s).",
-            len(result.points),
-        )
+        logger.info("Cache search returned %d result(s).", len(result.points))
         return result.points
     except Exception as ex:
         logger.exception("Cache search failed: %s", ex)

@@ -6,7 +6,7 @@ def delete_collection() -> None:
     """
     Delete the Qdrant collection.
     """
-    client.delete_collection(COLLECTION_NAME)
+    client.delete_collection(COLLECTION_NAME,)
     logger.info(
         COLLECTION_DELETED_SUCCESS_LOG,
         COLLECTION_NAME,

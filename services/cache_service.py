@@ -24,7 +24,7 @@ def get_cached_answer(query_embedding: list[float]):
         return None
     results = search_cache(query_embedding)
     if not results:
-        logger.info("Cache Miss")
+        logger.info("Cache Miss - No similar question found.")
         return None
     result = results[0]
     score = result.score
