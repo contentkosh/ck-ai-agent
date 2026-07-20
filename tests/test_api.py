@@ -91,6 +91,7 @@ def test_query_knowledge_base(
 def test_upload_document(
     mock_ingest_documents,
     client,
+    auth_headers,
 ):
     """
     Verify document upload.
@@ -105,11 +106,12 @@ def test_upload_document(
                 "files",
                 (
                     "sample.pdf",
-                    BytesIO(b"Dummy PDF content"),
+                    BytesIO(b"%PDF-1.4 Dummy PDF content"),
                     "application/pdf",
                 ),
             ),
         ],
+        headers=auth_headers,
     )
 
     assert response.status_code == status.HTTP_200_OK
@@ -118,6 +120,28 @@ def test_upload_document(
         data["message"]
         == "Document uploaded successfully."
     )
+
+
+def test_upload_document_rejected_without_api_key(
+    client,
+):
+    """
+    Verify upload is rejected when no API key is supplied.
+    """
+    response = client.post(
+        "/llm/upload",
+        files=[
+            (
+                "files",
+                (
+                    "sample.pdf",
+                    BytesIO(b"%PDF-1.4 Dummy PDF content"),
+                    "application/pdf",
+                ),
+            ),
+        ],
+    )
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 # ==========================================================
 # Get Uploaded Documents API Tests
@@ -153,12 +177,14 @@ def test_get_uploaded_documents(
 def test_delete_document(
     mock_delete_document_service,
     client,
+    auth_headers,
 ):
     """
     Verify deleting one document.
     """
     response = client.delete(
         "/llm/files/delete/123",
+        headers=auth_headers,
     )
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
@@ -167,6 +193,16 @@ def test_delete_document(
         "123",
     )
 
+def test_delete_document_rejected_without_api_key(
+    client,
+):
+    """
+    Verify delete is rejected when no API key is supplied.
+    """
+    response = client.delete(
+        "/llm/files/delete/123",
+    )
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 # ==========================================================
 # Clear Knowledge Base API Tests
@@ -176,14 +212,27 @@ def test_delete_document(
 def test_clear_knowledge_base(
     mock_clear_kb_service,
     client,
+    auth_headers,
 ):
     """
     Verify clearing the Knowledge Base.
     """
     response = client.delete(
         "/llm/files/delete",
+        headers=auth_headers,
     )
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert data["status"] == "success"
     mock_clear_kb_service.assert_called_once()
+
+def test_clear_knowledge_base_rejected_without_api_key(
+    client,
+):
+    """
+    Verify clear KB is rejected when no API key is supplied.
+    """
+    response = client.delete(
+        "/llm/files/delete",
+    )
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED

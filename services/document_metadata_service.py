@@ -1,43 +1,40 @@
 import json
-import os
 from typing import Any
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
-from common.custom_exceptions import ValidationException
+from common.llm_client import get_llm
 from common.logger import logger
-from configuration.config import (
-    LLM_MODEL,
-    OPENROUTER_BASE_URL,
-    METADATA_EXTRACTION_TEXT_LIMIT,
+from configuration.config import (METADATA_EXTRACTION_TEXT_LIMIT,)
+from configuration.constants import (
+    EMPTY_DOCUMENT_TEXT_ERROR,
+    INVALID_METADATA_JSON_ERROR,
+    METADATA_EXTRACTION_FAILED_ERROR,
 )
-from configuration.context import DOCUMENT_METADATA_EXTRACTION_PROMPT
+from configuration.context import (
+    DOCUMENT_METADATA_EXTRACTION_PROMPT,
+)
+from exceptions.metadata_exception import (
+    InvalidMetadataException,
+    MetadataExtractionException,
+)
 
 load_dotenv()
-
-_llm: ChatOpenAI | None = None
-
-def get_llm() -> ChatOpenAI:
-    """Return the singleton LLM instance."""
-    global _llm
-    if _llm is None:
-        _llm = ChatOpenAI(
-            api_key=os.getenv("OPENROUTER_API_KEY"),
-            base_url=OPENROUTER_BASE_URL,
-            model=LLM_MODEL,
-            temperature=0,
-        )
-    return _llm
 
 # ==========================================================
 # Extract Metadata
 # ==========================================================
 
-def extract_document_metadata(text: str) -> dict[str, Any]:
-    """Extract document metadata using the configured LLM."""
-
+def extract_document_metadata(
+    text: str,
+) -> dict[str, Any]:
+    """
+    Extract document metadata using the configured LLM.
+    """
     try:
         if not text.strip():
-            raise ValidationException("Document text cannot be empty.")
+            raise InvalidMetadataException(
+                EMPTY_DOCUMENT_TEXT_ERROR,
+            )
+
         logger.info("Extracting document metadata.")
         prompt = DOCUMENT_METADATA_EXTRACTION_PROMPT.format(
             text=text[:METADATA_EXTRACTION_TEXT_LIMIT]
@@ -45,14 +42,16 @@ def extract_document_metadata(text: str) -> dict[str, Any]:
         response = get_llm().invoke(prompt)
         metadata = json.loads(response.content)
         logger.info("Metadata extracted successfully.")
+
         return metadata
 
     except json.JSONDecodeError as ex:
-        logger.exception("Invalid metadata JSON returned by LLM.")
-        raise ValidationException("Invalid JSON returned by the LLM.") from ex
+        logger.exception(INVALID_METADATA_JSON_ERROR)
+        raise InvalidMetadataException(INVALID_METADATA_JSON_ERROR,) from ex
 
-    except ValidationException:
+    except InvalidMetadataException:
         raise
+
     except Exception as ex:
         logger.exception("Metadata extraction failed: %s",ex,)
-        raise ValidationException("Unable to extract document metadata.") from ex
+        raise MetadataExtractionException(METADATA_EXTRACTION_FAILED_ERROR,) from ex

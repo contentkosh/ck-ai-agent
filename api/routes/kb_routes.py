@@ -6,6 +6,10 @@ from fastapi import (
 )
 from api.dependencies import get_request_context
 from common.logger import logger
+from configuration.constants import (
+    KNOWLEDGE_BASE_ROUTE,
+    QUERY_KNOWLEDGE_BASE_ROUTE,
+)
 from configuration.context import RequestContext
 from dto.request_dto import QueryRequest
 from dto.response_dto import (
@@ -23,7 +27,7 @@ router = APIRouter()
 # ==========================================================
 
 @router.get(
-    "/llm/kb",
+    KNOWLEDGE_BASE_ROUTE,
     response_model=KnowledgeBaseResponse,
 )
 def get_knowledge_base(
@@ -48,7 +52,7 @@ def get_knowledge_base(
 # ==========================================================
 
 @router.post(
-    "/llm/kb/query",
+    QUERY_KNOWLEDGE_BASE_ROUTE,
     response_model=QueryResponse,
 )
 def query_knowledge_base(

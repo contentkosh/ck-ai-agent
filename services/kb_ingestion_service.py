@@ -4,35 +4,28 @@ from fastapi import UploadFile
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pypdf import PdfReader
 from qdrant_client.models import PointStruct
-from sentence_transformers import SentenceTransformer
 from common.custom_exceptions import (
     EmbeddingException,
     PDFProcessingException,
 )
-from common.file_utils import save_uploaded_file
+from common.embedding_client import get_embedding_model
+from common.file_utils import save_uploaded_file, delete_saved_file
 from common.logger import logger
 from validators.file_validator import validate_saved_file
 from configuration.config import (
     CHUNK_OVERLAP,
     CHUNK_SIZE,
-    EMBEDDING_MODEL,
+)
+from exceptions.document_exception import (
+    DocumentProcessingException,
+    EmptyDocumentException,
 )
 from repositories.kb_repository import save_chunks
 from services.document_metadata_service import extract_document_metadata
 
 Page = dict[str, Any]
 Metadata = dict[str, Any]
-_embedding_model: SentenceTransformer | None = None
 _text_splitter: RecursiveCharacterTextSplitter | None = None
-
-def get_embedding_model() -> SentenceTransformer:
-    """Return the singleton embedding model."""
-
-    global _embedding_model
-    if _embedding_model is None:
-        logger.info("Loading embedding model: %s", EMBEDDING_MODEL)
-        _embedding_model = SentenceTransformer(EMBEDDING_MODEL)
-    return _embedding_model
 
 def get_text_splitter() -> RecursiveCharacterTextSplitter:
     """Return the singleton text splitter."""
@@ -93,6 +86,7 @@ def build_payload(
 def read_pdf(file: UploadFile) -> tuple[PdfReader, str]:
     """Validate, save and load a PDF."""
     filename = file.filename
+    saved_file = None
     try:
         logger.info("Saving file: %s", filename)
         saved_file = save_uploaded_file(file)
@@ -100,6 +94,12 @@ def read_pdf(file: UploadFile) -> tuple[PdfReader, str]:
         return PdfReader(saved_file), saved_file
     except Exception as ex:
         logger.exception("Failed to read PDF '%s': %s", filename, ex)
+        # The file was already written to disk above; if parsing
+        # or validation fails here, ingest_documents' cleanup
+        # never runs (it only wraps process_document, which we
+        # never reach), so clean up here instead.
+        if saved_file is not None:
+            delete_saved_file(saved_file)
         raise PDFProcessingException(
             f"Unable to process '{filename}'."
         ) from ex
@@ -145,7 +145,7 @@ def get_document_metadata(pages: list[Page]) -> Metadata:
 
     except Exception as ex:
         logger.exception("Metadata extraction failed: %s",ex,)
-        raise PDFProcessingException(
+        raise DocumentProcessingException(
             "Unable to extract document metadata."
         ) from ex
     
@@ -199,8 +199,8 @@ def process_document(
         document_id = generate_document_id()
         _, pages = extract_document_text(pdf)
         if not pages:
-            raise PDFProcessingException(
-                "No pages found in the document."
+            raise EmptyDocumentException(
+                f"'{filename}' contains no pages."
             )
         metadata = get_document_metadata(pages)
         points, total_chunks = build_vectors(
@@ -216,11 +216,11 @@ def process_document(
             "points": points,
             "chunks": total_chunks,
         }
-    except PDFProcessingException:
+    except (EmptyDocumentException, DocumentProcessingException, PDFProcessingException):
         raise
     except Exception as ex:
         logger.exception("Document processing failed: %s",ex,)
-        raise PDFProcessingException(
+        raise DocumentProcessingException(
             f"Failed to process '{filename}'."
         ) from ex
 
@@ -234,11 +234,25 @@ def ingest_documents(
         total_chunks = 0
         for file in files:
             logger.info("Processing file: %s", file.filename)
-            pdf, _ = read_pdf(file)
-            document = process_document(
-                pdf=pdf,
-                filename=file.filename,
-            )
+            pdf, saved_file_path = read_pdf(file)
+            try:
+                document = process_document(
+                    pdf=pdf,
+                    filename=file.filename,
+                )
+            finally:
+                # On Windows, pypdf may still hold the file open
+                # internally, which blocks deletion. Explicitly
+                # release it before cleanup.
+                try:
+                    stream = getattr(pdf, "stream", None)
+                    if stream is not None and not stream.closed:
+                        stream.close()
+                except Exception:
+                    pass
+                del pdf
+                delete_saved_file(saved_file_path)
+
             save_chunks(document["points"])
             total_chunks += document["chunks"]
             documents.append({
@@ -258,7 +272,7 @@ def ingest_documents(
             "chunks_inserted": total_chunks,
             "documents": documents,
         }
-    except PDFProcessingException:
+    except (EmptyDocumentException, DocumentProcessingException, PDFProcessingException):
         raise
     except Exception as ex:
         logger.exception("Knowledge Base ingestion failed: %s",ex,)

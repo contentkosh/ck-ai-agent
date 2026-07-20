@@ -1,3 +1,4 @@
+from common.custom_exceptions import NotFoundException
 from repositories.kb_repository import (
     delete_all_documents,
     delete_document,
@@ -26,7 +27,7 @@ def delete_uploaded_document(
     """
     deleted = delete_document(document_id)
     if not deleted:
-        raise ValidationException(
+        raise NotFoundException(
             f"Document '{document_id}' does not exist."
         )
 

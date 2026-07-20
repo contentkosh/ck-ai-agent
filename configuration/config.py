@@ -13,7 +13,15 @@ load_dotenv()
 
 API_HOST = os.getenv("API_HOST","0.0.0.0",)
 API_PORT = int(os.getenv("API_PORT",8000,))
-API_RELOAD = os.getenv("API_RELOAD","True",).lower() == "true"
+API_RELOAD = os.getenv("API_RELOAD","False",).lower() == "true"
+
+# ==========================================================
+# AUTHENTICATION
+# ==========================================================
+
+API_KEY = os.getenv("API_KEY")
+API_KEY_HEADER_NAME = os.getenv("API_KEY_HEADER_NAME", "X-API-Key")
+AUTH_ENABLED = os.getenv("AUTH_ENABLED", "True").lower() == "true"
 
 # ==========================================================
 # QDRANT
@@ -72,3 +80,10 @@ UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER","uploads",)
 DEFAULT_MAX_FILE_SIZE = 50 * 1024 * 1024
 MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE",DEFAULT_MAX_FILE_SIZE,))
 
+# ==========================================================
+# LOGGING
+# ==========================================================
+
+LOG_FILE_PATH = os.getenv("LOG_FILE_PATH", "logs/application.log")
+LOG_MAX_BYTES = int(os.getenv("LOG_MAX_BYTES", 10 * 1024 * 1024))  # 10 MB
+LOG_BACKUP_COUNT = int(os.getenv("LOG_BACKUP_COUNT", 5))

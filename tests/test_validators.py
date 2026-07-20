@@ -59,7 +59,7 @@ class FakeUploadFile:
     def __init__(
         self,
         filename="sample.pdf",
-        content=b"dummy",
+        content=b"%PDF-1.4 dummy pdf content",
         content_type="application/pdf",
     ):
 
@@ -69,7 +69,6 @@ class FakeUploadFile:
 
 def test_validate_pdf_success():
     file = FakeUploadFile()
-
     validate_pdf_file(file)
 
 def test_validate_pdf_wrong_extension():
@@ -80,6 +79,11 @@ def test_validate_pdf_wrong_extension():
 def test_validate_pdf_empty():
     file = FakeUploadFile(content=b"")
     with pytest.raises(EmptyFileException):
+        validate_pdf_file(file)
+
+def test_validate_pdf_invalid_signature():
+    file = FakeUploadFile(content=b"not a real pdf")
+    with pytest.raises(InvalidFileException):
         validate_pdf_file(file)
 
 def test_validate_file_size():

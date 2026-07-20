@@ -1,7 +1,10 @@
-
 from pathlib import Path
 from configuration.config import MAX_FILE_SIZE
-from configuration.constants import (PDF_EXTENSION,SUPPORTED_CONTENT_TYPE,)
+from configuration.constants import (
+    PDF_EXTENSION,
+    SUPPORTED_CONTENT_TYPE,
+    PDF_MAGIC_BYTES,
+)
 from exceptions.validation_exception import (EmptyFileException,InvalidFileException,)
 
 def validate_pdf_file(file) -> None:
@@ -42,8 +45,23 @@ def validate_pdf_file(file) -> None:
 
     if file_size == 0:
         raise EmptyFileException("Uploaded file is empty.")
-    
+
     validate_file_size(file_size)
+    validate_pdf_signature(file)
+
+def validate_pdf_signature(file) -> None:
+    """
+    Validate that the file content actually starts with the
+    PDF magic bytes, rather than trusting the extension or
+    declared content_type alone (both are trivially spoofable).
+    """
+    header = file.file.read(len(PDF_MAGIC_BYTES))
+    file.file.seek(0)
+
+    if header != PDF_MAGIC_BYTES:
+        raise InvalidFileException(
+            "File content does not match a valid PDF."
+        )
 
 def validate_file_size(
     file_size: int,

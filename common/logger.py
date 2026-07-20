@@ -1,12 +1,26 @@
 import logging
 import os
-
-os.makedirs("logs", exist_ok=True)
-logging.basicConfig(
-
-    filename="logs/application.log",
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(message)s"
+from logging.handlers import RotatingFileHandler
+from configuration.config import (
+    LOG_FILE_PATH,
+    LOG_MAX_BYTES,
+    LOG_BACKUP_COUNT,
 )
 
-logger = logging.getLogger(__name__)
+os.makedirs(os.path.dirname(LOG_FILE_PATH) or ".", exist_ok=True)
+
+logger = logging.getLogger("ck_ai_agent")
+logger.setLevel(logging.INFO)
+
+if not logger.handlers:
+    handler = RotatingFileHandler(
+        LOG_FILE_PATH,
+        maxBytes=LOG_MAX_BYTES,
+        backupCount=LOG_BACKUP_COUNT,
+    )
+    handler.setFormatter(
+        logging.Formatter(
+            "%(asctime)s | %(levelname)s | %(message)s"
+        )
+    )
+    logger.addHandler(handler)

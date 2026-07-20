@@ -48,16 +48,29 @@ Payload = dict[str, Any]
 # Internal Helper
 # ==========================================================
 
-def _scroll_records() -> list:
+def _scroll_records(
+    query_filter: Optional[Filter] = None,
+) -> list:
     """
-    Return all records from Qdrant.
+    Return all records from Qdrant, paginating through
+    the full collection regardless of size.
     """
-    records, _ = client.scroll(
-        collection_name=COLLECTION_NAME,
-        limit=SCROLL_LIMIT,
-        with_payload=True,
-    )
-    return records
+    all_records: list = []
+    next_offset = None
+
+    while True:
+        records, next_offset = client.scroll(
+            collection_name=COLLECTION_NAME,
+            scroll_filter=query_filter,
+            limit=SCROLL_LIMIT,
+            offset=next_offset,
+            with_payload=True,
+        )
+        all_records.extend(records)
+        if next_offset is None:
+            break
+
+    return all_records
 
 def build_document_payload(
     payload: Payload,
@@ -112,9 +125,11 @@ def save_chunks(
 def search_chunks(
     query_embedding: list[float],
     limit: int = SEARCH_LIMIT,
+    score_threshold: Optional[float] = None,
 ):
     """
-    Search similar chunks.
+    Search similar chunks. Results below score_threshold
+    (Qdrant cosine similarity) are excluded server-side.
     """
     try:
 
@@ -122,6 +137,7 @@ def search_chunks(
             collection_name=COLLECTION_NAME,
             query=query_embedding,
             limit=limit,
+            score_threshold=score_threshold,
         )
         logger.info(SEMANTIC_SEARCH_LOG,len(result.points),)
         return result.points
@@ -138,17 +154,26 @@ def get_all_records(
     tag: Optional[str] = None,
 ) -> list[Payload]:
     """
-    Retrieve all stored chunks.
+    Retrieve all stored chunks, optionally filtered by tag.
+    Filtering happens server-side in Qdrant rather than
+    pulling the whole collection into memory.
     """
     try:
+        query_filter = None
+        if tag:
+            query_filter = Filter(
+                must=[
+                    FieldCondition(
+                        key=METADATA_TAG,
+                        match=MatchValue(value=tag),
+                    ),
+                ],
+            )
 
-        records = _scroll_records()
+        records = _scroll_records(query_filter)
         response: list[Payload] = []
         for point in records:
             payload = point.payload
-            if (tag and payload.get(METADATA_TAG) != tag
-            ):
-                continue
             record = build_document_payload(payload,)
             record[METADATA_PAGE] = payload.get(METADATA_PAGE)
             record[METADATA_TEXT] = payload.get(METADATA_TEXT)
@@ -158,7 +183,7 @@ def get_all_records(
         return response
 
     except Exception as ex:
-        logger.exception(FETCH_RECORDS_FAILED_LOG,ex,)
+        logger.exception(FETCH_RECORDS_FAILED_LOG)
         raise DatabaseException(DATABASE_FETCH_ERROR_MESSAGE,) from ex
 
 # ==========================================================
@@ -189,7 +214,7 @@ def get_uploaded_files() -> list[Payload]:
         return list(documents.values())
     
     except Exception as ex:
-        logger.exception(FETCH_DOCUMENTS_FAILED_LOG,ex,)
+        logger.exception(FETCH_DOCUMENTS_FAILED_LOG)
         raise DatabaseException(DATABASE_FETCH_DOCUMENTS_ERROR_MESSAGE,) from ex
 
 # ==========================================================
@@ -201,26 +226,38 @@ def delete_document(
 ) -> bool:
     """
     Delete all chunks belonging to one document.
+    Returns False if no chunks matched that document_id.
     """
     try:
+        document_filter = Filter(
+            must=[
+                FieldCondition(
+                    key=METADATA_DOCUMENT_ID,
+                    match=MatchValue(
+                        value=document_id,)
+                ),
+            ],
+        )
+
+        existing, _ = client.scroll(
+            collection_name=COLLECTION_NAME,
+            scroll_filter=document_filter,
+            limit=1,
+            with_payload=False,
+        )
+        if not existing:
+            logger.info("Document %s not found; nothing deleted.", document_id)
+            return False
 
         client.delete(
             collection_name=COLLECTION_NAME,
-            points_selector=Filter(
-                must=[
-                    FieldCondition(
-                        key=METADATA_DOCUMENT_ID,
-                        match=MatchValue(
-                            value=document_id,)
-                    ),
-                ],
-            ),
+            points_selector=document_filter,
         )
         logger.info(DELETE_DOCUMENT_LOG,document_id,)
         return True
 
     except Exception as ex:
-        logger.exception(DELETE_DOCUMENT_FAILED_LOG,ex,)
+        logger.exception(DELETE_DOCUMENT_FAILED_LOG)
         raise DatabaseException(DATABASE_DELETE_ERROR_MESSAGE,) from ex
     
 # ==========================================================
@@ -238,6 +275,5 @@ def delete_all_documents() -> bool:
         return True
 
     except Exception as ex:
-        logger.exception(CLEAR_KB_FAILED_LOG,ex,)
+        logger.exception(CLEAR_KB_FAILED_LOG)
         raise DatabaseException(DATABASE_CLEAR_ERROR_MESSAGE,) from ex
-

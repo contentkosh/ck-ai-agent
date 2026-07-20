@@ -1,4 +1,3 @@
-
 # ==========================================
 # FILE TYPES
 # ==========================================
@@ -8,6 +7,7 @@ SUPPORTED_FILE_TYPES = [
     PDF_EXTENSION
 ]
 SUPPORTED_CONTENT_TYPE = "application/pdf"
+PDF_MAGIC_BYTES = b"%PDF-"
 
 # ==========================================
 # DEFAULT VALUES
@@ -90,6 +90,8 @@ FILES_ROUTE = f"{LLM_BASE_ROUTE}/files"
 DOCUMENTS_ROUTE = f"{LLM_BASE_ROUTE}/doc"
 DELETE_DOCUMENT_ROUTE = f"{FILES_ROUTE}/delete/{{document_id}}"
 CLEAR_KB_ROUTE = f"{FILES_ROUTE}/delete"
+QUERY_KNOWLEDGE_BASE_ROUTE = f"{KNOWLEDGE_BASE_ROUTE}/query"
+
 # ==========================================================
 # FILE ROUTE LOG MESSAGES
 # ==========================================================
@@ -135,6 +137,9 @@ LLM_TIMEOUT_ERROR_MESSAGE = "LLM request timed out."
 
 METADATA_EXTRACTION_ERROR_MESSAGE = "Metadata extraction failed."
 INVALID_METADATA_ERROR_MESSAGE = "Invalid metadata."
+EMPTY_DOCUMENT_TEXT_ERROR = "Document text is empty; cannot extract metadata."
+INVALID_METADATA_JSON_ERROR = "LLM returned invalid JSON metadata."
+METADATA_EXTRACTION_FAILED_ERROR = "Metadata extraction failed."
 
 # ==========================================================
 # QDRANT EXCEPTION MESSAGES

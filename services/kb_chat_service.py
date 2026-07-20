@@ -1,13 +1,9 @@
-import os
 from typing import Dict, List
 from dotenv import load_dotenv
-from sentence_transformers import SentenceTransformer
-from langchain_openai import ChatOpenAI
-from configuration.config import (
-    EMBEDDING_MODEL,
-    LLM_MODEL,
-    SEARCH_LIMIT
-)
+from common.llm_client import get_llm
+from common.embedding_client import get_embedding_model
+from configuration.config import SEARCH_LIMIT
+from configuration.constants import DEFAULT_SCORE_THRESHOLD
 from repositories.kb_repository import search_chunks
 from common.logger import logger
 from common.custom_exceptions import DatabaseException
@@ -17,40 +13,6 @@ from common.custom_exceptions import DatabaseException
 # ==========================================================
 
 load_dotenv()
-
-# ==========================================================
-# Embedding Model
-# ==========================================================
-_embedding_model: SentenceTransformer | None = None
-
-def get_embedding_model() -> SentenceTransformer:
-    """Return the singleton embedding model."""
-    global _embedding_model
-    if _embedding_model is None:
-        logger.info("Loading embedding model.")
-        _embedding_model = SentenceTransformer(
-            EMBEDDING_MODEL
-        )
-    return _embedding_model
-
-# ==========================================================
-# LLM
-# ==========================================================
-
-_llm: ChatOpenAI | None = None
-
-def get_llm() -> ChatOpenAI:
-    """Return the singleton LLM."""
-
-    global _llm
-    if _llm is None:
-        _llm = ChatOpenAI(
-            model=LLM_MODEL,
-            base_url="https://openrouter.ai/api/v1",
-            api_key=os.getenv("OPENROUTER_API_KEY"),
-            temperature=0,
-        )
-    return _llm
 
 # ==========================================================
 # Build Context

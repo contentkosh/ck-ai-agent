@@ -1,3 +1,5 @@
+from http import HTTPStatus
+from common.custom_exceptions import ApplicationException
 from common.error_codes import ErrorCode
 from configuration.constants import (
     DOCUMENT_PROCESSING_ERROR_MESSAGE,
@@ -5,36 +7,47 @@ from configuration.constants import (
     INVALID_DOCUMENT_MESSAGE,
     EMPTY_DOCUMENT_MESSAGE,
 )
-from exceptions.base_exception import KBBaseException
 
-class DocumentProcessingException(KBBaseException):
+class DocumentProcessingException(ApplicationException):
     """
     Raised when document processing fails.
     """
-    def __init__(self,message: str = DOCUMENT_PROCESSING_ERROR_MESSAGE,
-    ):
-        super().__init__(message=message,error_code=ErrorCodes.DOCUMENT_PROCESSING_FAILED,)
+    def __init__(self, message: str = DOCUMENT_PROCESSING_ERROR_MESSAGE):
+        super().__init__(
+            error_code=ErrorCode.DOCUMENT_PROCESSING_FAILED,
+            message=message,
+            status_code=HTTPStatus.BAD_REQUEST,
+        )
 
-class DocumentNotFoundException(KBBaseException):
+class DocumentNotFoundException(ApplicationException):
     """
     Raised when the requested document is not found.
     """
-    def __init__(self,message: str = DOCUMENT_NOT_FOUND_MESSAGE,
-    ):
-        super().__init__(message=message,error_code=ErrorCodes.DOCUMENT_NOT_FOUND,)
+    def __init__(self, message: str = DOCUMENT_NOT_FOUND_MESSAGE):
+        super().__init__(
+            error_code=ErrorCode.DOCUMENT_NOT_FOUND,
+            message=message,
+            status_code=HTTPStatus.NOT_FOUND,
+        )
 
-class InvalidDocumentException(KBBaseException):
+class InvalidDocumentException(ApplicationException):
     """
     Raised when an invalid document is uploaded.
     """
-    def __init__(self,message: str = INVALID_DOCUMENT_MESSAGE,
-    ):
-        super().__init__(message=message,error_code=ErrorCodes.INVALID_DOCUMENT,)
+    def __init__(self, message: str = INVALID_DOCUMENT_MESSAGE):
+        super().__init__(
+            error_code=ErrorCode.INVALID_DOCUMENT,
+            message=message,
+            status_code=HTTPStatus.BAD_REQUEST,
+        )
 
-class EmptyDocumentException(KBBaseException):
+class EmptyDocumentException(ApplicationException):
     """
     Raised when an uploaded document is empty.
     """
-    def __init__(self,message: str = EMPTY_DOCUMENT_MESSAGE,
-    ):
-        super().__init__(message=message,error_code=ErrorCodes.EMPTY_DOCUMENT,)
+    def __init__(self, message: str = EMPTY_DOCUMENT_MESSAGE):
+        super().__init__(
+            error_code=ErrorCode.EMPTY_DOCUMENT,
+            message=message,
+            status_code=HTTPStatus.BAD_REQUEST,
+        )

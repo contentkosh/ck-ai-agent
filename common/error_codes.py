@@ -4,7 +4,6 @@ class ErrorCode(str, Enum):
     """
     Centralized application error codes.
     """
-
     # ==========================================
     # Document Errors (DOC)
     # ==========================================
@@ -58,3 +57,4 @@ class ErrorCode(str, Enum):
     INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR"
     BAD_REQUEST = "BAD_REQUEST"
     NOT_FOUND = "NOT_FOUND"
+    AUTHENTICATION_FAILED = "AUTHENTICATION_FAILED"

@@ -1,5 +1,5 @@
 from fastapi import (APIRouter,Depends,)
-from api.dependencies import get_request_context
+from api.dependencies import get_request_context, verify_api_key
 from common.logger import logger
 from configuration.constants import (
     DOCUMENTS_ROUTE,
@@ -49,7 +49,7 @@ def get_uploaded_documents(
 # Delete Uploaded Document
 # ==========================================================
 
-@router.delete(DELETE_DOCUMENT_ROUTE,response_model=DeleteDocumentResponse,)
+@router.delete(DELETE_DOCUMENT_ROUTE,response_model=DeleteDocumentResponse,dependencies=[Depends(verify_api_key)],)
 def delete_uploaded_document(
     document_id: str,
     context: RequestContext = Depends(get_request_context),
@@ -71,7 +71,7 @@ def delete_uploaded_document(
 # Clear Knowledge Base
 # ==========================================================
 
-@router.delete(CLEAR_KB_ROUTE,response_model=ClearKnowledgeBaseResponse,)
+@router.delete(CLEAR_KB_ROUTE,response_model=ClearKnowledgeBaseResponse,dependencies=[Depends(verify_api_key)],)
 def clear_knowledge_base(
     context: RequestContext = Depends(get_request_context),
 ):

@@ -17,7 +17,11 @@ class ApplicationException(Exception):
     """
     Base application exception.
     """
-    def __init__(selferror_code: ErrorCode,message: str,status_code: HTTPStatus,
+    def __init__(
+        self,
+        error_code: ErrorCode,
+        message: str,
+        status_code: HTTPStatus,
     ) -> None:
 
         self.error_code = error_code
@@ -34,8 +38,7 @@ class DatabaseException(ApplicationException):
     Raised when a database operation fails.
     """
 
-    def __init__(self,message: str = DATABASE_ERROR_MESSAGE,
-    ) -> None:
+    def __init__(self, message: str = DATABASE_ERROR_MESSAGE) -> None:
 
         super().__init__(
             error_code=ErrorCode.QDRANT_INSERT_FAILED,
@@ -51,8 +54,7 @@ class PDFProcessingException(ApplicationException):
     """
     Raised when a PDF cannot be processed.
     """
-    def __init__(self,message: str = PDF_PROCESSING_ERROR_MESSAGE,
-    ) -> None:
+    def __init__(self, message: str = PDF_PROCESSING_ERROR_MESSAGE) -> None:
 
         super().__init__(
             error_code=ErrorCode.DOCUMENT_PROCESSING_FAILED,
@@ -68,8 +70,7 @@ class EmbeddingException(ApplicationException):
     """
     Raised when embedding generation fails.
     """
-    def __init__(self,message: str = EMBEDDING_ERROR_MESSAGE,
-    ) -> None:
+    def __init__(self, message: str = EMBEDDING_ERROR_MESSAGE) -> None:
 
         super().__init__(
             error_code=ErrorCode.EMBEDDING_GENERATION_FAILED,
@@ -85,9 +86,8 @@ class ValidationException(ApplicationException):
     """
     Raised when validation fails.
     """
-    def __init__(self,message: str = VALIDATION_ERROR_MESSAGE,
-    ) -> None:
-        
+    def __init__(self, message: str = VALIDATION_ERROR_MESSAGE) -> None:
+
         super().__init__(
             error_code=ErrorCode.INVALID_REQUEST,
             message=message,
@@ -102,9 +102,8 @@ class NotFoundException(ApplicationException):
     """
     Raised when a requested resource is not found.
     """
-    def __init__(self,message: str = RESOURCE_NOT_FOUND_MESSAGE,
-    ) -> None:
-        
+    def __init__(self, message: str = RESOURCE_NOT_FOUND_MESSAGE) -> None:
+
         super().__init__(
             error_code=ErrorCode.NOT_FOUND,
             message=message,
@@ -119,8 +118,7 @@ class AuthenticationException(ApplicationException):
     """
     Raised when authentication fails.
     """
-    def __init__(self,message: str = AUTHENTICATION_FAILED_MESSAGE,
-    ) -> None:
+    def __init__(self, message: str = AUTHENTICATION_FAILED_MESSAGE) -> None:
 
         super().__init__(
             error_code=ErrorCode.AUTHENTICATION_FAILED,
