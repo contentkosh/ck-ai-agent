@@ -1,20 +1,25 @@
 import os
 from typing import Dict, List
-from services.llmlingua_service import compress_context
+
 from dotenv import load_dotenv
-from sentence_transformers import SentenceTransformer
 from langchain_openai import ChatOpenAI
-from services.cache_service import (
-    get_cached_answer,
-    cache_answer,
-)
+from sentence_transformers import SentenceTransformer
+
+from common.custom_exceptions import DatabaseException
+from common.logger import logger
 from configuration.app_settings import (
     EMBEDDING_MODEL,
-    LLM_MODEL
+    LLM_MODEL,
+    OPENROUTER_BASE_URL,
+    SEARCH_LIMIT,
 )
+from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
 from repositories.kb_repository import search_chunks
-from common.logger import logger
-from common.custom_exceptions import DatabaseException
+from services.cache_service import (
+    cache_answer,
+    get_cached_answer,
+)
+from services.llmlingua_service import compress_context
 
 # ==========================================================
 # Load Environment Variables
@@ -25,17 +30,22 @@ load_dotenv()
 # ==========================================================
 # Embedding Model
 # ==========================================================
+
 _embedding_model: SentenceTransformer | None = None
+
 
 def get_embedding_model() -> SentenceTransformer:
     """Return the singleton embedding model."""
     global _embedding_model
+
     if _embedding_model is None:
         logger.info("Loading embedding model.")
         _embedding_model = SentenceTransformer(
             EMBEDDING_MODEL
         )
+
     return _embedding_model
+
 
 # ==========================================================
 # LLM
@@ -43,18 +53,22 @@ def get_embedding_model() -> SentenceTransformer:
 
 _llm: ChatOpenAI | None = None
 
+
 def get_llm() -> ChatOpenAI:
     """Return the singleton LLM."""
 
     global _llm
+
     if _llm is None:
         _llm = ChatOpenAI(
             model=LLM_MODEL,
-            base_url="https://openrouter.ai/api/v1",
+            base_url=OPENROUTER_BASE_URL,
             api_key=os.getenv("OPENROUTER_API_KEY"),
             temperature=0,
         )
+
     return _llm
+
 
 # ==========================================================
 # Build Context
@@ -72,10 +86,10 @@ def build_context(results: List) -> str:
         for result in results
     )
 
+
 # ==========================================================
 # Build Prompt
 # ==========================================================
-from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
 
 def build_prompt(
     *,
@@ -88,6 +102,7 @@ def build_prompt(
         query=query,
     )
 
+
 # ==========================================================
 # Ask Question
 # ==========================================================
@@ -97,21 +112,24 @@ def ask_question(query: str) -> Dict:
     Search the Knowledge Base and generate an answer.
     """
     try:
-        logger.info("Received query: %s",query)
+        logger.info("Received query: %s", query)
 
         # --------------------------------------------------
         # Generate Query Embedding
         # --------------------------------------------------
+
         query_embedding = (
             get_embedding_model()
             .encode(query)
             .tolist()
         )
+
         # --------------------------------------------------
-        # Search Knowledge Base
+        # Search Semantic Cache
         # --------------------------------------------------
 
         cached = get_cached_answer(query_embedding)
+
         if cached:
             logger.info("Returning cached answer.")
             return {
@@ -122,9 +140,14 @@ def ask_question(query: str) -> Dict:
                     3,
                 ),
             }
+
+        # --------------------------------------------------
+        # Search Knowledge Base
+        # --------------------------------------------------
+
         results = search_chunks(
             query_embedding=query_embedding,
-            limit=5
+            limit=SEARCH_LIMIT,
         )
 
         if not results:
@@ -137,69 +160,61 @@ def ask_question(query: str) -> Dict:
                 "tag": None,
                 "summary": None,
                 "source": None,
-                "page": None
+                "page": None,
             }
-        logger.info("Knowledge Base search returned %d results.",len(results),)
+
+        logger.info("Knowledge Base search returned %d results.", len(results))
 
         # --------------------------------------------------
         # Build Context
         # --------------------------------------------------
 
-        context = build_context(
-            results
-        )
+        context = build_context(results)
+
         compressed_context = compress_context(
             context=context,
             query=query,
         )
+
         payload = results[0].payload
-        logger.info("Top matching source: %s",payload.get("source"),)
+
+        logger.info("Top matching source: %s",payload.get("source"))
+
         # --------------------------------------------------
         # Generate Answer
         # --------------------------------------------------
 
         prompt = build_prompt(
             context=compressed_context,
-            query=query
+            query=query,
         )
-        
+
         response = get_llm().invoke(prompt)
-        
+
         cache_answer(
             question=query,
             embedding=query_embedding,
             context=context,
             answer=response.content.strip(),
         )
+
         logger.info("LLM response generated successfully.")
+
         # --------------------------------------------------
         # Return Response
         # --------------------------------------------------
-        return {
 
+        return {
             "answer": response.content.strip(),
-            "document_id": payload.get(
-                "document_id"
-            ),
-            "title": payload.get(
-                "title"
-            ),
-            "document_type": payload.get(
-                "document_type"
-            ),
-            "tag": payload.get(
-                "tag"
-            ),
-            "summary": payload.get(
-                "summary"
-            ),
-            "source": payload.get(
-                "source"
-            ),
-            "page": payload.get(
-                "page"
-            )
+            "document_id": payload.get("document_id"),
+            "title": payload.get("title"),
+            "document_type": payload.get("document_type"),
+            "tag": payload.get("tag"),
+            "summary": payload.get("summary"),
+            "source": payload.get("source"),
+            "page": payload.get("page"),
         }
+
     except Exception as ex:
-        logger.exception("Chat service failed: %s",ex,)
+        logger.exception("Chat service failed: %s", ex)
         raise DatabaseException("Unable to process user query.") from ex

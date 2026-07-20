@@ -212,3 +212,11 @@ MAX_CACHE_SIZE = int(
         5000
     )
 )
+
+LLMLINGUA_MODEL = (
+    "microsoft/llmlingua-2-bert-base-multilingual-cased-meetingbank"
+)
+
+LLMLINGUA_DEVICE = "cuda:0"
+
+LLMLINGUA_TARGET_TOKEN = 512
