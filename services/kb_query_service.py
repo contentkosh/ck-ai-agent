@@ -7,7 +7,7 @@
 
 import os
 from typing import Dict, List
-from services.llmlingua_service import compress_context
+
 from dotenv import load_dotenv
 from services.cache_service import (
     get_cached_answer,
@@ -16,6 +16,7 @@ from services.cache_service import (
 from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
 from common.logger import logger
 from common.custom_exceptions import DatabaseException
+from services.llmlingua_service import compress_context
 from typing import List
 from dotenv import load_dotenv
 from common.embedding_client import get_embedding_model
@@ -64,6 +65,7 @@ def build_context(
         for searchResult in searchResults
     )
 
+
 # ==========================================================
 # Build Prompt
 # ==========================================================
@@ -80,6 +82,7 @@ def build_prompt(
         context=context,
         query=query,
     )
+
 
 # ==========================================================
 # Ask Question

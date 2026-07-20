@@ -52,6 +52,7 @@ load_dotenv()
 # Extract Metadata
 # ==========================================================
 
+
 def extract_document_metadata(
     text: str,
 ) -> DocumentMetadataDto:
@@ -76,6 +77,7 @@ def extract_document_metadata(
             llmResponse = get_llm().invoke(
                 prompt,
             )
+
         except Exception as exception:
             logger.exception(
                 LLM_INVOCATION_FAILED_LOG,
@@ -107,6 +109,7 @@ def extract_document_metadata(
             INVALID_METADATA_JSON_ERROR,
             exception,
         )
+
         raise InvalidMetadataException(
             INVALID_METADATA_JSON_ERROR,
         ) from exception
@@ -122,6 +125,7 @@ def extract_document_metadata(
             METADATA_EXTRACTION_FAILED_ERROR,
             exception,
         )
+
         raise MetadataExtractionException(
             METADATA_EXTRACTION_FAILED_ERROR,
         ) from exception

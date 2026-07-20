@@ -1,5 +1,11 @@
 from llmlingua import PromptCompressor
+
 from common.logger import logger
+from configuration.config import (
+    LLMLINGUA_DEVICE,
+    LLMLINGUA_MODEL,
+    LLMLINGUA_TARGET_TOKEN,
+)
 
 # ==========================================================
 # LLMLingua-2 Compressor Singleton
@@ -18,9 +24,9 @@ def get_compressor() -> PromptCompressor:
         logger.info("Loading LLMLingua-2 compressor...")
 
         _compressor = PromptCompressor(
-            model_name="microsoft/llmlingua-2-bert-base-multilingual-cased-meetingbank",
+            model_name=LLMLINGUA_MODEL,
             use_llmlingua2=True,
-            device_map="cuda:0",
+            device_map=LLMLINGUA_DEVICE,
         )
 
     return _compressor
@@ -45,12 +51,12 @@ def compress_context(
             context=[context],
             instruction=query,
             use_context_level_filter=True,
-            target_token=512,
+            target_token=LLMLINGUA_TARGET_TOKEN,
         )
 
         return result["compressed_prompt"]
 
     except Exception as ex:
-        logger.exception("LLMLingua compression failed: %s",ex)
+        logger.exception("LLMLingua compression failed: %s", ex)
         # Fall back to original context
         return context
