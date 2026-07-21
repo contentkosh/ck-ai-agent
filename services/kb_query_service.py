@@ -45,6 +45,15 @@ from exceptions.llm_exception import LLMResponseException
 from repositories.kb_repository import searchChunks
 from exceptions.contentkosh_exception import (ContentKoshException,)
 from exceptions.qdrant_exception import (QdrantConnectionException,)
+from services.cache_service import (
+    cache_answer,
+    get_cached_answer,
+)
+
+from services.llmlingua_service import (
+    compress_context,
+)
+
 load_dotenv()
 
 # ==========================================================
@@ -65,10 +74,10 @@ def build_context(
         for searchResult in searchResults
     )
 
-
 # ==========================================================
 # Build Prompt
 # ==========================================================
+from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
 
 def build_prompt(
     *,
@@ -82,7 +91,6 @@ def build_prompt(
         context=context,
         query=query,
     )
-
 
 # ==========================================================
 # Ask Question
@@ -209,6 +217,15 @@ def ask_question(
             documentPayload.get(
                 METADATA_SOURCE,
             ),
+        )
+
+        # --------------------------------------------------
+        # Token Optimization (LLMLingua-2)
+        # --------------------------------------------------
+
+        compressedContext = compress_context(
+            context=contextText,
+            query=query,
         )
 
         # --------------------------------------------------
