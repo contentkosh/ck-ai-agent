@@ -28,10 +28,7 @@ def get_compressor() -> PromptCompressor:
             use_llmlingua2=True,
             device_map=LLMLINGUA_DEVICE,
         )
-
     return _compressor
-
-
 # ==========================================================
 # Compress Context
 # ==========================================================
