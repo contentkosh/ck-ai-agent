@@ -4,6 +4,12 @@ from configuration.config import (
     SCROLL_LIMIT,
 )
 
+from database.qdrant_client_manager import client
+from configuration.config import (
+    COLLECTION_NAME,
+    SCROLL_LIMIT,
+)
+
 def print_all_documents() -> None:
     """
     Print every stored chunk's metadata, paginating through
@@ -19,6 +25,7 @@ def print_all_documents() -> None:
             offset=next_offset,
             with_payload=True,
         )
+
         for point in records:
             payload = point.payload
             print(f"Title : {payload.get('title')}")
@@ -27,6 +34,7 @@ def print_all_documents() -> None:
             print(f"Source : {payload.get('source')}")
             print(f"Page : {payload.get('page')}")
             print("-" * 40)
+
         if next_offset is None:
             break
 

@@ -1,13 +1,24 @@
+# ==========================================================
+# Knowledge Base Chat Service
+# Handles question answering by generating embeddings,
+# retrieving relevant document chunks, and using the LLM
+# to produce context-aware responses.
+# ==========================================================
+
 from typing import Dict, List
 from dotenv import load_dotenv
+
+from configuration.config import (
+    SEARCH_LIMIT,
+)
 from common.llm_client import get_llm
 from common.embedding_client import get_embedding_model
-from configuration.config import SEARCH_LIMIT
-from configuration.constants import DEFAULT_SCORE_THRESHOLD
+from common.llm_client import get_llm
+
+from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
 from repositories.kb_repository import search_chunks
 from common.logger import logger
 from common.custom_exceptions import DatabaseException
-
 # ==========================================================
 # Load Environment Variables
 # ==========================================================
@@ -33,7 +44,7 @@ def build_context(results: List) -> str:
 # ==========================================================
 # Build Prompt
 # ==========================================================
-from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
+
 def build_prompt(
     *,
     context: str,
@@ -72,11 +83,9 @@ def ask_question(query: str) -> Dict:
             query_embedding=query_embedding,
             limit=SEARCH_LIMIT,
         )
-
         if not results:
             logger.warning("No relevant chunks found.")
             return {
-
                 "answer": "Answer not found in the Knowledge Base.",
                 "document_id": None,
                 "title": None,
@@ -84,7 +93,7 @@ def ask_question(query: str) -> Dict:
                 "tag": None,
                 "summary": None,
                 "source": None,
-                "page": None
+                "page": None 
             }
         logger.info("Retrieved %d chunk(s).",len(results),)
 
@@ -116,7 +125,6 @@ def ask_question(query: str) -> Dict:
         # --------------------------------------------------
 
         return {
-
             "answer": response.content.strip(),
             "document_id": payload.get("document_id"),
             "title": payload.get("title"),
@@ -126,9 +134,6 @@ def ask_question(query: str) -> Dict:
             "source": payload.get("source"),
             "page": payload.get("page")
         }
-
     except Exception as ex:
         logger.exception("Chat service failed: %s",ex,)
-        raise DatabaseException(
-            "Unable to process user query."
-        ) from ex
+        raise DatabaseException("Unable to process user query.") from ex

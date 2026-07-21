@@ -1,10 +1,24 @@
-from fastapi import (HTTPException,status,)
+# ==========================================================
+# Query Validation Utilities
+# Validates user queries by ensuring they are not empty and
+# do not exceed the maximum allowed length before processing.
+# ==========================================================
+
+from fastapi import (
+    HTTPException,
+    status,
+)
+
 from configuration.config import MAX_QUERY_LENGTH
-from configuration.constants import (EMPTY_QUERY_ERROR,QUERY_LENGTH_ERROR,)
+from configuration.constants import (
+    EMPTY_QUERY_ERROR,
+    QUERY_LENGTH_ERROR,
+)
 def validate_query(query: str) -> None:
     """
     Validate user query.
     """
+
     if query is None or not query.strip():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

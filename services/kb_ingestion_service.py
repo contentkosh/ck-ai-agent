@@ -1,3 +1,10 @@
+# ==========================================================
+# Knowledge Base Ingestion Service
+# Handles the end-to-end document ingestion pipeline by
+# processing PDFs, generating embeddings, extracting metadata,
+# and storing document vectors in the knowledge base.
+# ==========================================================
+
 import uuid
 from typing import Any
 from fastapi import UploadFile
@@ -87,26 +94,29 @@ def read_pdf(file: UploadFile) -> tuple[PdfReader, str]:
     """Validate, save and load a PDF."""
     filename = file.filename
     saved_file = None
+
     try:
         logger.info("Saving file: %s", filename)
         saved_file = save_uploaded_file(file)
         validate_saved_file(saved_file)
         return PdfReader(saved_file), saved_file
     except Exception as ex:
-        logger.exception("Failed to read PDF '%s': %s", filename, ex)
+        logger.exception(
+            "Failed to read PDF '%s': %s",
+            filename,
+            ex,
+        )
+
         # The file was already written to disk above; if parsing
         # or validation fails here, ingest_documents' cleanup
         # never runs (it only wraps process_document, which we
         # never reach), so clean up here instead.
         if saved_file is not None:
             delete_saved_file(saved_file)
+
         raise PDFProcessingException(
             f"Unable to process '{filename}'."
         ) from ex
-
-# ==========================================================
-# Extract Document Text
-# ==========================================================
 
 def extract_document_text(
     pdf: PdfReader,
@@ -142,7 +152,6 @@ def get_document_metadata(pages: list[Page]) -> Metadata:
         metadata = extract_document_metadata(metadata_source)
         logger.info("Metadata extracted successfully.")
         return metadata
-
     except Exception as ex:
         logger.exception("Metadata extraction failed: %s",ex,)
         raise DocumentProcessingException(
@@ -192,34 +201,58 @@ def build_vectors(
 def process_document(
     pdf: PdfReader,
     filename: str,
-) -> Metadata:
+) -> dict[str, Any]:
     """Process a PDF document."""
     try:
-        logger.info("Processing document: %s", filename)
-        document_id = generate_document_id()
-        _, pages = extract_document_text(pdf)
-        if not pages:
+        logger.info(
+            "Processing document: %s",
+            filename,
+        )
+
+        document_id = generate_uuid()
+
+        full_text, pages = extract_document_text(pdf)
+
+        if not full_text.strip():
             raise EmptyDocumentException(
-                f"'{filename}' contains no pages."
+                "The uploaded PDF contains no readable text."
             )
+
         metadata = get_document_metadata(pages)
+
         points, total_chunks = build_vectors(
             pages=pages,
             metadata=metadata,
             filename=filename,
             document_id=document_id,
         )
-        logger.info("Processed %s (%d chunks).",document_id,total_chunks,)
+
+        logger.info(
+            "Processed %s (%d chunks).",
+            document_id,
+            total_chunks,
+        )
+
         return {
             "document_id": document_id,
             "metadata": metadata,
             "points": points,
             "chunks": total_chunks,
         }
-    except (EmptyDocumentException, DocumentProcessingException, PDFProcessingException):
+
+    except (
+        EmptyDocumentException,
+        DocumentProcessingException,
+        PDFProcessingException,
+    ):
         raise
+
     except Exception as ex:
-        logger.exception("Document processing failed: %s",ex,)
+        logger.exception(
+            "Document processing failed: %s",
+            ex,
+        )
+
         raise DocumentProcessingException(
             f"Failed to process '{filename}'."
         ) from ex
@@ -230,16 +263,24 @@ def ingest_documents(
     """Ingest PDF documents into the Knowledge Base."""
     try:
         logger.info("Knowledge Base ingestion started.")
+
         documents: list[Metadata] = []
         total_chunks = 0
+
         for file in files:
-            logger.info("Processing file: %s", file.filename)
+            logger.info(
+                "Processing file: %s",
+                file.filename,
+            )
+
             pdf, saved_file_path = read_pdf(file)
+
             try:
                 document = process_document(
                     pdf=pdf,
                     filename=file.filename,
                 )
+
             finally:
                 # On Windows, pypdf may still hold the file open
                 # internally, which blocks deletion. Explicitly
@@ -250,32 +291,57 @@ def ingest_documents(
                         stream.close()
                 except Exception:
                     pass
+
                 del pdf
                 delete_saved_file(saved_file_path)
 
             save_chunks(document["points"])
+
             total_chunks += document["chunks"]
-            documents.append({
-                "document_id": document["document_id"],
-                "title": document["metadata"].get("title"),
-                "document_type": document["metadata"].get("document_type"),
-                "tag": document["metadata"].get("tag"),
-                "summary": document["metadata"].get("summary"),
-                "source": file.filename,
-                "chunks": document["chunks"],
-            })
-            logger.info("Successfully processed '%s'.",file.filename,)
-        logger.info("Knowledge Base ingestion completed. Documents=%d Chunks=%d",len(documents),total_chunks,)
+
+            documents.append(
+                {
+                    "document_id": document["document_id"],
+                    "title": document["metadata"].get("title"),
+                    "document_type": document["metadata"].get("document_type"),
+                    "tag": document["metadata"].get("tag"),
+                    "summary": document["metadata"].get("summary"),
+                    "source": file.filename,
+                    "chunks": document["chunks"],
+                }
+            )
+
+            logger.info(
+                "Successfully processed '%s'.",
+                file.filename,
+            )
+
+        logger.info(
+            "Knowledge Base ingestion completed. Documents=%d Chunks=%d",
+            len(documents),
+            total_chunks,
+        )
+
         return {
             "status": "success",
             "documents_processed": len(documents),
             "chunks_inserted": total_chunks,
             "documents": documents,
         }
-    except (EmptyDocumentException, DocumentProcessingException, PDFProcessingException):
+
+    except (
+        EmptyDocumentException,
+        DocumentProcessingException,
+        PDFProcessingException,
+    ):
         raise
+
     except Exception as ex:
-        logger.exception("Knowledge Base ingestion failed: %s",ex,)
+        logger.exception(
+            "Knowledge Base ingestion failed: %s",
+            ex,
+        )
+
         raise PDFProcessingException(
             "Knowledge Base ingestion failed."
         ) from ex

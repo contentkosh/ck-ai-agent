@@ -1,5 +1,10 @@
-from typing import Any
-from typing import Optional
+# ==========================================================
+# Knowledge Base Repository
+# Handles all Qdrant database operations including storing,
+# searching, retrieving, and deleting knowledge base documents.
+# ==========================================================
+
+from typing import Any, Optional
 from qdrant_client.models import (
     FieldCondition,
     Filter,
@@ -10,7 +15,7 @@ from common.logger import logger
 from configuration.config import (
     COLLECTION_NAME,
     SCROLL_LIMIT,
-    SEARCH_LIMIT,
+    SEARCH_LIMIT
 )
 
 from configuration.constants import (
@@ -132,23 +137,22 @@ def search_chunks(
     (Qdrant cosine similarity) are excluded server-side.
     """
     try:
-
         result = client.query_points(
             collection_name=COLLECTION_NAME,
             query=query_embedding,
             limit=limit,
             score_threshold=score_threshold,
         )
-        logger.info(SEMANTIC_SEARCH_LOG,len(result.points),)
+
+        logger.info(SEMANTIC_SEARCH_LOG,len(result.points))
+
         return result.points
 
     except Exception as ex:
-        logger.exception(SEMANTIC_SEARCH_FAILED_LOG,ex,)
-        raise DatabaseException(DATABASE_SEARCH_ERROR_MESSAGE,) from ex
-    
-# ==========================================================
-# Get All Records
-# ==========================================================
+        logger.exception(SEMANTIC_SEARCH_FAILED_LOG,ex)
+        raise DatabaseException(
+            DATABASE_SEARCH_ERROR_MESSAGE,
+        ) from ex
 
 def get_all_records(
     tag: Optional[str] = None,
@@ -171,51 +175,55 @@ def get_all_records(
             )
 
         records = _scroll_records(query_filter)
+
         response: list[Payload] = []
+
         for point in records:
             payload = point.payload
-            record = build_document_payload(payload,)
+            record = build_document_payload(payload)
             record[METADATA_PAGE] = payload.get(METADATA_PAGE)
             record[METADATA_TEXT] = payload.get(METADATA_TEXT)
+
             response.append(record)
 
-        logger.info(FETCH_RECORDS_LOG,len(response),)
+        logger.info(FETCH_RECORDS_LOG,len(response))
+
         return response
 
     except Exception as ex:
-        logger.exception(FETCH_RECORDS_FAILED_LOG)
-        raise DatabaseException(DATABASE_FETCH_ERROR_MESSAGE,) from ex
-
-# ==========================================================
-# Get Uploaded Documents
-# ==========================================================
+        logger.exception(FETCH_RECORDS_FAILED_LOG,ex)
+        raise DatabaseException(
+            DATABASE_FETCH_ERROR_MESSAGE,
+        ) from ex
 
 def get_uploaded_files() -> list[Payload]:
     """
     Return one entry per uploaded document.
     """
     try:
-
         records = _scroll_records()
         documents: dict[str, Payload] = {}
         for point in records:
             payload = point.payload
-            document_id = payload.get(METADATA_DOCUMENT_ID,)
+            document_id = payload.get(
+                METADATA_DOCUMENT_ID,
+            )
             if not document_id:
                 continue
             if document_id not in documents:
-                documents[
-                    document_id
-                ] = build_document_payload(
+                documents[document_id] = build_document_payload(
                     payload,
                 )
-
-        logger.info(FETCH_DOCUMENTS_LOG,len(documents),)
+        logger.info(FETCH_DOCUMENTS_LOG,len(documents))
         return list(documents.values())
-    
     except Exception as ex:
-        logger.exception(FETCH_DOCUMENTS_FAILED_LOG)
-        raise DatabaseException(DATABASE_FETCH_DOCUMENTS_ERROR_MESSAGE,) from ex
+        logger.exception(
+            FETCH_DOCUMENTS_FAILED_LOG,
+            ex,
+        )
+        raise DatabaseException(
+            DATABASE_FETCH_DOCUMENTS_ERROR_MESSAGE,
+        ) from ex
 
 # ==========================================================
 # Delete One Document
@@ -234,7 +242,8 @@ def delete_document(
                 FieldCondition(
                     key=METADATA_DOCUMENT_ID,
                     match=MatchValue(
-                        value=document_id,)
+                        value=document_id,
+                    ),
                 ),
             ],
         )
@@ -245,21 +254,31 @@ def delete_document(
             limit=1,
             with_payload=False,
         )
-        if not existing:
-            logger.info("Document %s not found; nothing deleted.", document_id)
-            return False
 
+        if not existing:
+            logger.info(
+                "Document %s not found; nothing deleted.",
+                document_id,
+            )
+            return False
         client.delete(
             collection_name=COLLECTION_NAME,
             points_selector=document_filter,
         )
-        logger.info(DELETE_DOCUMENT_LOG,document_id,)
+        logger.info(
+            DELETE_DOCUMENT_LOG,
+            document_id,
+        )
         return True
-
     except Exception as ex:
-        logger.exception(DELETE_DOCUMENT_FAILED_LOG)
-        raise DatabaseException(DATABASE_DELETE_ERROR_MESSAGE,) from ex
-    
+        logger.exception(
+            DELETE_DOCUMENT_FAILED_LOG,
+            ex,
+        )
+        raise DatabaseException(
+            DATABASE_DELETE_ERROR_MESSAGE,
+        ) from ex
+
 # ==========================================================
 # Delete Entire Knowledge Base
 # ==========================================================
@@ -269,11 +288,18 @@ def delete_all_documents() -> bool:
     Remove every vector from Qdrant.
     """
     try:
+        client.delete(
+            collection_name=COLLECTION_NAME,
+            points_selector=Filter(),
+        )
 
-        client.delete(collection_name=COLLECTION_NAME,points_selector=Filter(),)
         logger.info(CLEAR_KB_LOG,)
         return True
-
     except Exception as ex:
-        logger.exception(CLEAR_KB_FAILED_LOG)
-        raise DatabaseException(DATABASE_CLEAR_ERROR_MESSAGE,) from ex
+        logger.exception(
+            CLEAR_KB_FAILED_LOG,
+            ex,
+        )
+        raise DatabaseException(
+            DATABASE_CLEAR_ERROR_MESSAGE,
+        ) from ex

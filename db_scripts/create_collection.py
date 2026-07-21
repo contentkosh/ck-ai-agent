@@ -1,12 +1,16 @@
 from qdrant_client.models import Distance, VectorParams
 from database.qdrant_client_manager import client
-from configuration.config import COLLECTION_NAME, EMBEDDING_DIMENSION
+from configuration.config import (
+    COLLECTION_NAME,
+    EMBEDDING_DIMENSION,
+)
 
 def create_collection_if_missing() -> None:
     """
     Create the Qdrant collection if it does not already exist.
     """
     collections = client.get_collections()
+
     existing = [
         collection.name
         for collection in collections.collections
