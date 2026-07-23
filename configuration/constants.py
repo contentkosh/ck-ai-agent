@@ -23,12 +23,18 @@ DEFAULT_ENCODING = "utf-8"
 DEFAULT_CHUNK_SIZE = 500
 DEFAULT_CHUNK_OVERLAP = 50
 
+# ==========================================================
+# REGEX PATTERNS
+# ==========================================================
+
+MARKDOWN_JSON_REGEX = r"^```(?:json)?\s*|\s*```$"
+
 # ==========================================
 # LOGGING
 # ==========================================
 
-UPLOAD_STARTED = "Document upload started."
-UPLOAD_COMPLETED = "Document upload completed."
+DOCUMENT_UPLOAD_STARTED_LOG = "Document upload started."
+DOCUMENT_UPLOAD_COMPLETED_LOG = "Document upload completed."
 METADATA_EXTRACTION_STARTED = "Metadata extraction started."
 METADATA_EXTRACTION_COMPLETED = "Metadata extraction completed."
 EMBEDDING_GENERATION_STARTED = "Embedding generation started."
@@ -36,12 +42,28 @@ EMBEDDING_GENERATION_COMPLETED = "Embedding generation completed."
 QDRANT_UPLOAD_STARTED = "Uploading vectors to Qdrant."
 QDRANT_UPLOAD_COMPLETED = "Successfully uploaded vectors to Qdrant."
 
+# ==========================================================
+# LLM LOG MESSAGES
+# ==========================================================
+
+LLM_INVOCATION_FAILED_LOG = "LLM invocation failed."
+METADATA_EXTRACTION_STARTED_LOG = "Extracting document metadata."
+METADATA_EXTRACTION_COMPLETED_LOG = "Metadata extracted successfully."
+
+# ==========================================================
+# COLLECTION SETUP LOGS
+# ==========================================================
+
+COLLECTION_CREATED_LOG = "Qdrant collection created successfully."
+COLLECTION_ALREADY_EXISTS_LOG = "Qdrant collection already exists."
+COLLECTION_SETUP_FAILED_LOG = ("Failed to verify or create Qdrant collection.")
+
 # ==========================================
 # API RESPONSES
 # ==========================================
 
-SUCCESS = "Success"
-FAILED = "Failed"
+SUCCESS_STATUS = "Success"
+FAILED_STATUS = "Failed"
 UPLOAD_SUCCESS = "Documents uploaded successfully."
 UPLOAD_FAILED = "Document upload failed."
 INVALID_FILE = "Only PDF files are allowed."
@@ -170,6 +192,16 @@ DATABASE_DELETE_ERROR_MESSAGE = "Unable to delete document."
 DATABASE_CLEAR_ERROR_MESSAGE = "Unable to clear Knowledge Base."
 
 # ==========================================================
+# KNOWLEDGE BASE INGESTION ERROR MESSAGES
+# ==========================================================
+
+EMBEDDING_GENERATION_FAILED_MESSAGE = "Failed to generate embedding."
+PDF_READ_FAILED_MESSAGE = "Unable to process '{}'."
+DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE = ("Unable to extract document metadata.")
+DOCUMENT_PROCESSING_FAILED_MESSAGE = "Failed to process '{}'."
+KNOWLEDGE_BASE_INGESTION_FAILED_MESSAGE = ("Knowledge Base ingestion failed.")
+EMPTY_DOCUMENT_TEXT_MESSAGE = ("The uploaded PDF contains no readable text.")
+# ==========================================================
 # LOG MESSAGES
 # ==========================================================
 
@@ -179,23 +211,39 @@ UNHANDLED_EXCEPTION_LOG = "Unhandled Exception: %s"
 # DATABASE LOG MESSAGES
 # ==========================================================
 
+EMBEDDING_GENERATION_FAILED_LOG = "Embedding generation failed: %s"
 VECTOR_INSERTION_LOG = "Inserted %d vectors."
 VECTOR_INSERTION_FAILED_LOG = "Vector insertion failed: %s"
-
 SEMANTIC_SEARCH_LOG = "Retrieved %d chunks."
 SEMANTIC_SEARCH_FAILED_LOG = "Semantic search failed: %s"
-
 FETCH_RECORDS_LOG = "Fetched %d records."
 FETCH_RECORDS_FAILED_LOG = "Unable to fetch records."
-
 FETCH_DOCUMENTS_LOG = "Found %d document(s)."
 FETCH_DOCUMENTS_FAILED_LOG = "Unable to fetch uploaded documents."
-
 DELETE_DOCUMENT_LOG = "Deleted document %s."
 DELETE_DOCUMENT_FAILED_LOG = "Unable to delete document."
-
+DOCUMENT_NOT_FOUND_LOG = "Document %s not found; nothing deleted."
 CLEAR_KB_LOG = "Knowledge Base cleared."
 CLEAR_KB_FAILED_LOG = "Unable to clear Knowledge Base."
+
+# ==========================================================
+# KNOWLEDGE BASE INGESTION LOG MESSAGES
+# ==========================================================
+
+FILE_SAVE_LOG = "Saving file: %s"
+PDF_READ_FAILED_LOG = "Failed to read PDF '%s': %s"
+PAGE_READ_FAILED_LOG = "Unable to read page %d: %s"
+PAGES_EXTRACTED_LOG = "Extracted %d pages."
+DOCUMENT_PROCESSING_STARTED_LOG = "Processing document: %s"
+DOCUMENT_PROCESSED_LOG = "Processed %s (%d chunks)."
+DOCUMENT_PROCESSING_FAILED_LOG = "Document processing failed: %s"
+KB_INGESTION_STARTED_LOG = "Knowledge Base ingestion started."
+KB_INGESTION_COMPLETED_LOG = ("Knowledge Base ingestion completed. Documents=%d Chunks=%d")
+KB_INGESTION_FAILED_LOG = "Knowledge Base ingestion failed: %s"
+FILE_PROCESSING_STARTED_LOG = "Processing file: %s"
+FILE_PROCESSING_COMPLETED_LOG = "Successfully processed '%s'."
+GENERATED_VECTORS_LOG = "Generated %d vectors."
+PAGE_CHUNK_GENERATION_LOG = "Page %d generated %d chunks."
 
 # ==========================================================
 # VALIDATION MESSAGES
@@ -205,3 +253,30 @@ EMPTY_QUERY_ERROR = "Query cannot be empty."
 QUERY_LENGTH_ERROR = (
     "Query cannot exceed {} characters."
 )
+
+QUERY_RECEIVED_LOG = "Received query: %s"
+NO_RELEVANT_CHUNKS_LOG = "No relevant chunks found."
+RETRIEVED_CHUNKS_LOG = "Retrieved %d chunk(s)."
+TOP_MATCHING_SOURCE_LOG = "Top matching source: %s"
+CHAT_SERVICE_FAILED_LOG = "Chat service failed: %s"
+CHAT_SERVICE_ERROR_MESSAGE = "Unable to process user query."
+ANSWER_NOT_FOUND_MESSAGE = "Answer not found in the Knowledge Base."
+DOCUMENT_NOT_FOUND_LOG = "Document %s not found; nothing deleted."
+
+# ==========================================================
+# FILE SERVICE LOG MESSAGES
+# ==========================================================
+
+TEMP_FILE_DELETED_LOG = "Deleted temporary upload file: %s"
+TEMP_FILE_DELETE_FAILED_LOG = ("Failed to delete temporary upload file '%s': %s")
+
+# ==========================================================
+# HEALTH API
+# ==========================================================
+
+HEALTH_ROUTE = "/"
+HEALTH_API_LOG = "[%s] Health API called."
+SERVICE_RUNNING_STATUS = "Running"
+
+SUCCESS_STATUS = "success"
+METADATA_EXTRACTION_FAILED_LOG = "Metadata extraction failed: %s"

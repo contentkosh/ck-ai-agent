@@ -1,9 +1,6 @@
 from database.qdrant_client_manager import client
 from configuration.config import COLLECTION_NAME
 
-from database.qdrant_client_manager import client
-from configuration.config import COLLECTION_NAME
-
 def print_collection_stats() -> None:
     """
     Print basic stats for the configured Qdrant collection.

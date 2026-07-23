@@ -3,7 +3,6 @@ from common.custom_exceptions import ApplicationException
 from common.error_codes import ErrorCode
 from configuration.constants import (
     LLM_RESPONSE_ERROR_MESSAGE,
-    LLM_TIMEOUT_ERROR_MESSAGE,
 )
 
 class LLMResponseException(ApplicationException):
@@ -15,15 +14,4 @@ class LLMResponseException(ApplicationException):
             error_code=ErrorCode.LLM_RESPONSE_FAILED,
             message=message,
             status_code=HTTPStatus.BAD_GATEWAY,
-        )
-
-class LLMTimeoutException(ApplicationException):
-    """
-    Raised when the LLM request times out.
-    """
-    def __init__(self, message: str = LLM_TIMEOUT_ERROR_MESSAGE):
-        super().__init__(
-            error_code=ErrorCode.LLM_TIMEOUT,
-            message=message,
-            status_code=HTTPStatus.GATEWAY_TIMEOUT,
         )

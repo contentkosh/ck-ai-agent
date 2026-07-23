@@ -4,9 +4,8 @@
 # filtering based on the provided document tag.
 # ==========================================================
 
-from repositories.kb_repository import (
-    get_all_records,
-)
+from repositories.kb_repository import (getAllRecords,)
+
 # ==========================================================
 # Get Knowledge Base
 # ==========================================================
@@ -16,4 +15,4 @@ def get_knowledge_base_records(
     """
     Retrieve Knowledge Base records.
     """
-    return get_all_records(tag)
+    return getAllRecords(tag)

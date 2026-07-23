@@ -6,6 +6,8 @@ from configuration.constants import (
     INVALID_FILE_ERROR_MESSAGE,
     INVALID_REQUEST_ERROR_MESSAGE,
     INVALID_TAG_ERROR_MESSAGE,
+    EMPTY_QUERY_ERROR,
+    QUERY_LENGTH_ERROR,
 )
 
 class InvalidFileException(ApplicationException):
@@ -48,6 +50,28 @@ class InvalidRequestException(ApplicationException):
     def __init__(self, message: str = INVALID_REQUEST_ERROR_MESSAGE):
         super().__init__(
             error_code=ErrorCode.INVALID_REQUEST,
+            message=message,
+            status_code=HTTPStatus.BAD_REQUEST,
+        )
+
+class EmptyQueryException(ApplicationException):
+    """
+    Raised when a user query is empty or missing.
+    """
+    def __init__(self, message: str = EMPTY_QUERY_ERROR):
+        super().__init__(
+            error_code=ErrorCode.EMPTY_QUERY,
+            message=message,
+            status_code=HTTPStatus.BAD_REQUEST,
+        )
+
+class QueryTooLongException(ApplicationException):
+    """
+    Raised when a user query exceeds the maximum allowed length.
+    """
+    def __init__(self, message: str = QUERY_LENGTH_ERROR):
+        super().__init__(
+            error_code=ErrorCode.INVALID_QUERY,
             message=message,
             status_code=HTTPStatus.BAD_REQUEST,
         )

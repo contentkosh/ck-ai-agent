@@ -21,6 +21,8 @@ class ErrorCode(str, Enum):
     INVALID_TAG = "INVALID_TAG"
     EMPTY_FILE = "EMPTY_FILE"
     INVALID_REQUEST = "INVALID_REQUEST"
+    EMPTY_QUERY = "EMPTY_QUERY"
+    INVALID_QUERY = "INVALID_QUERY"
 
     # ==========================================
     # Metadata Errors (META)
@@ -48,7 +50,6 @@ class ErrorCode(str, Enum):
     # ==========================================
 
     LLM_RESPONSE_FAILED = "LLM_RESPONSE_FAILED"
-    LLM_TIMEOUT = "LLM_TIMEOUT"
 
     # ==========================================
     # API Errors (API)

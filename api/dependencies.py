@@ -1,7 +1,6 @@
-from fastapi import Header, HTTPException, status
+from fastapi import Header
 from configuration.config import (
     API_KEY,
-    API_KEY_HEADER_NAME,
     AUTH_ENABLED,
 )
 from configuration.context import RequestContext

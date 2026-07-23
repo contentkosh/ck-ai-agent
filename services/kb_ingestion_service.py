@@ -11,23 +11,49 @@ from fastapi import UploadFile
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pypdf import PdfReader
 from qdrant_client.models import PointStruct
-from common.custom_exceptions import (
-    EmbeddingException,
-    PDFProcessingException,
-)
+from common.custom_exceptions import (EmbeddingException,PDFProcessingException,)
 from common.embedding_client import get_embedding_model
 from common.file_utils import save_uploaded_file, delete_saved_file
 from common.logger import logger
 from validators.file_validator import validate_saved_file
-from configuration.config import (
-    CHUNK_OVERLAP,
-    CHUNK_SIZE,
+from configuration.config import (CHUNK_OVERLAP,CHUNK_SIZE,)
+from exceptions.document_exception import (DocumentProcessingException,EmptyDocumentException,)
+from configuration.constants import (
+    FILE_SAVE_LOG,
+    PDF_READ_FAILED_LOG,
+    PAGE_READ_FAILED_LOG,
+    PAGES_EXTRACTED_LOG,
+    DOCUMENT_PROCESSING_STARTED_LOG,
+    DOCUMENT_PROCESSED_LOG,
+    DOCUMENT_PROCESSING_FAILED_LOG,
+    KB_INGESTION_STARTED_LOG,
+    KB_INGESTION_COMPLETED_LOG,
+    KB_INGESTION_FAILED_LOG,
+    FILE_PROCESSING_STARTED_LOG,
+    FILE_PROCESSING_COMPLETED_LOG,
+    GENERATED_VECTORS_LOG,
+    PAGE_CHUNK_GENERATION_LOG,
+    EMBEDDING_GENERATION_FAILED_LOG,
+    EMBEDDING_GENERATION_FAILED_MESSAGE,
+    METADATA_DOCUMENT_ID,
+    METADATA_TEXT,
+    METADATA_TITLE,
+    METADATA_DOCUMENT_TYPE,
+    METADATA_TAG,
+    METADATA_SUMMARY,
+    METADATA_SOURCE,
+    METADATA_PAGE,
+    PDF_READ_FAILED_MESSAGE,
+    METADATA_EXTRACTION_STARTED_LOG,
+    METADATA_EXTRACTION_COMPLETED_LOG,
+    METADATA_EXTRACTION_FAILED_LOG,
+    DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE,
+    DOCUMENT_PROCESSING_FAILED_MESSAGE,
+    KNOWLEDGE_BASE_INGESTION_FAILED_MESSAGE,
+    EMPTY_DOCUMENT_TEXT_MESSAGE,
+    SUCCESS_STATUS,
 )
-from exceptions.document_exception import (
-    DocumentProcessingException,
-    EmptyDocumentException,
-)
-from repositories.kb_repository import save_chunks
+from repositories.kb_repository import saveChunks
 from services.document_metadata_service import extract_document_metadata
 
 Page = dict[str, Any]
@@ -57,10 +83,8 @@ def generate_embedding(text: str) -> list[float]:
     try:
         return get_embedding_model().encode(text).tolist()
     except Exception as ex:
-        logger.exception("Embedding generation failed: %s", ex)
-        raise EmbeddingException(
-            "Failed to generate embedding."
-        ) from ex
+        logger.exception(EMBEDDING_GENERATION_FAILED_LOG, ex)
+        raise EmbeddingException(EMBEDDING_GENERATION_FAILED_MESSAGE,) from ex
 
 # ==========================================================
 # Build Payload
@@ -76,14 +100,14 @@ def build_payload(
 ) -> Metadata:
     """Build the Qdrant payload."""
     return {
-        "document_id": document_id,
-        "text": chunk,
-        "title": metadata.get("title"),
-        "document_type": metadata.get("document_type"),
-        "tag": metadata.get("tag"),
-        "summary": metadata.get("summary"),
-        "source": filename,
-        "page": page_number,
+        METADATA_DOCUMENT_ID: document_id,
+        METADATA_TEXT: chunk,
+        METADATA_TITLE: metadata.get(METADATA_TITLE,),
+        METADATA_DOCUMENT_TYPE: metadata.get(METADATA_DOCUMENT_TYPE,),
+        METADATA_TAG: metadata.get(METADATA_TAG,),
+        METADATA_SUMMARY: metadata.get(METADATA_SUMMARY,),
+        METADATA_SOURCE: filename,
+        METADATA_PAGE: page_number,
     }
 
 # ==========================================================
@@ -96,13 +120,13 @@ def read_pdf(file: UploadFile) -> tuple[PdfReader, str]:
     saved_file = None
 
     try:
-        logger.info("Saving file: %s", filename)
+        logger.info(FILE_SAVE_LOG, filename)
         saved_file = save_uploaded_file(file)
         validate_saved_file(saved_file)
         return PdfReader(saved_file), saved_file
     except Exception as ex:
         logger.exception(
-            "Failed to read PDF '%s': %s",
+            PDF_READ_FAILED_LOG,
             filename,
             ex,
         )
@@ -114,8 +138,7 @@ def read_pdf(file: UploadFile) -> tuple[PdfReader, str]:
         if saved_file is not None:
             delete_saved_file(saved_file)
 
-        raise PDFProcessingException(
-            f"Unable to process '{filename}'."
+        raise PDFProcessingException(PDF_READ_FAILED_MESSAGE.format(filename),
         ) from ex
 
 def extract_document_text(
@@ -128,7 +151,7 @@ def extract_document_text(
         try:
             page_text = page.extract_text() or ""
         except Exception as ex:
-            logger.warning("Unable to read page %d: %s",page_number,ex,)
+            logger.warning(PAGE_READ_FAILED_LOG,page_number,ex,)
             page_text = ""
         pages.append({
             "page": page_number,
@@ -136,7 +159,7 @@ def extract_document_text(
         })
         document_text.append(page_text)
     full_text = "\n".join(document_text)
-    logger.info("Extracted %d pages.",len(pages),)
+    logger.info(PAGES_EXTRACTED_LOG,len(pages),)
     return full_text, pages
 
 # ==========================================================
@@ -148,14 +171,14 @@ def get_document_metadata(pages: list[Page]) -> Metadata:
         metadata_source = "\n".join(
             page["text"] for page in pages[:3]
         )
-        logger.info("Extracting document metadata.")
+        logger.info(METADATA_EXTRACTION_STARTED_LOG,)
         metadata = extract_document_metadata(metadata_source)
-        logger.info("Metadata extracted successfully.")
+        logger.info(METADATA_EXTRACTION_COMPLETED_LOG,)
         return metadata
     except Exception as ex:
-        logger.exception("Metadata extraction failed: %s",ex,)
+        logger.exception(METADATA_EXTRACTION_FAILED_LOG,ex,)
         raise DocumentProcessingException(
-            "Unable to extract document metadata."
+            DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE,
         ) from ex
     
 def generate_document_id() -> str:
@@ -170,6 +193,7 @@ def build_vectors(
     document_id: str,
 ) -> tuple[list[PointStruct], int]:
     """Generate vectors for all document chunks."""
+
     splitter = get_text_splitter()
     points: list[PointStruct] = []
     total_chunks = 0
@@ -179,7 +203,7 @@ def build_vectors(
             continue
         page_number = page["page"]
         chunks = splitter.split_text(page_text)
-        logger.info("Page %d generated %d chunks.",page_number,len(chunks),)
+        logger.info(PAGE_CHUNK_GENERATION_LOG,page_number,len(chunks),)
         for chunk in chunks:
             points.append(
                 PointStruct(
@@ -195,7 +219,7 @@ def build_vectors(
                 )
             )
             total_chunks += 1
-    logger.info("Generated %d vectors.",total_chunks,)
+    logger.info(GENERATED_VECTORS_LOG,total_chunks,)
     return points, total_chunks
 
 def process_document(
@@ -204,22 +228,16 @@ def process_document(
 ) -> dict[str, Any]:
     """Process a PDF document."""
     try:
-        logger.info(
-            "Processing document: %s",
-            filename,
-        )
-
+        logger.info(DOCUMENT_PROCESSING_STARTED_LOG,filename,)
         document_id = generate_uuid()
-
         full_text, pages = extract_document_text(pdf)
 
         if not full_text.strip():
             raise EmptyDocumentException(
-                "The uploaded PDF contains no readable text."
+                EMPTY_DOCUMENT_TEXT_MESSAGE,
             )
 
         metadata = get_document_metadata(pages)
-
         points, total_chunks = build_vectors(
             pages=pages,
             metadata=metadata,
@@ -228,8 +246,8 @@ def process_document(
         )
 
         logger.info(
-            "Processed %s (%d chunks).",
-            document_id,
+            DOCUMENT_PROCESSED_LOG,
+            filename,
             total_chunks,
         )
 
@@ -249,12 +267,12 @@ def process_document(
 
     except Exception as ex:
         logger.exception(
-            "Document processing failed: %s",
+            DOCUMENT_PROCESSING_FAILED_LOG,
             ex,
         )
 
         raise DocumentProcessingException(
-            f"Failed to process '{filename}'."
+            DOCUMENT_PROCESSING_FAILED_MESSAGE.format(filename,)
         ) from ex
 
 def ingest_documents(
@@ -262,14 +280,14 @@ def ingest_documents(
 ) -> dict[str, Any]:
     """Ingest PDF documents into the Knowledge Base."""
     try:
-        logger.info("Knowledge Base ingestion started.")
+        logger.info( KB_INGESTION_STARTED_LOG,)
 
         documents: list[Metadata] = []
         total_chunks = 0
 
         for file in files:
             logger.info(
-                "Processing file: %s",
+                FILE_PROCESSING_STARTED_LOG,
                 file.filename,
             )
 
@@ -295,35 +313,30 @@ def ingest_documents(
                 del pdf
                 delete_saved_file(saved_file_path)
 
-            save_chunks(document["points"])
-
+            saveChunks(document["points"])
             total_chunks += document["chunks"]
-
             documents.append(
                 {
-                    "document_id": document["document_id"],
-                    "title": document["metadata"].get("title"),
-                    "document_type": document["metadata"].get("document_type"),
-                    "tag": document["metadata"].get("tag"),
-                    "summary": document["metadata"].get("summary"),
-                    "source": file.filename,
-                    "chunks": document["chunks"],
+                    METADATA_TITLE: document["metadata"].get(METADATA_TITLE),
+                    METADATA_DOCUMENT_TYPE: document["metadata"].get(METADATA_DOCUMENT_TYPE),
+                    METADATA_TAG: document["metadata"].get(METADATA_TAG),
+                    METADATA_SUMMARY: document["metadata"].get(METADATA_SUMMARY),
                 }
             )
 
             logger.info(
-                "Successfully processed '%s'.",
+                FILE_PROCESSING_COMPLETED_LOG,
                 file.filename,
             )
 
         logger.info(
-            "Knowledge Base ingestion completed. Documents=%d Chunks=%d",
+            KB_INGESTION_COMPLETED_LOG,
             len(documents),
             total_chunks,
         )
 
         return {
-            "status": "success",
+            "status": SUCCESS_STATUS,
             "documents_processed": len(documents),
             "chunks_inserted": total_chunks,
             "documents": documents,
@@ -338,10 +351,10 @@ def ingest_documents(
 
     except Exception as ex:
         logger.exception(
-            "Knowledge Base ingestion failed: %s",
+            KB_INGESTION_FAILED_LOG,
             ex,
         )
 
         raise PDFProcessingException(
-            "Knowledge Base ingestion failed."
+           KNOWLEDGE_BASE_INGESTION_FAILED_MESSAGE,
         ) from ex

@@ -1,13 +1,15 @@
+from dto.knowledge_base_record_dto import KnowledgeBaseRecordDto
+from configuration.config import (COLLECTION_NAME,SCROLL_LIMIT,)
 from database.qdrant_client_manager import client
-from configuration.config import (
-    COLLECTION_NAME,
-    SCROLL_LIMIT,
-)
-
-from database.qdrant_client_manager import client
-from configuration.config import (
-    COLLECTION_NAME,
-    SCROLL_LIMIT,
+from configuration.constants import (
+    METADATA_DOCUMENT_ID,
+    METADATA_DOCUMENT_TYPE,
+    METADATA_PAGE,
+    METADATA_SOURCE,
+    METADATA_SUMMARY,
+    METADATA_TAG,
+    METADATA_TEXT,
+    METADATA_TITLE,
 )
 
 def print_all_documents() -> None:
@@ -16,26 +18,39 @@ def print_all_documents() -> None:
     the full collection.
     """
     print("\nDOCUMENTS\n")
-    next_offset = None
+
+    nextOffset = None
 
     while True:
-        records, next_offset = client.scroll(
+        records, nextOffset = client.scroll(
             collection_name=COLLECTION_NAME,
             limit=SCROLL_LIMIT,
-            offset=next_offset,
+            offset=nextOffset,
             with_payload=True,
         )
 
         for point in records:
-            payload = point.payload
-            print(f"Title : {payload.get('title')}")
-            print(f"Type : {payload.get('document_type')}")
-            print(f"Tag : {payload.get('tag')}")
-            print(f"Source : {payload.get('source')}")
-            print(f"Page : {payload.get('page')}")
+            documentPayload = point.payload
+
+            record = KnowledgeBaseRecordDto(
+                document_id=documentPayload.get(METADATA_DOCUMENT_ID,),
+                title=documentPayload.get(METADATA_TITLE,),
+                document_type=documentPayload.get(METADATA_DOCUMENT_TYPE,),
+                tag=documentPayload.get(METADATA_TAG,),
+                summary=documentPayload.get(METADATA_SUMMARY,),
+                source=documentPayload.get(METADATA_SOURCE,),
+                page=documentPayload.get(METADATA_PAGE,),
+                text=documentPayload.get(METADATA_TEXT,),
+            )
+
+            print(f"Title : {record.title}")
+            print(f"Type : {record.document_type}")
+            print(f"Tag : {record.tag}")
+            print(f"Source : {record.source}")
+            print(f"Page : {record.page}")
             print("-" * 40)
 
-        if next_offset is None:
+        if nextOffset is None:
             break
 
 if __name__ == "__main__":

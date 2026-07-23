@@ -1,12 +1,12 @@
 from io import BytesIO
 from unittest.mock import patch
 import pytest
-from fastapi import HTTPException
-from fastapi import UploadFile
 from exceptions.validation_exception import (
     EmptyFileException,
     InvalidFileException,
     InvalidTagException,
+    EmptyQueryException,
+    QueryTooLongException,
 )
 from validators.file_validator import (validate_file_size,validate_pdf_file,)
 from validators.query_validator import (validate_query,)
@@ -22,12 +22,12 @@ def test_validate_query_success():
     validate_query("What is Artificial Intelligence?")
 
 def test_validate_query_empty():
-    with pytest.raises(HTTPException):
+    with pytest.raises(EmptyQueryException):
         validate_query("")
 
 def test_validate_query_too_long():
     query = "A" * (MAX_QUERY_LENGTH + 1)
-    with pytest.raises(HTTPException):
+    with pytest.raises(QueryTooLongException):
         validate_query(query)
 
 # ==========================================================

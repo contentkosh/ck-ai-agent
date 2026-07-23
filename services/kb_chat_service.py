@@ -5,20 +5,29 @@
 # to produce context-aware responses.
 # ==========================================================
 
-from typing import Dict, List
+from typing import List
 from dotenv import load_dotenv
-
-from configuration.config import (
-    SEARCH_LIMIT,
-)
-from common.llm_client import get_llm
+from common.custom_exceptions import DatabaseException
 from common.embedding_client import get_embedding_model
 from common.llm_client import get_llm
-
-from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
-from repositories.kb_repository import search_chunks
 from common.logger import logger
-from common.custom_exceptions import DatabaseException
+from dto.response_dto import QueryResponse
+from configuration.config import (SEARCH_LIMIT,)
+from configuration.constants import (
+    ANSWER_NOT_FOUND_MESSAGE,
+    CHAT_SERVICE_ERROR_MESSAGE,
+    CHAT_SERVICE_FAILED_LOG,
+    LLM_INVOCATION_FAILED_LOG,
+    NO_RELEVANT_CHUNKS_LOG,
+    QUERY_RECEIVED_LOG,
+    RETRIEVED_CHUNKS_LOG,
+    TOP_MATCHING_SOURCE_LOG,
+)
+
+from configuration.context import (KNOWLEDGE_BASE_QA_PROMPT,)
+from exceptions.llm_exception import (LLMResponseException,)
+from repositories.kb_repository import (searchChunks,)
+
 # ==========================================================
 # Load Environment Variables
 # ==========================================================
@@ -29,16 +38,18 @@ load_dotenv()
 # Build Context
 # ==========================================================
 
-def build_context(results: List) -> str:
+def build_context(
+    searchResults: List,
+) -> str:
     """
     Combine retrieved chunks into a single context string.
     """
     return "\n\n".join(
-        result.payload.get(
+        searchResult.payload.get(
             "text",
-            ""
+            "",
         )
-        for result in results
+        for searchResult in searchResults
     )
 
 # ==========================================================
@@ -50,7 +61,9 @@ def build_prompt(
     context: str,
     query: str,
 ) -> str:
-    """Build the LLM prompt."""
+    """
+    Build the LLM prompt.
+    """
     return KNOWLEDGE_BASE_QA_PROMPT.format(
         context=context,
         query=query,
@@ -60,80 +73,90 @@ def build_prompt(
 # Ask Question
 # ==========================================================
 
-def ask_question(query: str) -> Dict:
+def ask_question(
+    query: str,
+) -> QueryResponse:
     """
     Search the Knowledge Base and generate an answer.
     """
     try:
-        logger.info("Received query: %s",query)
+        logger.info(QUERY_RECEIVED_LOG,query,)
 
         # --------------------------------------------------
         # Generate Query Embedding
         # --------------------------------------------------
-        query_embedding = (
+
+        queryEmbedding = (
             get_embedding_model()
             .encode(query)
             .tolist()
         )
+
         # --------------------------------------------------
         # Search Knowledge Base
         # --------------------------------------------------
 
-        results = search_chunks(
-            query_embedding=query_embedding,
+        searchResults = searchChunks(
+            query_embedding=queryEmbedding,
             limit=SEARCH_LIMIT,
         )
-        if not results:
-            logger.warning("No relevant chunks found.")
-            return {
-                "answer": "Answer not found in the Knowledge Base.",
-                "document_id": None,
-                "title": None,
-                "document_type": None,
-                "tag": None,
-                "summary": None,
-                "source": None,
-                "page": None 
-            }
-        logger.info("Retrieved %d chunk(s).",len(results),)
+
+        if not searchResults:
+            logger.warning(NO_RELEVANT_CHUNKS_LOG,)
+
+            return QueryResponse(
+                answer=ANSWER_NOT_FOUND_MESSAGE,
+                document_id=None,
+                title=None,
+                document_type=None,
+                tag=None,
+                summary=None,
+                source=None,
+                page=None,
+            )
+
+        logger.info(RETRIEVED_CHUNKS_LOG,len(searchResults),)
 
         # --------------------------------------------------
         # Build Context
         # --------------------------------------------------
 
-        context = build_context(
-            results
+        contextText = build_context(
+            searchResults,
         )
-        payload = results[0].payload
-        logger.info("Top matching source: %s",payload.get("source"),)
+        documentPayload = searchResults[0].payload
+        logger.info(TOP_MATCHING_SOURCE_LOG,documentPayload.get("source"),)
+
         # --------------------------------------------------
         # Generate Answer
         # --------------------------------------------------
 
         prompt = build_prompt(
-            context=context,
-            query=query
+            context=contextText,
+            query=query,
         )
-        logger.info("Sending prompt to LLM.")
-        response = get_llm().invoke(
-            prompt
-        )
-        logger.info("LLM response generated successfully.")
+
+        try:
+            llmResponse = get_llm().invoke(
+                prompt,
+            )
+
+        except Exception as ex:
+            logger.exception(LLM_INVOCATION_FAILED_LOG,)
+            raise LLMResponseException() from ex
 
         # --------------------------------------------------
         # Return Response
         # --------------------------------------------------
 
-        return {
-            "answer": response.content.strip(),
-            "document_id": payload.get("document_id"),
-            "title": payload.get("title"),
-            "document_type": payload.get("document_type"),
-            "tag": payload.get("tag"),
-            "summary": payload.get("summary"),
-            "source": payload.get("source"),
-            "page": payload.get("page")
-        }
+        return QueryResponse.from_payload(
+            answer=llmResponse.content.strip(),
+            payload=documentPayload,
+        )
+
+    except LLMResponseException:
+        raise
+
     except Exception as ex:
-        logger.exception("Chat service failed: %s",ex,)
-        raise DatabaseException("Unable to process user query.") from ex
+        logger.exception(CHAT_SERVICE_FAILED_LOG,ex,)
+        raise DatabaseException(CHAT_SERVICE_ERROR_MESSAGE,) from ex

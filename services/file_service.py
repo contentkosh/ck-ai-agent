@@ -2,9 +2,9 @@ from common.custom_exceptions import (
     NotFoundException,
 )
 from repositories.kb_repository import (
-    delete_all_documents,
-    delete_document,
-    get_uploaded_files,
+    deleteAllDocuments,
+    deleteDocument,
+    getUploadedFiles,
 )
 
 # ==========================================================
@@ -15,8 +15,7 @@ def get_uploaded_documents():
     """
     Retrieve uploaded documents from the repository.
     """
-    return get_uploaded_files()
-
+    return getUploadedFiles()
 
 # ==========================================================
 # Delete Uploaded Document
@@ -28,7 +27,7 @@ def delete_uploaded_document(
     """
     Delete a single uploaded document.
     """
-    deleted = delete_document(document_id)
+    deleted = deleteDocument(document_id)
 
     if not deleted:
         raise NotFoundException(
@@ -43,4 +42,4 @@ def clear_knowledge_base():
     """
     Remove all uploaded documents.
     """
-    delete_all_documents()
+    deleteAllDocuments()
