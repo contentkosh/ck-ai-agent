@@ -280,3 +280,80 @@ SERVICE_RUNNING_STATUS = "Running"
 
 SUCCESS_STATUS = "success"
 METADATA_EXTRACTION_FAILED_LOG = "Metadata extraction failed: %s"
+
+# ==========================================================
+# File Validation Messages
+# ==========================================================
+
+NO_FILENAME_ERROR = (
+    "Uploaded file has no filename."
+)
+ONLY_PDF_ALLOWED_ERROR = (
+    "Only PDF files are allowed."
+)
+INVALID_FILE_TYPE_ERROR = (
+    "Invalid file type. Only PDF files are allowed."
+)
+EMPTY_UPLOADED_FILE_ERROR = (
+    "Uploaded file is empty."
+)
+INVALID_PDF_SIGNATURE_ERROR = (
+    "File content does not match a valid PDF."
+)
+FILE_SIZE_EXCEEDED_ERROR = (
+    "File size exceeds the maximum allowed limit of {} MB."
+)
+UPLOADED_FILE_NOT_FOUND_ERROR = (
+    "Uploaded file could not be found."
+)
+BYTES_PER_MB = 1024 * 1024
+
+# ==========================================================
+# Tag Validation Messages
+# ==========================================================
+
+EMPTY_TAG_ERROR = "Tag cannot be empty."
+
+TAG_LENGTH_ERROR = (
+    "Tag exceeds maximum length of {} characters."
+)
+
+# ==========================================================
+# Upload Validation Messages
+# ==========================================================
+
+NO_FILES_UPLOADED_ERROR = "No files were uploaded."
+
+# ==========================================================
+# File API Response Messages
+# ==========================================================
+
+SUCCESS_STATUS = "success"
+
+DOCUMENT_DELETED_SUCCESS = (
+    "Document deleted successfully."
+)
+
+KNOWLEDGE_BASE_CLEARED_SUCCESS = (
+    "Knowledge Base cleared successfully."
+)
+
+# ==========================================================
+# Knowledge Base API Logs
+# ==========================================================
+
+FETCH_KB_REQUEST_LOG = "[%s] Fetching Knowledge Base."
+
+FETCH_KB_SUCCESS_LOG = "[%s] Retrieved %d record(s)."
+
+QUERY_REQUEST_LOG = "[%s] Question received."
+
+QUERY_SUCCESS_LOG = "[%s] Question answered successfully."
+
+# ==========================================================
+# Upload API Logs
+# ==========================================================
+
+UPLOAD_REQUEST_LOG = "[%s] Upload request received."
+
+UPLOAD_SUCCESS_LOG = "[%s] Uploaded %d document(s) successfully."

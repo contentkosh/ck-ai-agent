@@ -6,54 +6,48 @@
 # ==========================================================
 
 from pathlib import Path
+
 from configuration.config import MAX_FILE_SIZE
 from configuration.constants import (
+    BYTES_PER_MB,
+    EMPTY_UPLOADED_FILE_ERROR,
+    FILE_SIZE_EXCEEDED_ERROR,
+    INVALID_FILE_TYPE_ERROR,
+    INVALID_PDF_SIGNATURE_ERROR,
+    NO_FILENAME_ERROR,
+    ONLY_PDF_ALLOWED_ERROR,
     PDF_EXTENSION,
-    SUPPORTED_CONTENT_TYPE,
     PDF_MAGIC_BYTES,
+    SUPPORTED_CONTENT_TYPE,
+    UPLOADED_FILE_NOT_FOUND_ERROR,
 )
 from exceptions.validation_exception import (
     EmptyFileException,
     InvalidFileException,
 )
 
+
 def validate_pdf_file(file) -> None:
     if file is None:
         raise EmptyFileException()
 
-    filename = (
-        getattr(file, "filename", None)
-        or getattr(file, "name", None)
-    )
+    filename = getattr(file, "filename", None) or getattr(file, "name", None)
     if not filename:
-        raise InvalidFileException(
-            "Uploaded file has no filename."
-        )
-    extension = Path(filename).suffix.lower()
-    if extension != PDF_EXTENSION:
-        raise InvalidFileException(
-            "Only PDF files are allowed."
-        )
-    content_type = getattr(
-        file,
-        "content_type",
-        None,
-    )
-    if (
-        content_type
-        and content_type != SUPPORTED_CONTENT_TYPE
-    ):
-        raise InvalidFileException(
-            "Invalid file type. Only PDF files are allowed."
-        )
+        raise InvalidFileException(NO_FILENAME_ERROR)
+
+    if Path(filename).suffix.lower() != PDF_EXTENSION:
+        raise InvalidFileException(ONLY_PDF_ALLOWED_ERROR)
+
+    content_type = getattr(file, "content_type", None)
+    if content_type and content_type != SUPPORTED_CONTENT_TYPE:
+        raise InvalidFileException(INVALID_FILE_TYPE_ERROR)
 
     file.file.seek(0, 2)
     file_size = file.file.tell()
     file.file.seek(0)
+
     if file_size == 0:
-        raise EmptyFileException(
-            "Uploaded file is empty."
-        )
+        raise EmptyFileException(EMPTY_UPLOADED_FILE_ERROR)
 
     validate_file_size(file_size)
     validate_pdf_signature(file)
@@ -64,29 +58,18 @@ def validate_pdf_signature(file) -> None:
     file.file.seek(0)
 
     if header != PDF_MAGIC_BYTES:
-        raise InvalidFileException(
-            "File content does not match a valid PDF."
-        )
+        raise InvalidFileException(INVALID_PDF_SIGNATURE_ERROR)
 
-def validate_file_size(
-    file_size: int,
-) -> None:
+
+def validate_file_size(file_size: int) -> None:
     if file_size > MAX_FILE_SIZE:
-        raise InvalidFileException(
-            f"File size exceeds the maximum allowed "
-            f"limit of {MAX_FILE_SIZE // (1024 * 1024)} MB."
-        )
+        raise InvalidFileException(FILE_SIZE_EXCEEDED_ERROR.format(MAX_FILE_SIZE // BYTES_PER_MB))
 
 
-def validate_saved_file(
-    file_path: str,
-) -> None:
+def validate_saved_file(file_path: str) -> None:
     path = Path(file_path)
 
     if not path.exists():
-        raise InvalidFileException(
-            "Uploaded file could not be found."
-        )
-    validate_file_size(
-        path.stat().st_size
-    )
+        raise InvalidFileException(UPLOADED_FILE_NOT_FOUND_ERROR)
+
+    validate_file_size(path.stat().st_size)

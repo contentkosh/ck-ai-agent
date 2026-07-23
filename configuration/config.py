@@ -87,3 +87,14 @@ MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE",DEFAULT_MAX_FILE_SIZE,))
 LOG_FILE_PATH = os.getenv("LOG_FILE_PATH", "logs/application.log")
 LOG_MAX_BYTES = int(os.getenv("LOG_MAX_BYTES", 10 * 1024 * 1024))  # 10 MB
 LOG_BACKUP_COUNT = int(os.getenv("LOG_BACKUP_COUNT", 5))
+
+# ==========================================================
+# TAG VALIDATION
+# ==========================================================
+
+MAX_TAG_LENGTH = int(
+    os.getenv(
+        "MAX_TAG_LENGTH",
+        100,
+    )
+)

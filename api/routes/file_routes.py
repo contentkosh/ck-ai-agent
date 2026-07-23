@@ -11,7 +11,11 @@ from configuration.constants import (
     DELETE_DOCUMENT_SUCCESS_LOG,
     CLEAR_KB_REQUEST_LOG,
     CLEAR_KB_SUCCESS_LOG,
+    SUCCESS_STATUS,
+    DOCUMENT_DELETED_SUCCESS,
+    KNOWLEDGE_BASE_CLEARED_SUCCESS,
 )
+
 from configuration.context import RequestContext
 from dto.file_response_dto import (
     ClearKnowledgeBaseResponse,
@@ -29,7 +33,10 @@ router = APIRouter()
 # Get Uploaded Documents
 # ==========================================================
 
-@router.get(DOCUMENTS_ROUTE,response_model=UploadedDocumentsResponse,)
+@router.get(
+    DOCUMENTS_ROUTE,
+    response_model=UploadedDocumentsResponse,
+)
 def get_uploaded_documents(
     context: RequestContext = Depends(get_request_context),
 ):
@@ -62,8 +69,8 @@ def delete_uploaded_document(
     logger.info(DELETE_DOCUMENT_SUCCESS_LOG,context.request_id,)
     return DeleteDocumentResponse(
         request_id=context.request_id,
-        status="success",
-        message="Document deleted successfully.",
+        status=SUCCESS_STATUS,
+        message=DOCUMENT_DELETED_SUCCESS,
         document_id=document_id,
     )
 
@@ -83,6 +90,6 @@ def clear_knowledge_base(
     logger.info(CLEAR_KB_SUCCESS_LOG,context.request_id,)
     return ClearKnowledgeBaseResponse(
         request_id=context.request_id,
-        status="success",
-        message="Knowledge Base cleared successfully.",
+        status=SUCCESS_STATUS,
+        message=KNOWLEDGE_BASE_CLEARED_SUCCESS,
     )

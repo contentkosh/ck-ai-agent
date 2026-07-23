@@ -5,13 +5,19 @@
 # Knowledge Base operations.
 # ==========================================================
 
+from configuration.config import MAX_TAG_LENGTH
+from configuration.constants import (
+    EMPTY_TAG_ERROR,
+    TAG_LENGTH_ERROR,
+)
 from exceptions.validation_exception import InvalidTagException
 
 def validate_tag(tag: str | None) -> None:
-    # Tag is optional for GET /llm/kb
     if tag is None:
         return
+    
     if not tag.strip():
-        raise InvalidTagException("Tag cannot be empty.")
-    if len(tag) > 100:
-        raise InvalidTagException("Tag exceeds maximum length.")
+        raise InvalidTagException(EMPTY_TAG_ERROR)
+
+    if len(tag) > MAX_TAG_LENGTH:
+        raise InvalidTagException(TAG_LENGTH_ERROR.format(MAX_TAG_LENGTH))
