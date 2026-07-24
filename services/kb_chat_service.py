@@ -94,7 +94,7 @@ def ask_question(
         # --------------------------------------------------
 
         searchResults = searchChunks(
-            query_embedding=queryEmbedding,
+            queryEmbedding=queryEmbedding,
             limit=SEARCH_LIMIT,
         )
 
@@ -157,7 +157,5 @@ def ask_question(
         raise
 
     except Exception as exception:
-        logger.exception(CHAT_SERVICE_FAILED_LOG,exception)
-        raise DatabaseException(
-            CHAT_SERVICE_ERROR_MESSAGE,
-        ) from exception
+        logger.exception(CHAT_SERVICE_FAILED_LOG,exception,)
+        raise DatabaseException(CHAT_SERVICE_ERROR_MESSAGE,) from exception

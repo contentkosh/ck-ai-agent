@@ -174,7 +174,8 @@ def get_document_metadata(pages: list[Page]) -> Metadata:
         logger.info(METADATA_EXTRACTION_STARTED_LOG,)
         metadata = extract_document_metadata(metadata_source)
         logger.info(METADATA_EXTRACTION_COMPLETED_LOG,)
-        return metadata
+        return metadata.model_dump()
+    
     except Exception as ex:
         logger.exception(METADATA_EXTRACTION_FAILED_LOG,ex,)
         raise DocumentProcessingException(
@@ -317,6 +318,7 @@ def ingest_documents(
                     METADATA_DOCUMENT_TYPE: document["metadata"].get(METADATA_DOCUMENT_TYPE),
                     METADATA_TAG: document["metadata"].get(METADATA_TAG),
                     METADATA_SUMMARY: document["metadata"].get(METADATA_SUMMARY),
+                    METADATA_SOURCE: file.filename,
                 }
             )
 

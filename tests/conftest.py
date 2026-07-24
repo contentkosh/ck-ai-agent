@@ -16,8 +16,8 @@ def client():
          patch("api.dependencies.AUTH_ENABLED", True), \
          patch("api.dependencies.API_KEY", TEST_API_KEY):
         from api.app import app
-        with TestClient(app) as test_client:
-            yield test_client
+        with TestClient(app) as testClient:
+            yield testClient
 
 @pytest.fixture
 def auth_headers():

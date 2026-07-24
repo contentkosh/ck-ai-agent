@@ -53,7 +53,7 @@ class FakeUploadFile:
         self.filename = filename
         self.file = BytesIO(content)
 
-@patch("services.kb_ingestion_service.save_chunks")
+@patch("services.kb_ingestion_service.saveChunks")
 @patch("services.document_metadata_service.get_llm")
 @patch("services.kb_ingestion_service.get_embedding_model")
 def test_ingest_documents_end_to_end(
@@ -71,11 +71,9 @@ def test_ingest_documents_end_to_end(
     mocked, since those require live infrastructure.
     """
     monkeypatch.setattr("common.file_utils.UPLOAD_FOLDER", str(tmp_path))
-
     fake_embedding_model = MagicMock()
     fake_embedding_model.encode.return_value.tolist.return_value = [0.1, 0.2, 0.3]
     mock_get_embedding_model.return_value = fake_embedding_model
-
     fake_llm = MagicMock()
     fake_response = MagicMock()
     fake_response.content = (
@@ -86,16 +84,15 @@ def test_ingest_documents_end_to_end(
     )
     fake_llm.invoke.return_value = fake_response
     mock_get_llm.return_value = fake_llm
-
     pdf_bytes = _build_minimal_pdf_bytes("Hello Knowledge Base integration test")
     upload_file = FakeUploadFile(filename="integration_sample.pdf", content=pdf_bytes)
 
     result = ingest_documents([upload_file])
-
     assert result["status"] == "success"
     assert result["documents_processed"] == 1
     assert result["chunks_inserted"] >= 1
 
+    print(result)
     document = result["documents"][0]
     assert document["title"] == "Integration Test Doc"
     assert document["tag"] == "integration_test"
@@ -111,7 +108,7 @@ def test_ingest_documents_end_to_end(
     remaining_files = list(Path(tmp_path).glob("*"))
     assert remaining_files == []
 
-@patch("services.kb_ingestion_service.save_chunks")
+@patch("services.kb_ingestion_service.saveChunks")
 @patch("services.document_metadata_service.get_llm")
 @patch("services.kb_ingestion_service.get_embedding_model")
 def test_ingest_documents_end_to_end_cleans_up_on_metadata_failure(
@@ -127,9 +124,7 @@ def test_ingest_documents_end_to_end_cleans_up_on_metadata_failure(
     still cleaned up from disk.
     """
     from exceptions.document_exception import DocumentProcessingException
-
     monkeypatch.setattr("common.file_utils.UPLOAD_FOLDER", str(tmp_path))
-
     fake_embedding_model = MagicMock()
     fake_embedding_model.encode.return_value.tolist.return_value = [0.1, 0.2, 0.3]
     mock_get_embedding_model.return_value = fake_embedding_model
@@ -147,6 +142,5 @@ def test_ingest_documents_end_to_end_cleans_up_on_metadata_failure(
         ingest_documents([upload_file])
 
     mock_save_chunks.assert_not_called()
-
     remaining_files = list(Path(tmp_path).glob("*"))
     assert remaining_files == []

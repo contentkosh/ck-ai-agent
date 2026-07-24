@@ -128,7 +128,12 @@ def searchChunks(
     (Qdrant cosine similarity) are excluded server-side.
     """
     try:
-        searchResult = client.query_points(...)
+        searchResult = client.query_points(
+            collection_name=COLLECTION_NAME,
+            query=queryEmbedding,
+            limit=limit,
+            score_threshold=scoreThreshold,
+        )
         logger.info(SEMANTIC_SEARCH_LOG,len(searchResult.points))
         return searchResult.points
     except Exception as ex:

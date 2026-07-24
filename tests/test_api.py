@@ -24,13 +24,13 @@ def test_health_check(client):
 
 @patch("api.routes.kb_routes.get_knowledge_base_records")
 def test_get_knowledge_base(
-    mock_get_knowledge_base_records,
+    mockGetKnowledgeBaseRecords,
     client,
 ):
     """
     Verify fetching all Knowledge Base records.
     """
-    mock_get_knowledge_base_records.return_value = [
+    mockGetKnowledgeBaseRecords.return_value = [
         {
             "title": "AI Notes",
             "tag": "ai",
@@ -50,13 +50,13 @@ def test_get_knowledge_base(
 
 @patch("api.routes.kb_routes.ask_question")
 def test_query_knowledge_base(
-    mock_ask_question,
+    mockAskQuestion,
     client,
 ):
     """
     Verify that the Knowledge Base returns an answer.
     """
-    mock_ask_question.return_value = {
+    mockAskQuestion.return_value = {
         "answer": "Artificial Intelligence is the simulation of human intelligence.",
         "document_id": "123",
         "title": "AI Notes",
@@ -89,14 +89,14 @@ def test_query_knowledge_base(
 
 @patch("api.routes.upload_routes.ingest_documents")
 def test_upload_document(
-    mock_ingest_documents,
+    mockIngestDocuments,
     client,
     auth_headers,
 ):
     """
     Verify document upload.
     """
-    mock_ingest_documents.return_value = (
+    mockIngestDocuments.return_value = (
         "Document uploaded successfully."
     )
     response = client.post(
@@ -149,13 +149,13 @@ def test_upload_document_rejected_without_api_key(
 
 @patch("api.routes.file_routes.get_uploaded_documents_service")
 def test_get_uploaded_documents(
-    mock_get_uploaded_documents_service,
+    mockGetUploadedDocumentsService,
     client,
 ):
     """
     Verify uploaded documents retrieval.
     """
-    mock_get_uploaded_documents_service.return_value = [
+    mockGetUploadedDocumentsService.return_value = [
         {
             "document_id": "123",
             "title": "AI Notes",
@@ -175,7 +175,7 @@ def test_get_uploaded_documents(
 
 @patch("api.routes.file_routes.delete_document_service")
 def test_delete_document(
-    mock_delete_document_service,
+    mockDeleteDocumentService,
     client,
     auth_headers,
 ):
@@ -189,7 +189,7 @@ def test_delete_document(
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert data["status"] == "success"
-    mock_delete_document_service.assert_called_once_with(
+    mockDeleteDocumentService.assert_called_once_with(
         "123",
     )
 
@@ -210,7 +210,7 @@ def test_delete_document_rejected_without_api_key(
 
 @patch("api.routes.file_routes.clear_kb_service")
 def test_clear_knowledge_base(
-    mock_clear_kb_service,
+    mockClearKbService,
     client,
     auth_headers,
 ):
@@ -224,7 +224,7 @@ def test_clear_knowledge_base(
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert data["status"] == "success"
-    mock_clear_kb_service.assert_called_once()
+    mockClearKbService.assert_called_once()
 
 def test_clear_knowledge_base_rejected_without_api_key(
     client,

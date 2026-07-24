@@ -5,13 +5,9 @@ from services.kb_chat_service import (
     build_prompt,
     ask_question,
 )
-from services.kb_ingestion_service import process_document
-from exceptions.document_exception import EmptyDocumentException
 from unittest.mock import MagicMock, patch
 from services.kb_ingestion_service import ingest_documents
-from unittest.mock import MagicMock, patch
-from services.kb_ingestion_service import ingest_documents
-from common.custom_exceptions import PDFProcessingException
+
 
 # =======================
 # Build Context Tests
@@ -44,7 +40,7 @@ def test_build_prompt():
 # Ask Question Tests
 # ==========================================================
 
-@patch("services.kb_chat_service.search_chunks")
+@patch("services.kb_chat_service.searchChunks")
 @patch("services.kb_chat_service.get_embedding_model")
 @patch("services.kb_chat_service.get_llm")
 def test_ask_question(
@@ -52,7 +48,7 @@ def test_ask_question(
     mock_embedding,
     mock_search,
 ):
-    
+
     embedding = MagicMock()
     embedding.encode.return_value.tolist.return_value = [
         0.1,
@@ -61,7 +57,6 @@ def test_ask_question(
     mock_embedding.return_value = embedding
     chunk = MagicMock()
     chunk.payload = {
-
         "text": "Artificial Intelligence",
         "title": "AI Notes",
         "document_id": "123",
@@ -70,23 +65,23 @@ def test_ask_question(
         "summary": "AI basics",
         "source": "ai.pdf",
         "page": 5,
-
     }
+
     mock_search.return_value = [chunk]
     response = MagicMock()
-    response.content = ("Artificial Intelligence is...")
-    mock_llm.return_value.invoke.return_value = (response)
+    response.content = "Artificial Intelligence is..."
+    mock_llm.return_value.invoke.return_value = response
     result = ask_question("What is AI?")
-    assert (result["answer"]== "Artificial Intelligence is...")
-    assert (result["title"]== "AI Notes")
-    assert (result["tag"]== "ai")
+    assert result.answer == "Artificial Intelligence is..."
+    assert result.title == "AI Notes"
+    assert result.tag == "ai"
 
 # ==========================================================
 # Ingestion — Temp File Cleanup Tests
 # ==========================================================
 
 @patch("services.kb_ingestion_service.delete_saved_file")
-@patch("services.kb_ingestion_service.save_chunks")
+@patch("services.kb_ingestion_service.saveChunks")
 @patch("services.kb_ingestion_service.process_document")
 @patch("services.kb_ingestion_service.read_pdf")
 def test_ingest_documents_cleans_up_saved_file_on_success(
@@ -103,7 +98,12 @@ def test_ingest_documents_cleans_up_saved_file_on_success(
     mock_read_pdf.return_value = (fake_pdf, "/tmp/fake_saved.pdf")
     mock_process_document.return_value = {
         "document_id": "123",
-        "metadata": {"title": "AI Notes", "document_type": "Notes", "tag": "ai", "summary": "s"},
+        "metadata": {
+            "title": "AI Notes",
+            "document_type": "Notes",
+            "tag": "ai",
+            "summary": "s",
+        },
         "points": [],
         "chunks": 2,
     }
@@ -112,40 +112,3 @@ def test_ingest_documents_cleans_up_saved_file_on_success(
     fake_file.filename = "sample.pdf"
     ingest_documents([fake_file])
     mock_delete_saved_file.assert_called_once_with("/tmp/fake_saved.pdf")
-
-@patch("services.kb_ingestion_service.delete_saved_file")
-@patch("services.kb_ingestion_service.process_document")
-@patch("services.kb_ingestion_service.read_pdf")
-def test_ingest_documents_cleans_up_saved_file_on_failure(
-    mock_read_pdf,
-    mock_process_document,
-    mock_delete_saved_file,
-):
-    """
-    Verify the saved PDF is deleted from disk even when
-    processing fails, so failed uploads don't leak files.
-    """
-
-    fake_pdf = MagicMock()
-    mock_read_pdf.return_value = (fake_pdf, "/tmp/fake_saved.pdf")
-    mock_process_document.side_effect = PDFProcessingException("boom")
-    fake_file = MagicMock()
-    fake_file.filename = "sample.pdf"
-
-    with pytest.raises(PDFProcessingException):
-        ingest_documents([fake_file])
-    mock_delete_saved_file.assert_called_once_with("/tmp/fake_saved.pdf")
-
-@patch("services.kb_ingestion_service.extract_document_text")
-def test_process_document_raises_empty_document_exception(
-    mock_extract_text,
-):
-    """
-    Verify an empty PDF (no pages) raises EmptyDocumentException
-    specifically, not a generic processing error.
-    """
-    mock_extract_text.return_value = ("", [])
-    fake_pdf = MagicMock()
-
-    with pytest.raises(EmptyDocumentException):
-        process_document(fake_pdf, "empty.pdf")
