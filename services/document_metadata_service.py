@@ -6,32 +6,28 @@
 
 import json
 import re
-from typing import Any
 from dotenv import load_dotenv
 from common.llm_client import get_llm
 from common.logger import logger
-from dto.document_metadata_dto import DocumentMetadataDto
-from configuration.config import (METADATA_EXTRACTION_TEXT_LIMIT,)
+from configuration.config import (
+    METADATA_EXTRACTION_TEXT_LIMIT,
+)
 from configuration.constants import (
     EMPTY_DOCUMENT_TEXT_ERROR,
     INVALID_METADATA_JSON_ERROR,
-    METADATA_EXTRACTION_FAILED_ERROR,
-    MARKDOWN_JSON_REGEX,
     LLM_INVOCATION_FAILED_LOG,
-    METADATA_EXTRACTION_STARTED_LOG,
+    MARKDOWN_JSON_REGEX,
     METADATA_EXTRACTION_COMPLETED_LOG,
+    METADATA_EXTRACTION_FAILED_ERROR,
+    METADATA_EXTRACTION_STARTED_LOG,
 )
-
-from configuration.context import (DOCUMENT_METADATA_EXTRACTION_PROMPT,)
-from exceptions.llm_exception import (
-    LLMResponseException,
-)
-
+from configuration.context import (DOCUMENT_METADATA_EXTRACTION_PROMPT)
+from dto.document_metadata_dto import (DocumentMetadataDto)
+from exceptions.llm_exception import (LLMResponseException,)
 from exceptions.metadata_exception import (
     InvalidMetadataException,
     MetadataExtractionException,
 )
-
 load_dotenv()
 
 # ==========================================================
@@ -41,49 +37,40 @@ load_dotenv()
 def extract_document_metadata(
     text: str,
 ) -> DocumentMetadataDto:
-    
     """
     Extract document metadata using the configured LLM.
     """
     try:
         if not text.strip():
             raise InvalidMetadataException(EMPTY_DOCUMENT_TEXT_ERROR,)
-
-        logger.info(METADATA_EXTRACTION_STARTED_LOG,)
+        logger.info(METADATA_EXTRACTION_STARTED_LOG)
         prompt = DOCUMENT_METADATA_EXTRACTION_PROMPT.format(
             text=text[:METADATA_EXTRACTION_TEXT_LIMIT],
         )
-
         try:
-            llmResponse = get_llm().invoke(
-                prompt,
-            )
-
-        except Exception as ex:
+            llmResponse = get_llm().invoke(prompt)
+        except Exception as exception:
             logger.exception(LLM_INVOCATION_FAILED_LOG,)
-            raise LLMResponseException() from ex
-
+            raise LLMResponseException() from exception
         responseContent = re.sub(
             MARKDOWN_JSON_REGEX,
             "",
             llmResponse.content.strip(),
             flags=re.MULTILINE,
         ).strip()
-
         documentMetadata = json.loads(responseContent,)
         logger.info(METADATA_EXTRACTION_COMPLETED_LOG,)
-        DocumentMetadataDto(**documentMetadata)
-
-    except json.JSONDecodeError as ex:
+        return DocumentMetadataDto(
+            **documentMetadata,
+        )
+    except json.JSONDecodeError as exception:
         logger.exception(INVALID_METADATA_JSON_ERROR,)
-        raise InvalidMetadataException(INVALID_METADATA_JSON_ERROR,) from ex
-
+        raise InvalidMetadataException(INVALID_METADATA_JSON_ERROR,) from exception
     except (
         InvalidMetadataException,
         LLMResponseException,
     ):
         raise
-
-    except Exception as ex:
+    except Exception as exception:
         logger.exception(METADATA_EXTRACTION_FAILED_ERROR,)
-        raise MetadataExtractionException(METADATA_EXTRACTION_FAILED_ERROR,) from ex
+        raise MetadataExtractionException(METADATA_EXTRACTION_FAILED_ERROR,) from exception

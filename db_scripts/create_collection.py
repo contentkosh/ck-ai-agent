@@ -1,18 +1,29 @@
-from qdrant_client.models import Distance, VectorParams
+from qdrant_client.models import (
+    Distance,
+    VectorParams,
+)
+from common.logger import logger
+from configuration.config import (
+    COLLECTION_NAME,
+    EMBEDDING_DIMENSION,
+)
+from configuration.constants import (
+    COLLECTION_ALREADY_EXISTS_SCRIPT_LOG,
+    COLLECTION_CREATED_SUCCESS_LOG,
+    COLLECTION_CREATION_FAILED_LOG,
+)
 from database.qdrant_client_manager import client
-from configuration.config import (COLLECTION_NAME,EMBEDDING_DIMENSION,)
 
 def create_collection_if_missing() -> None:
     """
     Create the Qdrant collection if it does not already exist.
     """
     collections = client.get_collections()
-    existing = [
+    existingCollections = [
         collection.name
         for collection in collections.collections
     ]
-
-    if COLLECTION_NAME not in existing:
+    if COLLECTION_NAME not in existingCollections:
         client.create_collection(
             collection_name=COLLECTION_NAME,
             vectors_config=VectorParams(
@@ -20,12 +31,12 @@ def create_collection_if_missing() -> None:
                 distance=Distance.COSINE,
             ),
         )
-        print("Collection created successfully.")
+        logger.info(COLLECTION_CREATED_SUCCESS_LOG)
     else:
-        print("Collection already exists.")
-
+        logger.info(COLLECTION_ALREADY_EXISTS_SCRIPT_LOG)
 if __name__ == "__main__":
     try:
         create_collection_if_missing()
-    except Exception as e:
-        print(e)
+
+    except Exception as exception:
+        logger.exception(COLLECTION_CREATION_FAILED_LOG)

@@ -159,7 +159,7 @@ def extract_document_text(
         })
         document_text.append(page_text)
     full_text = "\n".join(document_text)
-    logger.info(PAGES_EXTRACTED_LOG,len(pages),)
+    logger.info(PAGES_EXTRACTED_LOG,len(pages))
     return full_text, pages
 
 # ==========================================================
@@ -180,10 +180,6 @@ def get_document_metadata(pages: list[Page]) -> Metadata:
         raise DocumentProcessingException(
             DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE,
         ) from ex
-    
-def generate_document_id() -> str:
-    """Generate a unique document ID."""
-    return generate_uuid()
 
 def build_vectors(
     *,
@@ -280,7 +276,7 @@ def ingest_documents(
 ) -> dict[str, Any]:
     """Ingest PDF documents into the Knowledge Base."""
     try:
-        logger.info( KB_INGESTION_STARTED_LOG,)
+        logger.info(KB_INGESTION_STARTED_LOG,)
 
         documents: list[Metadata] = []
         total_chunks = 0

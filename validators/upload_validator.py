@@ -14,6 +14,5 @@ from validators.file_validator import validate_pdf_file
 def validate_upload(files: list[UploadFile]) -> None:
     if not files:
         raise EmptyFileException(NO_FILES_UPLOADED_ERROR)
-
     for file in files:
         validate_pdf_file(file)

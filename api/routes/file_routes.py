@@ -37,21 +37,25 @@ router = APIRouter()
     DOCUMENTS_ROUTE,
     response_model=UploadedDocumentsResponse,
 )
+
 def get_uploaded_documents(
     context: RequestContext = Depends(get_request_context),
 ):
     """
     Retrieve all uploaded documents.
     """
-    logger.info(FETCH_UPLOADED_DOCUMENTS_LOG,context.request_id,)
-    documents = get_uploaded_documents_service()
-    logger.info(FETCH_UPLOADED_DOCUMENTS_SUCCESS_LOG,context.request_id,len(documents),)
+    logger.info(FETCH_UPLOADED_DOCUMENTS_LOG, context.request_id)
+    uploadedDocuments = get_uploaded_documents_service()
+    logger.info(
+        FETCH_UPLOADED_DOCUMENTS_SUCCESS_LOG,
+        context.request_id,
+        len(uploadedDocuments),
+    )
     return UploadedDocumentsResponse(
         request_id=context.request_id,
-        total_documents=len(documents),
-        documents=documents,
+        total_documents=len(uploadedDocuments),
+        documents=uploadedDocuments,
     )
-
 # ==========================================================
 # Delete Uploaded Document
 # ==========================================================

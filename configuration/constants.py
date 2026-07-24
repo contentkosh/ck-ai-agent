@@ -343,11 +343,8 @@ KNOWLEDGE_BASE_CLEARED_SUCCESS = (
 # ==========================================================
 
 FETCH_KB_REQUEST_LOG = "[%s] Fetching Knowledge Base."
-
 FETCH_KB_SUCCESS_LOG = "[%s] Retrieved %d record(s)."
-
 QUERY_REQUEST_LOG = "[%s] Question received."
-
 QUERY_SUCCESS_LOG = "[%s] Question answered successfully."
 
 # ==========================================================
@@ -355,5 +352,55 @@ QUERY_SUCCESS_LOG = "[%s] Question answered successfully."
 # ==========================================================
 
 UPLOAD_REQUEST_LOG = "[%s] Upload request received."
-
 UPLOAD_SUCCESS_LOG = "[%s] Uploaded %d document(s) successfully."
+
+# ==========================================================
+# File Service Logs
+# ==========================================================
+
+DELETE_TEMP_FILE_SUCCESS_LOG = ("Deleted temporary upload file: %s")
+DELETE_TEMP_FILE_FAILED_LOG = ("Failed to delete temporary upload file '%s': %s")
+
+# ==========================================================
+# Logger
+# ==========================================================
+
+LOGGER_FORMAT = "%(asctime)s | %(levelname)s | %(message)s"
+
+# ==========================================================
+# Qdrant Client
+# ==========================================================
+
+QDRANT_CLIENT_INITIALIZING_LOG = (
+    "Initializing Qdrant client. host=%s port=%s"
+)
+
+QDRANT_CLIENT_INITIALIZED_LOG = (
+    "Qdrant client initialized successfully."
+)
+# ==========================================================
+# Check Collection Script
+# ==========================================================
+DOCUMENTS_HEADER_LOG = "========== DOCUMENTS =========="
+DOCUMENT_DETAILS_LOG = ("Title=%s | Type=%s | Tag=%s | Source=%s | Page=%s")
+DOCUMENT_SEPARATOR_LOG = ("----------------------------------------")
+# ==========================================================
+# Collection Statistics
+# ==========================================================
+COLLECTION_STATS_HEADER_LOG = ("========== Collection Statistics ==========")
+COLLECTION_STATS_LOG = ("Name=%s | Vectors=%s | Status=%s")
+# ==========================================================
+# Create Collection Script
+# ==========================================================
+
+COLLECTION_CREATED_SUCCESS_LOG = ("Collection created successfully.")
+COLLECTION_ALREADY_EXISTS_SCRIPT_LOG = ("Collection already exists.")
+COLLECTION_CREATION_FAILED_LOG = ("Failed to create collection.")
+
+# ==========================================================
+# Delete Collection Script
+# ==========================================================
+
+COLLECTION_DELETED_SUCCESS_LOG = ("Collection '%s' deleted successfully.")
+
+DOCUMENT_NOT_FOUND_ERROR = "Document '{}' does not exist."

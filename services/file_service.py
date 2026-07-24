@@ -1,6 +1,5 @@
-from common.custom_exceptions import (
-    NotFoundException,
-)
+from common.custom_exceptions import NotFoundException
+from configuration.constants import DOCUMENT_NOT_FOUND_ERROR
 from repositories.kb_repository import (
     deleteAllDocuments,
     deleteDocument,
@@ -21,17 +20,15 @@ def get_uploaded_documents():
 # Delete Uploaded Document
 # ==========================================================
 
-def delete_uploaded_document(
-    document_id: str,
-):
+def delete_uploaded_document(documentId: str):
     """
     Delete a single uploaded document.
     """
-    deleted = deleteDocument(document_id)
+    deleted = deleteDocument(documentId)
 
     if not deleted:
         raise NotFoundException(
-            f"Document '{document_id}' does not exist."
+            DOCUMENT_NOT_FOUND_ERROR.format(documentId)
         )
 
 # ==========================================================

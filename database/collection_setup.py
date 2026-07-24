@@ -13,7 +13,9 @@ from configuration.constants import (
     COLLECTION_SETUP_FAILED_LOG,
 )
 from database.qdrant_client_manager import client
-from exceptions.qdrant_exception import (QdrantConnectionException,)
+from exceptions.qdrant_exception import (
+    QdrantConnectionException,
+)
 
 def create_collection_if_missing() -> None:
     """
@@ -21,12 +23,11 @@ def create_collection_if_missing() -> None:
     """
     try:
         collections = client.get_collections()
-        existing = [
+        existingCollections = [
             collection.name
             for collection in collections.collections
         ]
-
-        if COLLECTION_NAME not in existing:
+        if COLLECTION_NAME not in existingCollections:
             client.create_collection(
                 collection_name=COLLECTION_NAME,
                 vectors_config=VectorParams(
@@ -34,12 +35,9 @@ def create_collection_if_missing() -> None:
                     distance=Distance.COSINE,
                 ),
             )
-
-            logger.info(COLLECTION_CREATED_LOG,)
-        
+            logger.info(COLLECTION_CREATED_LOG)
         else:
-            logger.info(COLLECTION_ALREADY_EXISTS_LOG,)
-
-    except Exception as ex:
-        logger.exception(COLLECTION_SETUP_FAILED_LOG,)
-        raise QdrantConnectionException() from ex
+            logger.info(COLLECTION_ALREADY_EXISTS_LOG)
+    except Exception as exception:
+        logger.exception(COLLECTION_SETUP_FAILED_LOG)
+        raise QdrantConnectionException() from exception

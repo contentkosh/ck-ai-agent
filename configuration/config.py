@@ -92,9 +92,10 @@ LOG_BACKUP_COUNT = int(os.getenv("LOG_BACKUP_COUNT", 5))
 # TAG VALIDATION
 # ==========================================================
 
-MAX_TAG_LENGTH = int(
-    os.getenv(
-        "MAX_TAG_LENGTH",
-        100,
-    )
-)
+MAX_TAG_LENGTH = int(os.getenv("MAX_TAG_LENGTH",100))
+
+# ==========================================================
+# Environment Variable Names
+# ==========================================================
+
+OPENROUTER_API_KEY_ENV = "OPENROUTER_API_KEY"

@@ -15,9 +15,7 @@ from exceptions.validation_exception import InvalidTagException
 def validate_tag(tag: str | None) -> None:
     if tag is None:
         return
-    
     if not tag.strip():
         raise InvalidTagException(EMPTY_TAG_ERROR)
-
     if len(tag) > MAX_TAG_LENGTH:
         raise InvalidTagException(TAG_LENGTH_ERROR.format(MAX_TAG_LENGTH))

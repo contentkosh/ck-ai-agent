@@ -11,26 +11,23 @@ from common.custom_exceptions import DatabaseException
 from common.embedding_client import get_embedding_model
 from common.llm_client import get_llm
 from common.logger import logger
-from dto.response_dto import QueryResponse
-from configuration.config import (SEARCH_LIMIT,)
+from configuration.config import SEARCH_LIMIT
 from configuration.constants import (
     ANSWER_NOT_FOUND_MESSAGE,
     CHAT_SERVICE_ERROR_MESSAGE,
     CHAT_SERVICE_FAILED_LOG,
     LLM_INVOCATION_FAILED_LOG,
+    METADATA_SOURCE,
+    METADATA_TEXT,
     NO_RELEVANT_CHUNKS_LOG,
     QUERY_RECEIVED_LOG,
     RETRIEVED_CHUNKS_LOG,
     TOP_MATCHING_SOURCE_LOG,
 )
-
-from configuration.context import (KNOWLEDGE_BASE_QA_PROMPT,)
-from exceptions.llm_exception import (LLMResponseException,)
-from repositories.kb_repository import (searchChunks,)
-
-# ==========================================================
-# Load Environment Variables
-# ==========================================================
+from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
+from dto.response_dto import QueryResponse
+from exceptions.llm_exception import LLMResponseException
+from repositories.kb_repository import searchChunks
 
 load_dotenv()
 
@@ -46,7 +43,7 @@ def build_context(
     """
     return "\n\n".join(
         searchResult.payload.get(
-            "text",
+            METADATA_TEXT,
             "",
         )
         for searchResult in searchResults
@@ -80,7 +77,7 @@ def ask_question(
     Search the Knowledge Base and generate an answer.
     """
     try:
-        logger.info(QUERY_RECEIVED_LOG,query,)
+        logger.info(QUERY_RECEIVED_LOG, query)
 
         # --------------------------------------------------
         # Generate Query Embedding
@@ -102,7 +99,7 @@ def ask_question(
         )
 
         if not searchResults:
-            logger.warning(NO_RELEVANT_CHUNKS_LOG,)
+            logger.warning(NO_RELEVANT_CHUNKS_LOG)
 
             return QueryResponse(
                 answer=ANSWER_NOT_FOUND_MESSAGE,
@@ -115,17 +112,18 @@ def ask_question(
                 page=None,
             )
 
-        logger.info(RETRIEVED_CHUNKS_LOG,len(searchResults),)
+        logger.info(RETRIEVED_CHUNKS_LOG,len(searchResults))
 
         # --------------------------------------------------
         # Build Context
         # --------------------------------------------------
 
-        contextText = build_context(
-            searchResults,
-        )
+        contextText = build_context(searchResults)
         documentPayload = searchResults[0].payload
-        logger.info(TOP_MATCHING_SOURCE_LOG,documentPayload.get("source"),)
+        logger.info(TOP_MATCHING_SOURCE_LOG,documentPayload.get(
+                METADATA_SOURCE,
+            ),
+        )
 
         # --------------------------------------------------
         # Generate Answer
@@ -140,10 +138,11 @@ def ask_question(
             llmResponse = get_llm().invoke(
                 prompt,
             )
-
-        except Exception as ex:
-            logger.exception(LLM_INVOCATION_FAILED_LOG,)
-            raise LLMResponseException() from ex
+        except Exception as exception:
+            logger.exception(
+                LLM_INVOCATION_FAILED_LOG,
+            )
+            raise LLMResponseException() from exception
 
         # --------------------------------------------------
         # Return Response
@@ -157,6 +156,8 @@ def ask_question(
     except LLMResponseException:
         raise
 
-    except Exception as ex:
-        logger.exception(CHAT_SERVICE_FAILED_LOG,ex,)
-        raise DatabaseException(CHAT_SERVICE_ERROR_MESSAGE,) from ex
+    except Exception as exception:
+        logger.exception(CHAT_SERVICE_FAILED_LOG,exception)
+        raise DatabaseException(
+            CHAT_SERVICE_ERROR_MESSAGE,
+        ) from exception
