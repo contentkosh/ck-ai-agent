@@ -6,8 +6,7 @@
 # ==========================================================
 
 from fastapi import UploadFile
-
-from configuration.constants import NO_FILES_UPLOADED_ERROR
+from configuration.error_constants import NO_FILES_UPLOADED_ERROR
 from exceptions.validation_exception import EmptyFileException
 from validators.file_validator import validate_pdf_file
 

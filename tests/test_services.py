@@ -1,13 +1,15 @@
 import pytest
 from unittest.mock import patch
-from services.kb_chat_service import (
+from services.kb_query_service import (
     build_context,
     build_prompt,
     ask_question,
 )
+from io import BytesIO
 from unittest.mock import MagicMock, patch
 from services.kb_ingestion_service import ingest_documents
-
+from dto.processed_document_dto import ProcessedDocumentDto
+from dto.document_metadata_dto import DocumentMetadataDto
 
 # =======================
 # Build Context Tests
@@ -40,9 +42,9 @@ def test_build_prompt():
 # Ask Question Tests
 # ==========================================================
 
-@patch("services.kb_chat_service.searchChunks")
-@patch("services.kb_chat_service.get_embedding_model")
-@patch("services.kb_chat_service.get_llm")
+@patch("services.kb_query_service.searchChunks")
+@patch("services.kb_query_service.get_embedding_model")
+@patch("services.kb_query_service.get_llm")
 def test_ask_question(
     mock_llm,
     mock_embedding,
@@ -96,19 +98,21 @@ def test_ingest_documents_cleans_up_saved_file_on_success(
     """
     fake_pdf = MagicMock()
     mock_read_pdf.return_value = (fake_pdf, "/tmp/fake_saved.pdf")
-    mock_process_document.return_value = {
-        "document_id": "123",
-        "metadata": {
-            "title": "AI Notes",
-            "document_type": "Notes",
-            "tag": "ai",
-            "summary": "s",
-        },
-        "points": [],
-        "chunks": 2,
-    }
+    mock_process_document.return_value = ProcessedDocumentDto(
+        document_id="123",
+        metadata=DocumentMetadataDto(
+            title="AI Notes",
+            document_type="Notes",
+            tag="ai",
+            summary="s",
+        ),
+        points=[],
+        chunks=2,
+    )
 
     fake_file = MagicMock()
     fake_file.filename = "sample.pdf"
+    fake_file.content_type = "application/pdf"
+    fake_file.file = BytesIO(b"%PDF-1.4 dummy pdf")
     ingest_documents([fake_file])
     mock_delete_saved_file.assert_called_once_with("/tmp/fake_saved.pdf")

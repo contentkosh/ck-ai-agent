@@ -6,7 +6,6 @@
 # ==========================================================
 
 import uuid
-from typing import Any
 from fastapi import UploadFile
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pypdf import PdfReader
@@ -34,7 +33,9 @@ from configuration.constants import (
     GENERATED_VECTORS_LOG,
     PAGE_CHUNK_GENERATION_LOG,
     EMBEDDING_GENERATION_FAILED_LOG,
-    EMBEDDING_GENERATION_FAILED_MESSAGE,
+    METADATA_EXTRACTION_STARTED_LOG,
+    METADATA_EXTRACTION_COMPLETED_LOG,
+    METADATA_EXTRACTION_FAILED_LOG,
     METADATA_DOCUMENT_ID,
     METADATA_TEXT,
     METADATA_TITLE,
@@ -43,21 +44,33 @@ from configuration.constants import (
     METADATA_SUMMARY,
     METADATA_SOURCE,
     METADATA_PAGE,
+    SUCCESS_STATUS,
+)
+from configuration.error_constants import (
+    EMBEDDING_GENERATION_FAILED_MESSAGE,
     PDF_READ_FAILED_MESSAGE,
-    METADATA_EXTRACTION_STARTED_LOG,
-    METADATA_EXTRACTION_COMPLETED_LOG,
-    METADATA_EXTRACTION_FAILED_LOG,
     DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE,
     DOCUMENT_PROCESSING_FAILED_MESSAGE,
     KNOWLEDGE_BASE_INGESTION_FAILED_MESSAGE,
     EMPTY_DOCUMENT_TEXT_MESSAGE,
-    SUCCESS_STATUS,
 )
 from repositories.kb_repository import saveChunks
 from services.document_metadata_service import extract_document_metadata
+from dto.file_response_dto import (
+    UploadedDocumentsResponse,
+    UploadedDocumentDto,
+)
+from dto.processed_document_dto import ProcessedDocumentDto
+from validators.upload_validator import validate_upload
+from dto.document_metadata_dto import DocumentMetadataDto
+from exceptions.qdrant_exception import QdrantInsertException
+from typing import TypedDict
+from exceptions.knowledge_base_exception import (KnowledgeBaseException,)
 
-Page = dict[str, Any]
-Metadata = dict[str, Any]
+class Page(TypedDict):
+    page: int
+    text: str
+
 _text_splitter: RecursiveCharacterTextSplitter | None = None
 
 def get_text_splitter() -> RecursiveCharacterTextSplitter:
@@ -93,19 +106,19 @@ def generate_embedding(text: str) -> list[float]:
 def build_payload(
     *,
     chunk: str,
-    metadata: Metadata,
+    metadata: DocumentMetadataDto,
     filename: str,
     document_id: str,
     page_number: int,
-) -> Metadata:
+) -> dict[str, str | int]:
     """Build the Qdrant payload."""
     return {
         METADATA_DOCUMENT_ID: document_id,
         METADATA_TEXT: chunk,
-        METADATA_TITLE: metadata.get(METADATA_TITLE,),
-        METADATA_DOCUMENT_TYPE: metadata.get(METADATA_DOCUMENT_TYPE,),
-        METADATA_TAG: metadata.get(METADATA_TAG,),
-        METADATA_SUMMARY: metadata.get(METADATA_SUMMARY,),
+        METADATA_TITLE: metadata.title,
+        METADATA_DOCUMENT_TYPE: metadata.document_type,
+        METADATA_TAG: metadata.tag,
+        METADATA_SUMMARY: metadata.summary,
         METADATA_SOURCE: filename,
         METADATA_PAGE: page_number,
     }
@@ -125,11 +138,7 @@ def read_pdf(file: UploadFile) -> tuple[PdfReader, str]:
         validate_saved_file(saved_file)
         return PdfReader(saved_file), saved_file
     except Exception as ex:
-        logger.exception(
-            PDF_READ_FAILED_LOG,
-            filename,
-            ex,
-        )
+        logger.exception(PDF_READ_FAILED_LOG,filename,ex,)
 
         # The file was already written to disk above; if parsing
         # or validation fails here, ingest_documents' cleanup
@@ -137,9 +146,7 @@ def read_pdf(file: UploadFile) -> tuple[PdfReader, str]:
         # never reach), so clean up here instead.
         if saved_file is not None:
             delete_saved_file(saved_file)
-
-        raise PDFProcessingException(PDF_READ_FAILED_MESSAGE.format(filename),
-        ) from ex
+        raise PDFProcessingException(PDF_READ_FAILED_MESSAGE.format(filename),) from ex
 
 def extract_document_text(
     pdf: PdfReader,
@@ -165,7 +172,7 @@ def extract_document_text(
 # ==========================================================
 # Extract Metadata
 # ==========================================================
-def get_document_metadata(pages: list[Page]) -> Metadata:
+def get_document_metadata(pages: list[Page]) -> DocumentMetadataDto:
     """Extract document metadata."""
     try:
         metadata_source = "\n".join(
@@ -174,18 +181,16 @@ def get_document_metadata(pages: list[Page]) -> Metadata:
         logger.info(METADATA_EXTRACTION_STARTED_LOG,)
         metadata = extract_document_metadata(metadata_source)
         logger.info(METADATA_EXTRACTION_COMPLETED_LOG,)
-        return metadata.model_dump()
+        return metadata
     
     except Exception as ex:
         logger.exception(METADATA_EXTRACTION_FAILED_LOG,ex,)
-        raise DocumentProcessingException(
-            DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE,
-        ) from ex
+        raise DocumentProcessingException(DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE,) from ex
 
 def build_vectors(
     *,
     pages: list[Page],
-    metadata: Metadata,
+    metadata: DocumentMetadataDto,
     filename: str,
     document_id: str,
 ) -> tuple[list[PointStruct], int]:
@@ -222,18 +227,16 @@ def build_vectors(
 def process_document(
     pdf: PdfReader,
     filename: str,
-) -> dict[str, Any]:
+) -> ProcessedDocumentDto:
     """Process a PDF document."""
     try:
         logger.info(DOCUMENT_PROCESSING_STARTED_LOG,filename,)
         document_id = generate_uuid()
         full_text, pages = extract_document_text(pdf)
-
         if not full_text.strip():
             raise EmptyDocumentException(
                 EMPTY_DOCUMENT_TEXT_MESSAGE,
             )
-
         metadata = get_document_metadata(pages)
         points, total_chunks = build_vectors(
             pages=pages,
@@ -241,19 +244,17 @@ def process_document(
             filename=filename,
             document_id=document_id,
         )
-
         logger.info(
             DOCUMENT_PROCESSED_LOG,
             filename,
             total_chunks,
         )
-
-        return {
-            "document_id": document_id,
-            "metadata": metadata,
-            "points": points,
-            "chunks": total_chunks,
-        }
+        return ProcessedDocumentDto(
+            document_id=document_id,
+            metadata=metadata,
+            points=points,
+            chunks=total_chunks,
+        )
 
     except (
         EmptyDocumentException,
@@ -261,25 +262,18 @@ def process_document(
         PDFProcessingException,
     ):
         raise
-
     except Exception as ex:
-        logger.exception(
-            DOCUMENT_PROCESSING_FAILED_LOG,
-            ex,
-        )
-
-        raise DocumentProcessingException(
-            DOCUMENT_PROCESSING_FAILED_MESSAGE.format(filename,)
-        ) from ex
+        logger.exception(DOCUMENT_PROCESSING_FAILED_LOG,ex,)
+        raise
 
 def ingest_documents(
     files: list[UploadFile],
-) -> dict[str, Any]:
+) -> UploadedDocumentsResponse:
     """Ingest PDF documents into the Knowledge Base."""
+    validate_upload(files)
     try:
         logger.info(KB_INGESTION_STARTED_LOG,)
-
-        documents: list[Metadata] = []
+        documents: list[UploadedDocumentDto] = []
         total_chunks = 0
 
         for file in files:
@@ -287,14 +281,9 @@ def ingest_documents(
                 FILE_PROCESSING_STARTED_LOG,
                 file.filename,
             )
-
             pdf, saved_file_path = read_pdf(file)
-
             try:
-                document = process_document(
-                    pdf=pdf,
-                    filename=file.filename,
-                )
+                document = process_document(pdf=pdf,filename=file.filename,)
 
             finally:
                 # On Windows, pypdf may still hold the file open
@@ -310,49 +299,44 @@ def ingest_documents(
                 del pdf
                 delete_saved_file(saved_file_path)
 
-            saveChunks(document["points"])
-            total_chunks += document["chunks"]
+            try:
+                saveChunks(document.points)
+
+            except QdrantInsertException as ex:
+                logger.exception(KB_INGESTION_FAILED_LOG,ex,)
+                raise KnowledgeBaseException() from ex
+            total_chunks += document.chunks
             documents.append(
-                {
-                    METADATA_TITLE: document["metadata"].get(METADATA_TITLE),
-                    METADATA_DOCUMENT_TYPE: document["metadata"].get(METADATA_DOCUMENT_TYPE),
-                    METADATA_TAG: document["metadata"].get(METADATA_TAG),
-                    METADATA_SUMMARY: document["metadata"].get(METADATA_SUMMARY),
-                    METADATA_SOURCE: file.filename,
-                }
+                UploadedDocumentDto(
+                        title=document.metadata.title,
+                        document_type=document.metadata.document_type,
+                        tag=document.metadata.tag,
+                        summary=document.metadata.summary,
+                        source=file.filename,
+                )
             )
 
-            logger.info(
-                FILE_PROCESSING_COMPLETED_LOG,
-                file.filename,
-            )
-
+            logger.info(FILE_PROCESSING_COMPLETED_LOG,file.filename,)
         logger.info(
             KB_INGESTION_COMPLETED_LOG,
             len(documents),
             total_chunks,
         )
 
-        return {
-            "status": SUCCESS_STATUS,
-            "documents_processed": len(documents),
-            "chunks_inserted": total_chunks,
-            "documents": documents,
-        }
+        return UploadedDocumentsResponse(
+            status=SUCCESS_STATUS,
+            documents_processed=len(documents),
+            chunks_inserted=total_chunks,
+            documents=documents,
+        )
 
     except (
         EmptyDocumentException,
         DocumentProcessingException,
         PDFProcessingException,
+        KnowledgeBaseException,
     ):
         raise
-
     except Exception as ex:
-        logger.exception(
-            KB_INGESTION_FAILED_LOG,
-            ex,
-        )
-
-        raise PDFProcessingException(
-           KNOWLEDGE_BASE_INGESTION_FAILED_MESSAGE,
-        ) from ex
+        logger.exception(KB_INGESTION_FAILED_LOG,ex,)
+        raise

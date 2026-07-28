@@ -25,9 +25,9 @@ def test_build_document_payload():
     }
 
     result = buildDocumentPayload(payload)
-    assert result["document_id"] == "123"
-    assert result["title"] == "AI Notes"
-    assert result["tag"] == "ai"
+    assert result.document_id == "123"
+    assert result.title == "AI Notes"
+    assert result.tag == "ai"
 
 # ==========================================================
 # Save Chunks Tests
@@ -103,7 +103,7 @@ def test_get_uploaded_files(
     mock_scroll.return_value = [point]
     documents = getUploadedFiles()
     assert len(documents) == 1
-    assert documents[0]["title"] == "AI Notes"
+    assert documents[0].title == "AI Notes"
 
 # ==========================================================
 # Delete Document Tests

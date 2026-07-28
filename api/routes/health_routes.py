@@ -1,11 +1,13 @@
 from fastapi import APIRouter
 from common.logger import logger
 from configuration.constants import (
-    API_TITLE,
-    API_VERSION,
     HEALTH_API_LOG,
     HEALTH_ROUTE,
     SERVICE_RUNNING_STATUS,
+)
+from configuration.config import(
+    API_TITLE,
+    API_VERSION,
 )
 from dto.health_response_dto import HealthResponse
 router = APIRouter()

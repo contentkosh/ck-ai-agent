@@ -1,7 +1,5 @@
 import os
-
 from langchain_openai import ChatOpenAI
-
 from configuration.config import (
     LLM_MODEL,
     OPENROUTER_API_KEY_ENV,

@@ -1,7 +1,7 @@
 from http import HTTPStatus
 from common.custom_exceptions import ApplicationException
 from common.error_codes import ErrorCode
-from configuration.constants import (
+from configuration.error_constants import (
     LLM_RESPONSE_ERROR_MESSAGE,
 )
 

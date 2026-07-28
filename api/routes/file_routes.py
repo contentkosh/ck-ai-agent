@@ -20,7 +20,7 @@ from configuration.context import RequestContext
 from dto.file_response_dto import (
     ClearKnowledgeBaseResponse,
     DeleteDocumentResponse,
-    UploadedDocumentsResponse,
+    UploadedDocumentsListResponse,
 )
 from services.file_service import (
     clear_knowledge_base as clear_kb_service,
@@ -33,29 +33,29 @@ router = APIRouter()
 # Get Uploaded Documents
 # ==========================================================
 
+# ==========================================================
+# Get Uploaded Documents
+# ==========================================================
+
 @router.get(
     DOCUMENTS_ROUTE,
-    response_model=UploadedDocumentsResponse,
+    response_model=UploadedDocumentsListResponse,
 )
-
 def get_uploaded_documents(
     context: RequestContext = Depends(get_request_context),
 ):
     """
     Retrieve all uploaded documents.
     """
-    logger.info(FETCH_UPLOADED_DOCUMENTS_LOG, context.request_id)
-    uploadedDocuments = get_uploaded_documents_service()
-    logger.info(
-        FETCH_UPLOADED_DOCUMENTS_SUCCESS_LOG,
-        context.request_id,
-        len(uploadedDocuments),
-    )
-    return UploadedDocumentsResponse(
+    logger.info(FETCH_UPLOADED_DOCUMENTS_LOG,context.request_id,)
+    uploaded_documents = get_uploaded_documents_service()
+    logger.info(FETCH_UPLOADED_DOCUMENTS_SUCCESS_LOG,context.request_id,len(uploaded_documents),)
+    return UploadedDocumentsListResponse(
         request_id=context.request_id,
-        total_documents=len(uploadedDocuments),
-        documents=uploadedDocuments,
+        total_documents=len(uploaded_documents),
+        documents=uploaded_documents,
     )
+
 # ==========================================================
 # Delete Uploaded Document
 # ==========================================================

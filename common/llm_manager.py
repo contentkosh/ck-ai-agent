@@ -1,9 +1,7 @@
 import os
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
-from configuration.config import (
-    LLM_MODEL, OPENROUTER_BASE_URL
-)
+from configuration.config import (LLM_MODEL, OPENROUTER_BASE_URL)
 load_dotenv()
 
 llm = ChatOpenAI(

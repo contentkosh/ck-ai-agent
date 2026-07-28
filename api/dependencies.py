@@ -1,8 +1,5 @@
 from fastapi import Header
-from configuration.config import (
-    API_KEY,
-    AUTH_ENABLED,
-)
+from configuration.config import (API_KEY,AUTH_ENABLED,)
 from configuration.context import RequestContext
 from common.custom_exceptions import AuthenticationException
 

@@ -3,11 +3,8 @@ from fastapi.responses import JSONResponse
 from common.logger import logger
 from common.custom_exceptions import (ApplicationException,)
 from common.error_codes import (ErrorCode,)
-from configuration.constants import (
-    INTERNAL_SERVER_ERROR_MESSAGE,
-    UNHANDLED_EXCEPTION_LOG,
-)
-
+from configuration.constants import (UNHANDLED_EXCEPTION_LOG,)
+from configuration.error_constants import (INTERNAL_SERVER_ERROR_MESSAGE,)
 # ==========================================================
 # Error Response Builder
 # ==========================================================

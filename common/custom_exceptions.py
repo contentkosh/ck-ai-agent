@@ -1,6 +1,6 @@
 from http import HTTPStatus
 from common.error_codes import ErrorCode
-from configuration.constants import (
+from configuration.error_constants import (
     DATABASE_ERROR_MESSAGE,
     PDF_PROCESSING_ERROR_MESSAGE,
     EMBEDDING_ERROR_MESSAGE,

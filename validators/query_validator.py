@@ -5,7 +5,7 @@
 # ==========================================================
 
 from configuration.config import MAX_QUERY_LENGTH
-from configuration.constants import (
+from configuration.error_constants import (
     EMPTY_QUERY_ERROR,
     QUERY_LENGTH_ERROR,
 )

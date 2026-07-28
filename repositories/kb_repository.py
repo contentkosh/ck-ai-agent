@@ -4,13 +4,18 @@
 # searching, retrieving, and deleting knowledge base documents.
 # ==========================================================
 
-from typing import Any, Optional
+from typing import Optional
 from qdrant_client.models import (
     FieldCondition,
     Filter,
     MatchValue,
 )
-from common.custom_exceptions import DatabaseException
+from exceptions.qdrant_exception import (
+    QdrantInsertException,
+    QdrantSearchException,
+    QdrantFetchException,
+    QdrantDeleteException,
+)
 from exceptions.qdrant_exception import (
     QdrantInsertException,
     QdrantSearchException,
@@ -31,15 +36,11 @@ from configuration.constants import (
     METADATA_TAG,
     METADATA_TEXT,
     METADATA_TITLE,
-    DATABASE_DELETE_ERROR_MESSAGE,
-    DATABASE_CLEAR_ERROR_MESSAGE,
     DELETE_DOCUMENT_LOG,
     DELETE_DOCUMENT_FAILED_LOG,
     DOCUMENT_NOT_FOUND_LOG,
     CLEAR_KB_LOG,
     CLEAR_KB_FAILED_LOG,
-    DATABASE_FETCH_DOCUMENTS_ERROR_MESSAGE,
-    DATABASE_FETCH_ERROR_MESSAGE,
     FETCH_DOCUMENTS_FAILED_LOG,
     FETCH_DOCUMENTS_LOG,
     FETCH_RECORDS_FAILED_LOG,
@@ -49,8 +50,8 @@ from configuration.constants import (
     VECTOR_INSERTION_FAILED_LOG,
     VECTOR_INSERTION_LOG,
 )
+from dto.document_payload_dto import DocumentPayloadDto
 from database.qdrant_client_manager import client
-Payload = dict[str, Any]
 
 # ==========================================================
 # Internal Helper
@@ -81,19 +82,19 @@ def _scrollRecords(
     return allRecords
 
 def buildDocumentPayload(
-    payload: Payload,
-) -> Payload:
+    payload: dict,
+) -> DocumentPayloadDto:
     """
     Build document metadata.
     """
-    return {
-        METADATA_DOCUMENT_ID: payload.get(METADATA_DOCUMENT_ID),
-        METADATA_TITLE: payload.get(METADATA_TITLE),
-        METADATA_DOCUMENT_TYPE: payload.get(METADATA_DOCUMENT_TYPE),
-        METADATA_TAG: payload.get(METADATA_TAG),
-        METADATA_SUMMARY: payload.get(METADATA_SUMMARY),
-        METADATA_SOURCE: payload.get(METADATA_SOURCE),
-    }
+    return DocumentPayloadDto(
+        document_id=payload.get(METADATA_DOCUMENT_ID),
+        title=payload.get(METADATA_TITLE),
+        document_type=payload.get(METADATA_DOCUMENT_TYPE),
+        tag=payload.get(METADATA_TAG),
+        summary=payload.get(METADATA_SUMMARY),
+        source=payload.get(METADATA_SOURCE),
+    )
 
 # ==========================================================
 # Save Chunks
@@ -183,15 +184,15 @@ def getAllRecords(
 
     except Exception as ex:
         logger.exception(FETCH_RECORDS_FAILED_LOG,ex)
-        raise DatabaseException(DATABASE_FETCH_ERROR_MESSAGE,) from ex
+        raise QdrantFetchException() from ex
 
-def getUploadedFiles() -> list[Payload]:
+def getUploadedFiles() -> list[DocumentPayloadDto]:
     """
     Return one entry per uploaded document.
     """
     try:
         records = _scrollRecords()
-        documents: dict[str, Payload] = {}
+        documents: dict[str, DocumentPayloadDto] = {}
         for point in records:
             payload = point.payload
             documentId = payload.get(
@@ -207,7 +208,7 @@ def getUploadedFiles() -> list[Payload]:
         return list(documents.values())
     except Exception as ex:
         logger.exception(FETCH_DOCUMENTS_FAILED_LOG,ex,)
-        raise DatabaseException(DATABASE_FETCH_DOCUMENTS_ERROR_MESSAGE,) from ex
+        raise QdrantFetchException() from ex
 
 # ==========================================================
 # Delete One Document
@@ -242,15 +243,12 @@ def deleteDocument(
         if not existing:
             logger.info(DOCUMENT_NOT_FOUND_LOG,documentId,)
             return False
-        client.delete(
-            collection_name=COLLECTION_NAME,
-            points_selector=documentFilter,
-        )
+        client.delete(collection_name=COLLECTION_NAME,points_selector=documentFilter,)
         logger.info(DELETE_DOCUMENT_LOG,documentId,)
         return True
     except Exception as ex:
         logger.exception(DELETE_DOCUMENT_FAILED_LOG, ex,)
-        raise DatabaseException(DATABASE_DELETE_ERROR_MESSAGE,) from ex
+        raise QdrantDeleteException() from ex
 
 # ==========================================================
 # Delete Entire Knowledge Base
@@ -270,4 +268,4 @@ def deleteAllDocuments() -> bool:
         return True
     except Exception as ex:
         logger.exception(CLEAR_KB_FAILED_LOG,ex,)
-        raise DatabaseException(DATABASE_CLEAR_ERROR_MESSAGE,) from ex
+        raise QdrantDeleteException() from ex

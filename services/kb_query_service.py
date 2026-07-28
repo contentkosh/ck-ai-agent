@@ -7,14 +7,12 @@
 
 from typing import List
 from dotenv import load_dotenv
-from common.custom_exceptions import DatabaseException
 from common.embedding_client import get_embedding_model
+from exceptions.knowledge_base_exception import (KnowledgeBaseException,)
 from common.llm_client import get_llm
 from common.logger import logger
 from configuration.config import SEARCH_LIMIT
 from configuration.constants import (
-    ANSWER_NOT_FOUND_MESSAGE,
-    CHAT_SERVICE_ERROR_MESSAGE,
     CHAT_SERVICE_FAILED_LOG,
     LLM_INVOCATION_FAILED_LOG,
     METADATA_SOURCE,
@@ -24,11 +22,15 @@ from configuration.constants import (
     RETRIEVED_CHUNKS_LOG,
     TOP_MATCHING_SOURCE_LOG,
 )
+from configuration.error_constants import(
+    ANSWER_NOT_FOUND_MESSAGE,
+    CHAT_SERVICE_ERROR_MESSAGE,
+)
 from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
 from dto.response_dto import QueryResponse
 from exceptions.llm_exception import LLMResponseException
 from repositories.kb_repository import searchChunks
-
+from exceptions.qdrant_exception import (QdrantSearchException,)
 load_dotenv()
 
 # ==========================================================
@@ -41,7 +43,7 @@ def build_context(
     """
     Combine retrieved chunks into a single context string.
     """
-    return "\n\n".join(
+    return "\n".join(
         searchResult.payload.get(
             METADATA_TEXT,
             "",
@@ -93,10 +95,14 @@ def ask_question(
         # Search Knowledge Base
         # --------------------------------------------------
 
-        searchResults = searchChunks(
-            queryEmbedding=queryEmbedding,
-            limit=SEARCH_LIMIT,
-        )
+        try:
+            searchResults = searchChunks(
+                queryEmbedding=queryEmbedding,
+                limit=SEARCH_LIMIT,
+            )
+        except QdrantSearchException as ex:
+            logger.exception(CHAT_SERVICE_FAILED_LOG,ex,)
+            raise KnowledgeBaseException() from ex
 
         if not searchResults:
             logger.warning(NO_RELEVANT_CHUNKS_LOG)
@@ -139,9 +145,7 @@ def ask_question(
                 prompt,
             )
         except Exception as exception:
-            logger.exception(
-                LLM_INVOCATION_FAILED_LOG,
-            )
+            logger.exception(LLM_INVOCATION_FAILED_LOG,exception,)
             raise LLMResponseException() from exception
 
         # --------------------------------------------------
@@ -156,6 +160,9 @@ def ask_question(
     except LLMResponseException:
         raise
 
+    except KnowledgeBaseException:
+        raise
     except Exception as exception:
         logger.exception(CHAT_SERVICE_FAILED_LOG,exception,)
-        raise DatabaseException(CHAT_SERVICE_ERROR_MESSAGE,) from exception
+        raise KnowledgeBaseException(CHAT_SERVICE_ERROR_MESSAGE,) from exception
+

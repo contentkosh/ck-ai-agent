@@ -1,10 +1,7 @@
 from http import HTTPStatus
 from common.custom_exceptions import ApplicationException
 from common.error_codes import ErrorCode
-from configuration.constants import (
-    DOCUMENT_PROCESSING_ERROR_MESSAGE,
-    EMPTY_DOCUMENT_MESSAGE,
-)
+from configuration.error_constants import (DOCUMENT_PROCESSING_ERROR_MESSAGE,EMPTY_DOCUMENT_MESSAGE,)
 
 class DocumentProcessingException(ApplicationException):
     """

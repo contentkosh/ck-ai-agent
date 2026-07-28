@@ -16,6 +16,13 @@ API_PORT = int(os.getenv("API_PORT",8000,))
 API_RELOAD = os.getenv("API_RELOAD","False",).lower() == "true"
 
 # ==========================================================
+# Application Configuration
+# ==========================================================
+
+API_TITLE = "Knowledge Base API"
+API_VERSION = "1.0.0"
+
+# ==========================================================
 # AUTHENTICATION
 # ==========================================================
 
@@ -99,3 +106,12 @@ MAX_TAG_LENGTH = int(os.getenv("MAX_TAG_LENGTH",100))
 # ==========================================================
 
 OPENROUTER_API_KEY_ENV = "OPENROUTER_API_KEY"
+
+# ==========================================
+# FILE TYPES
+# ==========================================
+
+PDF_EXTENSION = ".pdf"
+SUPPORTED_FILE_TYPES = [PDF_EXTENSION]
+SUPPORTED_CONTENT_TYPE = "application/pdf"
+PDF_MAGIC_BYTES = b"%PDF-"

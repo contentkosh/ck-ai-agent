@@ -6,23 +6,23 @@
 # ==========================================================
 
 from pathlib import Path
-
 from configuration.config import MAX_FILE_SIZE
 from configuration.constants import (
     BYTES_PER_MB,
+    PDF_EXTENSION,
+    PDF_MAGIC_BYTES,
+    SUPPORTED_CONTENT_TYPE,
+    )
+from configuration.error_constants import(
     EMPTY_UPLOADED_FILE_ERROR,
     FILE_SIZE_EXCEEDED_ERROR,
     INVALID_FILE_TYPE_ERROR,
     INVALID_PDF_SIGNATURE_ERROR,
     NO_FILENAME_ERROR,
     ONLY_PDF_ALLOWED_ERROR,
-    PDF_EXTENSION,
-    PDF_MAGIC_BYTES,
-    SUPPORTED_CONTENT_TYPE,
     UPLOADED_FILE_NOT_FOUND_ERROR,
-)
+    )
 from exceptions.validation_exception import EmptyFileException, InvalidFileException
-
 
 def validate_pdf_file(file) -> None:
     if file is None:

@@ -6,7 +6,7 @@
 # ==========================================================
 
 from configuration.config import MAX_TAG_LENGTH
-from configuration.constants import (
+from configuration.error_constants import (
     EMPTY_TAG_ERROR,
     TAG_LENGTH_ERROR,
 )

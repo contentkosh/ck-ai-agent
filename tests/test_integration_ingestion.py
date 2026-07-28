@@ -88,15 +88,15 @@ def test_ingest_documents_end_to_end(
     upload_file = FakeUploadFile(filename="integration_sample.pdf", content=pdf_bytes)
 
     result = ingest_documents([upload_file])
-    assert result["status"] == "success"
-    assert result["documents_processed"] == 1
-    assert result["chunks_inserted"] >= 1
 
+    assert result.status == "success"
+    assert result.documents_processed == 1
+    assert result.chunks_inserted >= 1
     print(result)
-    document = result["documents"][0]
-    assert document["title"] == "Integration Test Doc"
-    assert document["tag"] == "integration_test"
-    assert document["source"] == "integration_sample.pdf"
+    document = result.documents[0]
+    assert document.title == "Integration Test Doc"
+    assert document.tag == "integration_test"
+    assert document.source == "integration_sample.pdf"
 
     mock_save_chunks.assert_called_once()
     saved_points = mock_save_chunks.call_args[0][0]

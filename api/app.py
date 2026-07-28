@@ -1,9 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from configuration.constants import (
-    API_TITLE,
-    API_VERSION,
-)
+from configuration.config import (API_TITLE,API_VERSION,)
 from common.exception_handler import register_exception_handlers
 from common.logger import logger
 from api.routes.health_routes import (router as health_router,)

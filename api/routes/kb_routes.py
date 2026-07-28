@@ -1,7 +1,5 @@
 from typing import Optional
-
 from fastapi import APIRouter, Depends, Query
-
 from api.dependencies import get_request_context
 from common.logger import logger
 from configuration.constants import (
@@ -15,7 +13,7 @@ from configuration.constants import (
 from configuration.context import RequestContext
 from dto.request_dto import QueryRequest
 from dto.response_dto import KnowledgeBaseResponse, QueryResponse
-from services.kb_chat_service import ask_question
+from services.kb_query_service import ask_question
 from services.kb_service import get_knowledge_base_records
 from validators.query_validator import validate_query
 from validators.tag_validator import validate_tag
@@ -45,7 +43,6 @@ def get_knowledge_base(
         records=records,
     )
 
-
 # ==========================================================
 # Ask Question
 # ==========================================================
@@ -57,10 +54,7 @@ def query_knowledge_base(
 ) -> QueryResponse:
     """Answer a user query using the Knowledge Base."""
     logger.info(QUERY_REQUEST_LOG, context.request_id)
-
     validate_query(request.query)
     result = ask_question(request.query)
-
     logger.info(QUERY_SUCCESS_LOG, context.request_id)
-
     return result
