@@ -13,11 +13,7 @@ from configuration.constants import (
 )
 from configuration.error_constants import (DOCUMENT_NOT_FOUND_ERROR,)
 from exceptions.knowledge_base_exception import (KnowledgeBaseException,)
-from exceptions.qdrant_exception import (
-    QdrantDeleteException,
-    QdrantFetchException,
-)
-
+from exceptions.contentkosh_exception import (ContentKoshException,)
 from repositories.kb_repository import (
     deleteAllDocuments,
     deleteDocument,
@@ -35,10 +31,10 @@ def get_uploaded_documents():
     try:
         return getUploadedFiles()
 
-    except QdrantFetchException as ex:
+    except ContentKoshException as ex:
         logger.exception(FETCH_UPLOADED_DOCUMENTS_FAILED_LOG,ex,)
         raise KnowledgeBaseException() from ex
-
+    
 # ==========================================================
 # Delete Uploaded Document
 # ==========================================================
@@ -52,7 +48,7 @@ def delete_uploaded_document(
     try:
         deleted = deleteDocument(documentId)
 
-    except QdrantDeleteException as ex:
+    except ContentKoshException as ex:
         logger.exception(DELETE_DOCUMENT_FAILED_LOG,ex,)
         raise KnowledgeBaseException() from ex
     
@@ -70,6 +66,6 @@ def clear_knowledge_base():
     try:
         deleteAllDocuments()
 
-    except QdrantDeleteException as ex:
+    except ContentKoshException as ex:
         logger.exception(CLEAR_KNOWLEDGE_BASE_FAILED_LOG,ex,)
         raise KnowledgeBaseException() from ex

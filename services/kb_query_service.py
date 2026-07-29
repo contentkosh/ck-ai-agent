@@ -30,7 +30,7 @@ from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
 from dto.response_dto import QueryResponse
 from exceptions.llm_exception import LLMResponseException
 from repositories.kb_repository import searchChunks
-from exceptions.qdrant_exception import (QdrantSearchException,)
+from exceptions.contentkosh_exception import (ContentKoshException,)
 load_dotenv()
 
 # ==========================================================
@@ -100,7 +100,7 @@ def ask_question(
                 queryEmbedding=queryEmbedding,
                 limit=SEARCH_LIMIT,
             )
-        except QdrantSearchException as ex:
+        except ContentKoshException as ex:
             logger.exception(CHAT_SERVICE_FAILED_LOG,ex,)
             raise KnowledgeBaseException() from ex
 

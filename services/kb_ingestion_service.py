@@ -63,7 +63,7 @@ from dto.file_response_dto import (
 from dto.processed_document_dto import ProcessedDocumentDto
 from validators.upload_validator import validate_upload
 from dto.document_metadata_dto import DocumentMetadataDto
-from exceptions.qdrant_exception import QdrantInsertException
+from exceptions.contentkosh_exception import (ContentKoshException,)
 from typing import TypedDict
 from exceptions.knowledge_base_exception import (KnowledgeBaseException,)
 
@@ -302,7 +302,7 @@ def ingest_documents(
             try:
                 saveChunks(document.points)
 
-            except QdrantInsertException as ex:
+            except ContentKoshException as ex:
                 logger.exception(KB_INGESTION_FAILED_LOG,ex,)
                 raise KnowledgeBaseException() from ex
             total_chunks += document.chunks

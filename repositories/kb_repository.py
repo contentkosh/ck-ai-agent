@@ -10,16 +10,7 @@ from qdrant_client.models import (
     Filter,
     MatchValue,
 )
-from exceptions.qdrant_exception import (
-    QdrantInsertException,
-    QdrantSearchException,
-    QdrantFetchException,
-    QdrantDeleteException,
-)
-from exceptions.qdrant_exception import (
-    QdrantInsertException,
-    QdrantSearchException,
-)
+from exceptions.contentkosh_exception import (ContentKoshException,)
 from common.logger import logger
 from configuration.config import (
     COLLECTION_NAME,
@@ -50,7 +41,16 @@ from configuration.constants import (
     VECTOR_INSERTION_FAILED_LOG,
     VECTOR_INSERTION_LOG,
 )
-from dto.document_payload_dto import DocumentPayloadDto
+from configuration.error_constants import(
+    DATABASE_INSERT_ERROR_MESSAGE,
+    DATABASE_SEARCH_ERROR_MESSAGE,
+    DATABASE_FETCH_ERROR_MESSAGE,
+    DATABASE_FETCH_DOCUMENTS_ERROR_MESSAGE,
+    DATABASE_DELETE_ERROR_MESSAGE,
+    DATABASE_CLEAR_ERROR_MESSAGE,
+
+)
+from dto.file_response_dto import UploadedDocumentDto
 from database.qdrant_client_manager import client
 
 # ==========================================================
@@ -81,14 +81,13 @@ def _scrollRecords(
 
     return allRecords
 
-def buildDocumentPayload(
+def buildUploadedDocument(
     payload: dict,
-) -> DocumentPayloadDto:
+) -> UploadedDocumentDto:
     """
     Build document metadata.
     """
-    return DocumentPayloadDto(
-        document_id=payload.get(METADATA_DOCUMENT_ID),
+    return UploadedDocumentDto(
         title=payload.get(METADATA_TITLE),
         document_type=payload.get(METADATA_DOCUMENT_TYPE),
         tag=payload.get(METADATA_TAG),
@@ -113,7 +112,7 @@ def saveChunks(
 
     except Exception as ex:
         logger.exception(VECTOR_INSERTION_FAILED_LOG,ex,)
-        raise QdrantInsertException() from ex
+        raise ContentKoshException(DATABASE_INSERT_ERROR_MESSAGE) from ex
 
 # ==========================================================
 # Semantic Search
@@ -139,7 +138,7 @@ def searchChunks(
         return searchResult.points
     except Exception as ex:
         logger.exception(SEMANTIC_SEARCH_FAILED_LOG,ex)
-        raise QdrantSearchException() from ex
+        raise ContentKoshException( DATABASE_SEARCH_ERROR_MESSAGE) from ex
 
 def getAllRecords(
     tag: Optional[str] = None,
@@ -184,15 +183,15 @@ def getAllRecords(
 
     except Exception as ex:
         logger.exception(FETCH_RECORDS_FAILED_LOG,ex)
-        raise QdrantFetchException() from ex
+        raise ContentKoshException(DATABASE_FETCH_ERROR_MESSAGE) from ex
 
-def getUploadedFiles() -> list[DocumentPayloadDto]:
+def getUploadedFiles() -> list[UploadedDocumentDto]:
     """
     Return one entry per uploaded document.
     """
     try:
         records = _scrollRecords()
-        documents: dict[str, DocumentPayloadDto] = {}
+        documents: dict[str, UploadedDocumentDto] = {}
         for point in records:
             payload = point.payload
             documentId = payload.get(
@@ -201,14 +200,14 @@ def getUploadedFiles() -> list[DocumentPayloadDto]:
             if not documentId:
                 continue
             if documentId not in documents:
-                documents[documentId] = buildDocumentPayload(
+                documents[documentId] = buildUploadedDocument(
                     payload,
                 )
         logger.info(FETCH_DOCUMENTS_LOG,len(documents))
         return list(documents.values())
     except Exception as ex:
         logger.exception(FETCH_DOCUMENTS_FAILED_LOG,ex,)
-        raise QdrantFetchException() from ex
+        raise ContentKoshException(DATABASE_FETCH_DOCUMENTS_ERROR_MESSAGE) from ex
 
 # ==========================================================
 # Delete One Document
@@ -248,7 +247,7 @@ def deleteDocument(
         return True
     except Exception as ex:
         logger.exception(DELETE_DOCUMENT_FAILED_LOG, ex,)
-        raise QdrantDeleteException() from ex
+        raise ContentKoshException(DATABASE_DELETE_ERROR_MESSAGE) from ex
 
 # ==========================================================
 # Delete Entire Knowledge Base
@@ -268,4 +267,4 @@ def deleteAllDocuments() -> bool:
         return True
     except Exception as ex:
         logger.exception(CLEAR_KB_FAILED_LOG,ex,)
-        raise QdrantDeleteException() from ex
+        raise ContentKoshException(DATABASE_CLEAR_ERROR_MESSAGE) from ex

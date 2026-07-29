@@ -1,7 +1,6 @@
 from unittest.mock import MagicMock
 from unittest.mock import patch
 from repositories.kb_repository import (
-    buildDocumentPayload,
     deleteAllDocuments,
     deleteDocument,
     getAllRecords,
@@ -9,12 +8,12 @@ from repositories.kb_repository import (
     saveChunks,
     searchChunks,
 )
-
+from repositories.kb_repository import (buildUploadedDocument,)
 # ==========================================================
 # Build Payload Tests
 # ==========================================================
 
-def test_build_document_payload():
+def test_build_uploaded_document():
     payload = {
         "document_id": "123",
         "title": "AI Notes",
@@ -24,10 +23,12 @@ def test_build_document_payload():
         "source": "ai.pdf",
     }
 
-    result = buildDocumentPayload(payload)
-    assert result.document_id == "123"
+    result = buildUploadedDocument(payload)
     assert result.title == "AI Notes"
+    assert result.document_type == "Notes"
     assert result.tag == "ai"
+    assert result.summary == "Introduction"
+    assert result.source == "ai.pdf"
 
 # ==========================================================
 # Save Chunks Tests
