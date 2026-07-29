@@ -2,7 +2,7 @@ import uuid
 from typing import Optional
 from qdrant_client.models import PointStruct
 from database.qdrant_client_manager import client
-from configuration.app_settings import (CACHE_COLLECTION_NAME,)
+from configuration.config import (CACHE_COLLECTION_NAME)
 from common.logger import logger
 from common.custom_exceptions import DatabaseException
 

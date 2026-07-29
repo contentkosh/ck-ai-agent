@@ -1,7 +1,7 @@
 import uvicorn
 from dotenv import load_dotenv
 from api.app import app
-from configuration.app_settings import (
+from configuration.config import (
     API_HOST,
     API_PORT,
     API_RELOAD,

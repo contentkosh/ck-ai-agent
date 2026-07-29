@@ -2,7 +2,7 @@ from repositories.cache_repository import (
     search_cache,
     save_cache,
 )
-from configuration.app_settings import (
+from configuration.config import (
     CACHE_ENABLED,
     CACHE_SIMILARITY_THRESHOLD,
 )

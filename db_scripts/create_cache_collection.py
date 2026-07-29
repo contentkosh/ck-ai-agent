@@ -1,7 +1,7 @@
 from qdrant_client.models import Distance, VectorParams
 from common.logger import logger
 from database.qdrant_client_manager import client
-from configuration.app_settings import (
+from configuration.config import (
     CACHE_COLLECTION_NAME,
     EMBEDDING_DIMENSION,
 )

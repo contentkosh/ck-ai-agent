@@ -121,6 +121,10 @@ MAX_SCROLL_ITERATIONS = 1000
 # CACHE
 # ==========================================================
 
+LLMLINGUA_MODEL = "microsoft/llmlingua-2-bert-base-multilingual-cased-meetingbank"
+LLMLINGUA_DEVICE = "cuda"
+LLMLINGUA_TARGET_TOKEN = 512
+
 CACHE_ENABLED = os.getenv(
     "CACHE_ENABLED",
     "True",

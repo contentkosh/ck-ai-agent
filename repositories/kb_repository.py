@@ -42,12 +42,20 @@ from configuration.constants import (
     VECTOR_INSERTION_FAILED_LOG,
     VECTOR_INSERTION_LOG,
 )
+<<<<<<< HEAD
 from configuration.error_constants import(
     DATABASE_INSERT_ERROR_MESSAGE,
     DATABASE_FETCH_ERROR_MESSAGE,
     DATABASE_SEARCH_ERROR_MESSAGE,
     DATABASE_DELETE_ERROR_MESSAGE,
     DATABASE_CLEAR_ERROR_MESSAGE,
+=======
+from database.qdrant_client_manager import client
+
+from configuration.config import (
+    COLLECTION_NAME,
+    SCROLL_LIMIT,
+>>>>>>> 83843a0 (Rebased recent commits)
 )
 
 from dto.file_response_dto import UploadedDocumentDto
