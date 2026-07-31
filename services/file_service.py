@@ -19,12 +19,12 @@ from repositories.kb_repository import (
     deleteDocument,
     getUploadedFiles,
 )
-
+from dto.file_response_dto import UploadedDocumentDto
 # ==========================================================
 # Get Uploaded Documents
 # ==========================================================
 
-def get_uploaded_documents():
+def get_uploaded_documents() -> list[UploadedDocumentDto]:
     """
     Retrieve uploaded documents from the repository.
     """
@@ -53,7 +53,7 @@ def delete_uploaded_document(
         raise KnowledgeBaseException() from ex
     
     if not deleted:
-        raise NotFoundException(DOCUMENT_NOT_FOUND_ERROR.format(documentId))
+        raise NotFoundException(DOCUMENT_NOT_FOUND_ERROR.format(documentId),)
 
 # ==========================================================
 # Clear Knowledge Base

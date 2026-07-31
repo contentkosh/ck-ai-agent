@@ -8,6 +8,7 @@ from configuration.constants import (
     METADATA_SUMMARY,
     METADATA_TAG,
     METADATA_TITLE,
+    METADATA_TEXT,
 )
 from dto.knowledge_base_record_dto import KnowledgeBaseRecordDto
 
@@ -39,14 +40,14 @@ class QueryResponse(BaseModel):
         and the retrieved document payload.
         """
         return cls(
-            answer=answer,
-            document_id=payload.get(METADATA_DOCUMENT_ID,),
-            title=payload.get(METADATA_TITLE,),
-            document_type=payload.get(METADATA_DOCUMENT_TYPE,),
-            tag=payload.get(METADATA_TAG,),
-            summary=payload.get(METADATA_SUMMARY,),
-            source=payload.get(METADATA_SOURCE,),
-            page=payload.get(METADATA_PAGE,),
+            document_id=payload.get(METADATA_DOCUMENT_ID),
+            title=payload.get(METADATA_TITLE),
+            document_type=payload.get(METADATA_DOCUMENT_TYPE),
+            tag=payload.get(METADATA_TAG),
+            summary=payload.get(METADATA_SUMMARY),
+            source=payload.get(METADATA_SOURCE),
+            page=payload.get(METADATA_PAGE),
+            text=payload.get(METADATA_TEXT),
         )
 
 # ==========================================================

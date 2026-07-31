@@ -208,3 +208,4 @@ DELETE_TEMP_FILE_FAILED_LOG = ("Failed to delete temporary file: %s")
 PDF_EXTENSION = ".pdf"
 SUPPORTED_CONTENT_TYPE = "application/pdf"
 PDF_MAGIC_BYTES = b"%PDF"
+MAX_SCROLL_ITERATIONS_REACHED_LOG = ("Maximum scroll iterations reached while reading Qdrant records.")

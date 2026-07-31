@@ -33,10 +33,6 @@ router = APIRouter()
 # Get Uploaded Documents
 # ==========================================================
 
-# ==========================================================
-# Get Uploaded Documents
-# ==========================================================
-
 @router.get(
     DOCUMENTS_ROUTE,
     response_model=UploadedDocumentsListResponse,
