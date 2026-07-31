@@ -108,10 +108,6 @@ def ask_question(
             query,
         )
 
-        # --------------------------------------------------
-        # Generate Query Embedding
-        # --------------------------------------------------
-
         queryEmbedding = (
             get_embedding_model()
             .encode(query)
@@ -133,13 +129,13 @@ def ask_question(
 
             return QueryResponse(
                 answer=cached.get("answer"),
-                document_id=None,
-                title=None,
-                document_type=None,
-                tag=None,
-                summary=None,
-                source=CACHE_SOURCE,
-                page=None,
+                document_id=cached.get("document_id"),
+                title=cached.get("title"),
+                document_type=cached.get("document_type"),
+                tag=cached.get("tag"),
+                summary=cached.get("summary"),
+                source=cached.get("source"),
+                page=cached.get("page"),
             )
 
         # --------------------------------------------------
@@ -219,10 +215,6 @@ def ask_question(
             ),
         )
 
-        # --------------------------------------------------
-        # Token Optimization (LLMLingua-2)
-        # --------------------------------------------------
-
         compressedContext = compress_context(
             context=contextText,
             query=query,
@@ -252,6 +244,18 @@ def ask_question(
 
         answer = llmResponse.content.strip()
 
+        if ANSWER_NOT_FOUND_MESSAGE.lower() in answer.lower():
+            return QueryResponse(
+                answer=ANSWER_NOT_FOUND_MESSAGE,
+                document_id=None,
+                title=None,
+                document_type=None,
+                tag=None,
+                summary=None,
+                source=None,
+                page=None,
+            )
+
         # --------------------------------------------------
         # Save to Semantic Cache
         # --------------------------------------------------
@@ -261,6 +265,7 @@ def ask_question(
             embedding=queryEmbedding,
             context=contextText,
             answer=answer,
+            documentPayload=documentPayload,
         )
 
         # --------------------------------------------------

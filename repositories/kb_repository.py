@@ -405,4 +405,3 @@ def deleteAllDocuments() -> bool:
                 DATABASE_CLEAR_ERROR_MESSAGE,
             ),
         ) from exception
-       

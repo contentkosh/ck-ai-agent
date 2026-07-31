@@ -2,7 +2,7 @@ import uuid
 from typing import Optional
 from qdrant_client.models import PointStruct
 from database.qdrant_client_manager import client
-from configuration.config import (CACHE_COLLECTION_NAME)
+from configuration.config import CACHE_COLLECTION_NAME
 from common.logger import logger
 from common.custom_exceptions import DatabaseException
 
@@ -23,13 +23,12 @@ def search_cache(
             query=query_embedding,
             limit=limit,
         )
-        logger.info("Cache search returned %d result(s).", len(result.points))
+
+        logger.info("Cache search returned %d result(s).",len(result.points))
         return result.points
     except Exception as ex:
-        logger.exception("Cache search failed: %s", ex)
-        raise DatabaseException(
-            "Unable to search cache."
-        ) from ex
+        logger.exception("Cache search failed: %s",ex)
+        raise DatabaseException("Unable to search cache.") from ex
 
 
 # ==========================================================
@@ -42,11 +41,13 @@ def save_cache(
     embedding: list[float],
     context: str,
     answer: str,
+    documentPayload: dict,
 ):
     """
     Store an answer in the semantic cache.
     """
     logger.info("Cache saved for question: %s", question)
+
     try:
         point = PointStruct(
             id=str(uuid.uuid4()),
@@ -55,15 +56,21 @@ def save_cache(
                 "question": question,
                 "context": context,
                 "answer": answer,
+                "document_id": documentPayload.get("document_id"),
+                "title": documentPayload.get("title"),
+                "document_type": documentPayload.get("document_type"),
+                "tag": documentPayload.get("tag"),
+                "summary": documentPayload.get("summary"),
+                "source": documentPayload.get("source"),
+                "page": documentPayload.get("page"),
             },
         )
+
         client.upsert(
             collection_name=CACHE_COLLECTION_NAME,
             points=[point],
         )
-        logger.info("Answer cached successfully.")
+        logger.info("Answer cached successfully.",)
     except Exception as ex:
-        logger.exception("Failed to save cache.")
-        raise DatabaseException(
-            "Unable to save cache."
-        ) from ex
+        logger.exception("Failed to save cache: %s",ex)
+        raise DatabaseException("Unable to save cache.") from ex

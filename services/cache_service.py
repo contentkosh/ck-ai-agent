@@ -33,6 +33,13 @@ def get_cached_answer(query_embedding: list[float]):
         logger.info("Cache Hit")
         return {
             "answer": result.payload.get("answer"),
+            "document_id": result.payload.get("document_id"),
+            "title": result.payload.get("title"),
+            "document_type": result.payload.get("document_type"),
+            "tag": result.payload.get("tag"),
+            "summary": result.payload.get("summary"),
+            "source": result.payload.get("source"),
+            "page": result.payload.get("page"),
             "score": score,
         }
     logger.info("Cache Miss")
@@ -68,6 +75,7 @@ def cache_answer(
     embedding: list[float],
     context: str,
     answer: str,
+    documentPayload: dict,
 ):
     """
     Store a successful answer in the cache.
@@ -83,4 +91,5 @@ def cache_answer(
         embedding=embedding,
         context=context,
         answer=answer,
+        documentPayload=documentPayload,
     )
