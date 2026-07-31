@@ -65,11 +65,8 @@ def print_all_documents() -> None:
 
         if nextOffset is None:
             break
-
         iteration += 1
-
     else:
         logger.warning(MAX_SCROLL_ITERATIONS_REACHED_LOG,)
-
 if __name__ == "__main__":
     print_all_documents()

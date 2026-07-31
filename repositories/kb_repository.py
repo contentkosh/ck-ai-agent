@@ -4,7 +4,6 @@
 # searching, retrieving, and deleting knowledge base documents.
 # ==========================================================
 
-from sys import exception
 from typing import Any, Optional
 from qdrant_client.models import (
     FieldCondition,
@@ -42,21 +41,16 @@ from configuration.constants import (
     VECTOR_INSERTION_FAILED_LOG,
     VECTOR_INSERTION_LOG,
 )
-<<<<<<< HEAD
 from configuration.error_constants import(
     DATABASE_INSERT_ERROR_MESSAGE,
+    DATABASE_SEARCH_ERROR_MESSAGE,
     DATABASE_FETCH_ERROR_MESSAGE,
     DATABASE_SEARCH_ERROR_MESSAGE,
     DATABASE_DELETE_ERROR_MESSAGE,
     DATABASE_CLEAR_ERROR_MESSAGE,
-=======
+)
 from database.qdrant_client_manager import client
 
-from configuration.config import (
-    COLLECTION_NAME,
-    SCROLL_LIMIT,
->>>>>>> 83843a0 (Rebased recent commits)
-)
 
 from dto.file_response_dto import UploadedDocumentDto
 from database.qdrant_client_manager import client
@@ -166,16 +160,6 @@ def saveChunks(
     Save vectors to Qdrant.
     """
     try:
-        client.upsert(
-            collection_name=COLLECTION_NAME,
-            points=points,
-        )
-
-        logger.info(
-            VECTOR_INSERTION_LOG,
-            len(points),
-        )
-
         client.upsert(
             collection_name=COLLECTION_NAME,
             points=points,
@@ -379,19 +363,15 @@ def deleteAllDocuments() -> bool:
             collection_name=COLLECTION_NAME,
             points_selector=Filter(),
         )
-
-        logger.info(
-            CLEAR_KB_LOG,
-        )
-
+        logger.info(CLEAR_KB_LOG,)
         return True
-
     except Exception as exception:
         logger.exception(
             "%s: %s",
             CLEAR_KB_FAILED_LOG,
             exception,
         )
+<<<<<<< HEAD
 
         if isQdrantConnectionError(exception):
             raise ContentKoshException(
@@ -400,6 +380,15 @@ def deleteAllDocuments() -> bool:
             ) from exception
 
         raise ContentKoshException(
+=======
+    except Exception as exception:
+        logger.exception(
+            CLEAR_KB_FAILED_LOG,
+            exception,
+        )
+
+        raise DatabaseException(
+>>>>>>> bcd6c41 (Rebased on the Siddhi's final branch)
             DATABASE_CLEAR_ERROR_MESSAGE,
             cause=QdrantDeleteException(
                 DATABASE_CLEAR_ERROR_MESSAGE,

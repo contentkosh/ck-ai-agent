@@ -182,10 +182,7 @@ def ask_question(
                 page=None,
             )
 
-        logger.info(
-            RETRIEVED_CHUNKS_LOG,
-            len(searchResults),
-        )
+        logger.info(RETRIEVED_CHUNKS_LOG,len(searchResults))
 
         # --------------------------------------------------
         # Build Context
@@ -284,10 +281,7 @@ def ask_question(
         raise
 
     except Exception as exception:
-        logger.exception(
-            CHAT_SERVICE_FAILED_LOG,
-            exception,
-        )
+        logger.exception(CHAT_SERVICE_FAILED_LOG,exception)
         raise KnowledgeBaseException(
             CHAT_SERVICE_ERROR_MESSAGE,
         ) from exception

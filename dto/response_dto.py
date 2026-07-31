@@ -1,5 +1,7 @@
-from typing import Any, Optional
+from typing import Optional
+
 from pydantic import BaseModel
+
 from configuration.constants import (
     METADATA_DOCUMENT_ID,
     METADATA_DOCUMENT_TYPE,
@@ -8,18 +10,22 @@ from configuration.constants import (
     METADATA_SUMMARY,
     METADATA_TAG,
     METADATA_TITLE,
-    METADATA_TEXT,
 )
-from dto.knowledge_base_record_dto import KnowledgeBaseRecordDto
+
+from dto.knowledge_base_record_dto import (
+    KnowledgeBaseRecordDto,
+)
 
 # ==========================================================
 # Query Response
 # ==========================================================
 
+
 class QueryResponse(BaseModel):
     """
     Response returned by the Knowledge Base.
     """
+
     answer: str
     document_id: Optional[str] = None
     title: Optional[str] = None
@@ -48,17 +54,19 @@ class QueryResponse(BaseModel):
             summary=payload.get(METADATA_SUMMARY),
             source=payload.get(METADATA_SOURCE),
             page=payload.get(METADATA_PAGE),
-            text=payload.get(METADATA_TEXT),
         )
+
 
 # ==========================================================
 # Get Knowledge Base Response
 # ==========================================================
 
+
 class KnowledgeBaseResponse(BaseModel):
     """
     Response returned when retrieving Knowledge Base records.
     """
+
     request_id: str
     total_records: int
     records: list[KnowledgeBaseRecordDto]

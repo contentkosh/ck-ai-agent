@@ -55,11 +55,9 @@ DEFAULT_TOP_K = 5
 # API STATUS
 # ==========================================================
 
-<<<<<<< HEAD
 SUCCESS_STATUS = "success"
 FAILED_STATUS = "failed"
 SERVICE_RUNNING_STATUS = "Running"
-=======
 API_TITLE = "Knowledge Base API"
 API_VERSION = "1.0.0"
 # ==========================================================
@@ -74,7 +72,6 @@ QUERY_LENGTH_ERROR = (
 # ==========================================
 # CACHE
 # ==========================================
->>>>>>> da5801e (Cherry picked the latest changes from v2 branch)
 
 # ==========================================================
 # API ROUTES
