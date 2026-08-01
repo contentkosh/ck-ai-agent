@@ -178,7 +178,7 @@ def ask_question(
                 document_type=None,
                 tag=None,
                 summary=None,
-                source=CACHE_SOURCE,
+                source=None,
                 page=None,
             )
 
