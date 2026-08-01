@@ -145,7 +145,7 @@ def ask_question(
                 prompt,
             )
         except Exception as exception:
-            logger.exception(LLM_INVOCATION_FAILED_LOG,exception,)
+            logger.exception("%s: %s", LLM_INVOCATION_FAILED_LOG, exception)
             raise LLMResponseException() from exception
 
         # --------------------------------------------------

@@ -8,7 +8,11 @@ from exceptions.validation_exception import (
     EmptyQueryException,
     QueryTooLongException,
 )
-from validators.file_validator import (validate_file_size,validate_pdf_file,)
+from validators.file_validator import (
+    validate_file_size,
+    validate_pdf_file,
+    validate_saved_file,
+)
 from validators.query_validator import (validate_query,)
 from validators.tag_validator import (validate_tag,)
 from validators.upload_validator import (validate_upload,)
@@ -53,7 +57,6 @@ def test_validate_tag_too_long():
 # File Validator Tests
 # ==========================================================
 
-from io import BytesIO
 class FakeUploadFile:
 
     def __init__(
@@ -70,6 +73,35 @@ class FakeUploadFile:
 def test_validate_pdf_success():
     file = FakeUploadFile()
     validate_pdf_file(file)
+
+def test_validate_pdf_none():
+    """
+    Verify validation fails when the uploaded file is None.
+    """
+    with pytest.raises(EmptyFileException):
+        validate_pdf_file(None)
+
+def test_validate_pdf_no_filename():
+    """
+    Verify validation fails when no filename is provided.
+    """
+    file = FakeUploadFile()
+    file.filename = None
+
+    with pytest.raises(InvalidFileException):
+        validate_pdf_file(file)
+
+def test_validate_pdf_invalid_content_type():
+    """
+    Verify validation fails when the uploaded content type
+    is not application/pdf.
+    """
+    file = FakeUploadFile(
+        content_type="text/plain",
+    )
+
+    with pytest.raises(InvalidFileException):
+        validate_pdf_file(file)
 
 def test_validate_pdf_wrong_extension():
     file = FakeUploadFile(filename="sample.txt")
@@ -89,6 +121,14 @@ def test_validate_pdf_invalid_signature():
 def test_validate_file_size():
     with pytest.raises(InvalidFileException):
         validate_file_size(MAX_FILE_SIZE + 1)
+
+def test_validate_saved_file_not_found():
+    """
+    Verify validation fails when the saved PDF
+    does not exist on disk.
+    """
+    with pytest.raises(InvalidFileException):
+        validate_saved_file("missing_document.pdf",)
 
 # ==========================================================
 # Upload Validator Tests

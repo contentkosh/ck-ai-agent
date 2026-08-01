@@ -91,7 +91,6 @@ CHAT_SERVICE_ERROR_MESSAGE = ("Unable to process user query.")
 # ==========================================================
 
 NO_FILENAME_ERROR = ("Uploaded file has no filename.")
-ONLY_PDF_ALLOWED_ERROR = ("Only PDF files are allowed.")
 INVALID_FILE_TYPE_ERROR = ("Invalid file type. Only PDF files are allowed.")
 EMPTY_UPLOADED_FILE_ERROR = ("Uploaded file is empty.")
 INVALID_PDF_SIGNATURE_ERROR = ("File content does not match a valid PDF.")
@@ -125,3 +124,10 @@ INVALID_TAG = "Tag cannot be empty."
 
 DOCUMENT_NOT_FOUND_ERROR = ("Document '{}' does not exist.")
 KNOWLEDGE_BASE_ERROR_MESSAGE = ("Knowledge Base operation failed.")
+
+DATABASE_INSERT_ERROR_MESSAGE = ("Unable to insert vectors.")
+DATABASE_SEARCH_ERROR_MESSAGE = ("Semantic search failed.")
+DATABASE_FETCH_ERROR_MESSAGE = ("Unable to fetch records.")
+DATABASE_FETCH_DOCUMENTS_ERROR_MESSAGE = ("Unable to fetch uploaded documents.")
+DATABASE_DELETE_ERROR_MESSAGE = ("Unable to delete document.")
+DATABASE_CLEAR_ERROR_MESSAGE = ("Unable to clear Knowledge Base.")

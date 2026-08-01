@@ -2,6 +2,9 @@ from io import BytesIO
 from unittest.mock import patch
 from fastapi import status
 from tests.conftest import client
+from exceptions.knowledge_base_exception import KnowledgeBaseException
+from exceptions.validation_exception import InvalidFileException
+from common.custom_exceptions import NotFoundException
 
 # ==========================================================
 # Health API Tests
@@ -83,6 +86,25 @@ def test_query_knowledge_base(
     assert data["source"] == "ai_notes.pdf"
     assert data["page"] == 12
 
+@patch("api.routes.kb_routes.ask_question")
+def test_query_knowledge_base_failure(
+    mock_ask_question,
+    client,
+):
+    """
+    Verify query API returns Internal Server Error
+    when the service fails.
+    """
+    mock_ask_question.side_effect = KnowledgeBaseException()
+    response = client.post(
+        "/llm/kb/query",
+        json={
+            "query": "What is AI?",
+        },
+    )
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
 # ==========================================================
 # Upload Documents API Tests
 # ==========================================================
@@ -144,6 +166,41 @@ def test_upload_document_rejected_without_api_key(
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 # ==========================================================
+# Upload Documents - Negative Tests
+# ==========================================================
+
+@patch("api.routes.upload_routes.ingest_documents")
+def test_upload_document_invalid_file(
+    mock_ingest_documents,
+    client,
+    auth_headers,
+):
+    """
+    Verify upload returns Bad Request when an invalid
+    file is uploaded.
+    """
+    mock_ingest_documents.side_effect = InvalidFileException(
+        "Invalid file type.",
+    )
+
+    response = client.post(
+        "/llm/upload",
+        files=[
+            (
+                "files",
+                (
+                    "sample.txt",
+                    BytesIO(b"dummy"),
+                    "text/plain",
+                ),
+            ),
+        ],
+        headers=auth_headers,
+    )
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+# ==========================================================
 # Get Uploaded Documents API Tests
 # ==========================================================
 
@@ -168,6 +225,19 @@ def test_get_uploaded_documents(
     data = response.json()
     assert data["total_documents"] == 1
     assert data["documents"][0]["title"] == "AI Notes"
+
+@patch("api.routes.file_routes.get_uploaded_documents_service")
+def test_get_uploaded_documents_service_failure(
+    mock_service,
+    client,
+):
+    """
+    Verify API returns Internal Server Error when
+    the service fails.
+    """
+    mock_service.side_effect = KnowledgeBaseException()
+    response = client.get("/llm/doc")
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 # ==========================================================
 # Delete Document API Tests
@@ -203,6 +273,27 @@ def test_delete_document_rejected_without_api_key(
         "/llm/files/delete/123",
     )
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+@patch("api.routes.file_routes.delete_document_service")
+def test_delete_document_not_found(
+    mock_delete_document_service,
+    client,
+    auth_headers,
+):
+    """
+    Verify deleting a non-existing document
+    returns Not Found.
+    """
+    mock_delete_document_service.side_effect = NotFoundException(
+        "Document not found.",
+    )
+
+    response = client.delete(
+        "/llm/files/delete/123",
+        headers=auth_headers,
+    )
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
 
 # ==========================================================
 # Clear Knowledge Base API Tests

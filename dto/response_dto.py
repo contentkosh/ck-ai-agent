@@ -40,6 +40,7 @@ class QueryResponse(BaseModel):
         and the retrieved document payload.
         """
         return cls(
+            answer=answer,
             document_id=payload.get(METADATA_DOCUMENT_ID),
             title=payload.get(METADATA_TITLE),
             document_type=payload.get(METADATA_DOCUMENT_TYPE),

@@ -10,6 +10,7 @@ class UploadedDocumentDto(BaseModel):
     """
     title: str | None = None
     document_type: str | None = None
+    document_id: str | None = None
     tag: str | None = None
     summary: str | None = None
     source: str | None = None

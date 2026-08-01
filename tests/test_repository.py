@@ -9,6 +9,8 @@ from repositories.kb_repository import (
     searchChunks,
 )
 from repositories.kb_repository import (buildUploadedDocument,)
+import pytest
+from exceptions.contentkosh_exception import ContentKoshException
 # ==========================================================
 # Build Payload Tests
 # ==========================================================
@@ -43,6 +45,22 @@ def test_save_chunks(
     mock_client.upsert.assert_called_once()
 
 # ==========================================================
+# Save Chunks - Failure Test
+# ==========================================================
+
+@patch("repositories.kb_repository.client")
+def test_save_chunks_failure(
+    mock_client,
+):
+    """
+    Verify saveChunks raises ContentKoshException
+    when vector insertion fails.
+    """
+    mock_client.upsert.side_effect = Exception("Database Error")
+    with pytest.raises(ContentKoshException):
+        saveChunks([])
+
+# ==========================================================
 # Search Chunk Tests
 # ==========================================================
 
@@ -56,6 +74,24 @@ def test_search_chunks(
     mock_client.query_points.return_value = result
     response = searchChunks(queryEmbedding=[0.1, 0.2],)
     assert len(response) == 1
+
+# ==========================================================
+# Search Chunk - Failure Test
+# ==========================================================
+
+@patch("repositories.kb_repository.client")
+def test_search_chunks_failure(
+    mock_client,
+):
+    """
+    Verify searchChunks raises ContentKoshException
+    when semantic search fails.
+    """
+    mock_client.query_points.side_effect = Exception("Database Error")
+    with pytest.raises(ContentKoshException):
+        searchChunks(
+            queryEmbedding=[0.1, 0.2],
+        )
 
 # ==========================================================
 # Get All Records Tests
@@ -84,6 +120,22 @@ def test_get_all_records(
     assert records[0].page == 10
 
 # ==========================================================
+# Get All Records - Failure Test
+# ==========================================================
+
+@patch("repositories.kb_repository._scrollRecords")
+def test_get_all_records_failure(
+    mock_scroll,
+):
+    """
+    Verify getAllRecords raises ContentKoshException
+    when record retrieval fails.
+    """
+    mock_scroll.side_effect = Exception("Database Error")
+    with pytest.raises(ContentKoshException):
+        getAllRecords()
+
+# ==========================================================
 # Get Uploaded Files Tests
 # ==========================================================
 
@@ -105,6 +157,22 @@ def test_get_uploaded_files(
     documents = getUploadedFiles()
     assert len(documents) == 1
     assert documents[0].title == "AI Notes"
+
+# ==========================================================
+# Get Uploaded Files - Failure Test
+# ==========================================================
+
+@patch("repositories.kb_repository._scrollRecords")
+def test_get_uploaded_files_failure(
+    mock_scroll,
+):
+    """
+    Verify getUploadedFiles raises ContentKoshException
+    when document retrieval fails.
+    """
+    mock_scroll.side_effect = Exception("Database Error")
+    with pytest.raises(ContentKoshException):
+        getUploadedFiles()
 
 # ==========================================================
 # Delete Document Tests
@@ -148,6 +216,39 @@ def test_delete_document_found(
     assert result is True
     mock_client.delete.assert_called_once()
 
+# ==========================================================
+# Delete Document - Failure Test
+# ==========================================================
+
+@patch("repositories.kb_repository.client")
+def test_delete_document_failure(
+    mock_client,
+):
+    """
+    Verify deleteDocument raises ContentKoshException
+    when deletion fails.
+    """
+    mock_client.scroll.side_effect = Exception("Database Error")
+    with pytest.raises(ContentKoshException):
+        deleteDocument("123")
+
+# ==========================================================
+# Clear Knowledge Base - Failure Test
+# ==========================================================
+
+@patch("repositories.kb_repository.client")
+def test_delete_all_documents_failure(
+    mock_client,
+):
+    """
+    Verify deleteAllDocuments raises ContentKoshException
+    when clearing the Knowledge Base fails.
+    """
+    mock_client.delete.side_effect = Exception("Database Error")
+
+    with pytest.raises(ContentKoshException):
+        deleteAllDocuments()
+        
 # ==========================================================
 # Get All Records - Tag Filter Tests
 # ==========================================================

@@ -308,6 +308,7 @@ def ingest_documents(
             total_chunks += document.chunks
             documents.append(
                 UploadedDocumentDto(
+                        document_id=document.document_id,
                         title=document.metadata.title,
                         document_type=document.metadata.document_type,
                         tag=document.metadata.tag,

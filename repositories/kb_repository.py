@@ -88,11 +88,29 @@ def buildUploadedDocument(
     Build document metadata.
     """
     return UploadedDocumentDto(
+        document_id=payload.get(METADATA_DOCUMENT_ID),
         title=payload.get(METADATA_TITLE),
         document_type=payload.get(METADATA_DOCUMENT_TYPE),
         tag=payload.get(METADATA_TAG),
         summary=payload.get(METADATA_SUMMARY),
         source=payload.get(METADATA_SOURCE),
+    )
+
+def buildKnowledgeBaseRecord(
+    payload: dict,
+) -> KnowledgeBaseRecordDto:
+    """
+    Build a Knowledge Base record from a Qdrant payload.
+    """
+    return KnowledgeBaseRecordDto(
+        document_id=payload.get(METADATA_DOCUMENT_ID),
+        title=payload.get(METADATA_TITLE),
+        document_type=payload.get(METADATA_DOCUMENT_TYPE),
+        tag=payload.get(METADATA_TAG),
+        summary=payload.get(METADATA_SUMMARY),
+        source=payload.get(METADATA_SOURCE),
+        page=payload.get(METADATA_PAGE),
+        text=payload.get(METADATA_TEXT),
     )
 
 # ==========================================================
@@ -161,28 +179,17 @@ def getAllRecords(
             )
 
         records = _scrollRecords(queryFilter)
-        responseRecords: list[KnowledgeBaseRecordDto] = []
 
-        for point in records:
-           documentPayload = point.payload
-           responseRecords.append(
-                KnowledgeBaseRecordDto(
-                    document_id=documentPayload.get(METADATA_DOCUMENT_ID,),
-                    title=documentPayload.get(METADATA_TITLE,),
-                    document_type=documentPayload.get(METADATA_DOCUMENT_TYPE,),
-                    tag=documentPayload.get(METADATA_TAG,),
-                    summary=documentPayload.get(METADATA_SUMMARY,),
-                    source=documentPayload.get(METADATA_SOURCE,),
-                    page=documentPayload.get(METADATA_PAGE,),
-                    text=documentPayload.get(METADATA_TEXT,),
-                )
-            )
+        responseRecords = [
+            buildKnowledgeBaseRecord(point.payload)
+            for point in records
+            ]
 
-        logger.info(FETCH_RECORDS_LOG,len(responseRecords))
+        logger.info(FETCH_RECORDS_LOG,len(responseRecords),)
         return responseRecords
 
     except Exception as ex:
-        logger.exception(FETCH_RECORDS_FAILED_LOG,ex)
+        logger.exception("%s: %s", FETCH_RECORDS_FAILED_LOG, ex)
         raise ContentKoshException(DATABASE_FETCH_ERROR_MESSAGE) from ex
 
 def getUploadedFiles() -> list[UploadedDocumentDto]:
@@ -206,7 +213,7 @@ def getUploadedFiles() -> list[UploadedDocumentDto]:
         logger.info(FETCH_DOCUMENTS_LOG,len(documents))
         return list(documents.values())
     except Exception as ex:
-        logger.exception(FETCH_DOCUMENTS_FAILED_LOG,ex,)
+        logger.exception("%s: %s", FETCH_DOCUMENTS_FAILED_LOG, ex)
         raise ContentKoshException(DATABASE_FETCH_DOCUMENTS_ERROR_MESSAGE) from ex
 
 # ==========================================================
@@ -246,7 +253,7 @@ def deleteDocument(
         logger.info(DELETE_DOCUMENT_LOG,documentId,)
         return True
     except Exception as ex:
-        logger.exception(DELETE_DOCUMENT_FAILED_LOG, ex,)
+        logger.exception("%s: %s", DELETE_DOCUMENT_FAILED_LOG, ex)
         raise ContentKoshException(DATABASE_DELETE_ERROR_MESSAGE) from ex
 
 # ==========================================================
@@ -266,5 +273,5 @@ def deleteAllDocuments() -> bool:
         logger.info(CLEAR_KB_LOG,)
         return True
     except Exception as ex:
-        logger.exception(CLEAR_KB_FAILED_LOG,ex,)
+        logger.exception("%s: %s", CLEAR_KB_FAILED_LOG, ex)
         raise ContentKoshException(DATABASE_CLEAR_ERROR_MESSAGE) from ex
