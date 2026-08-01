@@ -30,9 +30,7 @@ from configuration.constants import (
     KB_INGESTION_FAILED_LOG,
     FILE_PROCESSING_STARTED_LOG,
     FILE_PROCESSING_COMPLETED_LOG,
-    GENERATED_VECTORS_LOG,
     PAGE_CHUNK_GENERATION_LOG,
-    EMBEDDING_GENERATION_FAILED_LOG,
     METADATA_EXTRACTION_STARTED_LOG,
     METADATA_EXTRACTION_COMPLETED_LOG,
     METADATA_EXTRACTION_FAILED_LOG,
@@ -85,18 +83,6 @@ def get_text_splitter() -> RecursiveCharacterTextSplitter:
 def generate_uuid() -> str:
     """Generate a UUID."""
     return str(uuid.uuid4())
-
-# ==========================================================
-# Generate Embedding
-# ==========================================================
-
-def generate_embedding(text: str) -> list[float]:
-    """Generate an embedding vector."""
-    try:
-        return get_embedding_model().encode(text).tolist()
-    except Exception as ex:
-        logger.exception(EMBEDDING_GENERATION_FAILED_LOG, ex)
-        raise EmbeddingException(EMBEDDING_GENERATION_FAILED_MESSAGE,) from ex
 
 # ==========================================================
 # Build Payload
@@ -187,41 +173,91 @@ def get_document_metadata(pages: list[Page]) -> DocumentMetadataDto:
         raise DocumentProcessingException(DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE,) from ex
 
 def build_vectors(
-    *,
-    pages: list[Page],
-    metadata: DocumentMetadataDto,
+    pages: list[dict],
+    metadata,
     filename: str,
     document_id: str,
 ) -> tuple[list[PointStruct], int]:
-    """Generate vectors for all document chunks."""
-
+    """
+    Split document pages into chunks, generate embeddings
+    in batches, and build Qdrant points.
+    """
     splitter = get_text_splitter()
-    points: list[PointStruct] = []
-    total_chunks = 0
+
+    chunkRecords = []
+
+    # --------------------------------------------------
+    # Generate Chunks
+    # --------------------------------------------------
+
     for page in pages:
-        page_text = page["text"]
-        if not page_text.strip():
+        pageText = page["text"]
+
+        if not pageText.strip():
             continue
-        page_number = page["page"]
-        chunks = splitter.split_text(page_text)
-        logger.info(PAGE_CHUNK_GENERATION_LOG,page_number,len(chunks),)
+
+        pageNumber = page["page"]
+
+        chunks = splitter.split_text(
+            pageText,
+        )
+
+        logger.info(
+            PAGE_CHUNK_GENERATION_LOG,
+            pageNumber,
+            len(chunks),
+        )
+
         for chunk in chunks:
-            points.append(
-                PointStruct(
-                    id=generate_uuid(),
-                    vector=generate_embedding(chunk),
-                    payload=build_payload(
-                        chunk=chunk,
-                        metadata=metadata,
-                        filename=filename,
-                        document_id=document_id,
-                        page_number=page_number,
-                    ),
-                )
+            chunkRecords.append(
+                {
+                    "text": chunk,
+                    "page": pageNumber,
+                }
             )
-            total_chunks += 1
-    logger.info(GENERATED_VECTORS_LOG,total_chunks,)
-    return points, total_chunks
+
+    if not chunkRecords:
+        return [], 0
+
+    # --------------------------------------------------
+    # Batch Embedding
+    # --------------------------------------------------
+
+    chunkTexts = [
+        record["text"]
+        for record in chunkRecords
+    ]
+
+    embeddings = get_embedding_model().encode(
+        chunkTexts,
+        batch_size=32,
+    )
+
+    # --------------------------------------------------
+    # Build Qdrant Points
+    # --------------------------------------------------
+
+    points = []
+
+    for record, embedding in zip(
+        chunkRecords,
+        embeddings,
+    ):
+        points.append(
+            PointStruct(
+                id=generate_uuid(),
+                vector=embedding.tolist(),
+                payload=build_payload(
+                    chunk=record["text"],
+                    metadata=metadata,
+                    filename=filename,
+                    document_id=document_id,
+                    page_number=record["page"],
+                ),
+            )
+        )
+
+    return points, len(points)
 
 def process_document(
     pdf: PdfReader,
