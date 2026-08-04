@@ -16,7 +16,7 @@ from common.file_utils import save_uploaded_file, delete_saved_file
 from common.logger import logger
 from validators.file_validator import validate_saved_file
 from configuration.config import (CHUNK_OVERLAP,CHUNK_SIZE,)
-from exceptions.document_exception import (DocumentProcessingException,EmptyDocumentException,)
+from exceptions.document_exception import (DocumentProcessingException,EmptyDocumentException, NoReadableTextException,)
 from configuration.constants import (
     FILE_SAVE_LOG,
     PDF_READ_FAILED_LOG,
@@ -48,11 +48,9 @@ from configuration.constants import (
 )
 from configuration.error_constants import (
     EMBEDDING_GENERATION_FAILED_MESSAGE,
+    NO_READABLE_TEXT_MESSAGE,
     PDF_READ_FAILED_MESSAGE,
     DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE,
-    DOCUMENT_PROCESSING_FAILED_MESSAGE,
-    KNOWLEDGE_BASE_INGESTION_FAILED_MESSAGE,
-    EMPTY_DOCUMENT_TEXT_MESSAGE,
 )
 from repositories.kb_repository import saveChunks
 from services.document_metadata_service import extract_document_metadata
@@ -66,6 +64,7 @@ from dto.document_metadata_dto import DocumentMetadataDto
 from exceptions.contentkosh_exception import (ContentKoshException,)
 from typing import TypedDict
 from exceptions.knowledge_base_exception import (KnowledgeBaseException,)
+from exceptions.qdrant_exception import (QdrantConnectionException,)
 
 class Page(TypedDict):
     page: int
@@ -150,7 +149,7 @@ def read_pdf(file: UploadFile) -> tuple[PdfReader, str]:
 
 def extract_document_text(
     pdf: PdfReader,
-) -> tuple[str, list[Page]]:
+) -> tuple[str, list[Page], int]:
     """Extract text from all PDF pages."""
     pages: list[Page] = []
     document_text: list[str] = []
@@ -234,9 +233,7 @@ def process_document(
         document_id = generate_uuid()
         full_text, pages = extract_document_text(pdf)
         if not full_text.strip():
-            raise EmptyDocumentException(
-                EMPTY_DOCUMENT_TEXT_MESSAGE,
-            )
+            raise NoReadableTextException()
         metadata = get_document_metadata(pages)
         points, total_chunks = build_vectors(
             pages=pages,
@@ -258,6 +255,7 @@ def process_document(
 
     except (
         EmptyDocumentException,
+        NoReadableTextException,
         DocumentProcessingException,
         PDFProcessingException,
     ):
@@ -302,9 +300,23 @@ def ingest_documents(
             try:
                 saveChunks(document.points)
 
-            except ContentKoshException as ex:
-                logger.exception(KB_INGESTION_FAILED_LOG,ex,)
-                raise KnowledgeBaseException() from ex
+            except ContentKoshException as exception:
+                print(type(exception.cause))
+                print(exception.cause)
+
+                logger.exception(
+                    KB_INGESTION_FAILED_LOG,
+                    exception,
+                )
+
+                if isinstance(
+                    exception.cause,
+                    QdrantConnectionException,
+                ):
+                    raise exception.cause
+
+                raise KnowledgeBaseException() from exception
+                        
             total_chunks += document.chunks
             documents.append(
                 UploadedDocumentDto(
@@ -333,11 +345,17 @@ def ingest_documents(
 
     except (
         EmptyDocumentException,
+        NoReadableTextException,
         DocumentProcessingException,
         PDFProcessingException,
         KnowledgeBaseException,
+        QdrantConnectionException,
     ):
         raise
+
     except Exception as ex:
-        logger.exception(KB_INGESTION_FAILED_LOG,ex,)
+        logger.exception(
+            KB_INGESTION_FAILED_LOG,
+            ex,
+        )
         raise

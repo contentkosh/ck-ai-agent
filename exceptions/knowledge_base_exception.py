@@ -14,5 +14,5 @@ class KnowledgeBaseException(ApplicationException):
         super().__init__(
             error_code=ErrorCode.KNOWLEDGE_BASE_OPERATION_FAILED,
             message=message,
-            status_code=HTTPStatus.BAD_REQUEST,
+            status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
         )

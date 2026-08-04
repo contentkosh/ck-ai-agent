@@ -146,3 +146,15 @@ def test_validate_upload_success(
     file = FakeUploadFile()
     validate_upload([file])
     mock_validate_pdf.assert_called_once()
+
+@patch("validators.upload_validator.validate_pdf_file")
+def test_validate_upload_invalid_file(
+    mock_validate_pdf,
+):
+    """
+    Verify upload validation propagates file validation errors.
+    """
+    mock_validate_pdf.side_effect = InvalidFileException("Invalid file")
+
+    with pytest.raises(InvalidFileException):
+        validate_upload([FakeUploadFile()])

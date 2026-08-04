@@ -26,6 +26,11 @@ def test_build_context():
     assert "Artificial Intelligence" in context
     assert "Machine Learning" in context
 
+def test_build_context_empty():
+    """
+    Verify an empty context is returned when no chunks exist.
+    """
+    assert build_context([]) == ""
 # ==========================================================
 # Build Prompt Tests
 # ==========================================================
@@ -125,10 +130,7 @@ def test_ask_question_repository_failure(
         0.2,
     ]
     mock_embedding.return_value = embedding
-    mock_search.side_effect = ContentKoshException(
-        "Database failure",
-    )
-
+    mock_search.side_effect = ContentKoshException("Database failure",)
     with pytest.raises(KnowledgeBaseException):
         ask_question("What is AI?")
 
@@ -167,10 +169,7 @@ def test_ask_question_llm_failure(
     }
 
     mock_search.return_value = [chunk]
-    mock_llm.return_value.invoke.side_effect = Exception(
-        "LLM unavailable",
-    )
-
+    mock_llm.return_value.invoke.side_effect = Exception("LLM unavailable",)
     with pytest.raises(LLMResponseException):
         ask_question("What is AI?")
 
@@ -216,9 +215,79 @@ def test_ingest_documents_cleans_up_saved_file_on_success(
     fake_file.file = BytesIO(b"%PDF-1.4 dummy pdf")
 
     ingest_documents([fake_file])
-
     mock_save_chunks.assert_called_once()
+    mock_delete_saved_file.assert_called_once_with("/tmp/fake_saved.pdf",)
 
-    mock_delete_saved_file.assert_called_once_with(
+@patch("services.kb_ingestion_service.saveChunks")
+@patch("services.kb_ingestion_service.read_pdf")
+@patch("services.kb_ingestion_service.process_document")
+@patch("services.kb_ingestion_service.delete_saved_file")
+def test_ingest_documents_process_document_failure(
+    mock_delete_saved_file,
+    mock_process_document,
+    mock_read_pdf,
+    mock_save_chunks,
+):
+    """
+    Verify temporary files are cleaned up when document
+    processing fails.
+    """
+    fake_pdf = MagicMock()
+    fake_pdf.stream = MagicMock()
+    fake_pdf.stream.closed = False
+    mock_read_pdf.return_value = (
+        fake_pdf,
         "/tmp/fake_saved.pdf",
     )
+
+    mock_process_document.side_effect = Exception("Processing failed",)
+    fake_file = MagicMock()
+    fake_file.filename = "sample.pdf"
+    fake_file.content_type = "application/pdf"
+    fake_file.file = BytesIO(b"%PDF-1.4 dummy pdf")
+    with pytest.raises(Exception):
+        ingest_documents([fake_file])
+
+    mock_delete_saved_file.assert_called_once()
+    mock_save_chunks.assert_not_called()
+
+@patch("services.kb_ingestion_service.delete_saved_file")
+@patch("services.kb_ingestion_service.saveChunks")
+@patch("services.kb_ingestion_service.process_document")
+@patch("services.kb_ingestion_service.read_pdf")
+def test_ingest_documents_save_chunks_failure(
+    mock_read_pdf,
+    mock_process_document,
+    mock_save_chunks,
+    mock_delete_saved_file,
+):
+    """
+    Verify repository failures raise KnowledgeBaseException.
+    """
+    fake_pdf = MagicMock()
+    mock_read_pdf.return_value = (
+        fake_pdf,
+        "/tmp/fake_saved.pdf",
+    )
+
+    mock_process_document.return_value = ProcessedDocumentDto(
+        document_id="123",
+        metadata=DocumentMetadataDto(
+            title="AI",
+            document_type="Notes",
+            tag="ai",
+            summary="summary",
+        ),
+        points=[],
+        chunks=1,
+    )
+
+    mock_save_chunks.side_effect = ContentKoshException("Database failure",)
+    fake_file = MagicMock()
+    fake_file.filename = "sample.pdf"
+    fake_file.content_type = "application/pdf"
+    fake_file.file = BytesIO(b"%PDF-1.4 dummy pdf")
+    with pytest.raises(KnowledgeBaseException):
+        ingest_documents([fake_file])
+        mock_delete_saved_file.assert_called_once_with("/tmp/fake_saved.pdf",)
+

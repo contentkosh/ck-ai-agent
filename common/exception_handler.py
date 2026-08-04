@@ -5,6 +5,8 @@ from common.custom_exceptions import (ApplicationException,)
 from common.error_codes import (ErrorCode,)
 from configuration.constants import (UNHANDLED_EXCEPTION_LOG,)
 from configuration.error_constants import (INTERNAL_SERVER_ERROR_MESSAGE,)
+from http import HTTPStatus
+
 # ==========================================================
 # Error Response Builder
 # ==========================================================
@@ -22,14 +24,11 @@ def build_error_response(
         status_code=status_code,
         content={
             "success": False,
+            "status": status_code,
+            "status_text": HTTPStatus(status_code).phrase,
             "error": {
                 "code": code,
                 "message": message,
-                "request_id": getattr(
-                    request.state,
-                    "request_id",
-                    None,
-                ),
             },
         },
     )

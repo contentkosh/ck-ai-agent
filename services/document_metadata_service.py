@@ -18,7 +18,6 @@ from configuration.constants import (
 )
 from configuration.context import (DOCUMENT_METADATA_EXTRACTION_PROMPT,)
 from configuration.error_constants import (
-    EMPTY_DOCUMENT_TEXT_ERROR,
     INVALID_METADATA_JSON_ERROR,
     METADATA_EXTRACTION_FAILED_ERROR,
 )
@@ -43,8 +42,7 @@ def extract_document_metadata(
     Extract document metadata using the configured LLM.
     """
     try:
-        if not text.strip():
-            raise InvalidMetadataException(EMPTY_DOCUMENT_TEXT_ERROR,)
+
         logger.info(METADATA_EXTRACTION_STARTED_LOG,)
         prompt = DOCUMENT_METADATA_EXTRACTION_PROMPT.format(
             text=text[:METADATA_EXTRACTION_TEXT_LIMIT],
@@ -55,7 +53,7 @@ def extract_document_metadata(
             )
 
         except Exception as exception:
-            logger.exception(LLM_INVOCATION_FAILED_LOG,exception,)
+            logger.exception("%s: %s",LLM_INVOCATION_FAILED_LOG,exception,)
             raise LLMResponseException() from exception
         response_content = re.sub(
             MARKDOWN_JSON_REGEX,

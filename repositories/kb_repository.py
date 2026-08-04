@@ -43,15 +43,24 @@ from configuration.constants import (
 )
 from configuration.error_constants import(
     DATABASE_INSERT_ERROR_MESSAGE,
-    DATABASE_SEARCH_ERROR_MESSAGE,
     DATABASE_FETCH_ERROR_MESSAGE,
-    DATABASE_FETCH_DOCUMENTS_ERROR_MESSAGE,
+    DATABASE_SEARCH_ERROR_MESSAGE,
     DATABASE_DELETE_ERROR_MESSAGE,
     DATABASE_CLEAR_ERROR_MESSAGE,
 
 )
 from dto.file_response_dto import UploadedDocumentDto
 from database.qdrant_client_manager import client
+from exceptions.qdrant_exception import (
+    QdrantConnectionException,
+    QdrantDeleteException,
+    QdrantFetchException,
+    QdrantInsertException,
+    QdrantSearchException,
+)
+
+from httpx import ConnectError
+from qdrant_client.http.exceptions import ResponseHandlingException
 
 # ==========================================================
 # Internal Helper
@@ -114,6 +123,30 @@ def buildKnowledgeBaseRecord(
     )
 
 # ==========================================================
+# Detect Qdrant Connection Failure
+# ==========================================================
+
+def isQdrantConnectionError(
+    exception: Exception,
+) -> bool:
+    """
+    Return True when the Qdrant server is unreachable.
+    """
+    return (
+        isinstance(
+            exception,
+            ResponseHandlingException,
+        )
+        and isinstance(
+            getattr(
+                exception,
+                "source",
+                None,
+            ),
+            ConnectError,
+        )
+    )
+# ==========================================================
 # Save Chunks
 # ==========================================================
 
@@ -124,13 +157,24 @@ def saveChunks(
     Save vectors to Qdrant.
     """
     try:
-
-        client.upsert(collection_name=COLLECTION_NAME,points=points,)
-        logger.info(VECTOR_INSERTION_LOG,len(points),)
-
+        client.upsert(
+            collection_name=COLLECTION_NAME,
+            points=points,
+        )
+        logger.info("%s: %s",VECTOR_INSERTION_LOG,len(points),)
     except Exception as ex:
-        logger.exception(VECTOR_INSERTION_FAILED_LOG,ex,)
-        raise ContentKoshException(DATABASE_INSERT_ERROR_MESSAGE) from ex
+        logger.exception("%s: %s",VECTOR_INSERTION_FAILED_LOG,ex,)
+
+        if isQdrantConnectionError(ex):
+            raise ContentKoshException(
+                DATABASE_INSERT_ERROR_MESSAGE,
+                cause=QdrantConnectionException(),
+            ) from ex
+
+        raise ContentKoshException(
+            DATABASE_INSERT_ERROR_MESSAGE,
+            cause=QdrantInsertException(),
+        ) from ex
 
 # ==========================================================
 # Semantic Search
@@ -152,11 +196,15 @@ def searchChunks(
             limit=limit,
             score_threshold=scoreThreshold,
         )
-        logger.info(SEMANTIC_SEARCH_LOG,len(searchResult.points))
+        logger.info("%s: %s",SEMANTIC_SEARCH_LOG,len(searchResult.points))
         return searchResult.points
     except Exception as ex:
-        logger.exception(SEMANTIC_SEARCH_FAILED_LOG,ex)
-        raise ContentKoshException( DATABASE_SEARCH_ERROR_MESSAGE) from ex
+        logger.exception("%s: %s",SEMANTIC_SEARCH_FAILED_LOG,ex,)
+
+        if isQdrantConnectionError(ex):
+            raise ContentKoshException(DATABASE_SEARCH_ERROR_MESSAGE,cause=QdrantConnectionException(),) from ex
+        raise ContentKoshException(DATABASE_SEARCH_ERROR_MESSAGE,cause=QdrantSearchException(),) from ex
+
 
 def getAllRecords(
     tag: Optional[str] = None,
@@ -185,12 +233,22 @@ def getAllRecords(
             for point in records
             ]
 
-        logger.info(FETCH_RECORDS_LOG,len(responseRecords),)
+        logger.info("%s: %s",FETCH_RECORDS_LOG,len(responseRecords),)
         return responseRecords
 
     except Exception as ex:
-        logger.exception("%s: %s", FETCH_RECORDS_FAILED_LOG, ex)
-        raise ContentKoshException(DATABASE_FETCH_ERROR_MESSAGE) from ex
+        logger.exception("%s: %s",FETCH_RECORDS_FAILED_LOG,ex,)
+
+        if isQdrantConnectionError(ex):
+            raise ContentKoshException(
+                DATABASE_FETCH_ERROR_MESSAGE,
+                cause=QdrantConnectionException(),
+            ) from ex
+
+        raise ContentKoshException(
+            DATABASE_FETCH_ERROR_MESSAGE,
+            cause=QdrantFetchException(),
+        ) from ex
 
 def getUploadedFiles() -> list[UploadedDocumentDto]:
     """
@@ -210,11 +268,21 @@ def getUploadedFiles() -> list[UploadedDocumentDto]:
                 documents[documentId] = buildUploadedDocument(
                     payload,
                 )
-        logger.info(FETCH_DOCUMENTS_LOG,len(documents))
+        logger.info("%s: %s",FETCH_DOCUMENTS_LOG,len(documents))
         return list(documents.values())
     except Exception as ex:
-        logger.exception("%s: %s", FETCH_DOCUMENTS_FAILED_LOG, ex)
-        raise ContentKoshException(DATABASE_FETCH_DOCUMENTS_ERROR_MESSAGE) from ex
+        logger.exception("%s: %s",FETCH_DOCUMENTS_FAILED_LOG,ex,)
+
+        if isQdrantConnectionError(ex):
+            raise ContentKoshException(
+                DATABASE_FETCH_ERROR_MESSAGE,
+                cause=QdrantConnectionException(),
+            ) from ex
+
+        raise ContentKoshException(
+            DATABASE_FETCH_ERROR_MESSAGE,
+            cause=QdrantFetchException(),
+        ) from ex
 
 # ==========================================================
 # Delete One Document
@@ -247,14 +315,24 @@ def deleteDocument(
         )
 
         if not existing:
-            logger.info(DOCUMENT_NOT_FOUND_LOG,documentId,)
+            logger.info("%s: %s",DOCUMENT_NOT_FOUND_LOG,documentId,)
             return False
         client.delete(collection_name=COLLECTION_NAME,points_selector=documentFilter,)
-        logger.info(DELETE_DOCUMENT_LOG,documentId,)
+        logger.info("%s: %s",DELETE_DOCUMENT_LOG,documentId,)
         return True
     except Exception as ex:
-        logger.exception("%s: %s", DELETE_DOCUMENT_FAILED_LOG, ex)
-        raise ContentKoshException(DATABASE_DELETE_ERROR_MESSAGE) from ex
+        logger.exception("%s: %s",DELETE_DOCUMENT_FAILED_LOG,ex,)
+
+        if isQdrantConnectionError(ex):
+            raise ContentKoshException(
+                DATABASE_DELETE_ERROR_MESSAGE,
+                cause=QdrantConnectionException(),
+            ) from ex
+
+        raise ContentKoshException(
+            DATABASE_DELETE_ERROR_MESSAGE,
+            cause=QdrantDeleteException(),
+        ) from ex
 
 # ==========================================================
 # Delete Entire Knowledge Base
@@ -270,8 +348,17 @@ def deleteAllDocuments() -> bool:
             points_selector=Filter(),
         )
 
-        logger.info(CLEAR_KB_LOG,)
+        logger.info("%s",CLEAR_KB_LOG,)
         return True
     except Exception as ex:
-        logger.exception("%s: %s", CLEAR_KB_FAILED_LOG, ex)
-        raise ContentKoshException(DATABASE_CLEAR_ERROR_MESSAGE) from ex
+        logger.exception("%s: %s",CLEAR_KB_FAILED_LOG,ex,)
+
+        if isQdrantConnectionError(ex):
+            raise ContentKoshException(
+                DATABASE_CLEAR_ERROR_MESSAGE,
+                cause=QdrantConnectionException(),
+            ) from ex
+
+        raise ContentKoshException(
+            DATABASE_CLEAR_ERROR_MESSAGE,
+            cause=QdrantDeleteException(DATABASE_CLEAR_ERROR_MESSAGE,),) from ex

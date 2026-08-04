@@ -96,6 +96,7 @@ EMPTY_UPLOADED_FILE_ERROR = ("Uploaded file is empty.")
 INVALID_PDF_SIGNATURE_ERROR = ("File content does not match a valid PDF.")
 FILE_SIZE_EXCEEDED_ERROR = ("File size exceeds the maximum allowed limit of {} MB.")
 UPLOADED_FILE_NOT_FOUND_ERROR = ("Uploaded file could not be found.")
+NO_READABLE_TEXT_MESSAGE = ("The uploaded PDF does not contain any readable text.")
 
 # ==========================================================
 # TAG VALIDATION ERRORS

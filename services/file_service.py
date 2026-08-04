@@ -20,6 +20,7 @@ from repositories.kb_repository import (
     getUploadedFiles,
 )
 from dto.file_response_dto import UploadedDocumentDto
+from exceptions.qdrant_exception import (QdrantConnectionException,)
 # ==========================================================
 # Get Uploaded Documents
 # ==========================================================
@@ -30,9 +31,14 @@ def get_uploaded_documents() -> list[UploadedDocumentDto]:
     """
     try:
         return getUploadedFiles()
-
     except ContentKoshException as ex:
         logger.exception(FETCH_UPLOADED_DOCUMENTS_FAILED_LOG,ex,)
+        if isinstance(
+            ex.cause,
+            QdrantConnectionException,
+        ):
+            raise ex.cause
+        
         raise KnowledgeBaseException() from ex
     
 # ==========================================================
@@ -49,11 +55,18 @@ def delete_uploaded_document(
         deleted = deleteDocument(documentId)
 
     except ContentKoshException as ex:
-        logger.exception(DELETE_DOCUMENT_FAILED_LOG,ex,)
+        logger.exception(
+            DELETE_DOCUMENT_FAILED_LOG,
+            ex,
+        )
+
+        if isinstance(
+            ex.cause,
+            QdrantConnectionException,
+        ):
+            raise ex.cause
+
         raise KnowledgeBaseException() from ex
-    
-    if not deleted:
-        raise NotFoundException(DOCUMENT_NOT_FOUND_ERROR.format(documentId),)
 
 # ==========================================================
 # Clear Knowledge Base
@@ -65,7 +78,12 @@ def clear_knowledge_base():
     """
     try:
         deleteAllDocuments()
-
     except ContentKoshException as ex:
         logger.exception(CLEAR_KNOWLEDGE_BASE_FAILED_LOG,ex,)
+        if isinstance(
+            ex.cause,
+            QdrantConnectionException,
+        ):
+            raise ex.cause
+
         raise KnowledgeBaseException() from ex

@@ -12,7 +12,8 @@ class ErrorCode(str, Enum):
     INVALID_DOCUMENT = "INVALID_DOCUMENT"
     DOCUMENT_PROCESSING_FAILED = "DOCUMENT_PROCESSING_FAILED"
     EMPTY_DOCUMENT = "EMPTY_DOCUMENT"
-
+    NO_READABLE_TEXT = "NO_READABLE_TEXT"
+    
     # ==========================================
     # Validation Errors (VAL)
     # ==========================================
@@ -44,6 +45,8 @@ class ErrorCode(str, Enum):
     QDRANT_CONNECTION_FAILED = "QDRANT_CONNECTION_FAILED"
     QDRANT_INSERT_FAILED = "QDRANT_INSERT_FAILED"
     QDRANT_SEARCH_FAILED = "QDRANT_SEARCH_FAILED"
+    QDRANT_FETCH_FAILED = "QDRANT_FETCH_FAILED"
+    QDRANT_DELETE_FAILED = "QDRANT_DELETE_FAILED"
 
     # ==========================================
     # LLM Errors (LLM)

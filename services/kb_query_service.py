@@ -31,6 +31,7 @@ from dto.response_dto import QueryResponse
 from exceptions.llm_exception import LLMResponseException
 from repositories.kb_repository import searchChunks
 from exceptions.contentkosh_exception import (ContentKoshException,)
+from exceptions.qdrant_exception import (QdrantConnectionException,)
 load_dotenv()
 
 # ==========================================================
@@ -102,6 +103,11 @@ def ask_question(
             )
         except ContentKoshException as ex:
             logger.exception(CHAT_SERVICE_FAILED_LOG,ex,)
+            if isinstance(
+                ex.cause,
+                QdrantConnectionException,
+            ):
+                raise ex.cause
             raise KnowledgeBaseException() from ex
 
         if not searchResults:
