@@ -10,6 +10,7 @@ from qdrant_client.models import (
     Filter,
     MatchValue,
 )
+from common.custom_exceptions import DatabaseException
 from exceptions.contentkosh_exception import (ContentKoshException,)
 from common.logger import logger
 from configuration.config import (
@@ -363,32 +364,26 @@ def deleteAllDocuments() -> bool:
             collection_name=COLLECTION_NAME,
             points_selector=Filter(),
         )
-        logger.info(CLEAR_KB_LOG,)
+
+        logger.info(
+            CLEAR_KB_LOG,
+        )
+
         return True
+
     except Exception as exception:
         logger.exception(
-            "%s: %s",
             CLEAR_KB_FAILED_LOG,
             exception,
         )
-<<<<<<< HEAD
 
         if isQdrantConnectionError(exception):
-            raise ContentKoshException(
+            raise DatabaseException(
                 DATABASE_CLEAR_ERROR_MESSAGE,
                 cause=QdrantConnectionException(),
             ) from exception
 
-        raise ContentKoshException(
-=======
-    except Exception as exception:
-        logger.exception(
-            CLEAR_KB_FAILED_LOG,
-            exception,
-        )
-
         raise DatabaseException(
->>>>>>> bcd6c41 (Rebased on the Siddhi's final branch)
             DATABASE_CLEAR_ERROR_MESSAGE,
             cause=QdrantDeleteException(
                 DATABASE_CLEAR_ERROR_MESSAGE,

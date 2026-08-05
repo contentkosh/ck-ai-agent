@@ -44,6 +44,7 @@ from exceptions.metadata_exception import (
 from configuration.error_constants import (
     INVALID_METADATA_JSON_ERROR,
     METADATA_EXTRACTION_FAILED_ERROR,
+    EMPTY_DOCUMENT_TEXT_ERROR,
 )
 
 load_dotenv()
