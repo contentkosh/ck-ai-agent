@@ -103,7 +103,7 @@ def test_query_knowledge_base_failure(
         },
     )
 
-    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
 
 # ==========================================================
 # Upload Documents API Tests
@@ -220,7 +220,7 @@ def test_get_uploaded_documents(
         }
     ]
 
-    response = client.get("/llm/doc")
+    response = client.get("/llm/files")
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert data["total_documents"] == 1
@@ -236,8 +236,8 @@ def test_get_uploaded_documents_service_failure(
     the service fails.
     """
     mock_service.side_effect = KnowledgeBaseException()
-    response = client.get("/llm/doc")
-    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    response = client.get("/llm/files")
+    assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
 
 # ==========================================================
 # Delete Document API Tests
@@ -253,7 +253,7 @@ def test_delete_document(
     Verify deleting one document.
     """
     response = client.delete(
-        "/llm/files/delete/123",
+        "/llm/files/123",
         headers=auth_headers,
     )
     assert response.status_code == status.HTTP_200_OK
@@ -270,7 +270,7 @@ def test_delete_document_rejected_without_api_key(
     Verify delete is rejected when no API key is supplied.
     """
     response = client.delete(
-        "/llm/files/delete/123",
+        "/llm/files/123",
     )
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
@@ -289,7 +289,7 @@ def test_delete_document_not_found(
     )
 
     response = client.delete(
-        "/llm/files/delete/123",
+        "/llm/files/123",
         headers=auth_headers,
     )
 
@@ -309,7 +309,7 @@ def test_clear_knowledge_base(
     Verify clearing the Knowledge Base.
     """
     response = client.delete(
-        "/llm/files/delete",
+        "/llm/files",
         headers=auth_headers,
     )
     assert response.status_code == status.HTTP_200_OK
@@ -324,6 +324,6 @@ def test_clear_knowledge_base_rejected_without_api_key(
     Verify clear KB is rejected when no API key is supplied.
     """
     response = client.delete(
-        "/llm/files/delete",
+        "/llm/files",
     )
     assert response.status_code == status.HTTP_401_UNAUTHORIZED

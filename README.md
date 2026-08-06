@@ -8,27 +8,28 @@ CK AI Agent is a Knowledge Base Management System built using FastAPI, Qdrant, a
 The application follows a layered architecture with separate API, Service, Repository, and Validation layers, making it scalable, maintainable, and easy to test.
 
 ---
-
 ## Features
 
 - Upload one or more PDF documents
 - Automatic document metadata extraction using LLM
-- PDF text extraction and chunking
+- PDF text extraction and intelligent chunking
 - Embedding generation using Sentence Transformers
 - Semantic vector search using Qdrant
 - AI-powered Question Answering using OpenRouter LLM
-- Knowledge Base retrieval with optional tag filtering
-- Uploaded document management
+- Knowledge Base retrieval
+- View uploaded documents
 - Delete individual documents
-- Clear entire Knowledge Base
-- Request-based logging with unique Request IDs
+- Clear the entire Knowledge Base
+- Structured request logging with unique Request IDs
 - Global exception handling
-- Request and response DTOs
+- Request and Response DTOs
 - Input validation
-- Automated unit testing using Pytest
+- Unit testing using Pytest
 - HTML test report generation
+- API testing using Postman
 
 ---
+
 
 ## Technology Stack
 
@@ -43,18 +44,18 @@ The application follows a layered architecture with separate API, Service, Repos
 | Testing | Pytest |
 | API Testing | Postman |
 
------
+---
 
-## Installation
+# Installation
 
-Clone the repository:
+## Clone the Repository
 
 ```bash
 git clone <repository-url>
 cd ck-ai-agent
 ```
 
-Install dependencies:
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -62,9 +63,103 @@ pip install -r requirements.txt
 
 ---
 
-## Running the Application
+# Docker & Qdrant Setup
 
-Run the application:
+## Install Docker Desktop
+
+Download Docker Desktop from:
+
+https://www.docker.com/products/docker-desktop/
+
+Install Docker and ensure it is running.
+
+---
+
+## Pull the Qdrant Docker Image
+
+```bash
+docker pull qdrant/qdrant
+```
+
+---
+
+## Start Qdrant
+
+### Windows (PowerShell)
+
+```bash
+docker run -d `
+  --name qdrant `
+  -p 6333:6333 `
+  -v qdrant_storage:/qdrant/storage `
+  qdrant/qdrant
+```
+
+### Linux / macOS
+
+```bash
+docker run -d \
+  --name qdrant \
+  -p 6333:6333 \
+  -v qdrant_storage:/qdrant/storage \
+  qdrant/qdrant
+```
+
+---
+
+## Verify Qdrant is Running
+
+```bash
+docker ps
+```
+
+Qdrant will be available at:
+
+```
+http://localhost:6333
+```
+
+---
+
+# Postman Setup
+
+## Install Postman
+
+Download Postman from:
+
+https://www.postman.com/downloads/
+
+---
+
+## Import the Postman Collection
+
+1. Open Postman.
+2. Click **Import**.
+3. Select:
+
+```
+docs/postman/CK_AI_Agent_APIs.postman_collection.json
+```
+
+4. Import the collection.
+
+---
+
+## Configure Base URL
+
+Run the FastAPI server locally:
+
+```
+http://127.0.0.1:8000
+```
+
+Use this as the base URL for all API requests.
+
+---
+
+# Running the Application
+
+Run the application using:
 
 ```bash
 python main.py
@@ -76,49 +171,84 @@ or
 uvicorn api.app:app --reload
 ```
 
-Swagger UI:
+---
+
+## Swagger Documentation
 
 ```
 http://127.0.0.1:8000/docs
 ```
 
-OpenAPI JSON:
+---
+
+## OpenAPI Specification
 
 ```
 http://127.0.0.1:8000/openapi.json
 ```
+
 ---
 
-## Testing
+# API Endpoints
 
-Run all tests:
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/llm/upload` | Upload PDF documents |
+| POST | `/llm/kb` | Query the Knowledge Base |
+| GET | `/llm/files` | Retrieve uploaded documents |
+| DELETE | `/llm/files/{document_id}` | Delete a specific document |
+| DELETE | `/llm/files` | Clear the Knowledge Base |
+| GET | `/health` | Health Check |
+
+---
+
+# Running Tests
+
+Run all unit tests:
 
 ```bash
 pytest
 ```
 
-Generate HTML report:
+Generate an HTML report:
 
 ```bash
 pytest --html=reports/report.html --self-contained-html
 ```
 
-Current automated test coverage includes:
+---
 
-- API routes
-- Services
-- Repository layer
-- Validators
-- File upload validation
+# Project Structure
+
+```
+ck-ai-agent/
+│
+├── api/
+├── common/
+├── configuration/
+├── database/
+├── dto/
+├── exceptions/
+├── repositories/
+├── services/
+├── tests/
+├── validators/
+├── docs/
+│   └── postman/
+│       └── CK_AI_Agent_APIs.postman_collection.json
+├── requirements.txt
+├── README.md
+└── main.py
+```
 
 ---
 
-## Version
+# Version
 
-**Version:** 0.0.1
+**Current Version:** 0.0.1
 
 ---
 
-## Author
+# Author
 
 Developed as part of the **CK AI Agent** project.

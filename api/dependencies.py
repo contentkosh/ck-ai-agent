@@ -18,6 +18,10 @@ def verify_api_key(
     allowed through, since that almost certainly indicates a
     misconfiguration rather than intent to run unauthenticated.
     """
+    print("AUTH_ENABLED =", AUTH_ENABLED)
+    print("API_KEY =", API_KEY)
+    print("RECEIVED_API_KEY =", x_api_key)
+    
     if not AUTH_ENABLED:
         return
 
