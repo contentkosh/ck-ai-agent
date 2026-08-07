@@ -1,0 +1,167 @@
+{
+  "info": {
+    "_postman_id": "29aaa3ca-e1c5-4144-baed-37bab8276f8e",
+    "name": "CK AI Agent APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "38578474"
+  },
+  "item": [
+    {
+      "name": "Query Knowledge Base",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"query\": \"\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/llm/kb",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "llm",
+            "kb"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Uploaded Documents",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/llm/files",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "llm",
+            "files"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Clear Knowledge Base",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/llm/files",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "llm",
+            "files"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Document",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/llm/files/68bf4a8a-c1ae-4d3c-9743-39",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "llm",
+            "files",
+            "68bf4a8a-c1ae-4d3c-9743-39"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Upload Documents",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "files",
+              "type": "file",
+              "uuid": "542e723b-deca-44f2-8df6-a8f228271f4f",
+              "src": "/C:/Users/Shalini/OneDrive/Desktop/Testing/Heftin AI.pdf"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/llm/upload",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "llm",
+            "upload"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
