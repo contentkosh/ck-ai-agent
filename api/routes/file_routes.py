@@ -1,5 +1,5 @@
-from fastapi import (APIRouter,Depends,)
-from api.dependencies import get_request_context, verify_api_key
+from fastapi import APIRouter, Depends
+from api.dependencies import get_request_context, require_permission
 from common.logger import logger
 from configuration.constants import (
     DOCUMENTS_ROUTE,
@@ -14,8 +14,10 @@ from configuration.constants import (
     SUCCESS_STATUS,
     DOCUMENT_DELETED_SUCCESS,
     KNOWLEDGE_BASE_CLEARED_SUCCESS,
+    VIEW_DOCUMENTS_PERMISSION,
+    DELETE_DOCUMENT_PERMISSION,
+    CLEAR_KB_PERMISSION,
 )
-
 from configuration.context import RequestContext
 from dto.file_response_dto import (
     ClearKnowledgeBaseResponse,
@@ -27,6 +29,7 @@ from services.file_service import (
     delete_uploaded_document as delete_document_service,
     get_uploaded_documents as get_uploaded_documents_service,
 )
+
 router = APIRouter()
 
 # ==========================================================
@@ -36,6 +39,11 @@ router = APIRouter()
 @router.get(
     DOCUMENTS_ROUTE,
     response_model=UploadedDocumentsListResponse,
+    dependencies=[
+        Depends(
+            require_permission(VIEW_DOCUMENTS_PERMISSION)
+        )
+    ],
 )
 def get_uploaded_documents(
     context: RequestContext = Depends(get_request_context),
@@ -43,9 +51,9 @@ def get_uploaded_documents(
     """
     Retrieve all uploaded documents.
     """
-    logger.info(FETCH_UPLOADED_DOCUMENTS_LOG,context.request_id,)
+    logger.info(FETCH_UPLOADED_DOCUMENTS_LOG, context.request_id)
     uploaded_documents = get_uploaded_documents_service()
-    logger.info(FETCH_UPLOADED_DOCUMENTS_SUCCESS_LOG,context.request_id,len(uploaded_documents),)
+    logger.info(FETCH_UPLOADED_DOCUMENTS_SUCCESS_LOG, context.request_id, len(uploaded_documents))
     return UploadedDocumentsListResponse(
         request_id=context.request_id,
         total_documents=len(uploaded_documents),
@@ -56,7 +64,15 @@ def get_uploaded_documents(
 # Delete Uploaded Document
 # ==========================================================
 
-@router.delete(DELETE_DOCUMENT_ROUTE,response_model=DeleteDocumentResponse,dependencies=[Depends(verify_api_key)],)
+@router.delete(
+    DELETE_DOCUMENT_ROUTE,
+    response_model=DeleteDocumentResponse,
+    dependencies=[
+        Depends(
+            require_permission(DELETE_DOCUMENT_PERMISSION)
+        )
+    ],
+)
 def delete_uploaded_document(
     document_id: str,
     context: RequestContext = Depends(get_request_context),
@@ -64,9 +80,9 @@ def delete_uploaded_document(
     """
     Delete a document and all its associated chunks.
     """
-    logger.info(DELETE_DOCUMENT_REQUEST_LOG,context.request_id,document_id,)
+    logger.info(DELETE_DOCUMENT_REQUEST_LOG, context.request_id, document_id)
     delete_document_service(document_id)
-    logger.info(DELETE_DOCUMENT_SUCCESS_LOG,context.request_id,)
+    logger.info(DELETE_DOCUMENT_SUCCESS_LOG, context.request_id)
     return DeleteDocumentResponse(
         request_id=context.request_id,
         status=SUCCESS_STATUS,
@@ -78,16 +94,24 @@ def delete_uploaded_document(
 # Clear Knowledge Base
 # ==========================================================
 
-@router.delete(CLEAR_KB_ROUTE,response_model=ClearKnowledgeBaseResponse,dependencies=[Depends(verify_api_key)],)
+@router.delete(
+    CLEAR_KB_ROUTE,
+    response_model=ClearKnowledgeBaseResponse,
+    dependencies=[
+        Depends(
+            require_permission(CLEAR_KB_PERMISSION)
+        )
+    ],
+)
 def clear_knowledge_base(
     context: RequestContext = Depends(get_request_context),
 ):
     """
     Delete all documents from the Knowledge Base.
     """
-    logger.info(CLEAR_KB_REQUEST_LOG,context.request_id,)
+    logger.info(CLEAR_KB_REQUEST_LOG, context.request_id)
     clear_kb_service()
-    logger.info(CLEAR_KB_SUCCESS_LOG,context.request_id,)
+    logger.info(CLEAR_KB_SUCCESS_LOG, context.request_id)
     return ClearKnowledgeBaseResponse(
         request_id=context.request_id,
         status=SUCCESS_STATUS,

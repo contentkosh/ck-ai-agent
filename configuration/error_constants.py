@@ -132,3 +132,9 @@ DATABASE_FETCH_ERROR_MESSAGE = ("Unable to fetch records.")
 DATABASE_FETCH_DOCUMENTS_ERROR_MESSAGE = ("Unable to fetch uploaded documents.")
 DATABASE_DELETE_ERROR_MESSAGE = ("Unable to delete document.")
 DATABASE_CLEAR_ERROR_MESSAGE = ("Unable to clear Knowledge Base.")
+
+AUTHORIZATION_HEADER_REQUIRED_MESSAGE = "Authorization header is required."
+INVALID_AUTHORIZATION_FORMAT_MESSAGE = "Invalid authorization format."
+AUTHENTICATION_TOKEN_REQUIRED_MESSAGE = "Authentication token is required."
+INVALID_AUTHENTICATION_TOKEN_MESSAGE = "Invalid or expired authentication token."
+AUTHORIZATION_FAILED_MESSAGE = "User is not authorized to perform this operation."

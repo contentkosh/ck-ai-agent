@@ -1,7 +1,7 @@
 from io import BytesIO
 from unittest.mock import patch
 from fastapi import status
-from tests.conftest import client
+from tests.conftest import auth_client
 from exceptions.knowledge_base_exception import KnowledgeBaseException
 from exceptions.validation_exception import InvalidFileException
 from common.custom_exceptions import NotFoundException
@@ -113,7 +113,7 @@ def test_query_knowledge_base_failure(
 def test_upload_document(
     mockIngestDocuments,
     client,
-    auth_headers,
+    
 ):
     """
     Verify document upload.
@@ -133,7 +133,6 @@ def test_upload_document(
                 ),
             ),
         ],
-        headers=auth_headers,
     )
 
     assert response.status_code == status.HTTP_200_OK
@@ -144,13 +143,14 @@ def test_upload_document(
     )
 
 
-def test_upload_document_rejected_without_api_key(
-    client,
+def test_upload_document_rejected_without_token(
+    auth_client,
 ):
+
     """
     Verify upload is rejected when no API key is supplied.
     """
-    response = client.post(
+    response = auth_client.post(
         "/llm/upload",
         files=[
             (
@@ -173,7 +173,6 @@ def test_upload_document_rejected_without_api_key(
 def test_upload_document_invalid_file(
     mock_ingest_documents,
     client,
-    auth_headers,
 ):
     """
     Verify upload returns Bad Request when an invalid
@@ -195,7 +194,6 @@ def test_upload_document_invalid_file(
                 ),
             ),
         ],
-        headers=auth_headers,
     )
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -247,14 +245,12 @@ def test_get_uploaded_documents_service_failure(
 def test_delete_document(
     mockDeleteDocumentService,
     client,
-    auth_headers,
 ):
     """
     Verify deleting one document.
     """
     response = client.delete(
         "/llm/files/123",
-        headers=auth_headers,
     )
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
@@ -264,12 +260,12 @@ def test_delete_document(
     )
 
 def test_delete_document_rejected_without_api_key(
-    client,
+    auth_client,
 ):
     """
     Verify delete is rejected when no API key is supplied.
     """
-    response = client.delete(
+    response = auth_client.delete(
         "/llm/files/123",
     )
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
@@ -278,7 +274,6 @@ def test_delete_document_rejected_without_api_key(
 def test_delete_document_not_found(
     mock_delete_document_service,
     client,
-    auth_headers,
 ):
     """
     Verify deleting a non-existing document
@@ -290,7 +285,6 @@ def test_delete_document_not_found(
 
     response = client.delete(
         "/llm/files/123",
-        headers=auth_headers,
     )
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
@@ -303,27 +297,23 @@ def test_delete_document_not_found(
 def test_clear_knowledge_base(
     mockClearKbService,
     client,
-    auth_headers,
 ):
     """
     Verify clearing the Knowledge Base.
     """
     response = client.delete(
         "/llm/files",
-        headers=auth_headers,
     )
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
     assert data["status"] == "success"
     mockClearKbService.assert_called_once()
 
-def test_clear_knowledge_base_rejected_without_api_key(
-    client,
+def test_clear_knowledge_base_rejected_without_token(
+    auth_client,
 ):
     """
-    Verify clear KB is rejected when no API key is supplied.
+    Verify clear KB is rejected when no authentication token is supplied.
     """
-    response = client.delete(
-        "/llm/files",
-    )
+    response = auth_client.delete("/llm/files")
     assert response.status_code == status.HTTP_401_UNAUTHORIZED

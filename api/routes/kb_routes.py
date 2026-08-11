@@ -1,14 +1,19 @@
 from typing import Optional
 from fastapi import APIRouter, Depends, Query
-from api.dependencies import get_request_context
+from api.dependencies import (
+    get_request_context,
+    require_permission,
+)
 from common.logger import logger
 from configuration.constants import (
     FETCH_KB_REQUEST_LOG,
     FETCH_KB_SUCCESS_LOG,
     KNOWLEDGE_BASE_ROUTE,
     QUERY_KNOWLEDGE_BASE_ROUTE,
+    QUERY_KB_PERMISSION,
     QUERY_REQUEST_LOG,
     QUERY_SUCCESS_LOG,
+    VIEW_DOCUMENTS_PERMISSION,
 )
 from configuration.context import RequestContext
 from dto.request_dto import QueryRequest
@@ -24,19 +29,26 @@ router = APIRouter()
 # Get Knowledge Base
 # ==========================================================
 
-@router.get(KNOWLEDGE_BASE_ROUTE, response_model=KnowledgeBaseResponse)
+@router.get(
+    KNOWLEDGE_BASE_ROUTE,
+    response_model=KnowledgeBaseResponse,
+    dependencies=[
+        Depends(
+            require_permission(VIEW_DOCUMENTS_PERMISSION)
+        )
+    ],
+)
 def get_knowledge_base(
     tag: Optional[str] = Query(default=None),
     context: RequestContext = Depends(get_request_context),
 ) -> KnowledgeBaseResponse:
-    """Retrieve all Knowledge Base records."""
+    """
+    Retrieve all Knowledge Base records.
+    """
     logger.info(FETCH_KB_REQUEST_LOG, context.request_id)
-
     validate_tag(tag)
     records = get_knowledge_base_records(tag)
-
     logger.info(FETCH_KB_SUCCESS_LOG, context.request_id, len(records))
-
     return KnowledgeBaseResponse(
         request_id=context.request_id,
         total_records=len(records),
@@ -47,14 +59,24 @@ def get_knowledge_base(
 # Ask Question
 # ==========================================================
 
-@router.post(QUERY_KNOWLEDGE_BASE_ROUTE, response_model=QueryResponse)
+@router.post(
+    QUERY_KNOWLEDGE_BASE_ROUTE,
+    response_model=QueryResponse,
+    dependencies=[
+        Depends(
+            require_permission(QUERY_KB_PERMISSION)
+        )
+    ],
+)
 def query_knowledge_base(
     request: QueryRequest,
     context: RequestContext = Depends(get_request_context),
 ) -> QueryResponse:
-    """Answer a user query using the Knowledge Base."""
+    """
+    Answer a user query using the Knowledge Base.
+    """
     logger.info(QUERY_REQUEST_LOG, context.request_id)
     validate_query(request.query)
     result = ask_question(request.query)
     logger.info(QUERY_SUCCESS_LOG, context.request_id)
-    return result
+    return result 

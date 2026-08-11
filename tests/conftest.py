@@ -1,27 +1,48 @@
 import pytest
+from types import SimpleNamespace
 from unittest.mock import patch
 from fastapi.testclient import TestClient
-
-TEST_API_KEY = "test-api-key-12345"
+from api.dependencies import verify_bearer_token
+from configuration.constants import ADMIN_ROLE
 
 @pytest.fixture
 def client():
     """
-    FastAPI test client fixture. Qdrant collection creation
-    is mocked on startup. Auth is enabled with a fixed test
-    key so protected-route tests exercise real auth behavior
-    instead of relying on auth being globally disabled.
+    FastAPI test client for functional API tests.
+
+    Authentication is overridden with a test ADMIN user so
+    functional tests can reach the actual route/service logic.
     """
-    with patch("api.app.create_collection_if_missing"), \
-         patch("api.dependencies.AUTH_ENABLED", True), \
-         patch("api.dependencies.API_KEY", TEST_API_KEY):
+    with patch("api.app.create_collection_if_missing"):
         from api.app import app
-        with TestClient(app) as testClient:
-            yield testClient
+
+        test_user = SimpleNamespace(
+            username="test_user",
+            role=ADMIN_ROLE,
+            is_active=True,
+            expires_at=None,
+        )
+
+        app.dependency_overrides[verify_bearer_token] = (
+            lambda: test_user
+        )
+
+        with TestClient(app) as test_client:
+            yield test_client
+
+        app.dependency_overrides.clear()
+
 
 @pytest.fixture
-def auth_headers():
+def auth_client():
     """
-    Standard headers for calling protected routes in tests.
+    FastAPI test client with real authentication enabled.
+
+    Used specifically for authentication tests such as
+    missing or invalid Bearer tokens.
     """
-    return {"X-API-Key": TEST_API_KEY}
+    with patch("api.app.create_collection_if_missing"):
+        from api.app import app
+
+        with TestClient(app) as test_client:
+            yield test_client

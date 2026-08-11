@@ -20,3 +20,5 @@ qdrant-client==1.15.1
 pypdf==6.0.0
 
 numpy>=1.26.0
+SQLAlchemy
+psycopg2-binary

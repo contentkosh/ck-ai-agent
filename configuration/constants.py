@@ -209,3 +209,46 @@ PDF_EXTENSION = ".pdf"
 SUPPORTED_CONTENT_TYPE = "application/pdf"
 PDF_MAGIC_BYTES = b"%PDF"
 MAX_SCROLL_ITERATIONS_REACHED_LOG = ("Maximum scroll iterations reached while reading Qdrant records.")
+
+AUTHORIZATION_HEADER_PREFIX = "Bearer"
+AUTHORIZATION_HEADER_SEPARATOR = " "
+
+# ==========================================================
+# AUTHORIZATION
+# ==========================================================
+
+ADMIN_ROLE = "ADMIN"
+USER_ROLE = "USER"
+VIEWER_ROLE = "VIEWER"
+SUPPORTED_ROLES = [
+    ADMIN_ROLE,
+    USER_ROLE,
+    VIEWER_ROLE,
+]
+
+# ==========================================================
+# ROLE PERMISSIONS
+# ==========================================================
+
+QUERY_KB_PERMISSION = "QUERY_KB"
+VIEW_DOCUMENTS_PERMISSION = "VIEW_DOCUMENTS"
+UPLOAD_DOCUMENTS_PERMISSION = "UPLOAD_DOCUMENTS"
+DELETE_DOCUMENT_PERMISSION = "DELETE_DOCUMENT"
+CLEAR_KB_PERMISSION = "CLEAR_KB"
+ROLE_PERMISSIONS = {
+    ADMIN_ROLE: {
+        QUERY_KB_PERMISSION,
+        VIEW_DOCUMENTS_PERMISSION,
+        UPLOAD_DOCUMENTS_PERMISSION,
+        DELETE_DOCUMENT_PERMISSION,
+        CLEAR_KB_PERMISSION,
+    },
+    USER_ROLE: {
+        QUERY_KB_PERMISSION,
+        VIEW_DOCUMENTS_PERMISSION,
+    },
+    VIEWER_ROLE: {
+        QUERY_KB_PERMISSION,
+        VIEW_DOCUMENTS_PERMISSION,
+    },
+}
