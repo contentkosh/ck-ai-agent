@@ -155,3 +155,26 @@ MAX_CACHE_SIZE = int(
         5000
     )
 )
+
+# ==========================================================
+# EMBEDDINGS
+# ==========================================================
+
+EMBEDDING_MODEL = os.getenv(
+    "EMBEDDING_MODEL",
+    "sentence-transformers/all-MiniLM-L6-v2",
+)
+
+EMBEDDING_DIMENSION = int(
+    os.getenv(
+        "EMBEDDING_DIMENSION",
+        384,
+    )
+)
+
+EMBEDDING_BATCH_SIZE = int(
+    os.getenv(
+        "EMBEDDING_BATCH_SIZE",
+        32,
+    )
+)
