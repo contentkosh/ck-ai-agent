@@ -1,6 +1,15 @@
-from fastapi import (APIRouter,Depends,)
-from api.dependencies import get_request_context, verify_api_key
+from fastapi import (
+    APIRouter,
+    Depends,
+)
+
+from api.dependencies import (
+    get_request_context,
+    verify_api_key,
+)
+
 from common.logger import logger
+
 from configuration.constants import (
     DOCUMENTS_ROUTE,
     DELETE_DOCUMENT_ROUTE,
@@ -17,17 +26,22 @@ from configuration.constants import (
 )
 
 from configuration.context import RequestContext
+
 from dto.file_response_dto import (
     ClearKnowledgeBaseResponse,
     DeleteDocumentResponse,
     UploadedDocumentsListResponse,
 )
+
 from services.file_service import (
     clear_knowledge_base as clear_kb_service,
     delete_uploaded_document as delete_document_service,
     get_uploaded_documents as get_uploaded_documents_service,
 )
+
+
 router = APIRouter()
+
 
 # ==========================================================
 # Get Uploaded Documents
@@ -38,14 +52,33 @@ router = APIRouter()
     response_model=UploadedDocumentsListResponse,
 )
 def get_uploaded_documents(
-    context: RequestContext = Depends(get_request_context),
+    business_id: str,
+    course_id: str,
+    context: RequestContext = Depends(
+        get_request_context,
+    ),
 ):
     """
-    Retrieve all uploaded documents.
+    Retrieve all uploaded documents for a specific
+    business and course.
     """
-    logger.info(FETCH_UPLOADED_DOCUMENTS_LOG,context.request_id,)
-    uploaded_documents = get_uploaded_documents_service()
-    logger.info(FETCH_UPLOADED_DOCUMENTS_SUCCESS_LOG,context.request_id,len(uploaded_documents),)
+
+    logger.info(
+        FETCH_UPLOADED_DOCUMENTS_LOG,
+        context.request_id,
+    )
+
+    uploaded_documents = get_uploaded_documents_service(
+        business_id=business_id,
+        course_id=course_id,
+    )
+
+    logger.info(
+        FETCH_UPLOADED_DOCUMENTS_SUCCESS_LOG,
+        context.request_id,
+        len(uploaded_documents),
+    )
+
     return UploadedDocumentsListResponse(
         request_id=context.request_id,
         total_documents=len(uploaded_documents),
@@ -56,17 +89,41 @@ def get_uploaded_documents(
 # Delete Uploaded Document
 # ==========================================================
 
-@router.delete(DELETE_DOCUMENT_ROUTE,response_model=DeleteDocumentResponse,dependencies=[Depends(verify_api_key)],)
+@router.delete(
+    DELETE_DOCUMENT_ROUTE,
+    response_model=DeleteDocumentResponse,
+    dependencies=[
+        Depends(verify_api_key),
+    ],
+)
 def delete_uploaded_document(
     document_id: str,
-    context: RequestContext = Depends(get_request_context),
+    business_id: str,
+    context: RequestContext = Depends(
+        get_request_context,
+    ),
 ):
     """
-    Delete a document and all its associated chunks.
+    Delete a document and all its associated chunks
+    from a specific business Knowledge Base.
     """
-    logger.info(DELETE_DOCUMENT_REQUEST_LOG,context.request_id,document_id,)
-    delete_document_service(document_id)
-    logger.info(DELETE_DOCUMENT_SUCCESS_LOG,context.request_id,)
+
+    logger.info(
+        DELETE_DOCUMENT_REQUEST_LOG,
+        context.request_id,
+        document_id,
+    )
+
+    delete_document_service(
+        documentId=document_id,
+        business_id=business_id,
+    )
+
+    logger.info(
+        DELETE_DOCUMENT_SUCCESS_LOG,
+        context.request_id,
+    )
+
     return DeleteDocumentResponse(
         request_id=context.request_id,
         status=SUCCESS_STATUS,
@@ -74,20 +131,43 @@ def delete_uploaded_document(
         document_id=document_id,
     )
 
+
 # ==========================================================
 # Clear Knowledge Base
 # ==========================================================
 
-@router.delete(CLEAR_KB_ROUTE,response_model=ClearKnowledgeBaseResponse,dependencies=[Depends(verify_api_key)],)
+@router.delete(
+    CLEAR_KB_ROUTE,
+    response_model=ClearKnowledgeBaseResponse,
+    dependencies=[
+        Depends(verify_api_key),
+    ],
+)
 def clear_knowledge_base(
-    context: RequestContext = Depends(get_request_context),
+    business_id: str,
+    context: RequestContext = Depends(
+        get_request_context,
+    ),
 ):
     """
-    Delete all documents from the Knowledge Base.
+    Delete all documents from a specific business
+    Knowledge Base.
     """
-    logger.info(CLEAR_KB_REQUEST_LOG,context.request_id,)
-    clear_kb_service()
-    logger.info(CLEAR_KB_SUCCESS_LOG,context.request_id,)
+
+    logger.info(
+        CLEAR_KB_REQUEST_LOG,
+        context.request_id,
+    )
+
+    clear_kb_service(
+        business_id=business_id,
+    )
+
+    logger.info(
+        CLEAR_KB_SUCCESS_LOG,
+        context.request_id,
+    )
+
     return ClearKnowledgeBaseResponse(
         request_id=context.request_id,
         status=SUCCESS_STATUS,

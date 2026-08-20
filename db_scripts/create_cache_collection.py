@@ -1,26 +1,54 @@
-from qdrant_client.models import Distance, VectorParams
+from qdrant_client.models import (
+    Distance,
+    VectorParams,
+)
+
 from common.logger import logger
 from database.qdrant_client_manager import client
 from configuration.config import (
-    CACHE_COLLECTION_NAME,
     EMBEDDING_DIMENSION,
 )
-try:
-    collections = client.get_collections()
-    existing = [
-        collection.name
-        for collection in collections.collections
-    ]
-    if CACHE_COLLECTION_NAME not in existing:
-        client.create_collection(
-            collection_name=CACHE_COLLECTION_NAME,
-            vectors_config=VectorParams(
-                size=EMBEDDING_DIMENSION,
-                distance=Distance.COSINE,
-            ),
+from configuration.constants import (
+    COLLECTION_ALREADY_EXISTS_SCRIPT_LOG,
+    COLLECTION_CREATED_SUCCESS_LOG,
+    COLLECTION_CREATION_FAILED_LOG,
+)
+
+def create_cache_collection_if_missing(
+    collection_name: str,
+) -> None:
+    """
+    Create the specified cache collection if it does not
+    already exist.
+    """
+    try:
+        collections = client.get_collections()
+        existingCollections = [
+            collection.name
+            for collection in collections.collections
+        ]
+
+        if collection_name not in existingCollections:
+            client.create_collection(
+                collection_name=collection_name,
+                vectors_config=VectorParams(
+                    size=EMBEDDING_DIMENSION,
+                    distance=Distance.COSINE,
+                ),
+            )
+
+            logger.info(COLLECTION_CREATED_SUCCESS_LOG)
+        else:
+            logger.info(COLLECTION_ALREADY_EXISTS_SCRIPT_LOG)
+
+    except Exception as exception:
+        logger.exception(
+            COLLECTION_CREATION_FAILED_LOG,
+            exception,
         )
-        logger.info("Collection '%s' created successfully.",CACHE_COLLECTION_NAME)
-    else:
-        logger.info("Collection '%s' already exists.",CACHE_COLLECTION_NAME)
-except Exception:
-    logger.exception("Failed to create cache collection.")
+        raise
+
+if __name__ == "__main__":
+    logger.info(
+        "This script requires a collection name."
+    )

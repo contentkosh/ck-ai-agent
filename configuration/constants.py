@@ -293,3 +293,9 @@ INVALID_CACHE_RESPONSES = [
 ]
 
 CACHE_SOURCE = "CACHE"
+
+METADATA_BUSINESS_ID = "business_id"
+METADATA_COURSE_ID = "course_id"
+
+BUSINESS_ID_REQUIRED_ERROR = "Business ID is required."
+COURSE_ID_REQUIRED_ERROR = "Course ID is required."

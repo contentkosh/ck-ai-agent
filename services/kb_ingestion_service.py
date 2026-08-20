@@ -6,12 +6,13 @@
 # ==========================================================
 
 import uuid
-from typing import TypedDict
+from typing import Any, TypedDict
 
 from fastapi import UploadFile
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from openai.types import Metadata
 from pypdf import PdfReader
-from qdrant_client.models import PointStruct
+from qdrant_client.models import Any, PointStruct
 
 from common.custom_exceptions import (
     EmbeddingException,
@@ -34,6 +35,8 @@ from configuration.config import (
 
 from configuration.constants import (
     FILE_SAVE_LOG,
+    METADATA_BUSINESS_ID,
+    METADATA_COURSE_ID,
     PDF_READ_FAILED_LOG,
     PAGE_READ_FAILED_LOG,
     PAGES_EXTRACTED_LOG,
@@ -123,10 +126,12 @@ def generate_uuid() -> str:
 def build_payload(
     *,
     chunk: str,
-    metadata: DocumentMetadataDto,
+    metadata: Metadata,
     filename: str,
     document_id: str,
     page_number: int,
+    business_id: str,
+    course_id: str,
 ) -> dict[str, str | int]:
     """Build the Qdrant payload."""
     return {
@@ -138,6 +143,8 @@ def build_payload(
         METADATA_SUMMARY: metadata.summary,
         METADATA_SOURCE: filename,
         METADATA_PAGE: page_number,
+        METADATA_BUSINESS_ID: business_id,
+        METADATA_COURSE_ID: course_id,
     }
 
 
@@ -267,8 +274,11 @@ def process_embedding_batch(
     metadata: DocumentMetadataDto,
     filename: str,
     document_id: str,
+    business_id: str,
+    course_id: str,
 ) -> int:
     """Generate embeddings and store one batch in Qdrant."""
+
     chunk_texts = [
         chunk
         for chunk, _ in chunk_batch
@@ -306,14 +316,20 @@ def process_embedding_batch(
                     filename=filename,
                     document_id=document_id,
                     page_number=page_number,
+                    business_id=business_id,
+                    course_id=course_id,
                 ),
             )
         )
 
     try:
-        saveChunks(points)
+        saveChunks(
+            points,
+            business_id,
+        )
 
     except ContentKoshException as ex:
+        
         logger.exception(
             KB_INGESTION_FAILED_LOG,
             ex,
@@ -337,11 +353,14 @@ def process_embedding_batch(
 def build_vectors(
     *,
     pages: list[Page],
-    metadata: DocumentMetadataDto,
+    metadata: Metadata,
     filename: str,
     document_id: str,
+    business_id: str,
+    course_id: str,
 ) -> int:
     """Generate and store document vectors in batches."""
+
     splitter = get_text_splitter()
     chunk_batch: list[tuple[str, int]] = []
     total_chunks = 0
@@ -378,6 +397,8 @@ def build_vectors(
                     metadata=metadata,
                     filename=filename,
                     document_id=document_id,
+                    business_id=business_id,
+                    course_id=course_id,
                 )
 
                 chunk_batch.clear()
@@ -388,6 +409,8 @@ def build_vectors(
             metadata=metadata,
             filename=filename,
             document_id=document_id,
+            business_id=business_id,
+            course_id=course_id,
         )
 
     logger.info(
@@ -405,8 +428,11 @@ def build_vectors(
 def process_document(
     pdf: PdfReader,
     filename: str,
-) -> ProcessedDocumentDto:
+    business_id: str,
+    course_id: str,
+) -> Metadata:
     """Process a PDF document."""
+
     try:
         logger.info(
             DOCUMENT_PROCESSING_STARTED_LOG,
@@ -431,6 +457,8 @@ def process_document(
             metadata=metadata,
             filename=filename,
             document_id=document_id,
+            business_id=business_id,
+            course_id=course_id,
         )
 
         logger.info(
@@ -468,9 +496,13 @@ def process_document(
 # ==========================================================
 
 def ingest_documents(
+    *,
     files: list[UploadFile],
-) -> UploadedDocumentsResponse:
+    business_id: str,
+    course_id: str,
+) -> dict[str, Any]:
     """Ingest PDF documents into the Knowledge Base."""
+
     validate_upload(files)
 
     try:
@@ -493,6 +525,8 @@ def ingest_documents(
                 document = process_document(
                     pdf=pdf,
                     filename=file.filename,
+                    business_id=business_id,
+                    course_id=course_id,
                 )
 
             finally:
@@ -513,6 +547,7 @@ def ingest_documents(
                     pass
 
                 del pdf
+
                 delete_saved_file(
                     saved_file_path,
                 )

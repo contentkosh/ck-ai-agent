@@ -98,6 +98,8 @@ def build_prompt(
 
 def ask_question(
     query: str,
+    business_id: str,
+    course_id: str,
 ) -> QueryResponse:
     """
     Search the Knowledge Base and generate an answer.
@@ -119,7 +121,9 @@ def ask_question(
         # --------------------------------------------------
 
         cached = get_cached_answer(
-            queryEmbedding,
+            query_embedding=queryEmbedding,
+            business_id=business_id,
+            course_id=course_id,
         )
 
         if cached:
@@ -145,6 +149,8 @@ def ask_question(
         try:
             searchResults = searchChunks(
                 queryEmbedding=queryEmbedding,
+                businessId=business_id,
+                courseId=course_id,
                 limit=SEARCH_LIMIT,
             )
 
@@ -263,6 +269,8 @@ def ask_question(
             context=contextText,
             answer=answer,
             documentPayload=documentPayload,
+            business_id=business_id,
+            course_id=course_id,
         )
 
         # --------------------------------------------------
