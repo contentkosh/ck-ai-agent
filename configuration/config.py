@@ -132,7 +132,7 @@ MAX_QUERY_LENGTH = int(
 
 LLM_MODEL = os.getenv(
     "LLM_MODEL",
-    "nvidia/nemotron-3-super-120b-a12b:free",
+    "liquid/lfm-2.5-2.6b:free",
 )
 
 OPENROUTER_API_KEY = os.getenv(
