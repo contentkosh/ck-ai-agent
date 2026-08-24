@@ -1,10 +1,16 @@
 from io import BytesIO
 from unittest.mock import patch
+
 from fastapi import status
-from tests.conftest import client
+
 from exceptions.knowledge_base_exception import KnowledgeBaseException
 from exceptions.validation_exception import InvalidFileException
 from common.custom_exceptions import NotFoundException
+
+
+BUSINESS_ID = "test-business"
+COURSE_ID = "test-course"
+
 
 # ==========================================================
 # Health API Tests
@@ -15,37 +21,53 @@ def test_health_check(client):
     Verify that the Health API is reachable.
     """
     response = client.get("/")
+
     assert response.status_code == status.HTTP_200_OK
+
     data = response.json()
+
     assert data["status"] == "Running"
     assert "service" in data
     assert "version" in data
 
+
 # ==========================================================
-# Get Knowledge Base API Tests
+# Knowledge Base API Tests
 # ==========================================================
 
 @patch("api.routes.kb_routes.get_knowledge_base_records")
 def test_get_knowledge_base(
-    mockGetKnowledgeBaseRecords,
+    mock_get_knowledge_base_records,
     client,
 ):
     """
-    Verify fetching all Knowledge Base records.
+    Verify fetching Knowledge Base records.
     """
-    mockGetKnowledgeBaseRecords.return_value = [
+    mock_get_knowledge_base_records.return_value = [
         {
             "title": "AI Notes",
             "tag": "ai",
         }
     ]
 
-    response = client.get("/llm/kb")
+    response = client.get(
+        "/llm/kb",
+        params={
+            "business_id": BUSINESS_ID,
+            "course_id": COURSE_ID,
+        },
+    )
+
     assert response.status_code == status.HTTP_200_OK
+
     data = response.json()
+
     assert data["total_records"] == 1
     assert len(data["records"]) == 1
     assert data["records"][0]["title"] == "AI Notes"
+
+    mock_get_knowledge_base_records.assert_called_once()
+
 
 # ==========================================================
 # Ask Question API Tests
@@ -53,14 +75,18 @@ def test_get_knowledge_base(
 
 @patch("api.routes.kb_routes.ask_question")
 def test_query_knowledge_base(
-    mockAskQuestion,
+    mock_ask_question,
     client,
 ):
     """
-    Verify that the Knowledge Base returns an answer.
+    Verify that the Knowledge Base returns an answer
+    for the requested business and course.
     """
-    mockAskQuestion.return_value = {
-        "answer": "Artificial Intelligence is the simulation of human intelligence.",
+    mock_ask_question.return_value = {
+        "answer": (
+            "Artificial Intelligence is the simulation "
+            "of human intelligence."
+        ),
         "document_id": "123",
         "title": "AI Notes",
         "document_type": "Notes",
@@ -69,22 +95,36 @@ def test_query_knowledge_base(
         "source": "ai_notes.pdf",
         "page": 12,
     }
+
     response = client.post(
         "/llm/kb/query",
         json={
             "query": "What is Artificial Intelligence?",
+            "business_id": BUSINESS_ID,
+            "course_id": COURSE_ID,
         },
     )
+
     assert response.status_code == status.HTTP_200_OK
+
     data = response.json()
+
     assert (
         data["answer"]
-        == "Artificial Intelligence is the simulation of human intelligence."
+        == "Artificial Intelligence is the simulation "
+        "of human intelligence."
     )
     assert data["title"] == "AI Notes"
     assert data["tag"] == "artificial_intelligence"
     assert data["source"] == "ai_notes.pdf"
     assert data["page"] == 12
+
+    mock_ask_question.assert_called_once_with(
+        query="What is Artificial Intelligence?",
+        business_id=BUSINESS_ID,
+        course_id=COURSE_ID,
+    )
+
 
 @patch("api.routes.kb_routes.ask_question")
 def test_query_knowledge_base_failure(
@@ -92,18 +132,21 @@ def test_query_knowledge_base_failure(
     client,
 ):
     """
-    Verify query API returns Internal Server Error
-    when the service fails.
+    Verify the query API handles service failure.
     """
     mock_ask_question.side_effect = KnowledgeBaseException()
+
     response = client.post(
         "/llm/kb/query",
         json={
             "query": "What is AI?",
+            "business_id": BUSINESS_ID,
+            "course_id": COURSE_ID,
         },
     )
 
     assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+
 
 # ==========================================================
 # Upload Documents API Tests
@@ -111,16 +154,17 @@ def test_query_knowledge_base_failure(
 
 @patch("api.routes.upload_routes.ingest_documents")
 def test_upload_document(
-    mockIngestDocuments,
+    mock_ingest_documents,
     client,
     auth_headers,
 ):
     """
-    Verify document upload.
+    Verify document upload with business and course metadata.
     """
-    mockIngestDocuments.return_value = (
+    mock_ingest_documents.return_value = (
         "Document uploaded successfully."
     )
+
     response = client.post(
         "/llm/upload",
         files=[
@@ -133,11 +177,17 @@ def test_upload_document(
                 ),
             ),
         ],
+        data={
+            "business_id": BUSINESS_ID,
+            "course_id": COURSE_ID,
+        },
         headers=auth_headers,
     )
 
     assert response.status_code == status.HTTP_200_OK
+
     data = response.json()
+
     assert (
         data["message"]
         == "Document uploaded successfully."
@@ -148,7 +198,8 @@ def test_upload_document_rejected_without_api_key(
     client,
 ):
     """
-    Verify upload is rejected when no API key is supplied.
+    Verify protected upload endpoint rejects requests
+    without an API key.
     """
     response = client.post(
         "/llm/upload",
@@ -162,8 +213,14 @@ def test_upload_document_rejected_without_api_key(
                 ),
             ),
         ],
+        data={
+            "business_id": BUSINESS_ID,
+            "course_id": COURSE_ID,
+        },
     )
+
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
 
 # ==========================================================
 # Upload Documents - Negative Tests
@@ -176,8 +233,7 @@ def test_upload_document_invalid_file(
     auth_headers,
 ):
     """
-    Verify upload returns Bad Request when an invalid
-    file is uploaded.
+    Verify invalid files are rejected.
     """
     mock_ingest_documents.side_effect = InvalidFileException(
         "Invalid file type.",
@@ -195,10 +251,15 @@ def test_upload_document_invalid_file(
                 ),
             ),
         ],
+        data={
+            "business_id": BUSINESS_ID,
+            "course_id": COURSE_ID,
+        },
         headers=auth_headers,
     )
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
+
 
 # ==========================================================
 # Get Uploaded Documents API Tests
@@ -206,13 +267,13 @@ def test_upload_document_invalid_file(
 
 @patch("api.routes.file_routes.get_uploaded_documents_service")
 def test_get_uploaded_documents(
-    mockGetUploadedDocumentsService,
+    mock_get_uploaded_documents_service,
     client,
 ):
     """
-    Verify uploaded documents retrieval.
+    Verify uploaded documents retrieval for a course.
     """
-    mockGetUploadedDocumentsService.return_value = [
+    mock_get_uploaded_documents_service.return_value = [
         {
             "document_id": "123",
             "title": "AI Notes",
@@ -220,11 +281,21 @@ def test_get_uploaded_documents(
         }
     ]
 
-    response = client.get("/llm/files")
+    response = client.get(
+        "/llm/files",
+        params={
+            "business_id": BUSINESS_ID,
+            "course_id": COURSE_ID,
+        },
+    )
+
     assert response.status_code == status.HTTP_200_OK
+
     data = response.json()
+
     assert data["total_documents"] == 1
     assert data["documents"][0]["title"] == "AI Notes"
+
 
 @patch("api.routes.file_routes.get_uploaded_documents_service")
 def test_get_uploaded_documents_service_failure(
@@ -232,12 +303,20 @@ def test_get_uploaded_documents_service_failure(
     client,
 ):
     """
-    Verify API returns Internal Server Error when
-    the service fails.
+    Verify the API handles document retrieval failure.
     """
     mock_service.side_effect = KnowledgeBaseException()
-    response = client.get("/llm/files")
+
+    response = client.get(
+        "/llm/files",
+        params={
+            "business_id": BUSINESS_ID,
+            "course_id": COURSE_ID,
+        },
+    )
+
     assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+
 
 # ==========================================================
 # Delete Document API Tests
@@ -245,34 +324,49 @@ def test_get_uploaded_documents_service_failure(
 
 @patch("api.routes.file_routes.delete_document_service")
 def test_delete_document(
-    mockDeleteDocumentService,
+    mock_delete_document_service,
     client,
     auth_headers,
 ):
     """
-    Verify deleting one document.
+    Verify deleting a document within a business.
     """
     response = client.delete(
         "/llm/files/123",
+        params={
+            "business_id": BUSINESS_ID,
+        },
         headers=auth_headers,
     )
+
     assert response.status_code == status.HTTP_200_OK
+
     data = response.json()
+
     assert data["status"] == "success"
-    mockDeleteDocumentService.assert_called_once_with(
-        "123",
+
+    mock_delete_document_service.assert_called_once_with(
+        documentId="123",
+        business_id=BUSINESS_ID,
     )
+
 
 def test_delete_document_rejected_without_api_key(
     client,
 ):
     """
-    Verify delete is rejected when no API key is supplied.
+    Verify protected delete endpoint rejects requests
+    without an API key.
     """
     response = client.delete(
         "/llm/files/123",
+        params={
+            "business_id": BUSINESS_ID,
+        },
     )
+
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
 
 @patch("api.routes.file_routes.delete_document_service")
 def test_delete_document_not_found(
@@ -281,8 +375,7 @@ def test_delete_document_not_found(
     auth_headers,
 ):
     """
-    Verify deleting a non-existing document
-    returns Not Found.
+    Verify deleting a non-existing document returns Not Found.
     """
     mock_delete_document_service.side_effect = NotFoundException(
         "Document not found.",
@@ -290,10 +383,14 @@ def test_delete_document_not_found(
 
     response = client.delete(
         "/llm/files/123",
+        params={
+            "business_id": BUSINESS_ID,
+        },
         headers=auth_headers,
     )
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
+
 
 # ==========================================================
 # Clear Knowledge Base API Tests
@@ -301,29 +398,44 @@ def test_delete_document_not_found(
 
 @patch("api.routes.file_routes.clear_kb_service")
 def test_clear_knowledge_base(
-    mockClearKbService,
+    mock_clear_kb_service,
     client,
     auth_headers,
 ):
     """
-    Verify clearing the Knowledge Base.
+    Verify clearing the Knowledge Base for a business.
     """
     response = client.delete(
         "/llm/files",
+        params={
+            "business_id": BUSINESS_ID,
+        },
         headers=auth_headers,
     )
+
     assert response.status_code == status.HTTP_200_OK
+
     data = response.json()
+
     assert data["status"] == "success"
-    mockClearKbService.assert_called_once()
+
+    mock_clear_kb_service.assert_called_once_with(
+        business_id=BUSINESS_ID,
+    )
+
 
 def test_clear_knowledge_base_rejected_without_api_key(
     client,
 ):
     """
-    Verify clear KB is rejected when no API key is supplied.
+    Verify protected clear-KB endpoint rejects requests
+    without an API key. 
     """
     response = client.delete(
         "/llm/files",
+        params={
+            "business_id": BUSINESS_ID,
+        },
     )
+
     assert response.status_code == status.HTTP_401_UNAUTHORIZED

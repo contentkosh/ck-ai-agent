@@ -5,6 +5,12 @@ from fastapi import UploadFile
 from common.logger import logger
 from configuration.config import UPLOAD_FOLDER
 from configuration.constants import (DELETE_TEMP_FILE_FAILED_LOG,DELETE_TEMP_FILE_SUCCESS_LOG,)
+from configuration.constants import (
+    DELETE_TEMP_FILE_FAILED_LOG,
+    DELETE_TEMP_FILE_SUCCESS_LOG,
+)
+
+from configuration.config import UPLOAD_FOLDER
 
 def save_uploaded_file(file: UploadFile) -> str:
     """

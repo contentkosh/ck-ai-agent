@@ -1,4 +1,12 @@
 # ==========================================================
+# ==========================================
+# FILE TYPES
+# ==========================================
+
+PDF_MAGIC_BYTES = b"%PDF-"
+
+
+# ==========================================
 # DEFAULT VALUES
 # ==========================================================
 
@@ -45,6 +53,17 @@ DEFAULT_TOP_K = 5
 SUCCESS_STATUS = "success"
 FAILED_STATUS = "failed"
 SERVICE_RUNNING_STATUS = "Running"
+API_TITLE = "Knowledge Base API"
+API_VERSION = "1.0.0"
+# ==========================================================
+# VALIDATION MESSAGES
+# ==========================================================
+
+EMPTY_QUERY_ERROR = "Query cannot be empty."
+
+# ==========================================
+# CACHE
+# ==========================================
 
 # ==========================================================
 # API ROUTES
@@ -133,6 +152,10 @@ PAGE_CHUNK_GENERATION_LOG = "Page %d generated %d chunks."
 # QUERY SERVICE LOGS
 # ==========================================================
 
+QUERY_LENGTH_ERROR = (
+    "Query cannot exceed {} characters."
+)
+
 QUERY_RECEIVED_LOG = "Received query: %s"
 NO_RELEVANT_CHUNKS_LOG = "No relevant chunks found."
 RETRIEVED_CHUNKS_LOG = "Retrieved %d chunk(s)."
@@ -144,7 +167,9 @@ CHAT_SERVICE_FAILED_LOG = "Chat service failed: %s"
 # ==========================================================
 
 TEMP_FILE_DELETED_LOG = "Deleted temporary upload file: %s"
-TEMP_FILE_DELETE_FAILED_LOG = ("Failed to delete temporary upload file '%s': %s")
+TEMP_FILE_DELETE_FAILED_LOG = (
+    "Failed to delete temporary upload file '%s': %s"
+)
 
 # ==========================================================
 # API LOGS
@@ -158,8 +183,12 @@ QUERY_SUCCESS_LOG = "[%s] Question answered successfully."
 UPLOAD_REQUEST_LOG = "[%s] Upload request received."
 UPLOAD_SUCCESS_LOG = "[%s] Uploaded %d document(s) successfully."
 FETCH_UPLOADED_DOCUMENTS_LOG = "[%s] Fetching uploaded documents."
-FETCH_UPLOADED_DOCUMENTS_SUCCESS_LOG = ("[%s] Retrieved %d uploaded document(s).")
-DELETE_DOCUMENT_REQUEST_LOG = ("[%s] Delete request received. Document ID=%s")
+FETCH_UPLOADED_DOCUMENTS_SUCCESS_LOG = (
+    "[%s] Retrieved %d uploaded document(s)."
+)
+DELETE_DOCUMENT_REQUEST_LOG = (
+    "[%s] Delete request received. Document ID=%s"
+)
 DELETE_DOCUMENT_SUCCESS_LOG = "[%s] Document deleted successfully."
 CLEAR_KB_REQUEST_LOG = "[%s] Clearing Knowledge Base."
 CLEAR_KB_SUCCESS_LOG = "[%s] Knowledge Base cleared successfully."
@@ -168,22 +197,42 @@ CLEAR_KB_SUCCESS_LOG = "[%s] Knowledge Base cleared successfully."
 # QDRANT CLIENT LOGS
 # ==========================================================
 
-QDRANT_CLIENT_INITIALIZING_LOG = ("Initializing Qdrant client. host=%s port=%s")
-QDRANT_CLIENT_INITIALIZED_LOG = ("Qdrant client initialized successfully.")
+QDRANT_CLIENT_INITIALIZING_LOG = (
+    "Initializing Qdrant client. host=%s port=%s"
+)
+QDRANT_CLIENT_INITIALIZED_LOG = (
+    "Qdrant client initialized successfully."
+)
 
 # ==========================================================
 # COLLECTION SCRIPTS
 # ==========================================================
 
 DOCUMENTS_HEADER_LOG = "========== DOCUMENTS =========="
-DOCUMENT_DETAILS_LOG = ("Title=%s | Type=%s | Tag=%s | Source=%s | Page=%s")
-DOCUMENT_SEPARATOR_LOG = ("----------------------------------------")
-COLLECTION_STATS_HEADER_LOG = ("========== Collection Statistics ==========")
-COLLECTION_STATS_LOG = ("Name=%s | Vectors=%s | Status=%s")
-COLLECTION_CREATED_SUCCESS_LOG = ("Collection created successfully.")
-COLLECTION_ALREADY_EXISTS_SCRIPT_LOG = ("Collection already exists.")
-COLLECTION_CREATION_FAILED_LOG = ("Failed to create collection.")
-COLLECTION_DELETED_SUCCESS_LOG = ("Collection '%s' deleted successfully.")
+DOCUMENT_DETAILS_LOG = (
+    "Title=%s | Type=%s | Tag=%s | Source=%s | Page=%s"
+)
+DOCUMENT_SEPARATOR_LOG = (
+    "----------------------------------------"
+)
+COLLECTION_STATS_HEADER_LOG = (
+    "========== Collection Statistics =========="
+)
+COLLECTION_STATS_LOG = (
+    "Name=%s | Vectors=%s | Status=%s"
+)
+COLLECTION_CREATED_SUCCESS_LOG = (
+    "Collection created successfully."
+)
+COLLECTION_ALREADY_EXISTS_SCRIPT_LOG = (
+    "Collection already exists."
+)
+COLLECTION_CREATION_FAILED_LOG = (
+    "Failed to create collection."
+)
+COLLECTION_DELETED_SUCCESS_LOG = (
+    "Collection '%s' deleted successfully."
+)
 
 # ==========================================================
 # GLOBAL LOGS
@@ -191,15 +240,23 @@ COLLECTION_DELETED_SUCCESS_LOG = ("Collection '%s' deleted successfully.")
 
 UNHANDLED_EXCEPTION_LOG = "Unhandled Exception: %s"
 
-FETCH_UPLOADED_DOCUMENTS_FAILED_LOG = ("Failed to fetch uploaded documents: %s")
-CLEAR_KNOWLEDGE_BASE_FAILED_LOG = ("Failed to clear Knowledge Base: %s")
+FETCH_UPLOADED_DOCUMENTS_FAILED_LOG = (
+    "Failed to fetch uploaded documents: %s"
+)
+CLEAR_KNOWLEDGE_BASE_FAILED_LOG = (
+    "Failed to clear Knowledge Base: %s"
+)
 
 # ==========================================================
 # File Utility Logs
 # ==========================================================
 
-DELETE_TEMP_FILE_SUCCESS_LOG = ("Temporary file deleted successfully: %s")
-DELETE_TEMP_FILE_FAILED_LOG = ("Failed to delete temporary file: %s")
+DELETE_TEMP_FILE_SUCCESS_LOG = (
+    "Temporary file deleted successfully: %s"
+)
+DELETE_TEMP_FILE_FAILED_LOG = (
+    "Failed to delete temporary file: %s"
+)
 
 # ==========================================================
 # File Validation Constants
@@ -208,4 +265,29 @@ DELETE_TEMP_FILE_FAILED_LOG = ("Failed to delete temporary file: %s")
 PDF_EXTENSION = ".pdf"
 SUPPORTED_CONTENT_TYPE = "application/pdf"
 PDF_MAGIC_BYTES = b"%PDF"
-MAX_SCROLL_ITERATIONS_REACHED_LOG = ("Maximum scroll iterations reached while reading Qdrant records.")
+MAX_SCROLL_ITERATIONS_REACHED_LOG = (
+    "Maximum scroll iterations reached while reading Qdrant records."
+)
+
+# ==========================================================
+# CACHE
+# ==========================================================
+
+DOCUMENT_NOT_FOUND_ERROR = "Document '{}' does not exist."
+
+INVALID_CACHE_RESPONSES = [
+    "I don't know",
+    "Answer not found",
+    "Answer not found in the Knowledge Base.",
+    "No relevant context found",
+]
+
+CACHE_SOURCE = "CACHE"
+
+METADATA_BUSINESS_ID = "business_id"
+METADATA_COURSE_ID = "course_id"
+
+BUSINESS_ID_REQUIRED_ERROR = "Business ID is required."
+COURSE_ID_REQUIRED_ERROR = "Course ID is required."
+
+BUSINESS_ID_NORMALIZATION_PATTERN = r"[^a-zA-Z0-9_]+"
