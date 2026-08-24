@@ -1,5 +1,7 @@
 import os
+
 from dotenv import load_dotenv
+
 
 # ==========================================================
 # Load Environment Variables
@@ -31,18 +33,12 @@ API_RELOAD = os.getenv(
 
 
 # ==========================================================
-# Application Configuration
-# ==========================================================
-
-API_TITLE = "Knowledge Base API"
-API_VERSION = "1.0.0"
-
-
-# ==========================================================
 # AUTHENTICATION
 # ==========================================================
 
-API_KEY = os.getenv("API_KEY")
+API_KEY = os.getenv(
+    "API_KEY",
+)
 
 API_KEY_HEADER_NAME = os.getenv(
     "API_KEY_HEADER_NAME",
@@ -71,7 +67,6 @@ QDRANT_PORT = int(
     )
 )
 
-# Prefixes used to create business-specific collections.
 KB_COLLECTION_PREFIX = os.getenv(
     "KB_COLLECTION_PREFIX",
     "kb_",
@@ -241,23 +236,6 @@ MAX_TAG_LENGTH = int(
 # ==========================================================
 
 OPENROUTER_API_KEY_ENV = "OPENROUTER_API_KEY"
-
-
-# ==========================================================
-# FILE TYPES
-# ==========================================================
-
-PDF_EXTENSION = ".pdf"
-
-SUPPORTED_FILE_TYPES = [
-    PDF_EXTENSION,
-]
-
-SUPPORTED_CONTENT_TYPE = "application/pdf"
-
-PDF_MAGIC_BYTES = b"%PDF-"
-
-MAX_SCROLL_ITERATIONS = 1000
 
 
 # ==========================================================

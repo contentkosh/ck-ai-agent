@@ -28,5 +28,9 @@ def get_knowledge_base_records(
             tag=tag,
         )
     except ContentKoshException as ex:
-        logger.exception(FETCH_RECORDS_FAILED_LOG,ex)
+        logger.exception(
+            "%s: %s",
+            FETCH_RECORDS_FAILED_LOG,
+            ex,
+        )
         raise KnowledgeBaseException() from ex

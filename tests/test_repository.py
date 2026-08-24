@@ -1,318 +1,830 @@
-from unittest.mock import MagicMock
-from unittest.mock import patch
+import pytest
+from unittest.mock import MagicMock, patch
+
+from qdrant_client.models import (
+    FieldCondition,
+    Filter,
+    MatchValue,
+)
+
+from common.custom_exceptions import DatabaseException
+from exceptions.contentkosh_exception import ContentKoshException
+from exceptions.qdrant_exception import (
+    QdrantConnectionException,
+    QdrantDeleteException,
+    QdrantFetchException,
+    QdrantInsertException,
+    QdrantSearchException,
+)
+
 from repositories.kb_repository import (
-    deleteAllDocuments,
-    deleteDocument,
-    getAllRecords,
-    getUploadedFiles,
+    _buildMetadataFilter,
+    _scrollRecords,
+    ensureCollection,
+    buildUploadedDocument,
+    buildKnowledgeBaseRecord,
     saveChunks,
     searchChunks,
+    getAllRecords,
+    getUploadedFiles,
+    deleteDocument,
+    deleteAllDocuments,
 )
-from repositories.kb_repository import (buildUploadedDocument,)
-import pytest
-from exceptions.contentkosh_exception import ContentKoshException
+
+
+BUSINESS_ID = "test-business"
+OTHER_BUSINESS_ID = "other-business"
+
+COURSE_ID = "test-course"
+OTHER_COURSE_ID = "other-course"
+
+DOCUMENT_ID = "test-document"
+MISSING_DOCUMENT_ID = "missing-document"
+
+
 # ==========================================================
-# Build Payload Tests
+# Test Helpers
+# ==========================================================
+
+def make_point(
+    payload=None,
+    point_id="point-1",
+):
+    point = MagicMock()
+    point.id = point_id
+    point.payload = payload or {}
+    return point
+
+
+def make_uploaded_payload(
+    document_id=DOCUMENT_ID,
+):
+    return {
+        "document_id": document_id,
+        "title": "AI Notes",
+        "document_type": "Notes",
+        "tag": "artificial_intelligence",
+        "summary": "Introduction to AI.",
+        "source": "ai_notes.pdf",
+    }
+
+
+def make_record_payload(
+    document_id=DOCUMENT_ID,
+):
+    return {
+        "document_id": document_id,
+        "title": "AI Notes",
+        "document_type": "Notes",
+        "tag": "artificial_intelligence",
+        "summary": "Introduction to AI.",
+        "source": "ai_notes.pdf",
+        "page": 10,
+        "text": "Artificial Intelligence is...",
+    }
+
+
+# ==========================================================
+# Metadata Filter Tests
+# ==========================================================
+
+def test_build_metadata_filter_course():
+    result = _buildMetadataFilter(
+        courseId=COURSE_ID,
+    )
+
+    assert isinstance(result, Filter)
+    assert len(result.must) == 1
+
+    condition = result.must[0]
+
+    assert isinstance(condition, FieldCondition)
+    assert condition.key == "course_id"
+    assert condition.match == MatchValue(
+        value=COURSE_ID,
+    )
+
+
+def test_build_metadata_filter_course_and_tag():
+    result = _buildMetadataFilter(
+        courseId=COURSE_ID,
+        tag="ai",
+    )
+
+    assert isinstance(result, Filter)
+    assert len(result.must) == 2
+
+    keys = {
+        condition.key
+        for condition in result.must
+    }
+
+    assert keys == {
+        "course_id",
+        "tag",
+    }
+
+
+def test_build_metadata_filter_empty():
+    result = _buildMetadataFilter()
+
+    assert result is None
+
+
+def test_build_metadata_filter_tag_only():
+    result = _buildMetadataFilter(
+        tag="ai",
+    )
+
+    assert isinstance(result, Filter)
+    assert len(result.must) == 1
+
+    assert result.must[0].key == "tag"
+
+
+# ==========================================================
+# Collection Tests
+# ==========================================================
+
+@patch(
+    "repositories.kb_repository.create_collection_if_missing"
+)
+@patch(
+    "repositories.kb_repository.get_kb_collection_name"
+)
+def test_ensure_collection(
+    mock_get_collection_name,
+    mock_create_collection,
+):
+    mock_get_collection_name.return_value = (
+        "kb_test_business"
+    )
+
+    result = ensureCollection(
+        BUSINESS_ID,
+    )
+
+    assert result == "kb_test_business"
+
+    mock_get_collection_name.assert_called_once_with(
+        BUSINESS_ID,
+    )
+
+    mock_create_collection.assert_called_once_with(
+        "kb_test_business",
+    )
+
+
+# ==========================================================
+# Payload Builder Tests
 # ==========================================================
 
 def test_build_uploaded_document():
-    payload = {
-        "document_id": "123",
-        "title": "AI Notes",
-        "document_type": "Notes",
-        "tag": "ai",
-        "summary": "Introduction",
-        "source": "ai.pdf",
-    }
+    payload = make_uploaded_payload()
 
-    result = buildUploadedDocument(payload)
+    result = buildUploadedDocument(
+        payload,
+    )
+
+    assert result.document_id == DOCUMENT_ID
     assert result.title == "AI Notes"
     assert result.document_type == "Notes"
-    assert result.tag == "ai"
-    assert result.summary == "Introduction"
-    assert result.source == "ai.pdf"
+    assert result.tag == "artificial_intelligence"
+    assert result.summary == "Introduction to AI."
+    assert result.source == "ai_notes.pdf"
+
+
+def test_build_knowledge_base_record():
+    payload = make_record_payload()
+
+    result = buildKnowledgeBaseRecord(
+        payload,
+    )
+
+    assert result.document_id == DOCUMENT_ID
+    assert result.title == "AI Notes"
+    assert result.document_type == "Notes"
+    assert result.tag == "artificial_intelligence"
+    assert result.summary == "Introduction to AI."
+    assert result.source == "ai_notes.pdf"
+    assert result.page == 10
+    assert result.text == "Artificial Intelligence is..."
+
 
 # ==========================================================
-# Save Chunks Tests
+# Pagination Tests
 # ==========================================================
 
 @patch("repositories.kb_repository.client")
-def test_save_chunks(
+def test_scroll_records_single_page(
     mock_client,
 ):
-    points = [MagicMock(), MagicMock()]
-    saveChunks(points)
-    mock_client.upsert.assert_called_once()
+    first_page = [
+        make_point(point_id="1"),
+        make_point(point_id="2"),
+    ]
+
+    mock_client.scroll.return_value = (
+        first_page,
+        None,
+    )
+
+    result = _scrollRecords(
+        "kb_test",
+    )
+
+    assert len(result) == 2
+    assert result == first_page
+
+    mock_client.scroll.assert_called_once()
+
+
+@patch("repositories.kb_repository.client")
+def test_scroll_records_multiple_pages(
+    mock_client,
+):
+    first_page = [
+        make_point(point_id="1"),
+    ]
+
+    second_page = [
+        make_point(point_id="2"),
+    ]
+
+    mock_client.scroll.side_effect = [
+        (first_page, "offset-2"),
+        (second_page, None),
+    ]
+
+    result = _scrollRecords(
+        "kb_test",
+    )
+
+    assert result == [
+        first_page[0],
+        second_page[0],
+    ]
+
+    assert mock_client.scroll.call_count == 2
+
+    first_call = mock_client.scroll.call_args_list[0]
+    second_call = mock_client.scroll.call_args_list[1]
+
+    assert first_call.kwargs["offset"] is None
+    assert second_call.kwargs["offset"] == "offset-2"
+
 
 # ==========================================================
-# Save Chunks - Failure Test
+# Save Chunks
 # ==========================================================
 
 @patch("repositories.kb_repository.client")
+@patch("repositories.kb_repository.ensureCollection")
+def test_save_chunks_success(
+    mock_ensure_collection,
+    mock_client,
+):
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
+
+    points = [
+        make_point(point_id="1"),
+        make_point(point_id="2"),
+    ]
+
+    saveChunks(
+        points,
+        BUSINESS_ID,
+    )
+
+    mock_ensure_collection.assert_called_once_with(
+        BUSINESS_ID,
+    )
+
+    mock_client.upsert.assert_called_once_with(
+        collection_name="kb_test_business",
+        points=points,
+    )
+
+
+@patch("repositories.kb_repository.client")
+@patch("repositories.kb_repository.ensureCollection")
 def test_save_chunks_failure(
+    mock_ensure_collection,
     mock_client,
 ):
-    """
-    Verify saveChunks raises ContentKoshException
-    when vector insertion fails.
-    """
-    mock_client.upsert.side_effect = Exception("Database Error")
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
+
+    mock_client.upsert.side_effect = Exception(
+        "Qdrant failure"
+    )
+
     with pytest.raises(ContentKoshException):
-        saveChunks([])
+        saveChunks(
+            [],
+            BUSINESS_ID,
+        )
+
 
 # ==========================================================
-# Search Chunk Tests
+# Semantic Search
 # ==========================================================
 
 @patch("repositories.kb_repository.client")
-def test_search_chunks(
+@patch("repositories.kb_repository.ensureCollection")
+def test_search_chunks_success(
+    mock_ensure_collection,
     mock_client,
 ):
-    point = MagicMock()
-    result = MagicMock()
-    result.points = [point]
-    mock_client.query_points.return_value = result
-    response = searchChunks(queryEmbedding=[0.1, 0.2],)
-    assert len(response) == 1
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
 
-# ==========================================================
-# Search Chunk - Failure Test
-# ==========================================================
+    search_points = [
+        make_point(
+            payload=make_record_payload(),
+        )
+    ]
+
+    mock_result = MagicMock()
+    mock_result.points = search_points
+
+    mock_client.query_points.return_value = (
+        mock_result
+    )
+
+    result = searchChunks(
+        queryEmbedding=[0.1, 0.2, 0.3],
+        businessId=BUSINESS_ID,
+        courseId=COURSE_ID,
+    )
+
+    assert result == search_points
+
+    mock_ensure_collection.assert_called_once_with(
+        BUSINESS_ID,
+    )
+
+    mock_client.query_points.assert_called_once()
+
+    call_kwargs = (
+        mock_client.query_points.call_args.kwargs
+    )
+
+    assert call_kwargs["collection_name"] == (
+        "kb_test_business"
+    )
+
+    assert call_kwargs["query"] == [
+        0.1,
+        0.2,
+        0.3,
+    ]
+
+    query_filter = call_kwargs["query_filter"]
+
+    assert query_filter.must[0].key == "course_id"
+    assert (
+        query_filter.must[0].match.value
+        == COURSE_ID
+    )
+
 
 @patch("repositories.kb_repository.client")
+@patch("repositories.kb_repository.ensureCollection")
+def test_search_chunks_respects_limit_and_threshold(
+    mock_ensure_collection,
+    mock_client,
+):
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
+
+    mock_result = MagicMock()
+    mock_result.points = []
+
+    mock_client.query_points.return_value = (
+        mock_result
+    )
+
+    searchChunks(
+        queryEmbedding=[0.1, 0.2],
+        businessId=BUSINESS_ID,
+        courseId=COURSE_ID,
+        limit=10,
+        scoreThreshold=0.75,
+    )
+
+    call_kwargs = (
+        mock_client.query_points.call_args.kwargs
+    )
+
+    assert call_kwargs["limit"] == 10
+    assert call_kwargs["score_threshold"] == 0.75
+
+
+@patch("repositories.kb_repository.client")
+@patch("repositories.kb_repository.ensureCollection")
 def test_search_chunks_failure(
+    mock_ensure_collection,
     mock_client,
 ):
-    """
-    Verify searchChunks raises ContentKoshException
-    when semantic search fails.
-    """
-    mock_client.query_points.side_effect = Exception("Database Error")
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
+
+    mock_client.query_points.side_effect = Exception(
+        "Qdrant search failed"
+    )
+
     with pytest.raises(ContentKoshException):
         searchChunks(
             queryEmbedding=[0.1, 0.2],
+            businessId=BUSINESS_ID,
+            courseId=COURSE_ID,
         )
 
+
 # ==========================================================
-# Get All Records Tests
+# Get All Records
 # ==========================================================
 
 @patch("repositories.kb_repository._scrollRecords")
+@patch("repositories.kb_repository.ensureCollection")
 def test_get_all_records(
-    mock_scroll,
+    mock_ensure_collection,
+    mock_scroll_records,
 ):
-    point = MagicMock()
-    point.payload = {
-        "document_id": "123",
-        "title": "AI Notes",
-        "document_type": "Notes",
-        "tag": "ai",
-        "summary": "Summary",
-        "source": "ai.pdf",
-        "page": 10,
-        "text": "Artificial Intelligence",
-    }
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
 
-    mock_scroll.return_value = [point]
-    records = getAllRecords()
-    assert len(records) == 1
-    assert records[0].title == "AI Notes"
-    assert records[0].page == 10
+    point = make_point(
+        payload=make_record_payload(),
+    )
 
-# ==========================================================
-# Get All Records - Failure Test
-# ==========================================================
+    mock_scroll_records.return_value = [
+        point,
+    ]
+
+    result = getAllRecords(
+        businessId=BUSINESS_ID,
+        courseId=COURSE_ID,
+    )
+
+    assert len(result) == 1
+    assert result[0].document_id == DOCUMENT_ID
+
+    mock_ensure_collection.assert_called_once_with(
+        BUSINESS_ID,
+    )
+
+    mock_scroll_records.assert_called_once()
+
+    call_args = (
+        mock_scroll_records.call_args
+    )
+
+    assert call_args.args[0] == (
+        "kb_test_business"
+    )
+
+    query_filter = call_args.args[1]
+
+    assert query_filter.must[0].key == "course_id"
+    assert (
+        query_filter.must[0].match.value
+        == COURSE_ID
+    )
+
 
 @patch("repositories.kb_repository._scrollRecords")
+@patch("repositories.kb_repository.ensureCollection")
+def test_get_all_records_with_tag(
+    mock_ensure_collection,
+    mock_scroll_records,
+):
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
+
+    mock_scroll_records.return_value = []
+
+    getAllRecords(
+        businessId=BUSINESS_ID,
+        courseId=COURSE_ID,
+        tag="ai",
+    )
+
+    query_filter = (
+        mock_scroll_records.call_args.args[1]
+    )
+
+    keys = {
+        condition.key
+        for condition in query_filter.must
+    }
+
+    assert keys == {
+        "course_id",
+        "tag",
+    }
+
+
+@patch("repositories.kb_repository._scrollRecords")
+@patch("repositories.kb_repository.ensureCollection")
 def test_get_all_records_failure(
-    mock_scroll,
+    mock_ensure_collection,
+    mock_scroll_records,
 ):
-    """
-    Verify getAllRecords raises ContentKoshException
-    when record retrieval fails.
-    """
-    mock_scroll.side_effect = Exception("Database Error")
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
+
+    mock_scroll_records.side_effect = Exception(
+        "Qdrant fetch failed"
+    )
+
     with pytest.raises(ContentKoshException):
-        getAllRecords()
+        getAllRecords(
+            businessId=BUSINESS_ID,
+            courseId=COURSE_ID,
+        )
+
 
 # ==========================================================
-# Get Uploaded Files Tests
+# Get Uploaded Files
 # ==========================================================
 
 @patch("repositories.kb_repository._scrollRecords")
+@patch("repositories.kb_repository.ensureCollection")
 def test_get_uploaded_files(
-    mock_scroll,
+    mock_ensure_collection,
+    mock_scroll_records,
 ):
-    point = MagicMock()
-    point.payload = {
-        "document_id": "123",
-        "title": "AI Notes",
-        "document_type": "Notes",
-        "tag": "ai",
-        "summary": "Summary",
-        "source": "ai.pdf",
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
+
+    first_document = make_point(
+        point_id="1",
+        payload=make_uploaded_payload(
+            document_id="doc-1",
+        ),
+    )
+
+    second_chunk_same_document = make_point(
+        point_id="2",
+        payload=make_uploaded_payload(
+            document_id="doc-1",
+        ),
+    )
+
+    second_document = make_point(
+        point_id="3",
+        payload=make_uploaded_payload(
+            document_id="doc-2",
+        ),
+    )
+
+    mock_scroll_records.return_value = [
+        first_document,
+        second_chunk_same_document,
+        second_document,
+    ]
+
+    result = getUploadedFiles(
+        businessId=BUSINESS_ID,
+        courseId=COURSE_ID,
+    )
+
+    assert len(result) == 2
+
+    document_ids = {
+        document.document_id
+        for document in result
     }
 
-    mock_scroll.return_value = [point]
-    documents = getUploadedFiles()
-    assert len(documents) == 1
-    assert documents[0].title == "AI Notes"
+    assert document_ids == {
+        "doc-1",
+        "doc-2",
+    }
 
-# ==========================================================
-# Get Uploaded Files - Failure Test
-# ==========================================================
 
 @patch("repositories.kb_repository._scrollRecords")
-def test_get_uploaded_files_failure(
-    mock_scroll,
+@patch("repositories.kb_repository.ensureCollection")
+def test_get_uploaded_files_ignores_missing_document_id(
+    mock_ensure_collection,
+    mock_scroll_records,
 ):
-    """
-    Verify getUploadedFiles raises ContentKoshException
-    when document retrieval fails.
-    """
-    mock_scroll.side_effect = Exception("Database Error")
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
+
+    valid_point = make_point(
+        payload=make_uploaded_payload(),
+    )
+
+    invalid_point = make_point(
+        payload={
+            "title": "No Document ID",
+        },
+    )
+
+    mock_scroll_records.return_value = [
+        valid_point,
+        invalid_point,
+    ]
+
+    result = getUploadedFiles(
+        businessId=BUSINESS_ID,
+        courseId=COURSE_ID,
+    )
+
+    assert len(result) == 1
+    assert result[0].document_id == DOCUMENT_ID
+
+
+@patch("repositories.kb_repository._scrollRecords")
+@patch("repositories.kb_repository.ensureCollection")
+def test_get_uploaded_files_failure(
+    mock_ensure_collection,
+    mock_scroll_records,
+):
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
+
+    mock_scroll_records.side_effect = Exception(
+        "Qdrant fetch failed"
+    )
+
     with pytest.raises(ContentKoshException):
-        getUploadedFiles()
+        getUploadedFiles(
+            businessId=BUSINESS_ID,
+            courseId=COURSE_ID,
+        )
+
 
 # ==========================================================
-# Delete Document Tests
+# Delete One Document
 # ==========================================================
 
 @patch("repositories.kb_repository.client")
-def test_delete_document(
+@patch("repositories.kb_repository.ensureCollection")
+def test_delete_document_success(
+    mock_ensure_collection,
     mock_client,
 ):
-    point = MagicMock()
-    mock_client.scroll.return_value = ([point], None)
-    result = deleteDocument("123")
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
+
+    existing_point = make_point()
+
+    mock_client.scroll.return_value = (
+        [existing_point],
+        None,
+    )
+
+    result = deleteDocument(
+        documentId=DOCUMENT_ID,
+        businessId=BUSINESS_ID,
+    )
+
     assert result is True
+
+    mock_client.scroll.assert_called_once()
+
+    scroll_kwargs = (
+        mock_client.scroll.call_args.kwargs
+    )
+
+    assert scroll_kwargs["collection_name"] == (
+        "kb_test_business"
+    )
+
+    document_filter = (
+        scroll_kwargs["scroll_filter"]
+    )
+
+    assert (
+        document_filter.must[0].key
+        == "document_id"
+    )
+
+    assert (
+        document_filter.must[0].match.value
+        == DOCUMENT_ID
+    )
+
     mock_client.delete.assert_called_once()
 
+
 @patch("repositories.kb_repository.client")
+@patch("repositories.kb_repository.ensureCollection")
 def test_delete_document_not_found(
+    mock_ensure_collection,
     mock_client,
 ):
-    """
-    Verify deleteDocument returns False when no chunks
-    match the given document_id.
-    """
-    mock_client.scroll.return_value = ([], None)
-    result = deleteDocument("does-not-exist")
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
+
+    mock_client.scroll.return_value = (
+        [],
+        None,
+    )
+
+    result = deleteDocument(
+        documentId=MISSING_DOCUMENT_ID,
+        businessId=BUSINESS_ID,
+    )
+
     assert result is False
+
     mock_client.delete.assert_not_called()
 
 
 @patch("repositories.kb_repository.client")
-def test_delete_document_found(
-    mock_client,
-):
-    """
-    Verify deleteDocument returns True and calls delete
-    when a matching chunk exists.
-    """
-    point = MagicMock()
-    mock_client.scroll.return_value = ([point], None)
-    result = deleteDocument("123")
-    assert result is True
-    mock_client.delete.assert_called_once()
-
-# ==========================================================
-# Delete Document - Failure Test
-# ==========================================================
-
-@patch("repositories.kb_repository.client")
+@patch("repositories.kb_repository.ensureCollection")
 def test_delete_document_failure(
+    mock_ensure_collection,
     mock_client,
 ):
-    """
-    Verify deleteDocument raises ContentKoshException
-    when deletion fails.
-    """
-    mock_client.scroll.side_effect = Exception("Database Error")
-    with pytest.raises(ContentKoshException):
-        deleteDocument("123")
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
 
-# ==========================================================
-# Clear Knowledge Base - Failure Test
-# ==========================================================
-
-@patch("repositories.kb_repository.client")
-def test_delete_all_documents_failure(
-    mock_client,
-):
-    """
-    Verify deleteAllDocuments raises ContentKoshException
-    when clearing the Knowledge Base fails.
-    """
-    mock_client.delete.side_effect = Exception("Database Error")
+    mock_client.scroll.side_effect = Exception(
+        "Qdrant delete failed"
+    )
 
     with pytest.raises(ContentKoshException):
-        deleteAllDocuments()
-        
+        deleteDocument(
+            documentId=DOCUMENT_ID,
+            businessId=BUSINESS_ID,
+        )
+
+
 # ==========================================================
-# Get All Records - Tag Filter Tests
-# ==========================================================
-
-@patch("repositories.kb_repository._scrollRecords")
-def test_get_all_records_with_tag_filter(
-    mock_scroll,
-):
-    """
-    Verify getAllRecords passes a server-side tag filter
-    through to _scrollRecords rather than filtering in
-    Python.
-    """
-    point = MagicMock()
-    point.payload = {
-        "document_id": "123",
-        "title": "AI Notes",
-        "document_type": "Notes",
-        "tag": "ai",
-        "summary": "Summary",
-        "source": "ai.pdf",
-        "page": 1,
-        "text": "text",
-    }
-
-    mock_scroll.return_value = [point]
-    records = getAllRecords(tag="ai")
-    assert len(records) == 1
-    passed_filter = mock_scroll.call_args[0][0]
-    assert passed_filter is not None
-
-# =========================================================
-# Scroll Records - Pagination Test
+# Delete Entire Knowledge Base
 # ==========================================================
 
 @patch("repositories.kb_repository.client")
-def test_scroll_records_paginates(
-    mock_client,
-):
-    """
-    Verify _scrollRecords follows next_offset until
-    exhausted instead of stopping after one page.
-    """
-    from repositories.kb_repository import _scrollRecords
-
-    page_1_point = MagicMock()
-    page_2_point = MagicMock()
-    mock_client.scroll.side_effect = [
-        ([page_1_point], "offset-2"),
-        ([page_2_point], None),
-    ]
-
-    records = _scrollRecords()
-    assert len(records) == 2
-    assert mock_client.scroll.call_count == 2
-
-# ==========================================================
-# Clear Knowledge Base Tests
-# ==========================================================
-
-@patch("repositories.kb_repository.client")
+@patch("repositories.kb_repository.ensureCollection")
 def test_delete_all_documents(
+    mock_ensure_collection,
     mock_client,
 ):
-    result = deleteAllDocuments()
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
+
+    result = deleteAllDocuments(
+        BUSINESS_ID,
+    )
+
     assert result is True
+
+    mock_ensure_collection.assert_called_once_with(
+        BUSINESS_ID,
+    )
+
     mock_client.delete.assert_called_once()
+
+    call_kwargs = (
+        mock_client.delete.call_args.kwargs
+    )
+
+    assert call_kwargs["collection_name"] == (
+        "kb_test_business"
+    )
+
+    assert isinstance(
+        call_kwargs["points_selector"],
+        Filter,
+    )
+
+
+@patch("repositories.kb_repository.client")
+@patch("repositories.kb_repository.ensureCollection")
+def test_delete_all_documents_failure(
+    mock_ensure_collection,
+    mock_client,
+):
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
+
+    mock_client.delete.side_effect = Exception(
+        "Qdrant clear failed"
+    )
+
+    with pytest.raises(ContentKoshException):
+        deleteAllDocuments(
+            BUSINESS_ID,
+        )

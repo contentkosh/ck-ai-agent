@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from configuration.config import (
+from configuration.constants import (
     API_TITLE,
     API_VERSION,
 )

@@ -70,7 +70,10 @@ from configuration.error_constants import (
     DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE,
 )
 
-from repositories.kb_repository import saveChunks
+from repositories.kb_repository import (
+    deleteDocument,
+    saveChunks,
+)
 from services.document_metadata_service import extract_document_metadata
 
 from dto.file_response_dto import (
@@ -365,53 +368,75 @@ def build_vectors(
     chunk_batch: list[tuple[str, int]] = []
     total_chunks = 0
 
-    for page in pages:
-        page_text = page["text"]
+    try:
+        for page in pages:
+            page_text = page["text"]
 
-        if not page_text.strip():
-            continue
+            if not page_text.strip():
+                continue
 
-        page_number = page["page"]
+            page_number = page["page"]
 
-        chunks = splitter.split_text(
-            page_text,
-        )
-
-        logger.info(
-            PAGE_CHUNK_GENERATION_LOG,
-            page_number,
-            len(chunks),
-        )
-
-        for chunk in chunks:
-            chunk_batch.append(
-                (
-                    chunk,
-                    page_number,
-                )
+            chunks = splitter.split_text(
+                page_text,
             )
 
-            if len(chunk_batch) >= EMBEDDING_BATCH_SIZE:
-                total_chunks += process_embedding_batch(
-                    chunk_batch=chunk_batch,
-                    metadata=metadata,
-                    filename=filename,
-                    document_id=document_id,
-                    business_id=business_id,
-                    course_id=course_id,
+            logger.info(
+                PAGE_CHUNK_GENERATION_LOG,
+                page_number,
+                len(chunks),
+            )
+
+            for chunk in chunks:
+                chunk_batch.append(
+                    (
+                        chunk,
+                        page_number,
+                    )
                 )
 
-                chunk_batch.clear()
+                if len(chunk_batch) >= EMBEDDING_BATCH_SIZE:
+                    total_chunks += process_embedding_batch(
+                        chunk_batch=chunk_batch,
+                        metadata=metadata,
+                        filename=filename,
+                        document_id=document_id,
+                        business_id=business_id,
+                        course_id=course_id,
+                    )
 
-    if chunk_batch:
-        total_chunks += process_embedding_batch(
-            chunk_batch=chunk_batch,
-            metadata=metadata,
-            filename=filename,
-            document_id=document_id,
-            business_id=business_id,
-            course_id=course_id,
+                    chunk_batch.clear()
+
+        if chunk_batch:
+            total_chunks += process_embedding_batch(
+                chunk_batch=chunk_batch,
+                metadata=metadata,
+                filename=filename,
+                document_id=document_id,
+                business_id=business_id,
+                course_id=course_id,
+            )
+
+    except Exception as ex:
+        logger.exception(
+            DOCUMENT_PROCESSING_FAILED_LOG,
+            ex,
         )
+
+        try:
+            deleteDocument(
+                documentId=document_id,
+                businessId=business_id,
+            )
+
+        except Exception as rollback_ex:
+            logger.exception(
+                "Failed to rollback document %s: %s",
+                document_id,
+                rollback_ex,
+            )
+
+        raise
 
     logger.info(
         GENERATED_VECTORS_LOG,

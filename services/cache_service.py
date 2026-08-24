@@ -1,3 +1,4 @@
+from dto.response_dto import CacheResponse
 from repositories.cache_repository import (
     search_cache,
     save_cache,
@@ -46,6 +47,12 @@ def get_cached_answer(
 
     result = results[0]
 
+    if result is None:
+        logger.info(
+            "Cache Miss - Invalid result from cache search."
+        )
+        return None
+
     score = result.score
 
     logger.info(
@@ -58,33 +65,17 @@ def get_cached_answer(
             "Cache Hit",
         )
 
-        return {
-            "answer": result.payload.get(
-                "answer",
-            ),
-            "document_id": result.payload.get(
-                "document_id",
-            ),
-            "title": result.payload.get(
-                "title",
-            ),
-            "document_type": result.payload.get(
-                "document_type",
-            ),
-            "tag": result.payload.get(
-                "tag",
-            ),
-            "summary": result.payload.get(
-                "summary",
-            ),
-            "source": result.payload.get(
-                "source",
-            ),
-            "page": result.payload.get(
-                "page",
-            ),
-            "score": score,
-        }
+        return CacheResponse(
+            answer=result.payload.get("answer"),
+            document_id=result.payload.get("document_id"),
+            title=result.payload.get("title"),
+            document_type=result.payload.get("document_type"),
+            tag=result.payload.get("tag"),
+            summary=result.payload.get("summary"),
+            source=result.payload.get("source"),
+            page=result.payload.get("page"),
+            similarity_score=score,
+        )
 
     logger.info(
         "Cache Miss",

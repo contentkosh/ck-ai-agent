@@ -218,11 +218,6 @@ def ask_question(
             ),
         )
 
-        compressedContext = compress_context(
-            context=contextText,
-            query=query,
-        )
-
         # --------------------------------------------------
         # Generate Answer
         # --------------------------------------------------

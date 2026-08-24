@@ -3,11 +3,6 @@
 # FILE TYPES
 # ==========================================
 
-PDF_EXTENSION = ".pdf"
-SUPPORTED_FILE_TYPES = [
-    PDF_EXTENSION
-]
-SUPPORTED_CONTENT_TYPE = "application/pdf"
 PDF_MAGIC_BYTES = b"%PDF-"
 
 
@@ -66,9 +61,6 @@ API_VERSION = "1.0.0"
 
 EMPTY_QUERY_ERROR = "Query cannot be empty."
 
-QUERY_LENGTH_ERROR = (
-    "Query cannot exceed {} characters."
-)
 # ==========================================
 # CACHE
 # ==========================================
@@ -159,8 +151,6 @@ PAGE_CHUNK_GENERATION_LOG = "Page %d generated %d chunks."
 # ==========================================================
 # QUERY SERVICE LOGS
 # ==========================================================
-
-EMPTY_QUERY_ERROR = "Query cannot be empty."
 
 QUERY_LENGTH_ERROR = (
     "Query cannot exceed {} characters."
@@ -299,3 +289,5 @@ METADATA_COURSE_ID = "course_id"
 
 BUSINESS_ID_REQUIRED_ERROR = "Business ID is required."
 COURSE_ID_REQUIRED_ERROR = "Course ID is required."
+
+BUSINESS_ID_NORMALIZATION_PATTERN = r"[^a-zA-Z0-9_]+"

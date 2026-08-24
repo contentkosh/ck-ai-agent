@@ -262,6 +262,41 @@ def saveChunks(
             cause=QdrantInsertException(),
         ) from exception
 
+def _buildMetadataFilter(
+    courseId: Optional[str] = None,
+    tag: Optional[str] = None,
+) -> Optional[Filter]:
+    """
+    Build a Qdrant filter using optional metadata fields.
+    """
+    mustConditions = []
+
+    if courseId:
+        mustConditions.append(
+            FieldCondition(
+                key=METADATA_COURSE_ID,
+                match=MatchValue(
+                    value=courseId,
+                ),
+            ),
+        )
+
+    if tag:
+        mustConditions.append(
+            FieldCondition(
+                key=METADATA_TAG,
+                match=MatchValue(
+                    value=tag,
+                ),
+            ),
+        )
+
+    return (
+        Filter(must=mustConditions)
+        if mustConditions
+        else None
+    )
+
 
 # ==========================================================
 # Semantic Search
@@ -286,17 +321,9 @@ def searchChunks(
     )
 
     try:
-        queryFilter = Filter(
-            must=[
-                FieldCondition(
-                    key=METADATA_COURSE_ID,
-                    match=MatchValue(
-                        value=courseId,
-                    ),
-                ),
-            ],
+        queryFilter = _buildMetadataFilter(
+            courseId=courseId,
         )
-
         searchResult = client.query_points(
             collection_name=collectionName,
             query=queryEmbedding,
@@ -351,32 +378,9 @@ def getAllRecords(
     )
 
     try:
-        mustConditions = []
-
-        if courseId:
-            mustConditions.append(
-                FieldCondition(
-                    key=METADATA_COURSE_ID,
-                    match=MatchValue(
-                        value=courseId,
-                    ),
-                ),
-            )
-
-        if tag:
-            mustConditions.append(
-                FieldCondition(
-                    key=METADATA_TAG,
-                    match=MatchValue(
-                        value=tag,
-                    ),
-                ),
-            )
-
-        queryFilter = (
-            Filter(must=mustConditions)
-            if mustConditions
-            else None
+        queryFilter = _buildMetadataFilter(
+            courseId=courseId,
+            tag=tag,
         )
 
         records = _scrollRecords(
@@ -435,15 +439,8 @@ def getUploadedFiles(
     )
 
     try:
-        courseFilter = Filter(
-            must=[
-                FieldCondition(
-                    key=METADATA_COURSE_ID,
-                    match=MatchValue(
-                        value=courseId,
-                    ),
-                ),
-            ],
+        courseFilter = _buildMetadataFilter(
+            courseId=courseId,
         )
 
         records = _scrollRecords(
@@ -598,17 +595,18 @@ def deleteAllDocuments(
 
     except Exception as exception:
         logger.exception(
+            "%s: %s",
             CLEAR_KB_FAILED_LOG,
             exception,
         )
 
         if isQdrantConnectionError(exception):
-            raise DatabaseException(
+            raise ContentKoshException(
                 DATABASE_CLEAR_ERROR_MESSAGE,
                 cause=QdrantConnectionException(),
             ) from exception
 
-        raise DatabaseException(
+        raise ContentKoshException(
             DATABASE_CLEAR_ERROR_MESSAGE,
             cause=QdrantDeleteException(
                 DATABASE_CLEAR_ERROR_MESSAGE,

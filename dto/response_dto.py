@@ -71,3 +71,24 @@ class KnowledgeBaseResponse(BaseModel):
     total_records: int
     records: list[KnowledgeBaseRecordDto]
     similarity_score: Optional[float] = None
+
+# ==========================================================
+# Cache Response
+# ==========================================================
+
+
+class CacheResponse(BaseModel):
+    """
+    Response returned when a matching answer is found
+    in the semantic cache.
+    """
+
+    answer: str
+    document_id: Optional[str] = None
+    title: Optional[str] = None
+    document_type: Optional[str] = None
+    tag: Optional[str] = None
+    summary: Optional[str] = None
+    source: Optional[str] = None
+    page: Optional[int] = None
+    similarity_score: Optional[float] = None
