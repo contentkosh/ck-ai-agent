@@ -5,8 +5,7 @@
 # to produce context-aware responses.
 # ==========================================================
 
-import os
-from typing import Dict, List
+from typing import List
 
 from dotenv import load_dotenv
 from services.cache_service import (
@@ -15,14 +14,10 @@ from services.cache_service import (
 )
 from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
 from common.logger import logger
-from common.custom_exceptions import DatabaseException
 from services.llmlingua_service import compress_context
-from typing import List
-from dotenv import load_dotenv
 from common.embedding_client import get_embedding_model
 from exceptions.knowledge_base_exception import (KnowledgeBaseException,)
 from common.llm_client import get_llm
-from common.logger import logger
 from configuration.config import SEARCH_LIMIT
 from configuration.constants import (
     CHAT_SERVICE_FAILED_LOG,
@@ -33,26 +28,16 @@ from configuration.constants import (
     QUERY_RECEIVED_LOG,
     RETRIEVED_CHUNKS_LOG,
     TOP_MATCHING_SOURCE_LOG,
-    CACHE_SOURCE,
 )
 from configuration.error_constants import(
     ANSWER_NOT_FOUND_MESSAGE,
     CHAT_SERVICE_ERROR_MESSAGE,
 )
-from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
 from dto.response_dto import QueryResponse
 from exceptions.llm_exception import LLMResponseException
 from repositories.kb_repository import searchChunks
 from exceptions.contentkosh_exception import (ContentKoshException,)
 from exceptions.qdrant_exception import (QdrantConnectionException,)
-from services.cache_service import (
-    cache_answer,
-    get_cached_answer,
-)
-
-from services.llmlingua_service import (
-    compress_context,
-)
 
 load_dotenv()
 

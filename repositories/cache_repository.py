@@ -14,9 +14,15 @@ from common.collection_utils import (
 from configuration.constants import (
     METADATA_BUSINESS_ID,
     METADATA_COURSE_ID,
+    METADATA_DOCUMENT_ID,
 )
 from common.logger import logger
 from common.custom_exceptions import DatabaseException
+
+from configuration.error_constants import (
+    DATABASE_CACHE_DELETE_ERROR_MESSAGE,
+    DATABASE_CACHE_CLEAR_ERROR_MESSAGE,
+)
 
 # ==========================================================
 # Ensure Cache Collection
@@ -137,8 +143,8 @@ def save_cache(
                 METADATA_BUSINESS_ID: business_id,
                 METADATA_COURSE_ID: course_id,
 
-                "document_id": documentPayload.get(
-                    "document_id",
+                METADATA_DOCUMENT_ID: documentPayload.get(
+                    METADATA_DOCUMENT_ID,
                 ),
                 "title": documentPayload.get(
                     "title",
@@ -173,3 +179,103 @@ def save_cache(
     except Exception as ex:
         logger.exception("Failed to save cache: %s", ex)
         raise DatabaseException("Unable to save cache.") from ex
+
+
+# ==========================================================
+# Delete Cache For Document
+# ==========================================================
+
+def delete_cache_for_document(
+    *,
+    business_id: str,
+    course_id: str,
+    document_id: str,
+) -> bool:
+    """
+    Delete cached answers associated with a specific document.
+    """
+
+    collection_name = ensure_cache_collection(
+        business_id,
+    )
+
+    try:
+        cache_filter = Filter(
+            must=[
+                FieldCondition(
+                    key=METADATA_COURSE_ID,
+                    match=MatchValue(
+                        value=course_id,
+                    ),
+                ),
+                FieldCondition(
+                    key=METADATA_DOCUMENT_ID,
+                    match=MatchValue(
+                        value=document_id,
+                    ),
+                ),
+            ],
+        )
+
+        client.delete(
+            collection_name=collection_name,
+            points_selector=cache_filter,
+        )
+
+        logger.info(
+            "Cache entries deleted for document: %s",
+            document_id,
+        )
+
+        return True
+
+    except Exception as ex:
+        logger.exception(
+            DATABASE_CACHE_DELETE_ERROR_MESSAGE,
+            document_id,
+            ex,
+        )
+
+        raise DatabaseException(
+            DATABASE_CACHE_DELETE_ERROR_MESSAGE,
+        ) from ex
+
+# ==========================================================
+# Delete All Cache
+# ==========================================================
+
+def delete_all_cache(
+    *,
+    business_id: str,
+) -> bool:
+    """
+    Delete all cached answers for a business.
+    """
+
+    collection_name = ensure_cache_collection(
+        business_id,
+    )
+
+    try:
+        client.delete(
+            collection_name=collection_name,
+            points_selector=Filter(),
+        )
+
+        logger.info(
+            "All cache entries deleted for business: %s",
+            business_id,
+        )
+
+        return True
+
+    except Exception as ex:
+        logger.exception(
+            DATABASE_CACHE_CLEAR_ERROR_MESSAGE,
+            business_id,
+            ex,
+        )
+
+        raise DatabaseException(
+            DATABASE_CACHE_CLEAR_ERROR_MESSAGE,
+        ) from ex

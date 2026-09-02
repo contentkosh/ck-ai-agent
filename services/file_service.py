@@ -10,6 +10,8 @@ from configuration.constants import (
     DELETE_DOCUMENT_FAILED_LOG,
     CLEAR_KNOWLEDGE_BASE_FAILED_LOG,
     FETCH_UPLOADED_DOCUMENTS_FAILED_LOG,
+    CACHE_DOCUMENT_INVALIDATION_FAILED_LOG,
+    CACHE_CLEAR_FAILED_LOG,
 )
 
 from exceptions.knowledge_base_exception import (
@@ -20,18 +22,24 @@ from exceptions.contentkosh_exception import (
     ContentKoshException,
 )
 
-from repositories.kb_repository import (
-    deleteAllDocuments,
-    deleteDocument,
-    getUploadedFiles,
-)
-
 from dto.file_response_dto import (
     UploadedDocumentDto,
 )
 
 from exceptions.qdrant_exception import (
     QdrantConnectionException,
+)
+
+from repositories.kb_repository import (
+    deleteAllDocuments,
+    deleteDocument,
+    getUploadedFiles,
+    getCourseIdForDocument,
+)
+
+from repositories.cache_repository import (
+    delete_cache_for_document,
+    delete_all_cache,
 )
 
 
@@ -76,14 +84,33 @@ def delete_uploaded_document(
     business_id: str,
 ):
     """
-    Delete a single uploaded document from a specific
-    business Knowledge Base.
+    Delete a single uploaded document and its associated
+    cache entries.
     """
     try:
+        course_id = getCourseIdForDocument(
+            documentId=documentId,
+            businessId=business_id,
+        )
+
         deleted = deleteDocument(
             documentId=documentId,
             businessId=business_id,
         )
+
+        if deleted and course_id:
+            try:
+                delete_cache_for_document(
+                    business_id=business_id,
+                    course_id=course_id,
+                    document_id=documentId,
+                )
+            except Exception as ex:
+                logger.exception(
+                    CACHE_DOCUMENT_INVALIDATION_FAILED_LOG,
+                    documentId,
+                    ex,
+                )
 
         return deleted
 
@@ -110,13 +137,27 @@ def clear_knowledge_base(
     business_id: str,
 ):
     """
-    Remove all uploaded documents belonging to a specific
-    business.
+    Remove all uploaded documents and cached answers
+    belonging to a specific business.
     """
     try:
-        return deleteAllDocuments(
+        deleted = deleteAllDocuments(
             businessId=business_id,
         )
+
+        if deleted:
+            try:
+                delete_all_cache(
+                    business_id=business_id,
+                )
+            except Exception as ex:
+                logger.exception(
+                    CACHE_CLEAR_FAILED_LOG,
+                    business_id,
+                    ex,
+                )
+
+        return deleted
 
     except ContentKoshException as ex:
         logger.exception(

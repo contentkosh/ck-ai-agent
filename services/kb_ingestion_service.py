@@ -6,7 +6,7 @@
 # ==========================================================
 
 import uuid
-from typing import Any, TypedDict
+from typing import TypedDict
 
 from fastapi import UploadFile
 from langchain_text_splitters import RecursiveCharacterTextSplitter

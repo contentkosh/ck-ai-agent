@@ -291,3 +291,6 @@ BUSINESS_ID_REQUIRED_ERROR = "Business ID is required."
 COURSE_ID_REQUIRED_ERROR = "Course ID is required."
 
 BUSINESS_ID_NORMALIZATION_PATTERN = r"[^a-zA-Z0-9_]+"
+
+CACHE_DOCUMENT_INVALIDATION_FAILED_LOG = ("Failed to invalidate cache for document %s: %s")
+CACHE_CLEAR_FAILED_LOG = ("Failed to clear cache for business %s: %s")

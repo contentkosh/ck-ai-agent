@@ -224,6 +224,7 @@ def test_get_knowledge_base_records_failure(
 @patch(
     "services.kb_query_service.get_embedding_model"
 )
+
 def test_ask_question_cache_hit(
     mock_get_embedding_model,
     mock_get_cached_answer,

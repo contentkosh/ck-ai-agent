@@ -491,7 +491,69 @@ def getUploadedFiles(
             cause=QdrantFetchException(),
         ) from ex
 
+# ==========================================================
+# Get Course ID For Document
+# ==========================================================
 
+def getCourseIdForDocument(
+    *,
+    documentId: str,
+    businessId: str,
+) -> str | None:
+    """
+    Retrieve the course ID associated with a document.
+    """
+
+    collectionName = ensureCollection(
+        businessId,
+    )
+
+    try:
+        documentFilter = Filter(
+            must=[
+                FieldCondition(
+                    key=METADATA_DOCUMENT_ID,
+                    match=MatchValue(
+                        value=documentId,
+                    ),
+                ),
+            ],
+        )
+
+        existing, _ = client.scroll(
+            collection_name=collectionName,
+            scroll_filter=documentFilter,
+            limit=1,
+            with_payload=True,
+        )
+
+        if not existing:
+            return None
+
+        payload = existing[0].payload or {}
+
+        return payload.get(
+            METADATA_COURSE_ID,
+        )
+
+    except Exception as ex:
+        logger.exception(
+            "Failed to retrieve course ID for document %s: %s",
+            documentId,
+            ex,
+        )
+
+        if isQdrantConnectionError(ex):
+            raise ContentKoshException(
+                DATABASE_DELETE_ERROR_MESSAGE,
+                cause=QdrantConnectionException(),
+            ) from ex
+
+        raise ContentKoshException(
+            DATABASE_DELETE_ERROR_MESSAGE,
+            cause=QdrantDeleteException(),
+        ) from ex
+    
 # ==========================================================
 # Delete One Document
 # ==========================================================
