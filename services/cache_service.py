@@ -23,11 +23,11 @@ from common.logger import logger
 def get_cached_answer(
     query_embedding: list[float],
     business_id: str,
-    course_id: str,
+    course_ids: list[str],
 ):
     """
     Return a cached answer if a similar question exists
-    for the specified business and course.
+    for the specified business and courses.
     """
 
     if not CACHE_ENABLED:
@@ -36,7 +36,7 @@ def get_cached_answer(
     results = search_cache(
         query_embedding=query_embedding,
         business_id=business_id,
-        course_id=course_id,
+        course_ids=course_ids,
     )
 
     if not results:
@@ -122,7 +122,7 @@ def cache_answer(
     answer: str,
     documentPayload: dict,
     business_id: str,
-    course_id: str,
+    course_ids: list[str],
 ):
     """
     Store a successful answer in the business-specific
@@ -145,5 +145,5 @@ def cache_answer(
         answer=answer,
         documentPayload=documentPayload,
         business_id=business_id,
-        course_id=course_id,
+        course_ids=course_ids,
     )

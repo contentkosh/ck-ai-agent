@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 from fastapi import APIRouter, Depends, Query
 from api.dependencies import get_request_context
 from common.logger import logger
@@ -34,7 +34,7 @@ router = APIRouter()
 )
 def get_knowledge_base(
     business_id: str,
-    course_id: str, 
+    course_ids: List[str] = Query(...),
     tag: Optional[str] = Query(default=None),
     context: RequestContext = Depends(
         get_request_context,
@@ -42,11 +42,14 @@ def get_knowledge_base(
 ) -> KnowledgeBaseResponse:
     """Retrieve all Knowledge Base records."""
 
-    logger.info(FETCH_KB_REQUEST_LOG,context.request_id)
+    logger.info(
+        FETCH_KB_REQUEST_LOG,
+        context.request_id,
+    )
     validate_tag(tag)
     records = get_knowledge_base_records(
         business_id=business_id,
-        course_id=course_id,
+        course_ids=course_ids,
         tag=tag,
     )
     logger.info(
@@ -59,6 +62,7 @@ def get_knowledge_base(
         total_records=len(records),
         records=records,
     )
+
 
 # ==========================================================
 # Ask Question
@@ -75,12 +79,19 @@ def query_knowledge_base(
     ),
 ) -> QueryResponse:
     """Answer a user query using the Knowledge Base."""
-    logger.info(QUERY_REQUEST_LOG,context.request_id,)
-    validate_query(request.query,)
+
+    logger.info(
+        QUERY_REQUEST_LOG,
+        context.request_id,
+    )
+    validate_query(request.query)
     result = ask_question(
         query=request.query,
         business_id=request.business_id,
-        course_id=request.course_id,
+        course_ids=request.course_ids,
     )
-    logger.info(QUERY_SUCCESS_LOG,context.request_id)
+    logger.info(
+        QUERY_SUCCESS_LOG,
+        context.request_id,
+    )
     return result

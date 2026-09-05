@@ -217,7 +217,7 @@ def test_ingest_documents_end_to_end(
     result = ingest_documents(
         files=[upload_file],
         business_id=BUSINESS_ID,
-        course_id=COURSE_ID,
+        course_ids=[COURSE_ID],
     )
 
     # --------------------------------------------------
@@ -267,9 +267,7 @@ def test_ingest_documents_end_to_end(
         BUSINESS_ID
     )
 
-    assert payload["course_id"] == (
-        COURSE_ID
-    )
+    assert payload["course_id"] == [COURSE_ID]
 
     assert "Hello Knowledge Base" in (
         payload["text"]
@@ -378,7 +376,7 @@ def test_ingest_documents_metadata_failure_cleans_up(
         ingest_documents(
             files=[upload_file],
             business_id=BUSINESS_ID,
-            course_id=COURSE_ID,
+            course_ids=[COURSE_ID],
         )
 
     # --------------------------------------------------

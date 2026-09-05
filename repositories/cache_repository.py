@@ -3,7 +3,7 @@ import uuid
 from qdrant_client.models import (
     FieldCondition,
     Filter,
-    MatchValue,
+    MatchAny,
     PointStruct,
 )
 from database.qdrant_client_manager import client
@@ -55,12 +55,12 @@ def search_cache(
     *,
     query_embedding: list[float],
     business_id: str,
-    course_id: str,
+    course_ids: list[str],
     limit: int = 1,
 ):
     """
     Search the semantic answer cache for a specific
-    business and course.
+    business and any of the specified courses.
     """
 
     collection_name = ensure_cache_collection(
@@ -72,8 +72,8 @@ def search_cache(
             must=[
                 FieldCondition(
                     key=METADATA_COURSE_ID,
-                    match=MatchValue(
-                        value=course_id,
+                    match=MatchAny(
+                        any=course_ids,
                     ),
                 ),
             ],
@@ -116,7 +116,7 @@ def save_cache(
     answer: str,
     documentPayload: dict,
     business_id: str,
-    course_id: str,
+    course_ids: list[str],
 ):
     """
     Store an answer in the business-specific semantic cache.
@@ -141,7 +141,7 @@ def save_cache(
                 "answer": answer,
 
                 METADATA_BUSINESS_ID: business_id,
-                METADATA_COURSE_ID: course_id,
+                METADATA_COURSE_ID: course_ids,
 
                 METADATA_DOCUMENT_ID: documentPayload.get(
                     METADATA_DOCUMENT_ID,
@@ -188,7 +188,7 @@ def save_cache(
 def delete_cache_for_document(
     *,
     business_id: str,
-    course_id: str,
+    course_ids: list[str],
     document_id: str,
 ) -> bool:
     """
@@ -204,14 +204,14 @@ def delete_cache_for_document(
             must=[
                 FieldCondition(
                     key=METADATA_COURSE_ID,
-                    match=MatchValue(
-                        value=course_id,
+                    match=MatchAny(
+                        any=course_ids,
                     ),
                 ),
                 FieldCondition(
                     key=METADATA_DOCUMENT_ID,
-                    match=MatchValue(
-                        value=document_id,
+                    match=MatchAny(
+                        any=[document_id],
                     ),
                 ),
             ],
@@ -239,6 +239,7 @@ def delete_cache_for_document(
         raise DatabaseException(
             DATABASE_CACHE_DELETE_ERROR_MESSAGE,
         ) from ex
+
 
 # ==========================================================
 # Delete All Cache

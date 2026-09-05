@@ -4,18 +4,10 @@ from unittest.mock import MagicMock, patch
 from qdrant_client.models import (
     FieldCondition,
     Filter,
-    MatchValue,
+    MatchAny,
 )
 
-from common.custom_exceptions import DatabaseException
 from exceptions.contentkosh_exception import ContentKoshException
-from exceptions.qdrant_exception import (
-    QdrantConnectionException,
-    QdrantDeleteException,
-    QdrantFetchException,
-    QdrantInsertException,
-    QdrantSearchException,
-)
 
 from repositories.kb_repository import (
     _buildMetadataFilter,
@@ -31,13 +23,9 @@ from repositories.kb_repository import (
     deleteAllDocuments,
 )
 
-
 BUSINESS_ID = "test-business"
-OTHER_BUSINESS_ID = "other-business"
-
 COURSE_ID = "test-course"
 OTHER_COURSE_ID = "other-course"
-
 DOCUMENT_ID = "test-document"
 MISSING_DOCUMENT_ID = "missing-document"
 
@@ -90,7 +78,7 @@ def make_record_payload(
 
 def test_build_metadata_filter_course():
     result = _buildMetadataFilter(
-        courseId=COURSE_ID,
+        courseIds=[COURSE_ID],
     )
 
     assert isinstance(result, Filter)
@@ -100,14 +88,34 @@ def test_build_metadata_filter_course():
 
     assert isinstance(condition, FieldCondition)
     assert condition.key == "course_id"
-    assert condition.match == MatchValue(
-        value=COURSE_ID,
+    assert isinstance(condition.match, MatchAny)
+    assert condition.match.any == [COURSE_ID]
+
+
+def test_build_metadata_filter_multiple_courses():
+    course_ids = [
+        COURSE_ID,
+        OTHER_COURSE_ID,
+    ]
+
+    result = _buildMetadataFilter(
+        courseIds=course_ids,
     )
+
+    assert isinstance(result, Filter)
+    assert len(result.must) == 1
+
+    condition = result.must[0]
+
+    assert isinstance(condition, FieldCondition)
+    assert condition.key == "course_id"
+    assert isinstance(condition.match, MatchAny)
+    assert condition.match.any == course_ids
 
 
 def test_build_metadata_filter_course_and_tag():
     result = _buildMetadataFilter(
-        courseId=COURSE_ID,
+        courseIds=[COURSE_ID],
         tag="ai",
     )
 
@@ -124,6 +132,20 @@ def test_build_metadata_filter_course_and_tag():
         "tag",
     }
 
+    course_condition = next(
+        condition
+        for condition in result.must
+        if condition.key == "course_id"
+    )
+
+    assert isinstance(
+        course_condition.match,
+        MatchAny,
+    )
+    assert course_condition.match.any == [
+        COURSE_ID,
+    ]
+
 
 def test_build_metadata_filter_empty():
     result = _buildMetadataFilter()
@@ -138,7 +160,6 @@ def test_build_metadata_filter_tag_only():
 
     assert isinstance(result, Filter)
     assert len(result.must) == 1
-
     assert result.must[0].key == "tag"
 
 
@@ -235,7 +256,6 @@ def test_scroll_records_single_page(
 
     assert len(result) == 2
     assert result == first_page
-
     mock_client.scroll.assert_called_once()
 
 
@@ -351,15 +371,12 @@ def test_search_chunks_success(
 
     mock_result = MagicMock()
     mock_result.points = search_points
-
-    mock_client.query_points.return_value = (
-        mock_result
-    )
+    mock_client.query_points.return_value = mock_result
 
     result = searchChunks(
         queryEmbedding=[0.1, 0.2, 0.3],
         businessId=BUSINESS_ID,
-        courseId=COURSE_ID,
+        courseIds=[COURSE_ID],
     )
 
     assert result == search_points
@@ -385,12 +402,56 @@ def test_search_chunks_success(
     ]
 
     query_filter = call_kwargs["query_filter"]
+    course_condition = query_filter.must[0]
 
-    assert query_filter.must[0].key == "course_id"
-    assert (
-        query_filter.must[0].match.value
-        == COURSE_ID
+    assert course_condition.key == "course_id"
+    assert isinstance(
+        course_condition.match,
+        MatchAny,
     )
+    assert course_condition.match.any == [
+        COURSE_ID,
+    ]
+
+
+@patch("repositories.kb_repository.client")
+@patch("repositories.kb_repository.ensureCollection")
+def test_search_chunks_multiple_courses(
+    mock_ensure_collection,
+    mock_client,
+):
+    mock_ensure_collection.return_value = (
+        "kb_test_business"
+    )
+
+    mock_result = MagicMock()
+    mock_result.points = []
+    mock_client.query_points.return_value = mock_result
+
+    course_ids = [
+        COURSE_ID,
+        OTHER_COURSE_ID,
+    ]
+
+    searchChunks(
+        queryEmbedding=[0.1, 0.2],
+        businessId=BUSINESS_ID,
+        courseIds=course_ids,
+    )
+
+    query_filter = (
+        mock_client.query_points.call_args.kwargs[
+            "query_filter"
+        ]
+    )
+
+    course_condition = query_filter.must[0]
+
+    assert isinstance(
+        course_condition.match,
+        MatchAny,
+    )
+    assert course_condition.match.any == course_ids
 
 
 @patch("repositories.kb_repository.client")
@@ -405,15 +466,12 @@ def test_search_chunks_respects_limit_and_threshold(
 
     mock_result = MagicMock()
     mock_result.points = []
-
-    mock_client.query_points.return_value = (
-        mock_result
-    )
+    mock_client.query_points.return_value = mock_result
 
     searchChunks(
         queryEmbedding=[0.1, 0.2],
         businessId=BUSINESS_ID,
-        courseId=COURSE_ID,
+        courseIds=[COURSE_ID],
         limit=10,
         scoreThreshold=0.75,
     )
@@ -444,7 +502,7 @@ def test_search_chunks_failure(
         searchChunks(
             queryEmbedding=[0.1, 0.2],
             businessId=BUSINESS_ID,
-            courseId=COURSE_ID,
+            courseIds=[COURSE_ID],
         )
 
 
@@ -466,13 +524,11 @@ def test_get_all_records(
         payload=make_record_payload(),
     )
 
-    mock_scroll_records.return_value = [
-        point,
-    ]
+    mock_scroll_records.return_value = [point]
 
     result = getAllRecords(
         businessId=BUSINESS_ID,
-        courseId=COURSE_ID,
+        courseIds=[COURSE_ID],
     )
 
     assert len(result) == 1
@@ -484,21 +540,23 @@ def test_get_all_records(
 
     mock_scroll_records.assert_called_once()
 
-    call_args = (
-        mock_scroll_records.call_args
-    )
+    call_args = mock_scroll_records.call_args
 
     assert call_args.args[0] == (
         "kb_test_business"
     )
 
     query_filter = call_args.args[1]
+    course_condition = query_filter.must[0]
 
-    assert query_filter.must[0].key == "course_id"
-    assert (
-        query_filter.must[0].match.value
-        == COURSE_ID
+    assert course_condition.key == "course_id"
+    assert isinstance(
+        course_condition.match,
+        MatchAny,
     )
+    assert course_condition.match.any == [
+        COURSE_ID,
+    ]
 
 
 @patch("repositories.kb_repository._scrollRecords")
@@ -515,7 +573,7 @@ def test_get_all_records_with_tag(
 
     getAllRecords(
         businessId=BUSINESS_ID,
-        courseId=COURSE_ID,
+        courseIds=[COURSE_ID],
         tag="ai",
     )
 
@@ -532,6 +590,20 @@ def test_get_all_records_with_tag(
         "course_id",
         "tag",
     }
+
+    course_condition = next(
+        condition
+        for condition in query_filter.must
+        if condition.key == "course_id"
+    )
+
+    assert isinstance(
+        course_condition.match,
+        MatchAny,
+    )
+    assert course_condition.match.any == [
+        COURSE_ID,
+    ]
 
 
 @patch("repositories.kb_repository._scrollRecords")
@@ -551,7 +623,7 @@ def test_get_all_records_failure(
     with pytest.raises(ContentKoshException):
         getAllRecords(
             businessId=BUSINESS_ID,
-            courseId=COURSE_ID,
+            courseIds=[COURSE_ID],
         )
 
 
@@ -598,7 +670,7 @@ def test_get_uploaded_files(
 
     result = getUploadedFiles(
         businessId=BUSINESS_ID,
-        courseId=COURSE_ID,
+        courseIds=[COURSE_ID],
     )
 
     assert len(result) == 2
@@ -641,7 +713,7 @@ def test_get_uploaded_files_ignores_missing_document_id(
 
     result = getUploadedFiles(
         businessId=BUSINESS_ID,
-        courseId=COURSE_ID,
+        courseIds=[COURSE_ID],
     )
 
     assert len(result) == 1
@@ -665,7 +737,7 @@ def test_get_uploaded_files_failure(
     with pytest.raises(ContentKoshException):
         getUploadedFiles(
             businessId=BUSINESS_ID,
-            courseId=COURSE_ID,
+            courseIds=[COURSE_ID],
         )
 
 
@@ -696,7 +768,6 @@ def test_delete_document_success(
     )
 
     assert result is True
-
     mock_client.scroll.assert_called_once()
 
     scroll_kwargs = (
@@ -745,7 +816,6 @@ def test_delete_document_not_found(
     )
 
     assert result is False
-
     mock_client.delete.assert_not_called()
 
 

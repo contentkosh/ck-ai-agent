@@ -54,7 +54,7 @@ def test_get_knowledge_base(
         "/llm/kb",
         params={
             "business_id": BUSINESS_ID,
-            "course_id": COURSE_ID,
+            "course_ids": [COURSE_ID],
         },
     )
 
@@ -66,7 +66,11 @@ def test_get_knowledge_base(
     assert len(data["records"]) == 1
     assert data["records"][0]["title"] == "AI Notes"
 
-    mock_get_knowledge_base_records.assert_called_once()
+    mock_get_knowledge_base_records.assert_called_once_with(
+        business_id=BUSINESS_ID,
+        course_ids=[COURSE_ID],
+        tag=None,
+    )
 
 
 # ==========================================================
@@ -80,7 +84,7 @@ def test_query_knowledge_base(
 ):
     """
     Verify that the Knowledge Base returns an answer
-    for the requested business and course.
+    for the requested business and courses.
     """
     mock_ask_question.return_value = {
         "answer": (
@@ -101,7 +105,7 @@ def test_query_knowledge_base(
         json={
             "query": "What is Artificial Intelligence?",
             "business_id": BUSINESS_ID,
-            "course_id": COURSE_ID,
+            "course_ids": [COURSE_ID],
         },
     )
 
@@ -122,7 +126,7 @@ def test_query_knowledge_base(
     mock_ask_question.assert_called_once_with(
         query="What is Artificial Intelligence?",
         business_id=BUSINESS_ID,
-        course_id=COURSE_ID,
+        course_ids=[COURSE_ID],
     )
 
 
@@ -141,7 +145,7 @@ def test_query_knowledge_base_failure(
         json={
             "query": "What is AI?",
             "business_id": BUSINESS_ID,
-            "course_id": COURSE_ID,
+            "course_ids": [COURSE_ID],
         },
     )
 
@@ -179,7 +183,7 @@ def test_upload_document(
         ],
         data={
             "business_id": BUSINESS_ID,
-            "course_id": COURSE_ID,
+            "course_ids": [COURSE_ID],
         },
         headers=auth_headers,
     )
@@ -215,7 +219,7 @@ def test_upload_document_rejected_without_api_key(
         ],
         data={
             "business_id": BUSINESS_ID,
-            "course_id": COURSE_ID,
+            "course_ids": [COURSE_ID],
         },
     )
 
@@ -253,7 +257,7 @@ def test_upload_document_invalid_file(
         ],
         data={
             "business_id": BUSINESS_ID,
-            "course_id": COURSE_ID,
+            "course_ids": [COURSE_ID],
         },
         headers=auth_headers,
     )
@@ -271,7 +275,7 @@ def test_get_uploaded_documents(
     client,
 ):
     """
-    Verify uploaded documents retrieval for a course.
+    Verify uploaded documents retrieval for courses.
     """
     mock_get_uploaded_documents_service.return_value = [
         {
@@ -285,9 +289,11 @@ def test_get_uploaded_documents(
         "/llm/files",
         params={
             "business_id": BUSINESS_ID,
-            "course_id": COURSE_ID,
+            "course_ids": [COURSE_ID],
         },
     )
+
+    print(response.json())
 
     assert response.status_code == status.HTTP_200_OK
 
@@ -295,6 +301,11 @@ def test_get_uploaded_documents(
 
     assert data["total_documents"] == 1
     assert data["documents"][0]["title"] == "AI Notes"
+
+    mock_get_uploaded_documents_service.assert_called_once_with(
+        business_id=BUSINESS_ID,
+        course_ids=[COURSE_ID],
+    )
 
 
 @patch("api.routes.file_routes.get_uploaded_documents_service")
@@ -311,7 +322,7 @@ def test_get_uploaded_documents_service_failure(
         "/llm/files",
         params={
             "business_id": BUSINESS_ID,
-            "course_id": COURSE_ID,
+            "course_ids": [COURSE_ID],
         },
     )
 
@@ -429,7 +440,7 @@ def test_clear_knowledge_base_rejected_without_api_key(
 ):
     """
     Verify protected clear-KB endpoint rejects requests
-    without an API key. 
+    without an API key.
     """
     response = client.delete(
         "/llm/files",

@@ -1,10 +1,3 @@
-# ==========================================================
-# Knowledge Base Ingestion Service
-# Handles the end-to-end document ingestion pipeline by
-# processing PDFs, generating embeddings, extracting metadata,
-# and storing document vectors in the knowledge base.
-# ==========================================================
-
 import uuid
 from typing import TypedDict
 
@@ -134,8 +127,8 @@ def build_payload(
     document_id: str,
     page_number: int,
     business_id: str,
-    course_id: str,
-) -> dict[str, str | int]:
+    course_ids: list[str],
+) -> dict:
     """Build the Qdrant payload."""
     return {
         METADATA_DOCUMENT_ID: document_id,
@@ -147,7 +140,7 @@ def build_payload(
         METADATA_SOURCE: filename,
         METADATA_PAGE: page_number,
         METADATA_BUSINESS_ID: business_id,
-        METADATA_COURSE_ID: course_id,
+        METADATA_COURSE_ID: course_ids,
     }
 
 
@@ -278,7 +271,7 @@ def process_embedding_batch(
     filename: str,
     document_id: str,
     business_id: str,
-    course_id: str,
+    course_ids: list[str],
 ) -> int:
     """Generate embeddings and store one batch in Qdrant."""
 
@@ -320,7 +313,7 @@ def process_embedding_batch(
                     document_id=document_id,
                     page_number=page_number,
                     business_id=business_id,
-                    course_id=course_id,
+                    course_ids=course_ids,
                 ),
             )
         )
@@ -332,7 +325,6 @@ def process_embedding_batch(
         )
 
     except ContentKoshException as ex:
-        
         logger.exception(
             KB_INGESTION_FAILED_LOG,
             ex,
@@ -360,7 +352,7 @@ def build_vectors(
     filename: str,
     document_id: str,
     business_id: str,
-    course_id: str,
+    course_ids: list[str],
 ) -> int:
     """Generate and store document vectors in batches."""
 
@@ -402,7 +394,7 @@ def build_vectors(
                         filename=filename,
                         document_id=document_id,
                         business_id=business_id,
-                        course_id=course_id,
+                        course_ids=course_ids,
                     )
 
                     chunk_batch.clear()
@@ -414,7 +406,7 @@ def build_vectors(
                 filename=filename,
                 document_id=document_id,
                 business_id=business_id,
-                course_id=course_id,
+                course_ids=course_ids,
             )
 
     except Exception as ex:
@@ -454,7 +446,7 @@ def process_document(
     pdf: PdfReader,
     filename: str,
     business_id: str,
-    course_id: str,
+    course_ids: list[str],
 ) -> Metadata:
     """Process a PDF document."""
 
@@ -483,7 +475,7 @@ def process_document(
             filename=filename,
             document_id=document_id,
             business_id=business_id,
-            course_id=course_id,
+            course_ids=course_ids,
         )
 
         logger.info(
@@ -524,7 +516,7 @@ def ingest_documents(
     *,
     files: list[UploadFile],
     business_id: str,
-    course_id: str,
+    course_ids: list[str],
 ) -> dict[str, Any]:
     """Ingest PDF documents into the Knowledge Base."""
 
@@ -551,7 +543,7 @@ def ingest_documents(
                     pdf=pdf,
                     filename=file.filename,
                     business_id=business_id,
-                    course_id=course_id,
+                    course_ids=course_ids,
                 )
 
             finally:

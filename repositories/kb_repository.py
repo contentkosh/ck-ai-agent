@@ -1,14 +1,9 @@
-# ==========================================================
-# Knowledge Base Repository
-# Handles all Qdrant database operations including storing,
-# searching, retrieving, and deleting knowledge base documents.
-# ==========================================================
-
 from typing import Optional
 
 from qdrant_client.models import (
     FieldCondition,
     Filter,
+    MatchAny,
     MatchValue,
 )
 
@@ -262,8 +257,9 @@ def saveChunks(
             cause=QdrantInsertException(),
         ) from exception
 
+
 def _buildMetadataFilter(
-    courseId: Optional[str] = None,
+    courseIds: Optional[list[str]] = None,
     tag: Optional[str] = None,
 ) -> Optional[Filter]:
     """
@@ -271,12 +267,12 @@ def _buildMetadataFilter(
     """
     mustConditions = []
 
-    if courseId:
+    if courseIds:
         mustConditions.append(
             FieldCondition(
                 key=METADATA_COURSE_ID,
-                match=MatchValue(
-                    value=courseId,
+                match=MatchAny(
+                    any=courseIds,
                 ),
             ),
         )
@@ -305,16 +301,16 @@ def _buildMetadataFilter(
 def searchChunks(
     queryEmbedding: list[float],
     businessId: str,
-    courseId: str,
+    courseIds: list[str],
     limit: int = SEARCH_LIMIT,
     scoreThreshold: Optional[float] = None,
 ):
     """
     Search similar chunks within a specific business and
-    course.
+    courses.
 
     The business determines the Qdrant collection.
-    The course determines the payload filter.
+    The courses determine the payload filter.
     """
     collectionName = ensureCollection(
         businessId,
@@ -322,7 +318,7 @@ def searchChunks(
 
     try:
         queryFilter = _buildMetadataFilter(
-            courseId=courseId,
+            courseIds=courseIds,
         )
         searchResult = client.query_points(
             collection_name=collectionName,
@@ -365,13 +361,13 @@ def searchChunks(
 
 def getAllRecords(
     businessId: str,
-    courseId: Optional[str] = None,
+    courseIds: Optional[list[str]] = None,
     tag: Optional[str] = None,
 ) -> list[KnowledgeBaseRecordDto]:
     """
     Retrieve stored chunks for a specific business.
 
-    Optionally filter by course and tag.
+    Optionally filter by courses and tag.
     """
     collectionName = ensureCollection(
         businessId,
@@ -379,7 +375,7 @@ def getAllRecords(
 
     try:
         queryFilter = _buildMetadataFilter(
-            courseId=courseId,
+            courseIds=courseIds,
             tag=tag,
         )
 
@@ -428,11 +424,11 @@ def getAllRecords(
 
 def getUploadedFiles(
     businessId: str,
-    courseId: str,
+    courseIds: list[str],
 ) -> list[UploadedDocumentDto]:
     """
     Return one entry per uploaded document for a specific
-    business and course.
+    business and courses.
     """
     collectionName = ensureCollection(
         businessId,
@@ -440,7 +436,7 @@ def getUploadedFiles(
 
     try:
         courseFilter = _buildMetadataFilter(
-            courseId=courseId,
+            courseIds=courseIds,
         )
 
         records = _scrollRecords(
@@ -491,19 +487,19 @@ def getUploadedFiles(
             cause=QdrantFetchException(),
         ) from ex
 
+
 # ==========================================================
-# Get Course ID For Document
+# Get Course IDs For Document
 # ==========================================================
 
-def getCourseIdForDocument(
+def getCourseIdsForDocument(
     *,
     documentId: str,
     businessId: str,
-) -> str | None:
+) -> list[str] | None:
     """
-    Retrieve the course ID associated with a document.
+    Retrieve the course IDs associated with a document.
     """
-
     collectionName = ensureCollection(
         businessId,
     )
@@ -531,14 +527,21 @@ def getCourseIdForDocument(
             return None
 
         payload = existing[0].payload or {}
-
-        return payload.get(
+        courseIds = payload.get(
             METADATA_COURSE_ID,
         )
 
+        if isinstance(courseIds, list):
+            return courseIds
+
+        if courseIds is not None:
+            return [courseIds]
+
+        return None
+
     except Exception as ex:
         logger.exception(
-            "Failed to retrieve course ID for document %s: %s",
+            "Failed to retrieve course IDs for document %s: %s",
             documentId,
             ex,
         )
@@ -553,7 +556,8 @@ def getCourseIdForDocument(
             DATABASE_DELETE_ERROR_MESSAGE,
             cause=QdrantDeleteException(),
         ) from ex
-    
+
+
 # ==========================================================
 # Delete One Document
 # ==========================================================

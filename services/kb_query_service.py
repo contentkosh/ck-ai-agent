@@ -1,10 +1,3 @@
-# ==========================================================
-# Knowledge Base Chat Service
-# Handles question answering by generating embeddings,
-# retrieving relevant document chunks, and using the LLM
-# to produce context-aware responses.
-# ==========================================================
-
 from typing import List
 
 from dotenv import load_dotenv
@@ -16,7 +9,9 @@ from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
 from common.logger import logger
 from services.llmlingua_service import compress_context
 from common.embedding_client import get_embedding_model
-from exceptions.knowledge_base_exception import (KnowledgeBaseException,)
+from exceptions.knowledge_base_exception import (
+    KnowledgeBaseException,
+)
 from common.llm_client import get_llm
 from configuration.config import SEARCH_LIMIT
 from configuration.constants import (
@@ -29,17 +24,22 @@ from configuration.constants import (
     RETRIEVED_CHUNKS_LOG,
     TOP_MATCHING_SOURCE_LOG,
 )
-from configuration.error_constants import(
+from configuration.error_constants import (
     ANSWER_NOT_FOUND_MESSAGE,
     CHAT_SERVICE_ERROR_MESSAGE,
 )
 from dto.response_dto import QueryResponse
 from exceptions.llm_exception import LLMResponseException
 from repositories.kb_repository import searchChunks
-from exceptions.contentkosh_exception import (ContentKoshException,)
-from exceptions.qdrant_exception import (QdrantConnectionException,)
+from exceptions.contentkosh_exception import (
+    ContentKoshException,
+)
+from exceptions.qdrant_exception import (
+    QdrantConnectionException,
+)
 
 load_dotenv()
+
 
 # ==========================================================
 # Build Context
@@ -59,10 +59,10 @@ def build_context(
         for searchResult in searchResults
     )
 
+
 # ==========================================================
 # Build Prompt
 # ==========================================================
-from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
 
 def build_prompt(
     *,
@@ -77,6 +77,7 @@ def build_prompt(
         query=query,
     )
 
+
 # ==========================================================
 # Ask Question
 # ==========================================================
@@ -84,7 +85,7 @@ def build_prompt(
 def ask_question(
     query: str,
     business_id: str,
-    course_id: str,
+    course_ids: list[str],
 ) -> QueryResponse:
     """
     Search the Knowledge Base and generate an answer.
@@ -108,7 +109,7 @@ def ask_question(
         cached = get_cached_answer(
             query_embedding=queryEmbedding,
             business_id=business_id,
-            course_id=course_id,
+            course_ids=course_ids,
         )
 
         if cached:
@@ -135,7 +136,7 @@ def ask_question(
             searchResults = searchChunks(
                 queryEmbedding=queryEmbedding,
                 businessId=business_id,
-                courseId=course_id,
+                courseIds=course_ids,
                 limit=SEARCH_LIMIT,
             )
 
@@ -173,7 +174,10 @@ def ask_question(
                 page=None,
             )
 
-        logger.info(RETRIEVED_CHUNKS_LOG,len(searchResults))
+        logger.info(
+            RETRIEVED_CHUNKS_LOG,
+            len(searchResults),
+        )
 
         # --------------------------------------------------
         # Build Context
@@ -250,7 +254,7 @@ def ask_question(
             answer=answer,
             documentPayload=documentPayload,
             business_id=business_id,
-            course_id=course_id,
+            course_ids=course_ids,
         )
 
         # --------------------------------------------------
@@ -269,7 +273,10 @@ def ask_question(
         raise
 
     except Exception as exception:
-        logger.exception(CHAT_SERVICE_FAILED_LOG,exception)
+        logger.exception(
+            CHAT_SERVICE_FAILED_LOG,
+            exception,
+        )
         raise KnowledgeBaseException(
             CHAT_SERVICE_ERROR_MESSAGE,
         ) from exception

@@ -1,6 +1,7 @@
 from fastapi import (
     APIRouter,
     Depends,
+    Query,
 )
 
 from api.dependencies import (
@@ -53,14 +54,14 @@ router = APIRouter()
 )
 def get_uploaded_documents(
     business_id: str,
-    course_id: str,
+    course_ids: list[str] = Query(...),
     context: RequestContext = Depends(
         get_request_context,
     ),
 ):
     """
     Retrieve all uploaded documents for a specific
-    business and course.
+    business and any of the specified courses.
     """
 
     logger.info(
@@ -70,7 +71,7 @@ def get_uploaded_documents(
 
     uploaded_documents = get_uploaded_documents_service(
         business_id=business_id,
-        course_id=course_id,
+        course_ids=course_ids,
     )
 
     logger.info(
@@ -84,6 +85,7 @@ def get_uploaded_documents(
         total_documents=len(uploaded_documents),
         documents=uploaded_documents,
     )
+
 
 # ==========================================================
 # Delete Uploaded Document

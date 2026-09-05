@@ -34,7 +34,7 @@ from repositories.kb_repository import (
     deleteAllDocuments,
     deleteDocument,
     getUploadedFiles,
-    getCourseIdForDocument,
+    getCourseIdsForDocument,
 )
 
 from repositories.cache_repository import (
@@ -49,15 +49,16 @@ from repositories.cache_repository import (
 
 def get_uploaded_documents(
     business_id: str,
-    course_id: str,
+    course_ids: list[str],
 ) -> list[UploadedDocumentDto]:
     """
-    Retrieve uploaded documents for a specific business and course.
+    Retrieve uploaded documents for a specific business
+    and any of the specified courses.
     """
     try:
         return getUploadedFiles(
             businessId=business_id,
-            courseId=course_id,
+            courseIds=course_ids,
         )
 
     except ContentKoshException as ex:
@@ -88,7 +89,7 @@ def delete_uploaded_document(
     cache entries.
     """
     try:
-        course_id = getCourseIdForDocument(
+        course_ids = getCourseIdsForDocument(
             documentId=documentId,
             businessId=business_id,
         )
@@ -98,11 +99,11 @@ def delete_uploaded_document(
             businessId=business_id,
         )
 
-        if deleted and course_id:
+        if deleted and course_ids:
             try:
                 delete_cache_for_document(
                     business_id=business_id,
-                    course_id=course_id,
+                    course_ids=course_ids,
                     document_id=documentId,
                 )
             except Exception as ex:
