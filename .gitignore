@@ -114,3 +114,6 @@ dist/
 *.temp
 *.bak
 *.swp
+
+# Local LLM models
+models/

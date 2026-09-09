@@ -24,13 +24,11 @@ from configuration.constants import (
 from configuration.context import (
     DOCUMENT_METADATA_EXTRACTION_PROMPT,
 )
-
 from configuration.error_constants import (
     EMPTY_DOCUMENT_TEXT_ERROR,
     INVALID_METADATA_JSON_ERROR,
     METADATA_EXTRACTION_FAILED_ERROR,
 )
-
 from dto.document_metadata_dto import (
     DocumentMetadataDto,
 )
@@ -40,11 +38,6 @@ from exceptions.llm_exception import (
 from exceptions.metadata_exception import (
     InvalidMetadataException,
     MetadataExtractionException,
-)
-from configuration.error_constants import (
-    INVALID_METADATA_JSON_ERROR,
-    METADATA_EXTRACTION_FAILED_ERROR,
-    EMPTY_DOCUMENT_TEXT_ERROR,
 )
 
 load_dotenv()

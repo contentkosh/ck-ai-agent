@@ -1,5 +1,5 @@
-from typing import List, Optional
-from fastapi import APIRouter, Depends, Query
+from typing import Annotated, List, Optional
+from fastapi import APIRouter, Depends, Form, Query
 from api.dependencies import get_request_context
 from common.logger import logger
 from configuration.constants import (
@@ -11,7 +11,6 @@ from configuration.constants import (
     QUERY_SUCCESS_LOG,
 )
 from configuration.context import RequestContext
-from dto.request_dto import QueryRequest
 from dto.response_dto import (
     KnowledgeBaseResponse,
     QueryResponse,
@@ -22,11 +21,6 @@ from validators.query_validator import validate_query
 from validators.tag_validator import validate_tag
 
 router = APIRouter()
-
-
-# ==========================================================
-# Get Knowledge Base
-# ==========================================================
 
 @router.get(
     KNOWLEDGE_BASE_ROUTE,
@@ -42,21 +36,21 @@ def get_knowledge_base(
 ) -> KnowledgeBaseResponse:
     """Retrieve all Knowledge Base records."""
 
-    logger.info(
-        FETCH_KB_REQUEST_LOG,
-        context.request_id,
-    )
+    logger.info(FETCH_KB_REQUEST_LOG, context.request_id)
     validate_tag(tag)
+
     records = get_knowledge_base_records(
         business_id=business_id,
         course_ids=course_ids,
         tag=tag,
     )
+
     logger.info(
         FETCH_KB_SUCCESS_LOG,
         context.request_id,
         len(records),
     )
+
     return KnowledgeBaseResponse(
         request_id=context.request_id,
         total_records=len(records),
@@ -64,34 +58,27 @@ def get_knowledge_base(
     )
 
 
-# ==========================================================
-# Ask Question
-# ==========================================================
-
 @router.post(
     QUERY_KNOWLEDGE_BASE_ROUTE,
     response_model=QueryResponse,
 )
 def query_knowledge_base(
-    request: QueryRequest,
+    query: Annotated[str, Form(...)],
+    business_id: Annotated[str, Form(...)],
+    course_ids: Annotated[List[str], Form(...)],
     context: RequestContext = Depends(
         get_request_context,
     ),
 ) -> QueryResponse:
     """Answer a user query using the Knowledge Base."""
 
-    logger.info(
-        QUERY_REQUEST_LOG,
-        context.request_id,
-    )
-    validate_query(request.query)
+    logger.info(QUERY_REQUEST_LOG, context.request_id)
+
+    validate_query(query)
     result = ask_question(
-        query=request.query,
-        business_id=request.business_id,
-        course_ids=request.course_ids,
+        query=query,
+        business_id=business_id,
+        course_ids=course_ids,
     )
-    logger.info(
-        QUERY_SUCCESS_LOG,
-        context.request_id,
-    )
+    logger.info(QUERY_SUCCESS_LOG, context.request_id)
     return result

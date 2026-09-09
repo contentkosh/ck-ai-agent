@@ -224,7 +224,6 @@ def test_get_knowledge_base_records_failure(
 @patch(
     "services.kb_query_service.get_embedding_model"
 )
-
 def test_ask_question_cache_hit(
     mock_get_embedding_model,
     mock_get_cached_answer,
@@ -278,7 +277,7 @@ def test_ask_question_cache_hit(
             0.3,
         ],
         business_id=BUSINESS_ID,
-        course_id=COURSE_ID,
+        course_ids=COURSE_ID,
     )
 
     # Cache hit must stop the pipeline.
@@ -347,7 +346,7 @@ def test_ask_question_no_relevant_chunks(
             0.3,
         ],
         businessId=BUSINESS_ID,
-        courseId=COURSE_ID,
+        courseIds=COURSE_ID,
         limit=5,
     )
 
@@ -365,9 +364,6 @@ def test_ask_question_no_relevant_chunks(
     "services.kb_query_service.get_llm"
 )
 @patch(
-    "services.kb_query_service.compress_context"
-)
-@patch(
     "services.kb_query_service.searchChunks"
 )
 @patch(
@@ -380,7 +376,6 @@ def test_ask_question_success(
     mock_get_embedding_model,
     mock_get_cached_answer,
     mock_search_chunks,
-    mock_compress_context,
     mock_get_llm,
     mock_cache_answer,
 ):
@@ -403,10 +398,6 @@ def test_ask_question_success(
     mock_search_chunks.return_value = [
         search_result
     ]
-
-    mock_compress_context.return_value = (
-        "Compressed AI context."
-    )
 
     llm = MagicMock()
 
@@ -440,11 +431,9 @@ def test_ask_question_success(
             0.3,
         ],
         businessId=BUSINESS_ID,
-        courseId=COURSE_ID,
+        courseIds=COURSE_ID,
         limit=5,
     )
-
-    mock_compress_context.assert_called_once()
 
     llm.invoke.assert_called_once()
 
@@ -460,9 +449,6 @@ def test_ask_question_success(
             "of human intelligence."
         ),
         answer=ANSWER,
-        documentPayload=DOCUMENT_PAYLOAD,
-        business_id=BUSINESS_ID,
-        course_id=COURSE_ID,
     )
 
 
@@ -569,9 +555,6 @@ def test_ask_question_knowledge_base_failure(
     "services.kb_query_service.get_llm"
 )
 @patch(
-    "services.kb_query_service.compress_context"
-)
-@patch(
     "services.kb_query_service.searchChunks"
 )
 @patch(
@@ -584,7 +567,6 @@ def test_ask_question_llm_failure(
     mock_get_embedding_model,
     mock_get_cached_answer,
     mock_search_chunks,
-    mock_compress_context,
     mock_get_llm,
 ):
     embedding_model = MagicMock()
@@ -603,10 +585,6 @@ def test_ask_question_llm_failure(
     mock_search_chunks.return_value = [
         make_search_result()
     ]
-
-    mock_compress_context.return_value = (
-        "Compressed context."
-    )
 
     llm = MagicMock()
 
@@ -637,9 +615,6 @@ def test_ask_question_llm_failure(
     "services.kb_query_service.get_llm"
 )
 @patch(
-    "services.kb_query_service.compress_context"
-)
-@patch(
     "services.kb_query_service.searchChunks"
 )
 @patch(
@@ -652,7 +627,6 @@ def test_ask_question_answer_not_found(
     mock_get_embedding_model,
     mock_get_cached_answer,
     mock_search_chunks,
-    mock_compress_context,
     mock_get_llm,
     mock_cache_answer,
 ):
@@ -672,10 +646,6 @@ def test_ask_question_answer_not_found(
     mock_search_chunks.return_value = [
         make_search_result()
     ]
-
-    mock_compress_context.return_value = (
-        "Compressed context."
-    )
 
     llm = MagicMock()
 

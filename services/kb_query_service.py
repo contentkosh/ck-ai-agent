@@ -1,49 +1,34 @@
 from typing import List
 
-from dotenv import load_dotenv
-from services.cache_service import (
-    get_cached_answer,
-    cache_answer,
-)
-from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
-from common.logger import logger
-from services.llmlingua_service import compress_context
 from common.embedding_client import get_embedding_model
-from exceptions.knowledge_base_exception import (
-    KnowledgeBaseException,
-)
 from common.llm_client import get_llm
+from common.logger import logger
 from configuration.config import SEARCH_LIMIT
 from configuration.constants import (
     CHAT_SERVICE_FAILED_LOG,
     LLM_INVOCATION_FAILED_LOG,
-    METADATA_SOURCE,
     METADATA_TEXT,
     NO_RELEVANT_CHUNKS_LOG,
     QUERY_RECEIVED_LOG,
     RETRIEVED_CHUNKS_LOG,
     TOP_MATCHING_SOURCE_LOG,
 )
+from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
 from configuration.error_constants import (
     ANSWER_NOT_FOUND_MESSAGE,
     CHAT_SERVICE_ERROR_MESSAGE,
 )
 from dto.response_dto import QueryResponse
+from exceptions.contentkosh_exception import ContentKoshException
+from exceptions.knowledge_base_exception import KnowledgeBaseException
 from exceptions.llm_exception import LLMResponseException
+from exceptions.qdrant_exception import QdrantConnectionException
 from repositories.kb_repository import searchChunks
-from exceptions.contentkosh_exception import (
-    ContentKoshException,
-)
-from exceptions.qdrant_exception import (
-    QdrantConnectionException,
+from services.cache_service import (
+    cache_answer,
+    get_cached_answer,
 )
 
-load_dotenv()
-
-
-# ==========================================================
-# Build Context
-# ==========================================================
 
 def build_context(
     searchResults: List,
@@ -60,10 +45,6 @@ def build_context(
     )
 
 
-# ==========================================================
-# Build Prompt
-# ==========================================================
-
 def build_prompt(
     *,
     context: str,
@@ -77,10 +58,6 @@ def build_prompt(
         query=query,
     )
 
-
-# ==========================================================
-# Ask Question
-# ==========================================================
 
 def ask_question(
     query: str,
@@ -102,10 +79,6 @@ def ask_question(
             .tolist()
         )
 
-        # --------------------------------------------------
-        # Check Semantic Cache
-        # --------------------------------------------------
-
         cached = get_cached_answer(
             query_embedding=queryEmbedding,
             business_id=business_id,
@@ -118,19 +91,15 @@ def ask_question(
             )
 
             return QueryResponse(
-                answer=cached.get("answer"),
-                document_id=cached.get("document_id"),
-                title=cached.get("title"),
-                document_type=cached.get("document_type"),
-                tag=cached.get("tag"),
-                summary=cached.get("summary"),
-                source=cached.get("source"),
-                page=cached.get("page"),
+                answer=cached.answer,
+                document_id=cached.document_id,
+                title=cached.title,
+                document_type=cached.document_type,
+                tag=cached.tag,
+                summary=cached.summary,
+                source=cached.source,
+                page=cached.page,
             )
-
-        # --------------------------------------------------
-        # Search Knowledge Base
-        # --------------------------------------------------
 
         try:
             searchResults = searchChunks(
@@ -154,10 +123,6 @@ def ask_question(
 
             raise KnowledgeBaseException() from exception
 
-        # --------------------------------------------------
-        # No Relevant Chunks
-        # --------------------------------------------------
-
         if not searchResults:
             logger.warning(
                 NO_RELEVANT_CHUNKS_LOG,
@@ -179,40 +144,19 @@ def ask_question(
             len(searchResults),
         )
 
-        # --------------------------------------------------
-        # Build Context
-        # --------------------------------------------------
+        documentPayload = searchResults[0].payload
+
+        logger.info(
+            TOP_MATCHING_SOURCE_LOG,
+            documentPayload.get("source"),
+        )
 
         contextText = build_context(
             searchResults,
         )
 
-        # --------------------------------------------------
-        # Compress Context using LLMLingua
-        # --------------------------------------------------
-
-        compressedContext = compress_context(
-            context=contextText,
-            query=query,
-        )
-
-        documentPayload = (
-            searchResults[0].payload or {}
-        )
-
-        logger.info(
-            TOP_MATCHING_SOURCE_LOG,
-            documentPayload.get(
-                METADATA_SOURCE,
-            ),
-        )
-
-        # --------------------------------------------------
-        # Generate Answer
-        # --------------------------------------------------
-
         prompt = build_prompt(
-            context=compressedContext,
+            context=contextText,
             query=query,
         )
 
@@ -227,6 +171,7 @@ def ask_question(
                 LLM_INVOCATION_FAILED_LOG,
                 exception,
             )
+
             raise LLMResponseException() from exception
 
         answer = llmResponse.content.strip()
@@ -243,10 +188,6 @@ def ask_question(
                 page=None,
             )
 
-        # --------------------------------------------------
-        # Save to Semantic Cache
-        # --------------------------------------------------
-
         cache_answer(
             question=query,
             embedding=queryEmbedding,
@@ -256,10 +197,6 @@ def ask_question(
             business_id=business_id,
             course_ids=course_ids,
         )
-
-        # --------------------------------------------------
-        # Return Response
-        # --------------------------------------------------
 
         return QueryResponse.from_payload(
             answer=answer,
@@ -277,6 +214,7 @@ def ask_question(
             CHAT_SERVICE_FAILED_LOG,
             exception,
         )
+
         raise KnowledgeBaseException(
             CHAT_SERVICE_ERROR_MESSAGE,
         ) from exception

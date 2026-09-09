@@ -1,11 +1,10 @@
 import uuid
-from typing import TypedDict
+from typing import Any, TypedDict
 
 from fastapi import UploadFile
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from openai.types import Metadata
 from pypdf import PdfReader
-from qdrant_client.models import Any, PointStruct
+from qdrant_client.models import PointStruct
 
 from common.custom_exceptions import (
     EmbeddingException,
@@ -122,7 +121,7 @@ def generate_uuid() -> str:
 def build_payload(
     *,
     chunk: str,
-    metadata: Metadata,
+    metadata: DocumentMetadataDto,
     filename: str,
     document_id: str,
     page_number: int,
@@ -348,7 +347,7 @@ def process_embedding_batch(
 def build_vectors(
     *,
     pages: list[Page],
-    metadata: Metadata,
+    metadata: DocumentMetadataDto,
     filename: str,
     document_id: str,
     business_id: str,
@@ -447,7 +446,7 @@ def process_document(
     filename: str,
     business_id: str,
     course_ids: list[str],
-) -> Metadata:
+) -> ProcessedDocumentDto:
     """Process a PDF document."""
 
     try:
