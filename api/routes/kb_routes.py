@@ -1,5 +1,5 @@
-from typing import Annotated, List, Optional
-from fastapi import APIRouter, Depends, Form, Query
+from typing import List, Optional
+from fastapi import APIRouter, Depends, Query
 from api.dependencies import get_request_context
 from common.logger import logger
 from configuration.constants import (
@@ -11,16 +11,15 @@ from configuration.constants import (
     QUERY_SUCCESS_LOG,
 )
 from configuration.context import RequestContext
-from dto.response_dto import (
-    KnowledgeBaseResponse,
-    QueryResponse,
-)
+from dto.request_dto import QueryRequest
+from dto.response_dto import KnowledgeBaseResponse, QueryResponse
 from services.kb_query_service import ask_question
 from services.kb_service import get_knowledge_base_records
 from validators.query_validator import validate_query
 from validators.tag_validator import validate_tag
 
 router = APIRouter()
+
 
 @router.get(
     KNOWLEDGE_BASE_ROUTE,
@@ -30,9 +29,7 @@ def get_knowledge_base(
     business_id: str,
     course_ids: List[str] = Query(...),
     tag: Optional[str] = Query(default=None),
-    context: RequestContext = Depends(
-        get_request_context,
-    ),
+    context: RequestContext = Depends(get_request_context),
 ) -> KnowledgeBaseResponse:
     """Retrieve all Knowledge Base records."""
 
@@ -63,22 +60,19 @@ def get_knowledge_base(
     response_model=QueryResponse,
 )
 def query_knowledge_base(
-    query: Annotated[str, Form(...)],
-    business_id: Annotated[str, Form(...)],
-    course_ids: Annotated[List[str], Form(...)],
-    context: RequestContext = Depends(
-        get_request_context,
-    ),
+    request: QueryRequest,
+    context: RequestContext = Depends(get_request_context),
 ) -> QueryResponse:
     """Answer a user query using the Knowledge Base."""
 
     logger.info(QUERY_REQUEST_LOG, context.request_id)
+    validate_query(request.query)
 
-    validate_query(query)
     result = ask_question(
-        query=query,
-        business_id=business_id,
-        course_ids=course_ids,
+        query=request.query,
+        business_id=request.business_id,
+        course_ids=request.course_ids,
     )
+
     logger.info(QUERY_SUCCESS_LOG, context.request_id)
     return result
