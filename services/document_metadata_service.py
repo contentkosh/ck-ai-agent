@@ -58,17 +58,32 @@ def extract_document_metadata(
             raise InvalidMetadataException(
                 EMPTY_DOCUMENT_TEXT_ERROR,
             )
-        logger.info(METADATA_EXTRACTION_STARTED_LOG)
+
+        logger.info(
+            METADATA_EXTRACTION_STARTED_LOG,
+        )
+
         prompt = DOCUMENT_METADATA_EXTRACTION_PROMPT.format(
             text=text[:METADATA_EXTRACTION_TEXT_LIMIT],
         )
+
         try:
             llmResponse = get_llm().invoke(
                 prompt,
             )
 
+            # Temporary logging to inspect the exact
+            # response returned by the local LLM.
+            logger.error(
+                "RAW METADATA LLM RESPONSE: %s",
+                llmResponse.content,
+            )
+
         except Exception as exception:
-            logger.exception(LLM_INVOCATION_FAILED_LOG, exception)
+            logger.exception(
+                LLM_INVOCATION_FAILED_LOG,
+                exception,
+            )
             raise LLMResponseException() from exception
 
         responseContent = re.sub(
@@ -81,10 +96,15 @@ def extract_document_metadata(
         documentMetadata = json.loads(
             responseContent,
         )
-        logger.info(METADATA_EXTRACTION_COMPLETED_LOG)
+
+        logger.info(
+            METADATA_EXTRACTION_COMPLETED_LOG,
+        )
+
         return DocumentMetadataDto(
             **documentMetadata,
         )
+
     except json.JSONDecodeError as exception:
         logger.exception(
             INVALID_METADATA_JSON_ERROR,
@@ -99,6 +119,7 @@ def extract_document_metadata(
         LLMResponseException,
     ):
         raise
+
     except Exception as exception:
         logger.exception(
             METADATA_EXTRACTION_FAILED_ERROR,

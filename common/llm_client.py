@@ -6,13 +6,14 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from common.logger import logger
 from configuration.config import (
     LLM_MAX_NEW_TOKENS,
+    LLM_MODEL_NAME,
     LLM_REPETITION_PENALTY,
 )
 
 MODEL_PATH = (
     Path(__file__).resolve().parent.parent
     / "models"
-    / "LFM2.5-1.2B-Instruct"
+    / LLM_MODEL_NAME
 )
 
 _llm = None
@@ -20,7 +21,7 @@ _tokenizer = None
 _device = None
 
 
-class LocalLFM:
+class LocalLLM:
     def __init__(self, model, tokenizer, device):
         self.model = model
         self.tokenizer = tokenizer
@@ -76,15 +77,16 @@ def get_llm():
 
         if not MODEL_PATH.exists():
             logger.error(
-                "Local LFM model not found: %s",
+                "Local LLM model not found: %s",
                 MODEL_PATH,
             )
             raise FileNotFoundError(
-                f"Local LFM model not found: {MODEL_PATH}"
+                f"Local LLM model not found: {MODEL_PATH}"
             )
 
         logger.info(
-            "Loading local LFM model on %s.",
+            "Loading local LLM '%s' on %s.",
+            LLM_MODEL_NAME,
             _device,
         )
 
@@ -110,14 +112,15 @@ def get_llm():
 
         model.eval()
 
-        _llm = LocalLFM(
+        _llm = LocalLLM(
             model=model,
             tokenizer=_tokenizer,
             device=_device,
         )
 
         logger.info(
-            "Local LFM model loaded successfully on %s.",
+            "Local LLM '%s' loaded successfully on %s.",
+            LLM_MODEL_NAME,
             _device,
         )
 

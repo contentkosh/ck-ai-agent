@@ -5544,3 +5544,324 @@ TypeError: cache_answer() missing 3 required keyword-only arguments: 'documentPa
 2026-09-09 11:09:35,988 | INFO | [0836ac5b-13ff-4444-b20f-c8f9d594ef42] Request Completed
 2026-09-09 11:09:36,121 | INFO | [60ab7b52-5a32-43df-935d-6e783d0400c6] Incoming Request : GET /openapi.json
 2026-09-09 11:09:36,179 | INFO | [60ab7b52-5a32-43df-935d-6e783d0400c6] Request Completed
+2026-09-17 10:30:09,430 | INFO | Loading local LLM 'Llama-3.2-3B-Instruct' on cuda.
+2026-09-17 10:30:30,130 | INFO | Local LLM 'Llama-3.2-3B-Instruct' loaded successfully on cuda.
+2026-09-17 10:32:09,705 | INFO | Loading local LLM 'Llama-3.2-3B-Instruct' on cuda.
+2026-09-17 10:32:15,959 | INFO | Local LLM 'Llama-3.2-3B-Instruct' loaded successfully on cuda.
+2026-09-17 10:35:39,284 | INFO | Loading local LLM 'Llama-3.2-3B-Instruct' on cuda.
+2026-09-17 10:35:52,815 | INFO | Local LLM 'Llama-3.2-3B-Instruct' loaded successfully on cuda.
+2026-09-17 10:41:34,016 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-17 10:41:37,086 | INFO | Qdrant client initialized successfully.
+2026-09-17 10:41:55,474 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-17 10:41:56,950 | INFO | Qdrant client initialized successfully.
+2026-09-17 10:42:02,853 | INFO | [7a1d720a-7a17-441e-93f5-874c31fbcae4] Incoming Request : GET /docs
+2026-09-17 10:42:02,859 | INFO | [7a1d720a-7a17-441e-93f5-874c31fbcae4] Request Completed
+2026-09-17 10:42:03,405 | INFO | [7efe77e2-9205-465f-9c18-b8cd7234a117] Incoming Request : GET /openapi.json
+2026-09-17 10:42:03,497 | INFO | [7efe77e2-9205-465f-9c18-b8cd7234a117] Request Completed
+2026-09-17 10:42:15,327 | INFO | [d085a42a-4f6a-4107-a8ba-4cd3b57a1de5] Incoming Request : GET /docs
+2026-09-17 10:42:15,328 | INFO | [d085a42a-4f6a-4107-a8ba-4cd3b57a1de5] Request Completed
+2026-09-17 10:42:15,513 | INFO | [3575bd8f-601f-4bea-8fb7-5e5eb2006590] Incoming Request : GET /openapi.json
+2026-09-17 10:42:15,515 | INFO | [3575bd8f-601f-4bea-8fb7-5e5eb2006590] Request Completed
+2026-09-17 10:42:59,204 | INFO | [ea0484ee-2c5c-42d9-b323-05084abcba88] Incoming Request : POST /llm/kb/query
+2026-09-17 10:42:59,269 | INFO | [517eaa9e-db94-42d4-8e2a-93c3b911ec3b] Question received.
+2026-09-17 10:42:59,270 | INFO | Received query: Name a few methods of mining
+2026-09-17 10:42:59,270 | INFO | Loading embedding model: sentence-transformers/all-MiniLM-L6-v2
+2026-09-17 10:43:07,587 | INFO | Qdrant collection already exists.
+2026-09-17 10:43:07,629 | INFO | Cache search returned 1 result(s).
+2026-09-17 10:43:07,629 | INFO | Cache similarity score: 0.258
+2026-09-17 10:43:07,629 | INFO | Cache Miss
+2026-09-17 10:43:07,650 | INFO | Qdrant collection already exists.
+2026-09-17 10:43:07,677 | INFO | Retrieved %d chunks.: 5
+2026-09-17 10:43:07,677 | INFO | Retrieved 5 chunk(s).
+2026-09-17 10:43:07,677 | INFO | Top matching source: Geography_compressed.pdf
+2026-09-17 10:43:07,677 | INFO | Loading local LLM 'Llama-3.2-3B-Instruct' on cuda.
+2026-09-17 10:43:18,709 | INFO | Local LLM 'Llama-3.2-3B-Instruct' loaded successfully on cuda.
+2026-09-17 10:43:20,561 | INFO | Qdrant collection already exists.
+2026-09-17 10:43:20,561 | INFO | Cache saved for question: Name a few methods of mining
+2026-09-17 10:43:20,587 | INFO | Answer cached successfully.
+2026-09-17 10:43:20,588 | INFO | [517eaa9e-db94-42d4-8e2a-93c3b911ec3b] Question answered successfully.
+2026-09-17 10:43:20,589 | INFO | [ea0484ee-2c5c-42d9-b323-05084abcba88] Request Completed
+2026-09-17 10:43:54,640 | INFO | [5312b7ac-75b3-4afd-a6df-9ff269f246dd] Incoming Request : POST /llm/kb/query
+2026-09-17 10:43:54,645 | INFO | [78648947-0c42-46d1-9f7e-715300872e12] Question received.
+2026-09-17 10:43:54,645 | INFO | Received query: Explain all the methods of mining in detail
+2026-09-17 10:43:54,712 | INFO | Qdrant collection already exists.
+2026-09-17 10:43:54,731 | INFO | Cache search returned 1 result(s).
+2026-09-17 10:43:54,732 | INFO | Cache similarity score: 0.859
+2026-09-17 10:43:54,732 | INFO | Cache Hit
+2026-09-17 10:43:54,732 | INFO | Returning cached answer.
+2026-09-17 10:43:54,733 | INFO | [78648947-0c42-46d1-9f7e-715300872e12] Question answered successfully.
+2026-09-17 10:43:54,735 | INFO | [5312b7ac-75b3-4afd-a6df-9ff269f246dd] Request Completed
+2026-09-17 10:43:57,432 | INFO | [b7464d15-ca5e-42bf-a7ea-f6c9d554e180] Incoming Request : POST /llm/kb/query
+2026-09-17 10:43:57,434 | INFO | [22c44cef-fa7c-4c92-a98e-08a0a14fbdae] Question received.
+2026-09-17 10:43:57,435 | INFO | Received query: Explain all the methods of mining in detail
+2026-09-17 10:43:57,497 | INFO | Qdrant collection already exists.
+2026-09-17 10:43:57,534 | INFO | Cache search returned 1 result(s).
+2026-09-17 10:43:57,535 | INFO | Cache similarity score: 0.859
+2026-09-17 10:43:57,535 | INFO | Cache Hit
+2026-09-17 10:43:57,535 | INFO | Returning cached answer.
+2026-09-17 10:43:57,536 | INFO | [22c44cef-fa7c-4c92-a98e-08a0a14fbdae] Question answered successfully.
+2026-09-17 10:43:57,537 | INFO | [b7464d15-ca5e-42bf-a7ea-f6c9d554e180] Request Completed
+2026-09-17 10:44:04,982 | INFO | [705bb7a3-d4ab-4df9-a537-8aca148a6482] Incoming Request : POST /llm/kb/query
+2026-09-17 10:44:04,986 | INFO | [db3e2373-4ab2-4d60-b0a0-17eb4d9dda3f] Question received.
+2026-09-17 10:44:04,986 | INFO | Received query: Explain all the methods of mining in detail
+2026-09-17 10:44:05,041 | INFO | Qdrant collection already exists.
+2026-09-17 10:44:05,058 | INFO | Cache search returned 1 result(s).
+2026-09-17 10:44:05,059 | INFO | Cache similarity score: 0.859
+2026-09-17 10:44:05,059 | INFO | Cache Hit
+2026-09-17 10:44:05,059 | INFO | Returning cached answer.
+2026-09-17 10:44:05,059 | INFO | [db3e2373-4ab2-4d60-b0a0-17eb4d9dda3f] Question answered successfully.
+2026-09-17 10:44:05,062 | INFO | [705bb7a3-d4ab-4df9-a537-8aca148a6482] Request Completed
+2026-09-17 10:44:36,859 | INFO | [39f9c126-978b-4123-adc0-16ef13870df5] Incoming Request : POST /llm/kb/query
+2026-09-17 10:44:36,861 | INFO | [e1f134b1-77a5-4e2a-ace0-f58222c79784] Question received.
+2026-09-17 10:44:36,861 | INFO | Received query: Explain the classification of industries
+2026-09-17 10:44:36,931 | INFO | Qdrant collection already exists.
+2026-09-17 10:44:36,947 | INFO | Cache search returned 1 result(s).
+2026-09-17 10:44:36,948 | INFO | Cache similarity score: 0.305
+2026-09-17 10:44:36,948 | INFO | Cache Miss
+2026-09-17 10:44:36,959 | INFO | Qdrant collection already exists.
+2026-09-17 10:44:36,978 | INFO | Retrieved %d chunks.: 5
+2026-09-17 10:44:36,978 | INFO | Retrieved 5 chunk(s).
+2026-09-17 10:44:36,978 | INFO | Top matching source: Geography_compressed.pdf
+2026-09-17 10:44:58,344 | INFO | Qdrant collection already exists.
+2026-09-17 10:44:58,344 | INFO | Cache saved for question: Explain the classification of industries
+2026-09-17 10:44:58,406 | INFO | Answer cached successfully.
+2026-09-17 10:44:58,406 | INFO | [e1f134b1-77a5-4e2a-ace0-f58222c79784] Question answered successfully.
+2026-09-17 10:44:58,407 | INFO | [39f9c126-978b-4123-adc0-16ef13870df5] Request Completed
+2026-09-17 10:46:03,944 | INFO | [9a9bae2e-21b5-45a8-919d-2b30e05896ce] Incoming Request : POST /llm/upload
+2026-09-17 10:46:04,173 | INFO | [f2d3a888-ff72-427d-bf09-bb659133d2ff] Upload request received.
+2026-09-17 10:46:04,175 | INFO | Knowledge Base ingestion started.
+2026-09-17 10:46:04,175 | INFO | Processing file: History_compressed.pdf
+2026-09-17 10:46:04,175 | INFO | Saving file: History_compressed.pdf
+2026-09-17 10:46:04,320 | INFO | Processing document: History_compressed.pdf
+2026-09-17 10:46:06,737 | INFO | Extracted 115 pages.
+2026-09-17 10:46:06,737 | INFO | Extracting document metadata.
+2026-09-17 10:46:06,737 | INFO | Extracting document metadata.
+2026-09-17 10:46:16,933 | ERROR | Document metadata extraction failed: LLM returned invalid JSON metadata.
+Traceback (most recent call last):
+  File "C:\Users\Mukund Upadhyay\OneDrive\Desktop\ck-ai-agent\services\document_metadata_service.py", line 81, in extract_document_metadata
+    documentMetadata = json.loads(
+                       ^^^^^^^^^^^
+  File "C:\Users\Mukund Upadhyay\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mukund Upadhyay\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mukund Upadhyay\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 354, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Expecting ',' delimiter: line 5 column 386 (char 490)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Mukund Upadhyay\OneDrive\Desktop\ck-ai-agent\services\kb_ingestion_service.py", line 241, in get_document_metadata
+    metadata = extract_document_metadata(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mukund Upadhyay\OneDrive\Desktop\ck-ai-agent\services\document_metadata_service.py", line 93, in extract_document_metadata
+    raise InvalidMetadataException(
+exceptions.metadata_exception.InvalidMetadataException: LLM returned invalid JSON metadata.
+2026-09-17 10:46:16,941 | INFO | Temporary file deleted successfully: uploads\0270c8c6d11e48289087ff9f85a42818_History_compressed.pdf
+2026-09-17 10:46:16,950 | INFO | [9a9bae2e-21b5-45a8-919d-2b30e05896ce] Request Completed
+2026-09-17 11:04:05,875 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-17 11:04:06,684 | INFO | Qdrant client initialized successfully.
+2026-09-17 11:04:17,507 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-17 11:04:18,246 | INFO | Qdrant client initialized successfully.
+2026-09-17 11:04:19,200 | INFO | [1124ad78-a500-4ef7-bb8f-cf7686300a4e] Incoming Request : GET /docs
+2026-09-17 11:04:19,201 | INFO | [1124ad78-a500-4ef7-bb8f-cf7686300a4e] Request Completed
+2026-09-17 11:04:19,693 | INFO | [f9371a3c-ade1-4496-a15e-b375a3d30738] Incoming Request : GET /openapi.json
+2026-09-17 11:04:19,722 | INFO | [f9371a3c-ade1-4496-a15e-b375a3d30738] Request Completed
+2026-09-17 11:05:03,908 | INFO | [4469b729-7cf1-44ee-86d5-e996b42b4f1b] Incoming Request : POST /llm/upload
+2026-09-17 11:05:04,147 | INFO | [25c76acc-e4b0-48b2-9410-92bf78a1f2b4] Upload request received.
+2026-09-17 11:05:04,150 | INFO | Knowledge Base ingestion started.
+2026-09-17 11:05:04,150 | INFO | Processing file: History_compressed.pdf
+2026-09-17 11:05:04,150 | INFO | Saving file: History_compressed.pdf
+2026-09-17 11:05:04,294 | INFO | Processing document: History_compressed.pdf
+2026-09-17 11:05:06,563 | INFO | Extracted 115 pages.
+2026-09-17 11:05:06,564 | INFO | Extracting document metadata.
+2026-09-17 11:05:06,564 | INFO | Extracting document metadata.
+2026-09-17 11:05:06,659 | INFO | Loading local LLM 'Llama-3.2-3B-Instruct' on cuda.
+2026-09-17 11:05:17,616 | INFO | Local LLM 'Llama-3.2-3B-Instruct' loaded successfully on cuda.
+2026-09-17 11:05:32,272 | ERROR | RAW METADATA LLM RESPONSE: {
+  "title": "The Harappan Civilization",
+  "document_type": "Documentation",
+  "tag": "harappan_civilization",
+  "summary": "The Harappan civilization was a Bronze Age civilization that existed from 6000 BCE to 1300 BCE in the Indus Valley region. It is characterized by its distinctive pottery, bricks, seals, weights, beads, and copper and bronze articles."
+}
+2026-09-17 11:05:32,273 | INFO | Metadata extracted successfully.
+2026-09-17 11:05:32,273 | INFO | Metadata extracted successfully.
+2026-09-17 11:05:32,273 | INFO | Page 1 generated 4 chunks.
+2026-09-17 11:05:32,273 | INFO | Page 2 generated 6 chunks.
+2026-09-17 11:05:32,273 | INFO | Page 3 generated 5 chunks.
+2026-09-17 11:05:32,273 | INFO | Page 4 generated 5 chunks.
+2026-09-17 11:05:32,274 | INFO | Page 5 generated 2 chunks.
+2026-09-17 11:05:32,274 | INFO | Page 6 generated 6 chunks.
+2026-09-17 11:05:32,274 | INFO | Page 7 generated 5 chunks.
+2026-09-17 11:05:32,274 | INFO | Loading embedding model: sentence-transformers/all-MiniLM-L6-v2
+2026-09-17 11:05:37,085 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:37,150 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:37,151 | INFO | Page 8 generated 3 chunks.
+2026-09-17 11:05:37,151 | INFO | Page 9 generated 5 chunks.
+2026-09-17 11:05:37,151 | INFO | Page 10 generated 5 chunks.
+2026-09-17 11:05:37,151 | INFO | Page 11 generated 5 chunks.
+2026-09-17 11:05:37,151 | INFO | Page 12 generated 5 chunks.
+2026-09-17 11:05:37,151 | INFO | Page 13 generated 3 chunks.
+2026-09-17 11:05:37,152 | INFO | Page 14 generated 3 chunks.
+2026-09-17 11:05:37,152 | INFO | Page 15 generated 5 chunks.
+2026-09-17 11:05:37,208 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:37,244 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:37,244 | INFO | Page 16 generated 5 chunks.
+2026-09-17 11:05:37,246 | INFO | Page 17 generated 5 chunks.
+2026-09-17 11:05:37,246 | INFO | Page 18 generated 11 chunks.
+2026-09-17 11:05:37,246 | INFO | Page 19 generated 6 chunks.
+2026-09-17 11:05:37,247 | INFO | Page 20 generated 7 chunks.
+2026-09-17 11:05:37,301 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:37,330 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:37,331 | INFO | Page 21 generated 8 chunks.
+2026-09-17 11:05:37,332 | INFO | Page 22 generated 5 chunks.
+2026-09-17 11:05:37,332 | INFO | Page 23 generated 6 chunks.
+2026-09-17 11:05:37,333 | INFO | Page 24 generated 5 chunks.
+2026-09-17 11:05:37,333 | INFO | Page 25 generated 3 chunks.
+2026-09-17 11:05:37,393 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:37,496 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:37,497 | INFO | Page 26 generated 2 chunks.
+2026-09-17 11:05:37,497 | INFO | Page 27 generated 4 chunks.
+2026-09-17 11:05:37,497 | INFO | Page 28 generated 5 chunks.
+2026-09-17 11:05:37,497 | INFO | Page 29 generated 8 chunks.
+2026-09-17 11:05:37,498 | INFO | Page 30 generated 3 chunks.
+2026-09-17 11:05:37,498 | INFO | Page 31 generated 4 chunks.
+2026-09-17 11:05:37,498 | INFO | Page 32 generated 6 chunks.
+2026-09-17 11:05:37,566 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:37,713 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:37,713 | INFO | Page 33 generated 3 chunks.
+2026-09-17 11:05:37,713 | INFO | Page 34 generated 7 chunks.
+2026-09-17 11:05:37,713 | INFO | Page 35 generated 7 chunks.
+2026-09-17 11:05:37,714 | INFO | Page 36 generated 6 chunks.
+2026-09-17 11:05:37,714 | INFO | Page 37 generated 4 chunks.
+2026-09-17 11:05:37,714 | INFO | Page 38 generated 8 chunks.
+2026-09-17 11:05:37,785 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:37,831 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:37,832 | INFO | Page 39 generated 7 chunks.
+2026-09-17 11:05:37,832 | INFO | Page 40 generated 8 chunks.
+2026-09-17 11:05:37,832 | INFO | Page 41 generated 5 chunks.
+2026-09-17 11:05:37,832 | INFO | Page 42 generated 5 chunks.
+2026-09-17 11:05:37,833 | INFO | Page 43 generated 3 chunks.
+2026-09-17 11:05:37,833 | INFO | Page 44 generated 8 chunks.
+2026-09-17 11:05:37,894 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:37,941 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:37,942 | INFO | Page 45 generated 5 chunks.
+2026-09-17 11:05:37,942 | INFO | Page 46 generated 3 chunks.
+2026-09-17 11:05:37,943 | INFO | Page 47 generated 6 chunks.
+2026-09-17 11:05:37,943 | INFO | Page 48 generated 7 chunks.
+2026-09-17 11:05:37,943 | INFO | Page 49 generated 3 chunks.
+2026-09-17 11:05:37,943 | INFO | Page 50 generated 3 chunks.
+2026-09-17 11:05:38,004 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:38,048 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:38,048 | INFO | Page 51 generated 3 chunks.
+2026-09-17 11:05:38,049 | INFO | Page 52 generated 6 chunks.
+2026-09-17 11:05:38,049 | INFO | Page 53 generated 5 chunks.
+2026-09-17 11:05:38,049 | INFO | Page 54 generated 6 chunks.
+2026-09-17 11:05:38,049 | INFO | Page 55 generated 6 chunks.
+2026-09-17 11:05:38,049 | INFO | Page 56 generated 4 chunks.
+2026-09-17 11:05:38,110 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:38,154 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:38,155 | INFO | Page 57 generated 6 chunks.
+2026-09-17 11:05:38,155 | INFO | Page 58 generated 7 chunks.
+2026-09-17 11:05:38,156 | INFO | Page 59 generated 3 chunks.
+2026-09-17 11:05:38,156 | INFO | Page 60 generated 6 chunks.
+2026-09-17 11:05:38,156 | INFO | Page 61 generated 5 chunks.
+2026-09-17 11:05:38,156 | INFO | Page 62 generated 6 chunks.
+2026-09-17 11:05:38,219 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:38,262 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:38,263 | INFO | Page 63 generated 5 chunks.
+2026-09-17 11:05:38,264 | INFO | Page 64 generated 6 chunks.
+2026-09-17 11:05:38,264 | INFO | Page 65 generated 5 chunks.
+2026-09-17 11:05:38,264 | INFO | Page 66 generated 4 chunks.
+2026-09-17 11:05:38,264 | INFO | Page 67 generated 5 chunks.
+2026-09-17 11:05:38,264 | INFO | Page 68 generated 7 chunks.
+2026-09-17 11:05:38,326 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:38,374 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:38,375 | INFO | Page 69 generated 5 chunks.
+2026-09-17 11:05:38,375 | INFO | Page 70 generated 5 chunks.
+2026-09-17 11:05:38,375 | INFO | Page 71 generated 4 chunks.
+2026-09-17 11:05:38,376 | INFO | Page 72 generated 5 chunks.
+2026-09-17 11:05:38,376 | INFO | Page 73 generated 4 chunks.
+2026-09-17 11:05:38,376 | INFO | Page 74 generated 3 chunks.
+2026-09-17 11:05:38,376 | INFO | Page 75 generated 5 chunks.
+2026-09-17 11:05:38,434 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:38,526 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:38,527 | INFO | Page 76 generated 5 chunks.
+2026-09-17 11:05:38,527 | INFO | Page 77 generated 5 chunks.
+2026-09-17 11:05:38,528 | INFO | Page 78 generated 6 chunks.
+2026-09-17 11:05:38,528 | INFO | Page 79 generated 3 chunks.
+2026-09-17 11:05:38,528 | INFO | Page 80 generated 4 chunks.
+2026-09-17 11:05:38,528 | INFO | Page 81 generated 4 chunks.
+2026-09-17 11:05:38,529 | INFO | Page 82 generated 5 chunks.
+2026-09-17 11:05:38,592 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:38,634 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:38,635 | INFO | Page 83 generated 5 chunks.
+2026-09-17 11:05:38,635 | INFO | Page 84 generated 4 chunks.
+2026-09-17 11:05:38,635 | INFO | Page 85 generated 7 chunks.
+2026-09-17 11:05:38,635 | INFO | Page 86 generated 5 chunks.
+2026-09-17 11:05:38,636 | INFO | Page 87 generated 5 chunks.
+2026-09-17 11:05:38,636 | INFO | Page 88 generated 5 chunks.
+2026-09-17 11:05:38,636 | INFO | Page 89 generated 6 chunks.
+2026-09-17 11:05:38,686 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:38,743 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:38,744 | INFO | Page 90 generated 4 chunks.
+2026-09-17 11:05:38,744 | INFO | Page 91 generated 3 chunks.
+2026-09-17 11:05:38,744 | INFO | Page 92 generated 5 chunks.
+2026-09-17 11:05:38,745 | INFO | Page 93 generated 5 chunks.
+2026-09-17 11:05:38,745 | INFO | Page 94 generated 3 chunks.
+2026-09-17 11:05:38,745 | INFO | Page 95 generated 4 chunks.
+2026-09-17 11:05:38,745 | INFO | Page 96 generated 3 chunks.
+2026-09-17 11:05:38,807 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:38,851 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:38,851 | INFO | Page 97 generated 7 chunks.
+2026-09-17 11:05:38,852 | INFO | Page 98 generated 3 chunks.
+2026-09-17 11:05:38,852 | INFO | Page 99 generated 5 chunks.
+2026-09-17 11:05:38,852 | INFO | Page 100 generated 5 chunks.
+2026-09-17 11:05:38,852 | INFO | Page 101 generated 3 chunks.
+2026-09-17 11:05:38,853 | INFO | Page 102 generated 4 chunks.
+2026-09-17 11:05:38,853 | INFO | Page 103 generated 3 chunks.
+2026-09-17 11:05:38,853 | INFO | Page 104 generated 5 chunks.
+2026-09-17 11:05:38,917 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:38,963 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:38,963 | INFO | Page 105 generated 5 chunks.
+2026-09-17 11:05:38,964 | INFO | Page 106 generated 4 chunks.
+2026-09-17 11:05:38,964 | INFO | Page 107 generated 2 chunks.
+2026-09-17 11:05:38,965 | INFO | Page 108 generated 4 chunks.
+2026-09-17 11:05:38,966 | INFO | Page 109 generated 4 chunks.
+2026-09-17 11:05:38,967 | INFO | Page 110 generated 3 chunks.
+2026-09-17 11:05:38,967 | INFO | Page 111 generated 3 chunks.
+2026-09-17 11:05:38,967 | INFO | Page 112 generated 3 chunks.
+2026-09-17 11:05:38,967 | INFO | Page 113 generated 2 chunks.
+2026-09-17 11:05:39,045 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:39,132 | INFO | Inserted 32 vectors.
+2026-09-17 11:05:39,133 | INFO | Page 114 generated 4 chunks.
+2026-09-17 11:05:39,133 | INFO | Page 115 generated 3 chunks.
+2026-09-17 11:05:39,167 | INFO | Qdrant collection already exists.
+2026-09-17 11:05:39,257 | INFO | Inserted 8 vectors.
+2026-09-17 11:05:39,257 | INFO | Generated 552 vectors.
+2026-09-17 11:05:39,258 | INFO | Processed History_compressed.pdf (552 chunks).
+2026-09-17 11:05:39,262 | INFO | Temporary file deleted successfully: uploads\71fe176f28fd4ca3b88e8bb2652b3cbd_History_compressed.pdf
+2026-09-17 11:05:39,262 | INFO | Successfully processed 'History_compressed.pdf'.
+2026-09-17 11:05:39,262 | INFO | Knowledge Base ingestion completed. Documents=1 Chunks=552
+2026-09-17 11:05:39,262 | INFO | [25c76acc-e4b0-48b2-9410-92bf78a1f2b4] Uploaded 1 document(s) successfully.
+2026-09-17 11:05:39,264 | INFO | [4469b729-7cf1-44ee-86d5-e996b42b4f1b] Request Completed
+2026-09-17 11:06:55,566 | INFO | [b3a1d3fd-57a6-423a-bdc8-4212f7f6811b] Incoming Request : POST /llm/kb/query
+2026-09-17 11:06:55,576 | INFO | [a552e637-4fd8-4209-a06c-f7e39849e7e0] Question received.
+2026-09-17 11:06:55,576 | INFO | Received query: Tell me the history of Pataliputra
+2026-09-17 11:06:55,841 | INFO | Qdrant collection already exists.
+2026-09-17 11:06:55,873 | INFO | Cache search returned 1 result(s).
+2026-09-17 11:06:55,873 | INFO | Cache similarity score: 0.011
+2026-09-17 11:06:55,876 | INFO | Cache Miss
+2026-09-17 11:06:55,888 | INFO | Qdrant collection already exists.
+2026-09-17 11:06:55,905 | INFO | Retrieved %d chunks.: 5
+2026-09-17 11:06:55,906 | INFO | Retrieved 5 chunk(s).
+2026-09-17 11:06:55,906 | INFO | Top matching source: History_compressed.pdf
+2026-09-17 11:07:09,343 | INFO | Qdrant collection already exists.
+2026-09-17 11:07:09,343 | INFO | Cache saved for question: Tell me the history of Pataliputra
+2026-09-17 11:07:09,371 | INFO | Answer cached successfully.
+2026-09-17 11:07:09,372 | INFO | [a552e637-4fd8-4209-a06c-f7e39849e7e0] Question answered successfully.
+2026-09-17 11:07:09,373 | INFO | [b3a1d3fd-57a6-423a-bdc8-4212f7f6811b] Request Completed

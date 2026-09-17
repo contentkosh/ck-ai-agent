@@ -4,15 +4,19 @@ from contextvars import ContextVar
 # ==========================================================
 # REQUEST CONTEXT
 # ==========================================================
+
 request_id_context: ContextVar[str] = ContextVar(
     "request_id",
     default=None,
 )
+
+
 class RequestContext:
     """
     Manages request-specific information throughout the
     application lifecycle.
     """
+
     def __init__(self) -> None:
         self.request_id = self.generate_request_id()
 
@@ -31,6 +35,7 @@ class RequestContext:
         Return the current request ID.
         """
         return request_id_context.get()
+
 
 # ==========================================================
 # KNOWLEDGE BASE QUESTION ANSWERING PROMPT
@@ -101,6 +106,8 @@ USER QUESTION
 FINAL ANSWER
 ==================================================
 """
+
+
 # ==========================================================
 # DOCUMENT METADATA EXTRACTION PROMPT
 # ==========================================================
@@ -217,6 +224,22 @@ GENERAL RULES
 5. Do not wrap the JSON inside markdown.
 
 6. Do not return any explanation before or after the JSON.
+
+7. Return exactly ONE JSON object.
+
+8. Use double quotes for every JSON key.
+
+9. Use double quotes for every string value.
+
+10. Escape any double quotes that appear inside
+    string values.
+
+11. Do not include trailing commas.
+
+12. Do not include newlines or extra text
+    outside the JSON object.
+
+13. The response must start with {{ and end with }}.
 
 ==================================================
 DOCUMENT

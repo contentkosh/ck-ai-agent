@@ -34,7 +34,15 @@ EMBEDDING_DIMENSION = int(os.getenv("EMBEDDING_DIMENSION", 384))
 MAX_QUERY_LENGTH = int(os.getenv("MAX_QUERY_LENGTH", 1000))
 
 # LOCAL LLM
-LLM_MAX_NEW_TOKENS = int(os.getenv("LLM_MAX_NEW_TOKENS", 512))
+LLM_MODEL_NAME = os.getenv(
+    "LLM_MODEL_NAME",
+    "Llama-3.2-3B-Instruct",
+)
+
+LLM_MAX_NEW_TOKENS = int(
+    os.getenv("LLM_MAX_NEW_TOKENS", 512)
+)
+
 LLM_REPETITION_PENALTY = float(
     os.getenv("LLM_REPETITION_PENALTY", 1.05)
 )
