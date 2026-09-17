@@ -8,5 +8,5 @@ llm = ChatOpenAI(
     model=LLM_MODEL,
     base_url=OPENROUTER_BASE_URL,
     api_key=os.getenv("OPENROUTER_API_KEY"),
-    temperature=0
+    temperature=0,
 )

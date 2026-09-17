@@ -132,3 +132,9 @@ DATABASE_FETCH_ERROR_MESSAGE = ("Unable to fetch records.")
 DATABASE_FETCH_DOCUMENTS_ERROR_MESSAGE = ("Unable to fetch uploaded documents.")
 DATABASE_DELETE_ERROR_MESSAGE = ("Unable to delete document.")
 DATABASE_CLEAR_ERROR_MESSAGE = ("Unable to clear Knowledge Base.")
+
+CACHE_DOCUMENT_INVALIDATION_FAILED_LOG = ("Failed to invalidate cache for document %s: %s")
+CACHE_CLEAR_FAILED_LOG = ("Failed to clear cache for business %s: %s")
+
+DATABASE_CACHE_DELETE_ERROR_MESSAGE = ("Unable to delete document cache.")
+DATABASE_CACHE_CLEAR_ERROR_MESSAGE = ("Unable to clear cache.")

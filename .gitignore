@@ -1,69 +1,116 @@
 # ==========================================================
-# API
+# Python
 # ==========================================================
 
-API_HOST=0.0.0.0
-API_PORT=8000
-API_RELOAD=True
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
 
 # ==========================================================
-# OPENROUTER
+# Environment / Secrets
 # ==========================================================
 
-OPENROUTER_API_KEY=your_openrouter_api_key
-OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
-# ==========================================================
-# QDRANT
-# ==========================================================
-
-QDRANT_HOST=localhost
-QDRANT_PORT=6333
-KB_COLLECTION_PREFIX=kb_
-CACHE_COLLECTION_PREFIX=cache_
-SCROLL_LIMIT=5000
-    
-# ==========================================================
-# EMBEDDINGS
-# ==========================================================
-
-EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+.env
+.env.*
+!.env.example
 
 # ==========================================================
-# LLM
+# Logs
 # ==========================================================
 
-LLM_MODEL=nvidia/nemotron-3-super-120b-a12b:free
+logs/
+*.log
 
 # ==========================================================
-# CHUNKING
+# Uploaded / Generated Documents
 # ==========================================================
 
-CHUNK_SIZE=500
-CHUNK_OVERLAP=50
+uploads/*
+!uploads/.gitkeep
+
+# Generated reports
+reports/
+*.html
 
 # ==========================================================
-# FILE STORAGE
+# Qdrant / Vector Database
 # ==========================================================
 
-UPLOAD_FOLDER=uploads
-MAX_FILE_SIZE=52428800
+vector_db/
+qdrant_storage/
+.qdrant/
 
 # ==========================================================
-# QUERY VALIDATION
+# Cache / Generated Data
 # ==========================================================
 
-MAX_QUERY_LENGTH=1000
+cache/
+.cache/
 
-OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
-
-# ==========================================================
-# EMBEDDINGS
-# ==========================================================
-
-EMBEDDING_BATCH_SIZE=32
+*.npy
+*.npz
+*.pkl
+*.pickle
 
 # ==========================================================
-# AUTHENTICATION
+# Testing / Coverage
 # ==========================================================
 
-AUTH_ENABLED=False
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# ==========================================================
+# IDEs / Editors
+# ==========================================================
+
+.vscode/
+.idea/
+
+# VS Code local settings
+*.code-workspace
+
+# ==========================================================
+# OS Generated Files
+# ==========================================================
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+# ==========================================================
+# Build / Packaging
+# ==========================================================
+
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ==========================================================
+# Jupyter
+# ==========================================================
+
+.ipynb_checkpoints/
+
+# ==========================================================
+# Temporary Files
+# ==========================================================
+
+*.tmp
+*.temp
+*.bak
+*.swp

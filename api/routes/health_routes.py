@@ -5,7 +5,7 @@ from configuration.constants import (
     HEALTH_ROUTE,
     SERVICE_RUNNING_STATUS,
 )
-from configuration.config import(
+from configuration.constants import (
     API_TITLE,
     API_VERSION,
 )

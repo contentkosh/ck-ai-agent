@@ -13,7 +13,6 @@ from exceptions.validation_exception import (
     EmptyQueryException,
     QueryTooLongException,
 )
-
 def validate_query(query: str) -> None:
     """
     Validate user query.
@@ -23,7 +22,13 @@ def validate_query(query: str) -> None:
         QueryTooLongException
     """
     if query is None or not query.strip():
-        raise EmptyQueryException(EMPTY_QUERY_ERROR)
+        raise EmptyQueryException(
+            EMPTY_QUERY_ERROR,
+        )
 
     if len(query.strip()) > MAX_QUERY_LENGTH:
-        raise QueryTooLongException(QUERY_LENGTH_ERROR.format(MAX_QUERY_LENGTH))
+        raise QueryTooLongException(
+            QUERY_LENGTH_ERROR.format(
+                MAX_QUERY_LENGTH,
+            )
+        )

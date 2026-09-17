@@ -4,24 +4,33 @@ from fastapi.testclient import TestClient
 
 TEST_API_KEY = "test-api-key-12345"
 
+
 @pytest.fixture
 def client():
     """
-    FastAPI test client fixture. Qdrant collection creation
-    is mocked on startup. Auth is enabled with a fixed test
-    key so protected-route tests exercise real auth behavior
-    instead of relying on auth being globally disabled.
+    FastAPI test client fixture.
+
+    Authentication is explicitly enabled for tests so protected
+    endpoints exercise the real authentication flow.
     """
-    with patch("api.app.create_collection_if_missing"), \
-         patch("api.dependencies.AUTH_ENABLED", True), \
-         patch("api.dependencies.API_KEY", TEST_API_KEY):
-        from api.app import app
-        with TestClient(app) as testClient:
-            yield testClient
+    from api.app import app
+
+    with patch(
+        "api.dependencies.AUTH_ENABLED",
+        True,
+    ), patch(
+        "api.dependencies.API_KEY",
+        TEST_API_KEY,
+    ):
+        with TestClient(app) as test_client:
+            yield test_client
+
 
 @pytest.fixture
 def auth_headers():
     """
-    Standard headers for calling protected routes in tests.
+    Standard headers for protected API routes.
     """
-    return {"X-API-Key": TEST_API_KEY}
+    return {
+        "X-API-Key": TEST_API_KEY,
+    }

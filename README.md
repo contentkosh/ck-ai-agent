@@ -37,6 +37,7 @@ The application follows a layered architecture with separate API, Service, Repos
 |-----------|------------|
 | Language | Python 3.12 |
 | Framework | FastAPI |
+| UI | Gradio (Optional) |
 | LLM | OpenRouter (NVIDIA Nemotron) |
 | Embeddings | Sentence Transformers |
 | Vector Database | Qdrant |
@@ -52,6 +53,7 @@ The application follows a layered architecture with separate API, Service, Repos
 
 ```bash
 git clone <repository-url>
+cd Knowledge_Base_Project
 cd ck-ai-agent
 ```
 
@@ -59,6 +61,7 @@ cd ck-ai-agent
 
 ```bash
 pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ---
