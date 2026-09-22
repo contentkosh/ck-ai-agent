@@ -15,7 +15,6 @@ from configuration.constants import (
 
 from common.logger import logger
 
-
 # ==========================================================
 # Search Semantic Cache
 # ==========================================================

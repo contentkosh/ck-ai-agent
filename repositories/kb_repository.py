@@ -632,7 +632,6 @@ def deleteDocument(
             cause=QdrantDeleteException(),
         ) from ex
 
-
 # ==========================================================
 # Delete Entire Knowledge Base
 # ==========================================================

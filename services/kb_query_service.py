@@ -1,4 +1,5 @@
 from typing import List
+import time
 
 from common.embedding_client import get_embedding_model
 from common.llm_client import get_llm
@@ -66,18 +67,36 @@ def ask_question(
 ) -> QueryResponse:
     """
     Search the Knowledge Base and generate an answer.
+
+    Timing for each major stage is logged to the terminal.
     """
+
+    total_start = time.perf_counter()
+
     try:
         logger.info(
             QUERY_RECEIVED_LOG,
             query,
         )
 
-        queryEmbedding = (
-            get_embedding_model()
-            .encode(query)
-            .tolist()
+        # --------------------------------------------------
+        # 1. Generate query embedding
+        # --------------------------------------------------
+
+        start = time.perf_counter()
+
+        queryEmbedding = get_embedding_model().encode(query).tolist()
+
+        logger.info(
+            "[TIMING] Embedding generation: %.4f seconds",
+            time.perf_counter() - start,
         )
+
+        # --------------------------------------------------
+        # 2. Cache lookup
+        # --------------------------------------------------
+
+        start = time.perf_counter()
 
         cached = get_cached_answer(
             query_embedding=queryEmbedding,
@@ -85,9 +104,19 @@ def ask_question(
             course_ids=course_ids,
         )
 
+        logger.info(
+            "[TIMING] Cache lookup: %.4f seconds",
+            time.perf_counter() - start,
+        )
+
         if cached:
             logger.info(
                 "Returning cached answer.",
+            )
+
+            logger.info(
+                "[TIMING] KB service total (cache hit): %.4f seconds",
+                time.perf_counter() - total_start,
             )
 
             return QueryResponse(
@@ -100,6 +129,12 @@ def ask_question(
                 source=cached.source,
                 page=cached.page,
             )
+
+        # --------------------------------------------------
+        # 3. Qdrant retrieval
+        # --------------------------------------------------
+
+        start = time.perf_counter()
 
         try:
             searchResults = searchChunks(
@@ -123,9 +158,19 @@ def ask_question(
 
             raise KnowledgeBaseException() from exception
 
+        logger.info(
+            "[TIMING] Qdrant retrieval: %.4f seconds",
+            time.perf_counter() - start,
+        )
+
         if not searchResults:
             logger.warning(
                 NO_RELEVANT_CHUNKS_LOG,
+            )
+
+            logger.info(
+                "[TIMING] KB service total (no relevant chunks): %.4f seconds",
+                time.perf_counter() - total_start,
             )
 
             return QueryResponse(
@@ -151,14 +196,42 @@ def ask_question(
             documentPayload.get("source"),
         )
 
+        # --------------------------------------------------
+        # 4. Build context
+        # --------------------------------------------------
+
+        start = time.perf_counter()
+
         contextText = build_context(
             searchResults,
         )
+
+        logger.info(
+            "[TIMING] Context building: %.4f seconds",
+            time.perf_counter() - start,
+        )
+
+        # --------------------------------------------------
+        # 5. Build prompt
+        # --------------------------------------------------
+
+        start = time.perf_counter()
 
         prompt = build_prompt(
             context=contextText,
             query=query,
         )
+
+        logger.info(
+            "[TIMING] Prompt building: %.4f seconds",
+            time.perf_counter() - start,
+        )
+
+        # --------------------------------------------------
+        # 6. LLM generation
+        # --------------------------------------------------
+
+        start = time.perf_counter()
 
         try:
             llmResponse = get_llm().invoke(
@@ -174,9 +247,19 @@ def ask_question(
 
             raise LLMResponseException() from exception
 
+        logger.info(
+            "[TIMING] LLM generation: %.4f seconds",
+            time.perf_counter() - start,
+        )
+
         answer = llmResponse.content.strip()
 
         if ANSWER_NOT_FOUND_MESSAGE.lower() in answer.lower():
+            logger.info(
+                "[TIMING] KB service total (LLM returned no-answer): %.4f seconds",
+                time.perf_counter() - total_start,
+            )
+
             return QueryResponse(
                 answer=ANSWER_NOT_FOUND_MESSAGE,
                 document_id=None,
@@ -188,6 +271,12 @@ def ask_question(
                 page=None,
             )
 
+        # --------------------------------------------------
+        # 7. Cache write
+        # --------------------------------------------------
+
+        start = time.perf_counter()
+
         cache_answer(
             question=query,
             embedding=queryEmbedding,
@@ -196,6 +285,20 @@ def ask_question(
             documentPayload=documentPayload,
             business_id=business_id,
             course_ids=course_ids,
+        )
+
+        logger.info(
+            "[TIMING] Cache write: %.4f seconds",
+            time.perf_counter() - start,
+        )
+
+        # --------------------------------------------------
+        # Total service time
+        # --------------------------------------------------
+
+        logger.info(
+            "[TIMING] KB service TOTAL: %.4f seconds",
+            time.perf_counter() - total_start,
         )
 
         return QueryResponse.from_payload(
@@ -213,6 +316,11 @@ def ask_question(
         logger.exception(
             CHAT_SERVICE_FAILED_LOG,
             exception,
+        )
+
+        logger.info(
+            "[TIMING] KB service TOTAL (failed): %.4f seconds",
+            time.perf_counter() - total_start,
         )
 
         raise KnowledgeBaseException(

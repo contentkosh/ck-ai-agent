@@ -1,4 +1,6 @@
 from typing import List, Optional
+import time
+
 from fastapi import APIRouter, Depends, Query
 from api.dependencies import get_request_context
 from common.logger import logger
@@ -34,6 +36,7 @@ def get_knowledge_base(
     """Retrieve all Knowledge Base records."""
 
     logger.info(FETCH_KB_REQUEST_LOG, context.request_id)
+
     validate_tag(tag)
 
     records = get_knowledge_base_records(
@@ -65,8 +68,33 @@ def query_knowledge_base(
 ) -> QueryResponse:
     """Answer a user query using the Knowledge Base."""
 
-    logger.info(QUERY_REQUEST_LOG, context.request_id)
-    validate_query(request.query)
+    request_start = time.perf_counter()
+
+    logger.info(
+        QUERY_REQUEST_LOG,
+        context.request_id,
+    )
+
+    # --------------------------------------------------
+    # 1. Query validation
+    # --------------------------------------------------
+
+    start = time.perf_counter()
+
+    validate_query(
+        request.query,
+    )
+
+    logger.info(
+        "[TIMING] Query validation: %.4f seconds",
+        time.perf_counter() - start,
+    )
+
+    # --------------------------------------------------
+    # 2. KB query service
+    # --------------------------------------------------
+
+    start = time.perf_counter()
 
     result = ask_question(
         query=request.query,
@@ -74,5 +102,23 @@ def query_knowledge_base(
         course_ids=request.course_ids,
     )
 
-    logger.info(QUERY_SUCCESS_LOG, context.request_id)
+    logger.info(
+        "[TIMING] KB service call: %.4f seconds",
+        time.perf_counter() - start,
+    )
+
+    logger.info(
+        QUERY_SUCCESS_LOG,
+        context.request_id,
+    )
+
+    # --------------------------------------------------
+    # Total API request time
+    # --------------------------------------------------
+
+    logger.info(
+        "[TIMING] API request TOTAL: %.4f seconds",
+        time.perf_counter() - request_start,
+    )
+
     return result

@@ -5865,3 +5865,462 @@ exceptions.metadata_exception.InvalidMetadataException: LLM returned invalid JSO
 2026-09-17 11:07:09,371 | INFO | Answer cached successfully.
 2026-09-17 11:07:09,372 | INFO | [a552e637-4fd8-4209-a06c-f7e39849e7e0] Question answered successfully.
 2026-09-17 11:07:09,373 | INFO | [b3a1d3fd-57a6-423a-bdc8-4212f7f6811b] Request Completed
+2026-09-18 16:13:06,236 | INFO | Loading local LLM 'LFM2-1.2B-RAG' on cuda.
+2026-09-18 16:13:10,333 | INFO | Local LLM 'LFM2-1.2B-RAG' loaded successfully on cuda.
+2026-09-18 16:14:30,986 | INFO | Loading local LLM 'LFM2-1.2B-RAG' on cuda.
+2026-09-18 16:14:34,733 | INFO | Local LLM 'LFM2-1.2B-RAG' loaded successfully on cuda.
+2026-09-18 16:16:28,790 | INFO | Loading local LLM 'LFM2-1.2B-RAG' on cuda.
+2026-09-18 16:16:32,419 | INFO | Local LLM 'LFM2-1.2B-RAG' loaded successfully on cuda.
+2026-09-21 18:45:37,523 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-21 18:45:38,023 | INFO | Qdrant client initialized successfully.
+2026-09-21 18:45:43,449 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-21 18:45:43,863 | INFO | Qdrant client initialized successfully.
+2026-09-21 18:46:14,971 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-21 18:46:15,356 | INFO | Qdrant client initialized successfully.
+2026-09-21 18:46:30,770 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-21 18:46:31,357 | INFO | Qdrant client initialized successfully.
+2026-09-21 18:46:31,903 | INFO | [837ec336-6960-496b-950c-443bbbae3871] Incoming Request : GET /docs
+2026-09-21 18:46:31,904 | INFO | [837ec336-6960-496b-950c-443bbbae3871] Request Completed
+2026-09-21 18:46:32,004 | INFO | [7d3accb1-7f99-48f6-9240-33f5fcdc47bc] Incoming Request : GET /openapi.json
+2026-09-21 18:46:32,017 | INFO | [7d3accb1-7f99-48f6-9240-33f5fcdc47bc] Request Completed
+2026-09-21 18:47:29,522 | INFO | [017829cf-9720-47fe-8fc4-cc84fe42e79c] Incoming Request : POST /llm/kb/query
+2026-09-21 18:47:29,528 | INFO | [483fe1f5-2b9c-444f-9b40-930343ac8a51] Question received.
+2026-09-21 18:47:29,528 | INFO | Received query: Tell me about the end of civilization
+2026-09-21 18:47:29,528 | INFO | Loading embedding model: sentence-transformers/all-MiniLM-L6-v2
+2026-09-21 18:47:50,366 | INFO | Qdrant collection already exists.
+2026-09-21 18:47:50,406 | INFO | Cache search returned 1 result(s).
+2026-09-21 18:47:50,406 | INFO | Cache similarity score: 0.236
+2026-09-21 18:47:50,406 | INFO | Cache Miss
+2026-09-21 18:47:50,428 | INFO | Qdrant collection already exists.
+2026-09-21 18:47:50,454 | INFO | Retrieved %d chunks.: 5
+2026-09-21 18:47:50,455 | INFO | Retrieved 5 chunk(s).
+2026-09-21 18:47:50,455 | INFO | Top matching source: History_compressed.pdf
+2026-09-21 18:47:50,455 | INFO | Loading local LLM 'LFM2-1.2B-RAG' on cuda.
+2026-09-21 18:47:53,602 | INFO | Local LLM 'LFM2-1.2B-RAG' loaded successfully on cuda.
+2026-09-21 18:47:56,587 | INFO | Qdrant collection already exists.
+2026-09-21 18:47:56,588 | INFO | Cache saved for question: Tell me about the end of civilization
+2026-09-21 18:47:56,637 | INFO | Answer cached successfully.
+2026-09-21 18:47:56,638 | INFO | [483fe1f5-2b9c-444f-9b40-930343ac8a51] Question answered successfully.
+2026-09-21 18:47:56,638 | INFO | [017829cf-9720-47fe-8fc4-cc84fe42e79c] Request Completed
+2026-09-21 18:48:25,726 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-21 18:48:26,155 | INFO | Qdrant client initialized successfully.
+2026-09-21 18:48:26,998 | INFO | [f157b00e-484b-4c5b-939a-70ea48a6f39c] Incoming Request : POST /llm/kb/query
+2026-09-21 18:48:27,001 | INFO | [f157b00e-484b-4c5b-939a-70ea48a6f39c] Request Completed
+2026-09-21 18:48:37,651 | INFO | [5180810d-a7cb-4952-be26-3e95885b672d] Incoming Request : POST /llm/kb/query
+2026-09-21 18:48:37,653 | INFO | [7eb11947-4dc0-449a-b421-eaee1e6239a8] Question received.
+2026-09-21 18:48:37,653 | INFO | Received query: Explain the end of civilization
+2026-09-21 18:48:37,653 | INFO | Loading embedding model: sentence-transformers/all-MiniLM-L6-v2
+2026-09-21 18:48:54,525 | INFO | Qdrant collection already exists.
+2026-09-21 18:48:54,553 | INFO | Cache search returned 1 result(s).
+2026-09-21 18:48:54,553 | INFO | Cache similarity score: 0.910
+2026-09-21 18:48:54,554 | INFO | Cache Hit
+2026-09-21 18:48:54,554 | INFO | Returning cached answer.
+2026-09-21 18:48:54,554 | INFO | [7eb11947-4dc0-449a-b421-eaee1e6239a8] Question answered successfully.
+2026-09-21 18:48:54,554 | INFO | [5180810d-a7cb-4952-be26-3e95885b672d] Request Completed
+2026-09-21 18:50:22,965 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-21 18:50:23,336 | INFO | Qdrant client initialized successfully.
+2026-09-21 18:50:23,719 | INFO | [54cf578f-8bf7-46dd-9be2-e09f814e2d90] Incoming Request : POST /llm/kb/query
+2026-09-21 18:50:23,721 | INFO | [54cf578f-8bf7-46dd-9be2-e09f814e2d90] Request Completed
+2026-09-21 18:52:53,909 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-21 18:52:54,398 | INFO | Qdrant client initialized successfully.
+2026-09-21 18:52:59,980 | INFO | [4c0f26fe-751f-457f-8a4a-996c0153e909] Incoming Request : POST /llm/kb/query
+2026-09-21 18:52:59,983 | INFO | [a2f12c4a-2740-4737-ab40-a74a1d424e7c] Question received.
+2026-09-21 18:52:59,983 | INFO | Received query: What is Cunningham's confusion?
+2026-09-21 18:52:59,983 | INFO | Loading embedding model: sentence-transformers/all-MiniLM-L6-v2
+2026-09-21 18:53:09,549 | INFO | Qdrant collection created successfully.
+2026-09-21 18:53:09,575 | INFO | Cache search returned 0 result(s).
+2026-09-21 18:53:09,575 | INFO | Cache Miss - No similar question found.
+2026-09-21 18:53:09,697 | INFO | Qdrant collection created successfully.
+2026-09-21 18:53:09,714 | INFO | Retrieved %d chunks.: 0
+2026-09-21 18:53:09,714 | WARNING | No relevant chunks found.
+2026-09-21 18:53:09,714 | INFO | [a2f12c4a-2740-4737-ab40-a74a1d424e7c] Question answered successfully.
+2026-09-21 18:53:09,714 | INFO | [4c0f26fe-751f-457f-8a4a-996c0153e909] Request Completed
+2026-09-21 18:55:29,102 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-21 18:55:29,509 | INFO | Qdrant client initialized successfully.
+2026-09-22 09:34:35,524 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-22 09:34:36,001 | INFO | Qdrant client initialized successfully.
+2026-09-22 09:34:42,834 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-22 09:34:43,298 | INFO | Qdrant client initialized successfully.
+2026-09-22 09:34:59,771 | INFO | [128e47a3-b9a8-4463-9e7c-82b73b9b2ea0] Incoming Request : GET /docs
+2026-09-22 09:34:59,772 | INFO | [128e47a3-b9a8-4463-9e7c-82b73b9b2ea0] Request Completed
+2026-09-22 09:34:59,929 | INFO | [0068df07-a15d-4297-9d1d-4c6eeff91859] Incoming Request : GET /openapi.json
+2026-09-22 09:34:59,939 | INFO | [0068df07-a15d-4297-9d1d-4c6eeff91859] Request Completed
+2026-09-22 09:35:10,934 | INFO | [a9d9df2d-e307-4d3b-a662-c59f6423e5ab] Incoming Request : DELETE /llm/files
+2026-09-22 09:35:10,938 | INFO | [29e2b983-5313-4b73-862e-03411bfc4624] Clearing Knowledge Base.
+2026-09-22 09:35:10,962 | INFO | Qdrant collection already exists.
+2026-09-22 09:35:11,004 | INFO | Knowledge Base cleared.
+2026-09-22 09:35:11,009 | INFO | Qdrant collection already exists.
+2026-09-22 09:35:11,026 | INFO | All cache entries deleted for business: Mukund Upadhyay
+2026-09-22 09:35:11,026 | INFO | [29e2b983-5313-4b73-862e-03411bfc4624] Knowledge Base cleared successfully.
+2026-09-22 09:35:11,027 | INFO | [a9d9df2d-e307-4d3b-a662-c59f6423e5ab] Request Completed
+2026-09-22 09:36:53,082 | INFO | [30ba5a29-b996-4778-8ebc-b1d5f709bad7] Incoming Request : POST /llm/upload
+2026-09-22 09:36:53,099 | INFO | [ee0cafa5-cc34-4625-ad84-c99c7df3dfbc] Upload request received.
+2026-09-22 09:36:53,099 | INFO | Knowledge Base ingestion started.
+2026-09-22 09:36:53,099 | INFO | Processing file: OODP class 12.pdf
+2026-09-22 09:36:53,099 | INFO | Saving file: OODP class 12.pdf
+2026-09-22 09:36:53,109 | INFO | Processing document: OODP class 12.pdf
+2026-09-22 09:36:53,398 | INFO | Extracted 16 pages.
+2026-09-22 09:36:53,398 | INFO | Extracting document metadata.
+2026-09-22 09:36:53,398 | INFO | Extracting document metadata.
+2026-09-22 09:36:53,823 | INFO | Loading local LLM 'LFM2-1.2B-RAG' on cuda.
+2026-09-22 09:36:57,245 | INFO | Local LLM 'LFM2-1.2B-RAG' loaded successfully on cuda.
+2026-09-22 09:37:18,489 | ERROR | RAW METADATA LLM RESPONSE: ```json
+{
+    "title": "Document Metadata Extraction",
+    "document_type": "Knowledge Base Entry",
+    "tag": "C++ Classes",
+    "summary": "Metadata extracted from document on C++ classes."
+}
+```
+
+```json
+{
+    "FIELD DEFINITIONS": {
+        "title": "Class Definition",
+        "description": "Extracted definition of a C++ class including private/public/protected members and their visibility.",
+        "field": "class declaration"
+    },
+    "FIELD DEFINITIONS": {
+        "title": "Access Specifiers",
+        "description": "Metadata extracted regarding access specifiers (public, private, protected) and their scope in C++ classes.",
+        "field": "access specifiers"
+    },
+    "FIELD DEFINITIONS": {
+        "title": "Member Access",
+        "description": "Metadata extracted regarding how to access class members (public, private, protected) using dot/arrow operators.",
+        "field": "member access"
+    },
+    "FIELD DEFINITIONS": {
+        "title": "Class Members",
+        "description": "Metadata extracted regarding class members (variables and functions) and their
+2026-09-22 09:37:18,496 | ERROR | Document metadata extraction failed: LLM returned invalid JSON metadata.
+Traceback (most recent call last):
+  File "C:\Users\Mukund Upadhyay\OneDrive\Desktop\ck-ai-agent\services\document_metadata_service.py", line 96, in extract_document_metadata
+    documentMetadata = json.loads(
+                       ^^^^^^^^^^^
+  File "C:\Users\Mukund Upadhyay\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mukund Upadhyay\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 341, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 8 column 1 (char 187)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Mukund Upadhyay\OneDrive\Desktop\ck-ai-agent\services\kb_ingestion_service.py", line 241, in get_document_metadata
+    metadata = extract_document_metadata(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mukund Upadhyay\OneDrive\Desktop\ck-ai-agent\services\document_metadata_service.py", line 113, in extract_document_metadata
+    raise InvalidMetadataException(
+exceptions.metadata_exception.InvalidMetadataException: LLM returned invalid JSON metadata.
+2026-09-22 09:37:18,497 | INFO | Temporary file deleted successfully: uploads\4029a29f987b456aa19e1be8d51d102b_OODP class 12.pdf
+2026-09-22 09:37:18,498 | INFO | [30ba5a29-b996-4778-8ebc-b1d5f709bad7] Request Completed
+2026-09-22 09:53:53,240 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-22 09:53:53,772 | INFO | Qdrant client initialized successfully.
+2026-09-22 09:54:00,495 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-22 09:54:01,010 | INFO | Qdrant client initialized successfully.
+2026-09-22 09:54:06,544 | INFO | [6eba823f-394c-4770-b121-b3cd871d9720] Incoming Request : GET /docs
+2026-09-22 09:54:06,544 | INFO | [6eba823f-394c-4770-b121-b3cd871d9720] Request Completed
+2026-09-22 09:54:06,639 | INFO | [17053aaf-b116-4ea5-872f-bea181471096] Incoming Request : GET /openapi.json
+2026-09-22 09:54:06,653 | INFO | [17053aaf-b116-4ea5-872f-bea181471096] Request Completed
+2026-09-22 09:54:26,120 | INFO | [5155192c-35f5-4ccf-ad0f-1b10d60f5609] Incoming Request : POST /llm/upload
+2026-09-22 09:54:26,140 | INFO | [330e0220-3f81-47b8-aab2-155150c623b3] Upload request received.
+2026-09-22 09:54:26,140 | INFO | Knowledge Base ingestion started.
+2026-09-22 09:54:26,140 | INFO | Processing file: OODP class 12.pdf
+2026-09-22 09:54:26,141 | INFO | Saving file: OODP class 12.pdf
+2026-09-22 09:54:26,150 | INFO | Processing document: OODP class 12.pdf
+2026-09-22 09:54:26,435 | INFO | Extracted 16 pages.
+2026-09-22 09:54:26,435 | INFO | Extracting document metadata.
+2026-09-22 09:54:26,435 | INFO | Extracting document metadata.
+2026-09-22 09:54:26,466 | INFO | Loading local LLM 'LFM2-1.2B-RAG' on cuda.
+2026-09-22 09:54:27,992 | INFO | Local LLM 'LFM2-1.2B-RAG' loaded successfully on cuda.
+2026-09-22 09:54:48,868 | ERROR | RAW METADATA LLM RESPONSE: ```json
+{
+    "title": "Document Metadata Extraction",
+    "document_type": "Knowledge Base Entry",
+    "tag": "C++ Classes",
+    "summary": "Metadata extracted from document on C++ classes."
+}
+```
+
+```json
+{
+    "FIELD DEFINITIONS": {
+        "title": "Class Definition",
+        "description": "Extracted definition of a C++ class including private/public/protected members and their visibility.",
+        "field": "class declaration"
+    },
+    "FIELD DEFINITIONS": {
+        "title": "Access Specifiers",
+        "description": "Metadata extracted regarding access specifiers (public, private, protected) and their scope in C++ classes.",
+        "field": "access specifiers"
+    },
+    "FIELD DEFINITIONS": {
+        "title": "Member Access",
+        "description": "Metadata extracted regarding how to access class members (public, private, protected) using dot/arrow operators.",
+        "field": "member access"
+    },
+    "FIELD DEFINITIONS": {
+        "title": "Class Members",
+        "description": "Metadata extracted regarding class members (variables and functions) and their
+2026-09-22 09:54:48,872 | ERROR | Document metadata extraction failed: LLM returned invalid JSON metadata.
+Traceback (most recent call last):
+  File "C:\Users\Mukund Upadhyay\OneDrive\Desktop\ck-ai-agent\services\document_metadata_service.py", line 96, in extract_document_metadata
+    documentMetadata = json.loads(
+                       ^^^^^^^^^^^
+  File "C:\Users\Mukund Upadhyay\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mukund Upadhyay\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 341, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 8 column 1 (char 187)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Mukund Upadhyay\OneDrive\Desktop\ck-ai-agent\services\kb_ingestion_service.py", line 241, in get_document_metadata
+    metadata = extract_document_metadata(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mukund Upadhyay\OneDrive\Desktop\ck-ai-agent\services\document_metadata_service.py", line 113, in extract_document_metadata
+    raise InvalidMetadataException(
+exceptions.metadata_exception.InvalidMetadataException: LLM returned invalid JSON metadata.
+2026-09-22 09:54:48,873 | INFO | Temporary file deleted successfully: uploads\072f7e74b0914a7e8f8cc05fc24b1a63_OODP class 12.pdf
+2026-09-22 09:54:48,874 | INFO | [5155192c-35f5-4ccf-ad0f-1b10d60f5609] Request Completed
+2026-09-22 10:00:55,192 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-22 10:00:55,706 | INFO | Qdrant client initialized successfully.
+2026-09-22 10:01:20,162 | INFO | [999ca0d5-d253-40ab-80ac-0bc52d452740] Incoming Request : GET /docs
+2026-09-22 10:01:20,163 | INFO | [999ca0d5-d253-40ab-80ac-0bc52d452740] Request Completed
+2026-09-22 10:01:20,234 | INFO | [15ceb9f2-79fe-4857-86c7-252d83335301] Incoming Request : GET /openapi.json
+2026-09-22 10:01:20,247 | INFO | [15ceb9f2-79fe-4857-86c7-252d83335301] Request Completed
+2026-09-22 10:01:46,769 | INFO | [203c0509-4d4e-4803-9d4d-3f3617facd8e] Incoming Request : POST /llm/upload
+2026-09-22 10:01:46,782 | INFO | [8ae2ca27-b8af-4c66-810d-dad6c972368e] Upload request received.
+2026-09-22 10:01:46,782 | INFO | Knowledge Base ingestion started.
+2026-09-22 10:01:46,782 | INFO | Processing file: OODP class 12.pdf
+2026-09-22 10:01:46,782 | INFO | Saving file: OODP class 12.pdf
+2026-09-22 10:01:46,793 | INFO | Processing document: OODP class 12.pdf
+2026-09-22 10:01:47,102 | INFO | Extracted 16 pages.
+2026-09-22 10:01:47,103 | INFO | Extracting document metadata.
+2026-09-22 10:01:47,103 | INFO | Extracting document metadata.
+2026-09-22 10:01:47,124 | INFO | Loading local LLM 'LFM2-1.2B-RAG' on cuda.
+2026-09-22 10:01:48,481 | INFO | Local LLM 'LFM2-1.2B-RAG' loaded successfully on cuda.
+2026-09-22 10:01:59,735 | ERROR | RAW METADATA LLM RESPONSE: ```json
+{
+    "title": "Document Metadata Extraction",
+    "document_type": "Knowledge Base Entry",
+    "tag": "C++ Classes",
+    "summary": "Metadata extracted from document on C++ classes."
+}
+```
+
+```json
+{
+    "FIELD DEFINITIONS": {
+        "title": "Class Definition",
+        "description": "Extracted definition of a C++ class including private/public/protected members and their visibility.",
+        "field": "class declaration"
+    },
+    "FIELD DEFINITIONS": {
+        "title": "Access Specifiers",
+        "description": "Metadata extracted regarding access specifiers (public, private, protected) and their scope in C++ classes.",
+        "field": "access specifiers"
+    },
+    "FIELD DEFINITIONS": {
+        "title": "Member Access",
+        "description": "Metadata extracted regarding how to access class members (public, private, protected) using dot/arrow operators.",
+        "field": "member access"
+    },
+    "FIELD DEFINITIONS": {
+        "title": "Class Members",
+        "description": "Metadata extracted regarding class members (variables and functions) and their
+2026-09-22 10:01:59,735 | INFO | Metadata extracted successfully.
+2026-09-22 10:01:59,735 | INFO | Metadata extracted successfully.
+2026-09-22 10:01:59,735 | INFO | Page 1 generated 4 chunks.
+2026-09-22 10:01:59,735 | INFO | Page 2 generated 4 chunks.
+2026-09-22 10:01:59,735 | INFO | Page 3 generated 3 chunks.
+2026-09-22 10:01:59,735 | INFO | Page 4 generated 3 chunks.
+2026-09-22 10:01:59,735 | INFO | Page 5 generated 2 chunks.
+2026-09-22 10:01:59,735 | INFO | Page 6 generated 3 chunks.
+2026-09-22 10:01:59,735 | INFO | Page 7 generated 3 chunks.
+2026-09-22 10:01:59,736 | INFO | Page 8 generated 2 chunks.
+2026-09-22 10:01:59,736 | INFO | Page 9 generated 2 chunks.
+2026-09-22 10:01:59,736 | INFO | Page 10 generated 4 chunks.
+2026-09-22 10:01:59,736 | INFO | Page 11 generated 3 chunks.
+2026-09-22 10:01:59,736 | INFO | Loading embedding model: sentence-transformers/all-MiniLM-L6-v2
+2026-09-22 10:02:03,971 | INFO | Qdrant collection created successfully.
+2026-09-22 10:02:04,007 | INFO | Inserted 32 vectors.
+2026-09-22 10:02:04,007 | INFO | Page 12 generated 2 chunks.
+2026-09-22 10:02:04,007 | INFO | Page 13 generated 2 chunks.
+2026-09-22 10:02:04,007 | INFO | Page 14 generated 3 chunks.
+2026-09-22 10:02:04,007 | INFO | Page 15 generated 2 chunks.
+2026-09-22 10:02:04,007 | INFO | Page 16 generated 1 chunks.
+2026-09-22 10:02:04,036 | INFO | Qdrant collection already exists.
+2026-09-22 10:02:04,128 | INFO | Inserted 11 vectors.
+2026-09-22 10:02:04,128 | INFO | Generated 43 vectors.
+2026-09-22 10:02:04,128 | INFO | Processed OODP class 12.pdf (43 chunks).
+2026-09-22 10:02:04,128 | INFO | Temporary file deleted successfully: uploads\98cc1033c8754e458966b7986309d4b0_OODP class 12.pdf
+2026-09-22 10:02:04,129 | INFO | Successfully processed 'OODP class 12.pdf'.
+2026-09-22 10:02:04,129 | INFO | Knowledge Base ingestion completed. Documents=1 Chunks=43
+2026-09-22 10:02:04,129 | INFO | [8ae2ca27-b8af-4c66-810d-dad6c972368e] Uploaded 1 document(s) successfully.
+2026-09-22 10:02:04,130 | INFO | [203c0509-4d4e-4803-9d4d-3f3617facd8e] Request Completed
+2026-09-22 10:02:46,822 | INFO | [4b2a6d39-8218-41fb-8d6d-1dc0a8c40b9b] Incoming Request : POST /llm/kb/query
+2026-09-22 10:02:46,824 | INFO | [27277ac1-83f9-4c2b-af48-be14349143c5] Question received.
+2026-09-22 10:02:46,824 | INFO | [TIMING] Query validation: 0.0000 seconds
+2026-09-22 10:02:46,825 | INFO | Received query: What is meant by anonymous objects?
+2026-09-22 10:02:46,915 | INFO | [TIMING] Embedding generation: 0.0899 seconds
+2026-09-22 10:02:47,051 | INFO | Qdrant collection created successfully.
+2026-09-22 10:02:47,091 | INFO | Cache search returned 0 result(s).
+2026-09-22 10:02:47,092 | INFO | Cache Miss - No similar question found.
+2026-09-22 10:02:47,092 | INFO | [TIMING] Cache lookup: 0.1768 seconds
+2026-09-22 10:02:47,107 | INFO | Qdrant collection already exists.
+2026-09-22 10:02:47,128 | INFO | Retrieved %d chunks.: 0
+2026-09-22 10:02:47,128 | INFO | [TIMING] Qdrant retrieval: 0.0369 seconds
+2026-09-22 10:02:47,130 | WARNING | No relevant chunks found.
+2026-09-22 10:02:47,130 | INFO | [TIMING] KB service total (no relevant chunks): 0.3041 seconds
+2026-09-22 10:02:47,130 | INFO | [TIMING] KB service call: 0.3042 seconds
+2026-09-22 10:02:47,130 | INFO | [27277ac1-83f9-4c2b-af48-be14349143c5] Question answered successfully.
+2026-09-22 10:02:47,130 | INFO | [TIMING] API request TOTAL: 0.3053 seconds
+2026-09-22 10:02:47,131 | INFO | [4b2a6d39-8218-41fb-8d6d-1dc0a8c40b9b] Request Completed
+2026-09-22 10:02:57,936 | INFO | [2f7a1511-304d-450f-ba18-1b92e4e19e64] Incoming Request : POST /llm/kb/query
+2026-09-22 10:02:57,937 | INFO | [e3ffb514-106d-48d8-a363-0d659670b4eb] Question received.
+2026-09-22 10:02:57,937 | INFO | [TIMING] Query validation: 0.0000 seconds
+2026-09-22 10:02:57,937 | INFO | Received query: What is meant by anonymous objects?
+2026-09-22 10:02:57,947 | INFO | [TIMING] Embedding generation: 0.0106 seconds
+2026-09-22 10:02:57,955 | INFO | Qdrant collection already exists.
+2026-09-22 10:02:57,984 | INFO | Cache search returned 0 result(s).
+2026-09-22 10:02:57,984 | INFO | Cache Miss - No similar question found.
+2026-09-22 10:02:57,984 | INFO | [TIMING] Cache lookup: 0.0356 seconds
+2026-09-22 10:02:57,988 | INFO | Qdrant collection already exists.
+2026-09-22 10:02:58,017 | INFO | Retrieved %d chunks.: 5
+2026-09-22 10:02:58,017 | INFO | [TIMING] Qdrant retrieval: 0.0329 seconds
+2026-09-22 10:02:58,017 | INFO | Retrieved 5 chunk(s).
+2026-09-22 10:02:58,017 | INFO | Top matching source: OODP class 12.pdf
+2026-09-22 10:02:58,017 | INFO | [TIMING] Context building: 0.0000 seconds
+2026-09-22 10:02:58,017 | INFO | [TIMING] Prompt building: 0.0000 seconds
+2026-09-22 10:03:00,892 | INFO | [TIMING] LLM generation: 2.8744 seconds
+2026-09-22 10:03:00,897 | INFO | Qdrant collection already exists.
+2026-09-22 10:03:00,898 | INFO | Cache saved for question: What is meant by anonymous objects?
+2026-09-22 10:03:00,922 | INFO | Answer cached successfully.
+2026-09-22 10:03:00,922 | INFO | [TIMING] Cache write: 0.0306 seconds
+2026-09-22 10:03:00,922 | INFO | [TIMING] KB service TOTAL: 2.9849 seconds
+2026-09-22 10:03:00,923 | INFO | [TIMING] KB service call: 2.9851 seconds
+2026-09-22 10:03:00,923 | INFO | [e3ffb514-106d-48d8-a363-0d659670b4eb] Question answered successfully.
+2026-09-22 10:03:00,923 | INFO | [TIMING] API request TOTAL: 2.9854 seconds
+2026-09-22 10:03:00,924 | INFO | [2f7a1511-304d-450f-ba18-1b92e4e19e64] Request Completed
+2026-09-22 10:03:30,489 | INFO | [9afebc37-df19-449e-a1e5-3c9d947af4c2] Incoming Request : DELETE /llm/files
+2026-09-22 10:03:30,492 | INFO | [715aacbe-5505-4833-b777-55ab0c3a08ff] Clearing Knowledge Base.
+2026-09-22 10:03:30,517 | INFO | Qdrant collection already exists.
+2026-09-22 10:03:30,542 | INFO | Knowledge Base cleared.
+2026-09-22 10:03:30,546 | INFO | Qdrant collection already exists.
+2026-09-22 10:03:30,571 | INFO | All cache entries deleted for business: Mukund Upadhyay
+2026-09-22 10:03:30,571 | INFO | [715aacbe-5505-4833-b777-55ab0c3a08ff] Knowledge Base cleared successfully.
+2026-09-22 10:03:30,572 | INFO | [9afebc37-df19-449e-a1e5-3c9d947af4c2] Request Completed
+2026-09-22 10:04:01,644 | INFO | [b17fd9bc-bae0-4156-a36e-11bfd9f09695] Incoming Request : POST /llm/upload
+2026-09-22 10:04:01,655 | INFO | [367b12ef-35ea-40a9-84bd-b4d95413c336] Upload request received.
+2026-09-22 10:04:01,655 | INFO | Knowledge Base ingestion started.
+2026-09-22 10:04:01,655 | INFO | Processing file: OODP class 12.pdf
+2026-09-22 10:04:01,655 | INFO | Saving file: OODP class 12.pdf
+2026-09-22 10:04:01,663 | INFO | Processing document: OODP class 12.pdf
+2026-09-22 10:04:01,946 | INFO | Extracted 16 pages.
+2026-09-22 10:04:01,946 | INFO | Extracting document metadata.
+2026-09-22 10:04:01,946 | INFO | Extracting document metadata.
+2026-09-22 10:04:07,703 | ERROR | RAW METADATA LLM RESPONSE: ```json
+{
+    "title": "Document Metadata Extraction",
+    "document_type": "Knowledge Base Entry",
+    "tag": "C++ Classes",
+    "summary": "Metadata extracted from document on C++ classes."
+}
+```
+
+```json
+{
+    "FIELD DEFINITIONS": {
+        "title": "Class Definition",
+        "description": "Extracted definition of a C++ class including private/public/protected members and their visibility.",
+        "field": "class declaration"
+    },
+    "FIELD DEFINITIONS": {
+        "title": "Access Specifiers",
+        "description": "Metadata extracted regarding access specifiers (public, private, protected) and their scope in C++ classes.",
+        "field": "access specifiers"
+    },
+    "FIELD DEFINITIONS": {
+        "title": "Member Access",
+        "description": "Metadata extracted regarding how to access class members (public, private, protected) using dot/arrow operators.",
+        "field": "member access"
+    },
+    "FIELD DEFINITIONS": {
+        "title": "Class Members",
+        "description": "Metadata extracted regarding class members (variables and functions) and their
+2026-09-22 10:04:07,703 | INFO | Metadata extracted successfully.
+2026-09-22 10:04:07,703 | INFO | Metadata extracted successfully.
+2026-09-22 10:04:07,703 | INFO | Page 1 generated 4 chunks.
+2026-09-22 10:04:07,704 | INFO | Page 2 generated 4 chunks.
+2026-09-22 10:04:07,704 | INFO | Page 3 generated 3 chunks.
+2026-09-22 10:04:07,704 | INFO | Page 4 generated 3 chunks.
+2026-09-22 10:04:07,704 | INFO | Page 5 generated 2 chunks.
+2026-09-22 10:04:07,704 | INFO | Page 6 generated 3 chunks.
+2026-09-22 10:04:07,704 | INFO | Page 7 generated 3 chunks.
+2026-09-22 10:04:07,704 | INFO | Page 8 generated 2 chunks.
+2026-09-22 10:04:07,704 | INFO | Page 9 generated 2 chunks.
+2026-09-22 10:04:07,704 | INFO | Page 10 generated 4 chunks.
+2026-09-22 10:04:07,704 | INFO | Page 11 generated 3 chunks.
+2026-09-22 10:04:07,865 | INFO | Qdrant collection created successfully.
+2026-09-22 10:04:07,903 | INFO | Inserted 32 vectors.
+2026-09-22 10:04:07,904 | INFO | Page 12 generated 2 chunks.
+2026-09-22 10:04:07,904 | INFO | Page 13 generated 2 chunks.
+2026-09-22 10:04:07,904 | INFO | Page 14 generated 3 chunks.
+2026-09-22 10:04:07,904 | INFO | Page 15 generated 2 chunks.
+2026-09-22 10:04:07,904 | INFO | Page 16 generated 1 chunks.
+2026-09-22 10:04:07,937 | INFO | Qdrant collection already exists.
+2026-09-22 10:04:07,953 | INFO | Inserted 11 vectors.
+2026-09-22 10:04:07,953 | INFO | Generated 43 vectors.
+2026-09-22 10:04:07,953 | INFO | Processed OODP class 12.pdf (43 chunks).
+2026-09-22 10:04:07,954 | INFO | Temporary file deleted successfully: uploads\56161fe470d54967b06a14a959979413_OODP class 12.pdf
+2026-09-22 10:04:07,954 | INFO | Successfully processed 'OODP class 12.pdf'.
+2026-09-22 10:04:07,954 | INFO | Knowledge Base ingestion completed. Documents=1 Chunks=43
+2026-09-22 10:04:07,954 | INFO | [367b12ef-35ea-40a9-84bd-b4d95413c336] Uploaded 1 document(s) successfully.
+2026-09-22 10:04:07,955 | INFO | [b17fd9bc-bae0-4156-a36e-11bfd9f09695] Request Completed
+2026-09-22 10:04:52,991 | INFO | [f4306c7d-8985-4871-926f-92d4f9071d9c] Incoming Request : POST /llm/kb/query
+2026-09-22 10:04:52,992 | INFO | [52a673a7-0b48-47e5-bb92-dcb56522cd0c] Question received.
+2026-09-22 10:04:52,992 | INFO | [TIMING] Query validation: 0.0000 seconds
+2026-09-22 10:04:52,992 | INFO | Received query: What is meant by anonymous objects?
+2026-09-22 10:04:53,001 | INFO | [TIMING] Embedding generation: 0.0094 seconds
+2026-09-22 10:04:53,126 | INFO | Qdrant collection created successfully.
+2026-09-22 10:04:53,149 | INFO | Cache search returned 0 result(s).
+2026-09-22 10:04:53,149 | INFO | Cache Miss - No similar question found.
+2026-09-22 10:04:53,149 | INFO | [TIMING] Cache lookup: 0.1469 seconds
+2026-09-22 10:04:53,177 | INFO | Qdrant collection already exists.
+2026-09-22 10:04:53,197 | INFO | Retrieved %d chunks.: 5
+2026-09-22 10:04:53,197 | INFO | [TIMING] Qdrant retrieval: 0.0480 seconds
+2026-09-22 10:04:53,197 | INFO | Retrieved 5 chunk(s).
+2026-09-22 10:04:53,197 | INFO | Top matching source: OODP class 12.pdf
+2026-09-22 10:04:53,197 | INFO | [TIMING] Context building: 0.0000 seconds
+2026-09-22 10:04:53,197 | INFO | [TIMING] Prompt building: 0.0000 seconds
+2026-09-22 10:04:55,911 | INFO | [TIMING] LLM generation: 2.7138 seconds
+2026-09-22 10:04:55,934 | INFO | Qdrant collection already exists.
+2026-09-22 10:04:55,934 | INFO | Cache saved for question: What is meant by anonymous objects?
+2026-09-22 10:04:55,961 | INFO | Answer cached successfully.
+2026-09-22 10:04:55,961 | INFO | [TIMING] Cache write: 0.0493 seconds
+2026-09-22 10:04:55,961 | INFO | [TIMING] KB service TOTAL: 2.9684 seconds
+2026-09-22 10:04:55,961 | INFO | [TIMING] KB service call: 2.9686 seconds
+2026-09-22 10:04:55,961 | INFO | [52a673a7-0b48-47e5-bb92-dcb56522cd0c] Question answered successfully.
+2026-09-22 10:04:55,961 | INFO | [TIMING] API request TOTAL: 2.9689 seconds
+2026-09-22 10:04:55,962 | INFO | [f4306c7d-8985-4871-926f-92d4f9071d9c] Request Completed
+2026-09-22 10:05:13,245 | INFO | [656eabec-d7fb-4648-bdb2-0e3ffbb56a4f] Incoming Request : POST /llm/kb/query
+2026-09-22 10:05:13,247 | INFO | [d7ebd5fd-9d4b-482b-9aff-15dcae1ed8c6] Question received.
+2026-09-22 10:05:13,247 | INFO | [TIMING] Query validation: 0.0000 seconds
+2026-09-22 10:05:13,247 | INFO | Received query: Explain anonymous objects?
+2026-09-22 10:05:13,260 | INFO | [TIMING] Embedding generation: 0.0135 seconds
+2026-09-22 10:05:13,289 | INFO | Qdrant collection already exists.
+2026-09-22 10:05:13,298 | INFO | Cache search returned 1 result(s).
+2026-09-22 10:05:13,298 | INFO | Cache similarity score: 0.947
+2026-09-22 10:05:13,298 | INFO | Cache Hit
+2026-09-22 10:05:13,298 | INFO | [TIMING] Cache lookup: 0.0377 seconds
+2026-09-22 10:05:13,298 | INFO | Returning cached answer.
+2026-09-22 10:05:13,298 | INFO | [TIMING] KB service total (cache hit): 0.0514 seconds
+2026-09-22 10:05:13,298 | INFO | [TIMING] KB service call: 0.0515 seconds
+2026-09-22 10:05:13,298 | INFO | [d7ebd5fd-9d4b-482b-9aff-15dcae1ed8c6] Question answered successfully.
+2026-09-22 10:05:13,299 | INFO | [TIMING] API request TOTAL: 0.0517 seconds
+2026-09-22 10:05:13,299 | INFO | [656eabec-d7fb-4648-bdb2-0e3ffbb56a4f] Request Completed

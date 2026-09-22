@@ -217,7 +217,6 @@ GENERAL RULES
 
 3. If information is unavailable,
    return the closest valid value according
-   to the rules above.
 
 4. Ensure the response is valid JSON.
 

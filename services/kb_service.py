@@ -26,3 +26,5 @@ def get_knowledge_base_records(
             ex,
         )
         raise KnowledgeBaseException() from ex
+
+    
