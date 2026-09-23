@@ -22,6 +22,7 @@ SCROLL_LIMIT = int(os.getenv("SCROLL_LIMIT", 5000))
 
 # SEARCH
 SEARCH_LIMIT = int(os.getenv("SEARCH_LIMIT", 5))
+SEARCH_SCORE_THRESHOLD = float(os.getenv("SEARCH_SCORE_THRESHOLD", 0.50))
 
 # EMBEDDINGS
 EMBEDDING_MODEL = os.getenv(
@@ -39,18 +40,12 @@ LLM_MODEL_NAME = os.getenv(
     "Llama-3.2-3B-Instruct",
 )
 
-LLM_MAX_NEW_TOKENS = int(
-    os.getenv("LLM_MAX_NEW_TOKENS", 512)
-)
+LLM_MAX_NEW_TOKENS = int(os.getenv("LLM_MAX_NEW_TOKENS", 512))
 
-LLM_REPETITION_PENALTY = float(
-    os.getenv("LLM_REPETITION_PENALTY", 1.05)
-)
+LLM_REPETITION_PENALTY = float(os.getenv("LLM_REPETITION_PENALTY", 1.05))
 
 # METADATA EXTRACTION
-METADATA_EXTRACTION_TEXT_LIMIT = int(
-    os.getenv("METADATA_EXTRACTION_TEXT_LIMIT", 4000)
-)
+METADATA_EXTRACTION_TEXT_LIMIT = int(os.getenv("METADATA_EXTRACTION_TEXT_LIMIT", 4000))
 
 # CHUNKING
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", 500))
@@ -59,18 +54,14 @@ CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", 50))
 # FILE STORAGE
 UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "uploads")
 DEFAULT_MAX_FILE_SIZE = 150 * 1024 * 1024
-MAX_FILE_SIZE = int(
-    os.getenv("MAX_FILE_SIZE", DEFAULT_MAX_FILE_SIZE)
-)
+MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE", DEFAULT_MAX_FILE_SIZE))
 
 # LOGGING
 LOG_FILE_PATH = os.getenv(
     "LOG_FILE_PATH",
     "logs/application.log",
 )
-LOG_MAX_BYTES = int(
-    os.getenv("LOG_MAX_BYTES", 10 * 1024 * 1024)
-)
+LOG_MAX_BYTES = int(os.getenv("LOG_MAX_BYTES", 10 * 1024 * 1024))
 LOG_BACKUP_COUNT = int(os.getenv("LOG_BACKUP_COUNT", 5))
 
 # TAG VALIDATION
@@ -78,9 +69,7 @@ MAX_TAG_LENGTH = int(os.getenv("MAX_TAG_LENGTH", 100))
 
 # CACHE
 CACHE_ENABLED = os.getenv("CACHE_ENABLED", "True").lower() == "true"
-CACHE_SIMILARITY_THRESHOLD = float(
-    os.getenv("CACHE_SIMILARITY_THRESHOLD", 0.60)
-)
+CACHE_SIMILARITY_THRESHOLD = float(os.getenv("CACHE_SIMILARITY_THRESHOLD", 0.85))
 CACHE_TOP_K = int(os.getenv("CACHE_TOP_K", 1))
 MAX_CACHE_SIZE = int(os.getenv("MAX_CACHE_SIZE", 5000))
 

@@ -35,15 +35,25 @@ def build_context(
     searchResults: List,
 ) -> str:
     """
-    Combine retrieved chunks into a single context string.
+    Combine retrieved chunks into a clearly separated context.
     """
-    return "\n".join(
-        searchResult.payload.get(
-            METADATA_TEXT,
-            "",
+    contextParts = []
+
+    for index, searchResult in enumerate(searchResults, start=1):
+        payload = searchResult.payload
+
+        source = payload.get("source", "Unknown")
+        page = payload.get("page", "Unknown")
+        text = payload.get(METADATA_TEXT, "")
+
+        contextParts.append(
+            f"--- Retrieved Chunk {index} ---\n"
+            f"Source: {source}\n"
+            f"Page: {page}\n"
+            f"Content:\n{text}"
         )
-        for searchResult in searchResults
-    )
+
+    return "\n\n".join(contextParts)
 
 
 def build_prompt(
@@ -188,6 +198,15 @@ def ask_question(
             RETRIEVED_CHUNKS_LOG,
             len(searchResults),
         )
+
+        for index, searchResult in enumerate(searchResults, start=1):
+            logger.info(
+                "[RETRIEVAL] Chunk %d | score=%.4f | source=%s | page=%s",
+                index,
+                searchResult.score,
+                searchResult.payload.get("source"),
+                searchResult.payload.get("page"),
+            )
 
         documentPayload = searchResults[0].payload
 

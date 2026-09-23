@@ -18,6 +18,7 @@ from configuration.constants import (
 )
 from common.logger import logger
 from common.custom_exceptions import DatabaseException
+from configuration.config import CACHE_TOP_K
 
 from configuration.error_constants import (
     DATABASE_CACHE_DELETE_ERROR_MESSAGE,
@@ -27,6 +28,7 @@ from configuration.error_constants import (
 # ==========================================================
 # Ensure Cache Collection
 # ==========================================================
+
 
 def ensure_cache_collection(
     business_id: str,
@@ -51,12 +53,13 @@ def ensure_cache_collection(
 # Search Cache
 # ==========================================================
 
+
 def search_cache(
     *,
     query_embedding: list[float],
     business_id: str,
     course_ids: list[str],
-    limit: int = 1,
+    limit: int = CACHE_TOP_K,
 ):
     """
     Search the semantic answer cache for a specific
@@ -108,6 +111,7 @@ def search_cache(
 # Save Cache
 # ==========================================================
 
+
 def save_cache(
     *,
     question: str,
@@ -139,10 +143,8 @@ def save_cache(
                 "question": question,
                 "context": context,
                 "answer": answer,
-
                 METADATA_BUSINESS_ID: business_id,
                 METADATA_COURSE_ID: course_ids,
-
                 METADATA_DOCUMENT_ID: documentPayload.get(
                     METADATA_DOCUMENT_ID,
                 ),
@@ -184,6 +186,7 @@ def save_cache(
 # ==========================================================
 # Delete Cache For Document
 # ==========================================================
+
 
 def delete_cache_for_document(
     *,
@@ -244,6 +247,7 @@ def delete_cache_for_document(
 # ==========================================================
 # Delete All Cache
 # ==========================================================
+
 
 def delete_all_cache(
     *,

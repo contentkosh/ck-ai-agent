@@ -19,6 +19,7 @@ from configuration.config import (
 from dto.knowledge_base_record_dto import (
     KnowledgeBaseRecordDto,
 )
+from configuration.config import SEARCH_SCORE_THRESHOLD
 
 from configuration.constants import (
     METADATA_BUSINESS_ID,
@@ -74,10 +75,10 @@ from exceptions.qdrant_exception import (
 from httpx import ConnectError
 from qdrant_client.http.exceptions import ResponseHandlingException
 
-
 # ==========================================================
 # Internal Helper
 # ==========================================================
+
 
 def _scrollRecords(
     collectionName: str,
@@ -191,31 +192,30 @@ def buildKnowledgeBaseRecord(
 # Detect Qdrant Connection Failure
 # ==========================================================
 
+
 def isQdrantConnectionError(
     exception: Exception,
 ) -> bool:
     """
     Return True when the Qdrant server is unreachable.
     """
-    return (
-        isinstance(
+    return isinstance(
+        exception,
+        ResponseHandlingException,
+    ) and isinstance(
+        getattr(
             exception,
-            ResponseHandlingException,
-        )
-        and isinstance(
-            getattr(
-                exception,
-                "source",
-                None,
-            ),
-            ConnectError,
-        )
+            "source",
+            None,
+        ),
+        ConnectError,
     )
 
 
 # ==========================================================
 # Save Chunks
 # ==========================================================
+
 
 def saveChunks(
     points: list,
@@ -287,23 +287,20 @@ def _buildMetadataFilter(
             ),
         )
 
-    return (
-        Filter(must=mustConditions)
-        if mustConditions
-        else None
-    )
+    return Filter(must=mustConditions) if mustConditions else None
 
 
 # ==========================================================
 # Semantic Search
 # ==========================================================
 
+
 def searchChunks(
     queryEmbedding: list[float],
     businessId: str,
     courseIds: list[str],
     limit: int = SEARCH_LIMIT,
-    scoreThreshold: Optional[float] = None,
+    scoreThreshold: Optional[float] = SEARCH_SCORE_THRESHOLD,
 ):
     """
     Search similar chunks within a specific business and
@@ -358,6 +355,7 @@ def searchChunks(
 # ==========================================================
 # Get All Records
 # ==========================================================
+
 
 def getAllRecords(
     businessId: str,
@@ -421,6 +419,7 @@ def getAllRecords(
 # ==========================================================
 # Get Uploaded Files
 # ==========================================================
+
 
 def getUploadedFiles(
     businessId: str,
@@ -492,6 +491,7 @@ def getUploadedFiles(
 # Get Course IDs For Document
 # ==========================================================
 
+
 def getCourseIdsForDocument(
     *,
     documentId: str,
@@ -561,6 +561,7 @@ def getCourseIdsForDocument(
 # ==========================================================
 # Delete One Document
 # ==========================================================
+
 
 def deleteDocument(
     documentId: str,
@@ -632,9 +633,11 @@ def deleteDocument(
             cause=QdrantDeleteException(),
         ) from ex
 
+
 # ==========================================================
 # Delete Entire Knowledge Base
 # ==========================================================
+
 
 def deleteAllDocuments(
     businessId: str,

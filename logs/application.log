@@ -6324,3 +6324,162 @@ exceptions.metadata_exception.InvalidMetadataException: LLM returned invalid JSO
 2026-09-22 10:05:13,298 | INFO | [d7ebd5fd-9d4b-482b-9aff-15dcae1ed8c6] Question answered successfully.
 2026-09-22 10:05:13,299 | INFO | [TIMING] API request TOTAL: 0.0517 seconds
 2026-09-22 10:05:13,299 | INFO | [656eabec-d7fb-4648-bdb2-0e3ffbb56a4f] Request Completed
+2026-09-23 12:06:33,009 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-23 12:06:33,935 | INFO | Qdrant client initialized successfully.
+2026-09-23 12:06:45,931 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-23 12:06:46,829 | INFO | Qdrant client initialized successfully.
+2026-09-23 12:16:30,029 | INFO | [5ebe48a0-cd68-4a05-a3d7-f4710951e743] Incoming Request : GET /docs
+2026-09-23 12:16:30,039 | INFO | [5ebe48a0-cd68-4a05-a3d7-f4710951e743] Request Completed
+2026-09-23 12:16:30,250 | INFO | [def5e9c7-a19a-4096-a30e-045c91e62ff2] Incoming Request : GET /openapi.json
+2026-09-23 12:16:30,497 | INFO | [def5e9c7-a19a-4096-a30e-045c91e62ff2] Request Completed
+2026-09-23 12:17:56,068 | INFO | [0c300e18-3f57-4d96-a888-e8889f9052c4] Incoming Request : POST /llm/kb/query
+2026-09-23 12:17:56,082 | INFO | [4aac4a27-7808-40be-8b56-74adeed7596e] Question received.
+2026-09-23 12:17:56,082 | INFO | [TIMING] Query validation: 0.0000 seconds
+2026-09-23 12:17:56,083 | INFO | Received query: What are constructors??
+2026-09-23 12:17:56,083 | INFO | Loading embedding model: sentence-transformers/all-MiniLM-L6-v2
+2026-09-23 12:18:08,218 | INFO | [TIMING] Embedding generation: 12.1341 seconds
+2026-09-23 12:18:08,229 | INFO | Qdrant collection already exists.
+2026-09-23 12:18:08,274 | INFO | Cache search returned 1 result(s).
+2026-09-23 12:18:08,274 | INFO | Cache similarity score: 0.322
+2026-09-23 12:18:08,275 | INFO | Cache Miss
+2026-09-23 12:18:08,275 | INFO | [TIMING] Cache lookup: 0.0568 seconds
+2026-09-23 12:18:08,282 | INFO | Qdrant collection already exists.
+2026-09-23 12:18:08,292 | INFO | Retrieved %d chunks.: 0
+2026-09-23 12:18:08,292 | INFO | [TIMING] Qdrant retrieval: 0.0179 seconds
+2026-09-23 12:18:08,293 | WARNING | No relevant chunks found.
+2026-09-23 12:18:08,293 | INFO | [TIMING] KB service total (no relevant chunks): 12.2099 seconds
+2026-09-23 12:18:08,293 | INFO | [TIMING] KB service call: 12.2101 seconds
+2026-09-23 12:18:08,293 | INFO | [4aac4a27-7808-40be-8b56-74adeed7596e] Question answered successfully.
+2026-09-23 12:18:08,293 | INFO | [TIMING] API request TOTAL: 12.2116 seconds
+2026-09-23 12:18:08,294 | INFO | [0c300e18-3f57-4d96-a888-e8889f9052c4] Request Completed
+2026-09-23 12:21:48,051 | INFO | [c06542f7-32ad-4bbe-a75f-4bdc0943a68d] Incoming Request : POST /llm/kb/query
+2026-09-23 12:21:48,057 | INFO | [7bd16b91-8f99-45c9-8f6f-2b50ec2ab314] Question received.
+2026-09-23 12:21:48,057 | INFO | [TIMING] Query validation: 0.0000 seconds
+2026-09-23 12:21:48,058 | INFO | Received query: What are constructors??
+2026-09-23 12:21:48,126 | INFO | [TIMING] Embedding generation: 0.0692 seconds
+2026-09-23 12:21:48,159 | INFO | Qdrant collection already exists.
+2026-09-23 12:21:48,197 | INFO | Cache search returned 1 result(s).
+2026-09-23 12:21:48,197 | INFO | Cache similarity score: 0.322
+2026-09-23 12:21:48,199 | INFO | Cache Miss
+2026-09-23 12:21:48,199 | INFO | [TIMING] Cache lookup: 0.0709 seconds
+2026-09-23 12:21:48,214 | INFO | Qdrant collection already exists.
+2026-09-23 12:21:48,233 | INFO | Retrieved %d chunks.: 0
+2026-09-23 12:21:48,234 | INFO | [TIMING] Qdrant retrieval: 0.0348 seconds
+2026-09-23 12:21:48,234 | WARNING | No relevant chunks found.
+2026-09-23 12:21:48,234 | INFO | [TIMING] KB service total (no relevant chunks): 0.1770 seconds
+2026-09-23 12:21:48,234 | INFO | [TIMING] KB service call: 0.1774 seconds
+2026-09-23 12:21:48,235 | INFO | [7bd16b91-8f99-45c9-8f6f-2b50ec2ab314] Question answered successfully.
+2026-09-23 12:21:48,235 | INFO | [TIMING] API request TOTAL: 0.1789 seconds
+2026-09-23 12:21:48,238 | INFO | [c06542f7-32ad-4bbe-a75f-4bdc0943a68d] Request Completed
+2026-09-23 12:23:46,781 | INFO | [0f05f48b-a2cf-4915-b68a-778f58a65450] Incoming Request : POST /llm/kb/query
+2026-09-23 12:23:46,791 | INFO | [f779edc9-497f-4d56-a69b-89183c044ed2] Question received.
+2026-09-23 12:23:46,792 | INFO | [TIMING] Query validation: 0.0000 seconds
+2026-09-23 12:23:46,792 | INFO | Received query: What are constructors??
+2026-09-23 12:23:46,990 | INFO | [TIMING] Embedding generation: 0.1937 seconds
+2026-09-23 12:23:47,011 | INFO | Qdrant collection already exists.
+2026-09-23 12:23:47,055 | INFO | Cache search returned 1 result(s).
+2026-09-23 12:23:47,055 | INFO | Cache similarity score: 0.322
+2026-09-23 12:23:47,056 | INFO | Cache Miss
+2026-09-23 12:23:47,056 | INFO | [TIMING] Cache lookup: 0.0651 seconds
+2026-09-23 12:23:47,080 | INFO | Qdrant collection already exists.
+2026-09-23 12:23:47,104 | INFO | Retrieved %d chunks.: 0
+2026-09-23 12:23:47,105 | INFO | [TIMING] Qdrant retrieval: 0.0483 seconds
+2026-09-23 12:23:47,105 | WARNING | No relevant chunks found.
+2026-09-23 12:23:47,106 | INFO | [TIMING] KB service total (no relevant chunks): 0.3132 seconds
+2026-09-23 12:23:47,106 | INFO | [TIMING] KB service call: 0.3134 seconds
+2026-09-23 12:23:47,106 | INFO | [f779edc9-497f-4d56-a69b-89183c044ed2] Question answered successfully.
+2026-09-23 12:23:47,106 | INFO | [TIMING] API request TOTAL: 0.3150 seconds
+2026-09-23 12:23:47,112 | INFO | [0f05f48b-a2cf-4915-b68a-778f58a65450] Request Completed
+2026-09-23 12:25:27,376 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-23 12:25:28,148 | INFO | Qdrant client initialized successfully.
+2026-09-23 12:27:26,601 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-23 12:27:27,460 | INFO | Qdrant client initialized successfully.
+2026-09-23 12:27:39,008 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-23 12:27:39,750 | INFO | Qdrant client initialized successfully.
+2026-09-23 12:31:10,443 | INFO | [2746f864-2cc6-4dfd-832f-1d857c1e8cd4] Incoming Request : GET /docs
+2026-09-23 12:31:10,447 | INFO | [2746f864-2cc6-4dfd-832f-1d857c1e8cd4] Request Completed
+2026-09-23 12:31:10,633 | INFO | [b0df2d1b-6114-4bc0-9711-026a44f3f4d6] Incoming Request : GET /openapi.json
+2026-09-23 12:31:10,731 | INFO | [b0df2d1b-6114-4bc0-9711-026a44f3f4d6] Request Completed
+2026-09-23 12:31:44,507 | INFO | [39a8e72a-67f6-42b0-a7be-ec525e5dbd1c] Incoming Request : POST /llm/kb/query
+2026-09-23 12:31:44,526 | INFO | [451be0e3-9943-480e-9fa4-eacc5a23837d] Question received.
+2026-09-23 12:31:44,526 | INFO | [TIMING] Query validation: 0.0000 seconds
+2026-09-23 12:31:44,527 | INFO | Received query: What are constructors??
+2026-09-23 12:31:44,527 | INFO | Loading embedding model: sentence-transformers/all-MiniLM-L6-v2
+2026-09-23 12:31:52,530 | INFO | [TIMING] Embedding generation: 8.0025 seconds
+2026-09-23 12:31:52,561 | INFO | Qdrant collection already exists.
+2026-09-23 12:31:52,577 | INFO | Cache search returned 1 result(s).
+2026-09-23 12:31:52,577 | INFO | Cache similarity score: 0.322
+2026-09-23 12:31:52,577 | INFO | Cache Miss
+2026-09-23 12:31:52,577 | INFO | [TIMING] Cache lookup: 0.0464 seconds
+2026-09-23 12:31:52,591 | INFO | Qdrant collection already exists.
+2026-09-23 12:31:52,608 | INFO | Retrieved %d chunks.: 5
+2026-09-23 12:31:52,609 | INFO | [TIMING] Qdrant retrieval: 0.0317 seconds
+2026-09-23 12:31:52,609 | INFO | Retrieved 5 chunk(s).
+2026-09-23 12:31:52,609 | INFO | [RETRIEVAL] Chunk 1 | score=0.6883 | source=OODP class 12.pdf | page=10
+2026-09-23 12:31:52,609 | INFO | [RETRIEVAL] Chunk 2 | score=0.6548 | source=OODP class 12.pdf | page=10
+2026-09-23 12:31:52,609 | INFO | [RETRIEVAL] Chunk 3 | score=0.6435 | source=OODP class 12.pdf | page=10
+2026-09-23 12:31:52,609 | INFO | [RETRIEVAL] Chunk 4 | score=0.6351 | source=OODP class 12.pdf | page=13
+2026-09-23 12:31:52,609 | INFO | [RETRIEVAL] Chunk 5 | score=0.6274 | source=OODP class 12.pdf | page=1
+2026-09-23 12:31:52,609 | INFO | Top matching source: OODP class 12.pdf
+2026-09-23 12:31:52,609 | INFO | [TIMING] Context building: 0.0000 seconds
+2026-09-23 12:31:52,610 | INFO | [TIMING] Prompt building: 0.0000 seconds
+2026-09-23 12:31:52,610 | INFO | Loading local LLM 'LFM2-1.2B-RAG' on cuda.
+2026-09-23 12:31:57,885 | INFO | Local LLM 'LFM2-1.2B-RAG' loaded successfully on cuda.
+2026-09-23 12:32:05,987 | INFO | [TIMING] LLM generation: 13.3772 seconds
+2026-09-23 12:32:06,015 | INFO | Qdrant collection already exists.
+2026-09-23 12:32:06,016 | INFO | Cache saved for question: What are constructors??
+2026-09-23 12:32:06,049 | INFO | Answer cached successfully.
+2026-09-23 12:32:06,049 | INFO | [TIMING] Cache write: 0.0620 seconds
+2026-09-23 12:32:06,049 | INFO | [TIMING] KB service TOTAL: 21.5217 seconds
+2026-09-23 12:32:06,049 | INFO | [TIMING] KB service call: 21.5218 seconds
+2026-09-23 12:32:06,049 | INFO | [451be0e3-9943-480e-9fa4-eacc5a23837d] Question answered successfully.
+2026-09-23 12:32:06,049 | INFO | [TIMING] API request TOTAL: 21.5233 seconds
+2026-09-23 12:32:06,051 | INFO | [39a8e72a-67f6-42b0-a7be-ec525e5dbd1c] Request Completed
+2026-09-23 12:33:15,844 | INFO | [612e0f30-38b0-4937-80e3-f22280ce7ad0] Incoming Request : POST /llm/kb/query
+2026-09-23 12:33:15,848 | INFO | [84832856-f332-408e-b290-44916dae6231] Question received.
+2026-09-23 12:33:15,848 | INFO | [TIMING] Query validation: 0.0000 seconds
+2026-09-23 12:33:15,848 | INFO | Received query: Explain to me what is a constructor??
+2026-09-23 12:33:15,917 | INFO | [TIMING] Embedding generation: 0.0698 seconds
+2026-09-23 12:33:15,932 | INFO | Qdrant collection already exists.
+2026-09-23 12:33:15,949 | INFO | Cache search returned 1 result(s).
+2026-09-23 12:33:15,949 | INFO | Cache similarity score: 0.934
+2026-09-23 12:33:15,949 | INFO | Cache Hit | similarity=0.934
+2026-09-23 12:33:15,950 | INFO | [TIMING] Cache lookup: 0.0304 seconds
+2026-09-23 12:33:15,950 | INFO | Returning cached answer.
+2026-09-23 12:33:15,950 | INFO | [TIMING] KB service total (cache hit): 0.1012 seconds
+2026-09-23 12:33:15,950 | INFO | [TIMING] KB service call: 0.1017 seconds
+2026-09-23 12:33:15,951 | INFO | [84832856-f332-408e-b290-44916dae6231] Question answered successfully.
+2026-09-23 12:33:15,951 | INFO | [TIMING] API request TOTAL: 0.1026 seconds
+2026-09-23 12:33:15,955 | INFO | [612e0f30-38b0-4937-80e3-f22280ce7ad0] Request Completed
+2026-09-23 12:43:33,217 | INFO | [562bb254-695c-448a-a100-6d7444605a62] Incoming Request : POST /llm/kb/query
+2026-09-23 12:43:33,221 | INFO | [937d92b3-c9ce-427a-88e8-409c65ba0eb9] Question received.
+2026-09-23 12:43:33,221 | INFO | [TIMING] Query validation: 0.0000 seconds
+2026-09-23 12:43:33,221 | INFO | Received query: How do constructors work in C++?
+2026-09-23 12:43:33,327 | INFO | [TIMING] Embedding generation: 0.1054 seconds
+2026-09-23 12:43:33,349 | INFO | Qdrant collection already exists.
+2026-09-23 12:43:33,371 | INFO | Cache search returned 1 result(s).
+2026-09-23 12:43:33,371 | INFO | Cache similarity score: 0.820
+2026-09-23 12:43:33,371 | INFO | Cache Miss
+2026-09-23 12:43:33,371 | INFO | [TIMING] Cache lookup: 0.0442 seconds
+2026-09-23 12:43:33,407 | INFO | Qdrant collection already exists.
+2026-09-23 12:43:33,428 | INFO | Retrieved %d chunks.: 5
+2026-09-23 12:43:33,428 | INFO | [TIMING] Qdrant retrieval: 0.0567 seconds
+2026-09-23 12:43:33,428 | INFO | Retrieved 5 chunk(s).
+2026-09-23 12:43:33,428 | INFO | [RETRIEVAL] Chunk 1 | score=0.6804 | source=OODP class 12.pdf | page=14
+2026-09-23 12:43:33,432 | INFO | [RETRIEVAL] Chunk 2 | score=0.6799 | source=OODP class 12.pdf | page=11
+2026-09-23 12:43:33,432 | INFO | [RETRIEVAL] Chunk 3 | score=0.6676 | source=OODP class 12.pdf | page=10
+2026-09-23 12:43:33,432 | INFO | [RETRIEVAL] Chunk 4 | score=0.6585 | source=OODP class 12.pdf | page=1
+2026-09-23 12:43:33,433 | INFO | [RETRIEVAL] Chunk 5 | score=0.6545 | source=OODP class 12.pdf | page=10
+2026-09-23 12:43:33,433 | INFO | Top matching source: OODP class 12.pdf
+2026-09-23 12:43:33,433 | INFO | [TIMING] Context building: 0.0001 seconds
+2026-09-23 12:43:33,436 | INFO | [TIMING] Prompt building: 0.0001 seconds
+2026-09-23 12:43:38,847 | INFO | [TIMING] LLM generation: 5.4101 seconds
+2026-09-23 12:43:38,854 | INFO | Qdrant collection already exists.
+2026-09-23 12:43:38,855 | INFO | Cache saved for question: How do constructors work in C++?
+2026-09-23 12:43:39,063 | INFO | Answer cached successfully.
+2026-09-23 12:43:39,063 | INFO | [TIMING] Cache write: 0.2167 seconds
+2026-09-23 12:43:39,063 | INFO | [TIMING] KB service TOTAL: 5.8429 seconds
+2026-09-23 12:43:39,064 | INFO | [TIMING] KB service call: 5.8430 seconds
+2026-09-23 12:43:39,064 | INFO | [937d92b3-c9ce-427a-88e8-409c65ba0eb9] Question answered successfully.
+2026-09-23 12:43:39,064 | INFO | [TIMING] API request TOTAL: 5.8438 seconds
+2026-09-23 12:43:39,065 | INFO | [562bb254-695c-448a-a100-6d7444605a62] Request Completed

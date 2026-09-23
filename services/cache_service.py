@@ -19,6 +19,7 @@ from common.logger import logger
 # Search Semantic Cache
 # ==========================================================
 
+
 def get_cached_answer(
     query_embedding: list[float],
     business_id: str,
@@ -39,17 +40,13 @@ def get_cached_answer(
     )
 
     if not results:
-        logger.info(
-            "Cache Miss - No similar question found."
-        )
+        logger.info("Cache Miss - No similar question found.")
         return None
 
     result = results[0]
 
     if result is None:
-        logger.info(
-            "Cache Miss - Invalid result from cache search."
-        )
+        logger.info("Cache Miss - Invalid result from cache search.")
         return None
 
     score = result.score
@@ -61,7 +58,8 @@ def get_cached_answer(
 
     if score >= CACHE_SIMILARITY_THRESHOLD:
         logger.info(
-            "Cache Hit",
+            "Cache Hit | similarity=%.3f",
+            score,
         )
 
         return CacheResponse(
@@ -86,6 +84,7 @@ def get_cached_answer(
 # ==========================================================
 # Validate Cache Entry
 # ==========================================================
+
 
 def should_cache(
     answer: str,
@@ -112,6 +111,7 @@ def should_cache(
 # ==========================================================
 # Save Cache
 # ==========================================================
+
 
 def cache_answer(
     *,
