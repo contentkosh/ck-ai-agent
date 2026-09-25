@@ -1,25 +1,20 @@
-from fastapi import (FastAPI,Request,status,)
-from fastapi.responses import JSONResponse
-from common.logger import logger
-from common.custom_exceptions import (ApplicationException,)
-from common.error_codes import (ErrorCode,)
-from configuration.constants import (UNHANDLED_EXCEPTION_LOG,)
-from configuration.error_constants import (INTERNAL_SERVER_ERROR_MESSAGE,)
 from http import HTTPStatus
 
-# ==========================================================
-# Error Response Builder
-# ==========================================================
+from fastapi import FastAPI, Request, status
+from fastapi.responses import JSONResponse
+
+from common.custom_exceptions import ApplicationException
+from common.error_codes import ErrorCode
+from common.logger import logger
+from configuration.constants import UNHANDLED_EXCEPTION_LOG
+from configuration.error_constants import INTERNAL_SERVER_ERROR_MESSAGE
+
 
 def build_error_response(
-    request: Request,
     status_code: int,
     code: str,
     message: str,
 ) -> JSONResponse:
-    """
-    Build a standard error response.
-    """
     return JSONResponse(
         status_code=status_code,
         content={
@@ -33,26 +28,22 @@ def build_error_response(
         },
     )
 
-# ==========================================================
-# Register Exception Handlers
-# ==========================================================
 
-def register_exception_handlers(
-    app: FastAPI,
-) -> None:
-    """
-    Register global exception handlers.
-    """
+def register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(ApplicationException)
     async def application_exception_handler(
         request: Request,
         exc: ApplicationException,
     ):
-        """
-        Handle all application-specific exceptions.
-        """
+        logger.warning(
+            "Application exception: %s %s | code=%s | message=%s",
+            request.method,
+            request.url.path,
+            exc.error_code.value,
+            exc.message,
+        )
+
         return build_error_response(
-            request=request,
             status_code=exc.status_code,
             code=exc.error_code.value,
             message=exc.message,
@@ -63,12 +54,14 @@ def register_exception_handlers(
         request: Request,
         exc: Exception,
     ):
-        """
-        Handle unexpected exceptions.
-        """
-        logger.exception(UNHANDLED_EXCEPTION_LOG,exc,)
+        logger.exception(
+            "%s | %s %s",
+            UNHANDLED_EXCEPTION_LOG,
+            request.method,
+            request.url.path,
+        )
+
         return build_error_response(
-            request=request,
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             code=ErrorCode.INTERNAL_SERVER_ERROR.value,
             message=INTERNAL_SERVER_ERROR_MESSAGE,

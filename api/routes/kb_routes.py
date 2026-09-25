@@ -1,7 +1,8 @@
-from typing import List, Optional
 import time
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends, Query
+
 from api.dependencies import get_request_context
 from common.logger import logger
 from configuration.constants import (
@@ -35,27 +36,67 @@ def get_knowledge_base(
 ) -> KnowledgeBaseResponse:
     """Retrieve all Knowledge Base records."""
 
-    logger.info(FETCH_KB_REQUEST_LOG, context.request_id)
-
-    validate_tag(tag)
-
-    records = get_knowledge_base_records(
-        business_id=business_id,
-        course_ids=course_ids,
-        tag=tag,
-    )
-
     logger.info(
-        FETCH_KB_SUCCESS_LOG,
+        FETCH_KB_REQUEST_LOG,
         context.request_id,
-        len(records),
     )
 
-    return KnowledgeBaseResponse(
-        request_id=context.request_id,
-        total_records=len(records),
-        records=records,
-    )
+    try:
+        logger.info(
+            "[%s] Knowledge Base retrieval started. Business ID=%s | Course IDs=%s | Tag=%s",
+            context.request_id,
+            business_id,
+            course_ids,
+            tag,
+        )
+
+        logger.info(
+            "[%s] Knowledge Base tag validation started.",
+            context.request_id,
+        )
+
+        validate_tag(tag)
+
+        logger.info(
+            "[%s] Knowledge Base tag validation completed.",
+            context.request_id,
+        )
+
+        logger.info(
+            "[%s] Knowledge Base service call started.",
+            context.request_id,
+        )
+
+        records = get_knowledge_base_records(
+            business_id=business_id,
+            course_ids=course_ids,
+            tag=tag,
+        )
+
+        logger.info(
+            "[%s] Knowledge Base service call completed. Records=%d",
+            context.request_id,
+            len(records),
+        )
+
+        logger.info(
+            FETCH_KB_SUCCESS_LOG,
+            context.request_id,
+            len(records),
+        )
+
+        return KnowledgeBaseResponse(
+            request_id=context.request_id,
+            total_records=len(records),
+            records=records,
+        )
+
+    except Exception:
+        logger.exception(
+            "[%s] Knowledge Base retrieval request failed.",
+            context.request_id,
+        )
+        raise
 
 
 @router.post(
@@ -75,50 +116,72 @@ def query_knowledge_base(
         context.request_id,
     )
 
-    # --------------------------------------------------
-    # 1. Query validation
-    # --------------------------------------------------
+    try:
+        logger.info(
+            "[%s] Knowledge Base query started. Business ID=%s | Course IDs=%s",
+            context.request_id,
+            request.business_id,
+            request.course_ids,
+        )
 
-    start = time.perf_counter()
+        validation_start = time.perf_counter()
 
-    validate_query(
-        request.query,
-    )
+        logger.info(
+            "[%s] Query validation started.",
+            context.request_id,
+        )
 
-    logger.info(
-        "[TIMING] Query validation: %.4f seconds",
-        time.perf_counter() - start,
-    )
+        validate_query(
+            request.query,
+        )
 
-    # --------------------------------------------------
-    # 2. KB query service
-    # --------------------------------------------------
+        logger.info(
+            "[%s] Query validation completed.",
+            context.request_id,
+        )
 
-    start = time.perf_counter()
+        logger.info(
+            "[%s] Query validation duration: %.4f seconds",
+            context.request_id,
+            time.perf_counter() - validation_start,
+        )
 
-    result = ask_question(
-        query=request.query,
-        business_id=request.business_id,
-        course_ids=request.course_ids,
-    )
+        service_start = time.perf_counter()
 
-    logger.info(
-        "[TIMING] KB service call: %.4f seconds",
-        time.perf_counter() - start,
-    )
+        logger.info(
+            "[%s] KB query service started.",
+            context.request_id,
+        )
 
-    logger.info(
-        QUERY_SUCCESS_LOG,
-        context.request_id,
-    )
+        result = ask_question(
+            query=request.query,
+            business_id=request.business_id,
+            course_ids=request.course_ids,
+        )
 
-    # --------------------------------------------------
-    # Total API request time
-    # --------------------------------------------------
+        logger.info(
+            "[%s] KB query service completed. Duration=%.4f seconds",
+            context.request_id,
+            time.perf_counter() - service_start,
+        )
 
-    logger.info(
-        "[TIMING] API request TOTAL: %.4f seconds",
-        time.perf_counter() - request_start,
-    )
+        logger.info(
+            QUERY_SUCCESS_LOG,
+            context.request_id,
+        )
 
-    return result
+        logger.info(
+            "[%s] API query request completed. Total duration=%.4f seconds",
+            context.request_id,
+            time.perf_counter() - request_start,
+        )
+
+        return result
+
+    except Exception:
+        logger.exception(
+            "[%s] Knowledge Base query request failed. Total duration=%.4f seconds",
+            context.request_id,
+            time.perf_counter() - request_start,
+        )
+        raise

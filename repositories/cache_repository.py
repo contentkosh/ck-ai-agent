@@ -1,57 +1,45 @@
 import uuid
 
-from qdrant_client.models import (
-    FieldCondition,
-    Filter,
-    MatchAny,
-    PointStruct,
-)
-from database.qdrant_client_manager import client
-from database.collection_setup import create_collection_if_missing
-from common.collection_utils import (
-    get_cache_collection_name,
-)
+from common.collection_utils import get_cache_collection_name
+from common.custom_exceptions import DatabaseException
+from common.logger import logger
+from configuration.config import CACHE_TOP_K
 from configuration.constants import (
     METADATA_BUSINESS_ID,
     METADATA_COURSE_ID,
     METADATA_DOCUMENT_ID,
 )
-from common.logger import logger
-from common.custom_exceptions import DatabaseException
-from configuration.config import CACHE_TOP_K
-
 from configuration.error_constants import (
-    DATABASE_CACHE_DELETE_ERROR_MESSAGE,
     DATABASE_CACHE_CLEAR_ERROR_MESSAGE,
+    DATABASE_CACHE_DELETE_ERROR_MESSAGE,
 )
-
-# ==========================================================
-# Ensure Cache Collection
-# ==========================================================
+from database.collection_setup import create_collection_if_missing
+from database.qdrant_client_manager import client
+from qdrant_client.models import FieldCondition, Filter, MatchAny, PointStruct
 
 
 def ensure_cache_collection(
     business_id: str,
 ) -> str:
-    """
-    Return the cache collection for a business and create it
-    if it does not already exist.
-    """
-
     collection_name = get_cache_collection_name(
         business_id,
+    )
+
+    logger.info(
+        "Ensuring cache collection exists: %s",
+        collection_name,
     )
 
     create_collection_if_missing(
         collection_name,
     )
 
+    logger.info(
+        "Cache collection ready: %s",
+        collection_name,
+    )
+
     return collection_name
-
-
-# ==========================================================
-# Search Cache
-# ==========================================================
 
 
 def search_cache(
@@ -61,16 +49,17 @@ def search_cache(
     course_ids: list[str],
     limit: int = CACHE_TOP_K,
 ):
-    """
-    Search the semantic answer cache for a specific
-    business and any of the specified courses.
-    """
-
     collection_name = ensure_cache_collection(
         business_id,
     )
 
     try:
+        logger.info(
+            "Cache Qdrant search started. Collection=%s | limit=%d",
+            collection_name,
+            limit,
+        )
+
         query_filter = Filter(
             must=[
                 FieldCondition(
@@ -90,7 +79,8 @@ def search_cache(
         )
 
         logger.info(
-            "Cache search returned %d result(s).",
+            "Cache Qdrant search completed. Collection=%s | results=%d",
+            collection_name,
             len(result.points),
         )
 
@@ -101,15 +91,9 @@ def search_cache(
             "Cache search failed: %s",
             ex,
         )
-
         raise DatabaseException(
             "Unable to search cache.",
         ) from ex
-
-
-# ==========================================================
-# Save Cache
-# ==========================================================
 
 
 def save_cache(
@@ -122,20 +106,16 @@ def save_cache(
     business_id: str,
     course_ids: list[str],
 ):
-    """
-    Store an answer in the business-specific semantic cache.
-    """
-
     collection_name = ensure_cache_collection(
         business_id,
     )
 
-    logger.info(
-        "Cache saved for question: %s",
-        question,
-    )
-
     try:
+        logger.info(
+            "Cache Qdrant write started. Collection=%s",
+            collection_name,
+        )
+
         point = PointStruct(
             id=str(uuid.uuid4()),
             vector=embedding,
@@ -148,24 +128,12 @@ def save_cache(
                 METADATA_DOCUMENT_ID: documentPayload.get(
                     METADATA_DOCUMENT_ID,
                 ),
-                "title": documentPayload.get(
-                    "title",
-                ),
-                "document_type": documentPayload.get(
-                    "document_type",
-                ),
-                "tag": documentPayload.get(
-                    "tag",
-                ),
-                "summary": documentPayload.get(
-                    "summary",
-                ),
-                "source": documentPayload.get(
-                    "source",
-                ),
-                "page": documentPayload.get(
-                    "page",
-                ),
+                "title": documentPayload.get("title"),
+                "document_type": documentPayload.get("document_type"),
+                "tag": documentPayload.get("tag"),
+                "summary": documentPayload.get("summary"),
+                "source": documentPayload.get("source"),
+                "page": documentPayload.get("page"),
             },
         )
 
@@ -175,17 +143,18 @@ def save_cache(
         )
 
         logger.info(
-            "Answer cached successfully.",
+            "Cache Qdrant write completed successfully. Collection=%s",
+            collection_name,
         )
 
     except Exception as ex:
-        logger.exception("Failed to save cache: %s", ex)
-        raise DatabaseException("Unable to save cache.") from ex
-
-
-# ==========================================================
-# Delete Cache For Document
-# ==========================================================
+        logger.exception(
+            "Failed to save cache: %s",
+            ex,
+        )
+        raise DatabaseException(
+            "Unable to save cache.",
+        ) from ex
 
 
 def delete_cache_for_document(
@@ -194,15 +163,17 @@ def delete_cache_for_document(
     course_ids: list[str],
     document_id: str,
 ) -> bool:
-    """
-    Delete cached answers associated with a specific document.
-    """
-
     collection_name = ensure_cache_collection(
         business_id,
     )
 
     try:
+        logger.info(
+            "Cache deletion started. Collection=%s | document_id=%s",
+            collection_name,
+            document_id,
+        )
+
         cache_filter = Filter(
             must=[
                 FieldCondition(
@@ -226,7 +197,7 @@ def delete_cache_for_document(
         )
 
         logger.info(
-            "Cache entries deleted for document: %s",
+            "Cache entries deleted successfully. Document ID=%s",
             document_id,
         )
 
@@ -238,37 +209,32 @@ def delete_cache_for_document(
             document_id,
             ex,
         )
-
         raise DatabaseException(
             DATABASE_CACHE_DELETE_ERROR_MESSAGE,
         ) from ex
-
-
-# ==========================================================
-# Delete All Cache
-# ==========================================================
 
 
 def delete_all_cache(
     *,
     business_id: str,
 ) -> bool:
-    """
-    Delete all cached answers for a business.
-    """
-
     collection_name = ensure_cache_collection(
         business_id,
     )
 
     try:
+        logger.info(
+            "Full cache deletion started. Collection=%s",
+            collection_name,
+        )
+
         client.delete(
             collection_name=collection_name,
             points_selector=Filter(),
         )
 
         logger.info(
-            "All cache entries deleted for business: %s",
+            "All cache entries deleted successfully. Business ID=%s",
             business_id,
         )
 
@@ -280,7 +246,6 @@ def delete_all_cache(
             business_id,
             ex,
         )
-
         raise DatabaseException(
             DATABASE_CACHE_CLEAR_ERROR_MESSAGE,
         ) from ex

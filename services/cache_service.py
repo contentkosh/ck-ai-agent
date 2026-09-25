@@ -1,23 +1,8 @@
-from dto.response_dto import CacheResponse
-from repositories.cache_repository import (
-    search_cache,
-    save_cache,
-)
-
-from configuration.config import (
-    CACHE_ENABLED,
-    CACHE_SIMILARITY_THRESHOLD,
-)
-
-from configuration.constants import (
-    INVALID_CACHE_RESPONSES,
-)
-
 from common.logger import logger
-
-# ==========================================================
-# Search Semantic Cache
-# ==========================================================
+from configuration.config import CACHE_ENABLED, CACHE_SIMILARITY_THRESHOLD
+from configuration.constants import INVALID_CACHE_RESPONSES
+from dto.response_dto import CacheResponse
+from repositories.cache_repository import save_cache, search_cache
 
 
 def get_cached_answer(
@@ -25,13 +10,15 @@ def get_cached_answer(
     business_id: str,
     course_ids: list[str],
 ):
-    """
-    Return a cached answer if a similar question exists
-    for the specified business and courses.
-    """
-
     if not CACHE_ENABLED:
+        logger.info("Cache lookup skipped because cache is disabled.")
         return None
+
+    logger.info(
+        "Cache search started. Business ID=%s | Course IDs=%s",
+        business_id,
+        course_ids,
+    )
 
     results = search_cache(
         query_embedding=query_embedding,
@@ -40,25 +27,26 @@ def get_cached_answer(
     )
 
     if not results:
-        logger.info("Cache Miss - No similar question found.")
+        logger.info("Cache miss. No similar question found.")
         return None
 
     result = results[0]
 
     if result is None:
-        logger.info("Cache Miss - Invalid result from cache search.")
+        logger.info("Cache miss. Invalid result from cache search.")
         return None
 
     score = result.score
 
     logger.info(
-        "Cache similarity score: %.3f",
+        "Cache similarity score: %.3f | threshold=%.3f",
         score,
+        CACHE_SIMILARITY_THRESHOLD,
     )
 
     if score >= CACHE_SIMILARITY_THRESHOLD:
         logger.info(
-            "Cache Hit | similarity=%.3f",
+            "Cache hit. Similarity=%.3f",
             score,
         )
 
@@ -75,42 +63,28 @@ def get_cached_answer(
         )
 
     logger.info(
-        "Cache Miss",
+        "Cache miss. Similarity %.3f is below threshold %.3f.",
+        score,
+        CACHE_SIMILARITY_THRESHOLD,
     )
-
     return None
 
 
-# ==========================================================
-# Validate Cache Entry
-# ==========================================================
-
-
-def should_cache(
-    answer: str,
-) -> bool:
-    """
-    Decide whether an answer should be cached.
-    """
-
-    if not answer:
+def should_cache(answer: str) -> bool:
+    if not answer or not answer.strip():
+        logger.info("Answer not cached because it is empty.")
         return False
 
     answer = answer.strip()
 
-    if not answer:
-        return False
-
     for text in INVALID_CACHE_RESPONSES:
         if text.lower() in answer.lower():
+            logger.info(
+                "Answer not cached because it matches an invalid cache response."
+            )
             return False
 
     return True
-
-
-# ==========================================================
-# Save Cache
-# ==========================================================
 
 
 def cache_answer(
@@ -123,26 +97,30 @@ def cache_answer(
     business_id: str,
     course_ids: list[str],
 ):
-    """
-    Store a successful answer in the business-specific
-    and course-specific semantic cache.
-    """
-
     if not CACHE_ENABLED:
+        logger.info("Cache write skipped because cache is disabled.")
         return
 
     if not should_cache(answer):
-        logger.info(
-            "Answer not cached.",
-        )
         return
 
-    save_cache(
-        question=question,
-        embedding=embedding,
-        context=context,
-        answer=answer,
-        documentPayload=documentPayload,
-        business_id=business_id,
-        course_ids=course_ids,
+    logger.info(
+        "Cache write started. Business ID=%s | Course IDs=%s",
+        business_id,
+        course_ids,
     )
+
+    try:
+        save_cache(
+            question=question,
+            embedding=embedding,
+            context=context,
+            answer=answer,
+            documentPayload=documentPayload,
+            business_id=business_id,
+            course_ids=course_ids,
+        )
+        logger.info("Cache write completed successfully.")
+    except Exception:
+        logger.exception("Cache write failed.")
+        raise

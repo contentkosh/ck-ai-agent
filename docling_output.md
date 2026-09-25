@@ -523,7 +523,7 @@ For example, in any country, it is interesting to see which group the most of th
 Sustainability means continuity in the availability of opportunities. To have sustainable human development, each generation must have the same opportunities. All environmental, financial and human resources must be used keeping in mind the future. Misuse of any of these resources will lead to fewer opportunities for future generations.
 
 A good example is about the importance of sending girls to school. If a community does not stress the importance of sending its girl children to school, many opportunities will be lost to these young women when they grow up. Their career choices will be severely curtailed and this would affect other aspects of their lives. So each generation must ensure the availability of choices and opportunities to its future generations.
-
+x`
 Productivity here means human labour productivity or productivity in terms of human work. Such productivity must be constantly enriched by building capabilities in people. Ultimately, it is people who are the real wealth of nations. Therefore, efforts to increase their knowledge, or provide better health facilities ultimately leads to better work efficiency.
 
 Empowerment means to have the power to make choices. Such power comes from increasing freedom and capability. Good governance and people-oriented policies are required to empower people. The empowerment of socially and economically disadvantaged groups is of special importance.

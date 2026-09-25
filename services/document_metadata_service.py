@@ -1,40 +1,24 @@
-# ==========================================================
-# Document Metadata Service
-# Provides utilities to extract structured document metadata
-# from raw text using the configured LLM.
-# ==========================================================
-
 import json
 import re
-
 from dotenv import load_dotenv
 
 from common.llm_client import get_llm
 from common.logger import logger
-
-from configuration.config import (
-    METADATA_EXTRACTION_TEXT_LIMIT,
-)
+from configuration.config import METADATA_EXTRACTION_TEXT_LIMIT
 from configuration.constants import (
     LLM_INVOCATION_FAILED_LOG,
     MARKDOWN_JSON_REGEX,
     METADATA_EXTRACTION_COMPLETED_LOG,
     METADATA_EXTRACTION_STARTED_LOG,
 )
-from configuration.context import (
-    DOCUMENT_METADATA_EXTRACTION_PROMPT,
-)
+from configuration.context import DOCUMENT_METADATA_EXTRACTION_PROMPT
 from configuration.error_constants import (
     EMPTY_DOCUMENT_TEXT_ERROR,
     INVALID_METADATA_JSON_ERROR,
     METADATA_EXTRACTION_FAILED_ERROR,
 )
-from dto.document_metadata_dto import (
-    DocumentMetadataDto,
-)
-from exceptions.llm_exception import (
-    LLMResponseException,
-)
+from dto.document_metadata_dto import DocumentMetadataDto
+from exceptions.llm_exception import LLMResponseException
 from exceptions.metadata_exception import (
     InvalidMetadataException,
     MetadataExtractionException,
@@ -43,158 +27,100 @@ from exceptions.metadata_exception import (
 load_dotenv()
 
 
-# ==========================================================
-# Extract First JSON Object
-# ==========================================================
-
-
-def extract_first_json_object(
-    response_content: str,
-) -> dict:
-    """
-    Extract the first JSON object from the LLM response.
-
-    The local LLM may sometimes return the required metadata
-    JSON followed by additional JSON or explanatory content.
-
-    This function parses only the first JSON object, which
-    contains the document metadata.
-    """
-
-    cleanedContent = re.sub(
-        MARKDOWN_JSON_REGEX,
-        "",
-        response_content.strip(),
-        flags=re.MULTILINE,
+def extract_first_json_object(response_content: str) -> dict:
+    cleaned_content = re.sub(
+        MARKDOWN_JSON_REGEX, "", response_content.strip(), flags=re.MULTILINE
     ).strip()
+    json_start = cleaned_content.find("{")
 
-    jsonStart = cleanedContent.find("{")
-
-    if jsonStart == -1:
-        raise json.JSONDecodeError(
-            "No JSON object found.",
-            cleanedContent,
-            0,
-        )
+    if json_start == -1:
+        raise json.JSONDecodeError("No JSON object found.", cleaned_content, 0)
 
     decoder = json.JSONDecoder()
+    document_metadata, _ = decoder.raw_decode(cleaned_content, json_start)
 
-    documentMetadata, _ = decoder.raw_decode(
-        cleanedContent,
-        jsonStart,
-    )
-
-    if not isinstance(
-        documentMetadata,
-        dict,
-    ):
+    if not isinstance(document_metadata, dict):
         raise json.JSONDecodeError(
-            "Metadata JSON must be an object.",
-            cleanedContent,
-            jsonStart,
+            "Metadata JSON must be an object.", cleaned_content, json_start
         )
 
-    return documentMetadata
+    if "metadata" in document_metadata:
+        nested_metadata = document_metadata["metadata"]
+
+        if not isinstance(nested_metadata, dict):
+            raise json.JSONDecodeError(
+                "Metadata field must contain an object.", cleaned_content, json_start
+            )
+
+        document_metadata = nested_metadata
+
+    required_fields = {"title", "document_type", "tag", "summary"}
+    missing_fields = required_fields.difference(document_metadata.keys())
+
+    if missing_fields:
+        raise json.JSONDecodeError(
+            "Metadata JSON is missing required fields.", cleaned_content, json_start
+        )
+
+    empty_fields = [
+        field
+        for field in required_fields
+        if not isinstance(document_metadata.get(field), str)
+        or not document_metadata[field].strip()
+    ]
+
+    if empty_fields:
+        raise InvalidMetadataException(
+            "Metadata fields cannot be empty: " + ", ".join(sorted(empty_fields))
+        )
+
+    return document_metadata
 
 
-# ==========================================================
-# Extract Metadata
-# ==========================================================
-
-
-def extract_document_metadata(
-    text: str,
-) -> DocumentMetadataDto:
-    """
-    Extract document metadata using the configured LLM.
-    """
-
+def extract_document_metadata(text: str) -> DocumentMetadataDto:
     try:
         if not text.strip():
-            raise InvalidMetadataException(
-                EMPTY_DOCUMENT_TEXT_ERROR,
-            )
+            raise InvalidMetadataException(EMPTY_DOCUMENT_TEXT_ERROR)
 
-        logger.info(
-            METADATA_EXTRACTION_STARTED_LOG,
-        )
+        logger.info(METADATA_EXTRACTION_STARTED_LOG)
+        logger.info("Metadata extraction input prepared. Characters=%d", len(text))
 
         prompt = DOCUMENT_METADATA_EXTRACTION_PROMPT.format(
-            text=text[:METADATA_EXTRACTION_TEXT_LIMIT],
+            text=text[:METADATA_EXTRACTION_TEXT_LIMIT]
         )
-
-        # --------------------------------------------------
-        # LLM Invocation
-        # --------------------------------------------------
+        logger.info("Metadata extraction prompt prepared. Characters=%d", len(prompt))
 
         try:
-            llmResponse = get_llm().invoke(
-                prompt,
+            logger.info("Metadata LLM invocation started.")
+            llm_response = get_llm().invoke(prompt)
+            logger.info(
+                "Metadata LLM invocation completed. Response characters=%d",
+                len(llm_response.content),
             )
-
-            # Temporary logging to inspect the exact
-            # response returned by the local LLM.
-            logger.error(
-                "RAW METADATA LLM RESPONSE: %s",
-                llmResponse.content,
-            )
-
         except Exception as exception:
-            logger.exception(
-                LLM_INVOCATION_FAILED_LOG,
-            )
-
+            logger.exception(LLM_INVOCATION_FAILED_LOG)
             raise LLMResponseException() from exception
 
-        # --------------------------------------------------
-        # Parse Metadata JSON
-        # --------------------------------------------------
-
-        documentMetadata = extract_first_json_object(
-            llmResponse.content,
-        )
-
+        logger.info("Metadata JSON parsing started.")
+        document_metadata = extract_first_json_object(llm_response.content)
         logger.info(
-            METADATA_EXTRACTION_COMPLETED_LOG,
+            "Metadata JSON parsing completed. Fields=%d", len(document_metadata)
         )
 
-        return DocumentMetadataDto(
-            **documentMetadata,
-        )
+        metadata = DocumentMetadataDto(**document_metadata)
+        logger.info(METADATA_EXTRACTION_COMPLETED_LOG)
 
-    # ------------------------------------------------------
-    # Invalid JSON
-    # ------------------------------------------------------
+        return metadata
 
     except json.JSONDecodeError as exception:
-        logger.exception(
-            INVALID_METADATA_JSON_ERROR,
-        )
+        logger.exception(INVALID_METADATA_JSON_ERROR)
+        raise InvalidMetadataException(INVALID_METADATA_JSON_ERROR) from exception
 
-        raise InvalidMetadataException(
-            INVALID_METADATA_JSON_ERROR,
-        ) from exception
-
-    # ------------------------------------------------------
-    # Known Exceptions
-    # ------------------------------------------------------
-
-    except (
-        InvalidMetadataException,
-        LLMResponseException,
-    ):
+    except (InvalidMetadataException, LLMResponseException):
         raise
 
-    # ------------------------------------------------------
-    # Unexpected Exceptions
-    # ------------------------------------------------------
-
     except Exception as exception:
-        logger.exception(
-            METADATA_EXTRACTION_FAILED_ERROR,
-            exception,
-        )
-
+        logger.exception(METADATA_EXTRACTION_FAILED_ERROR, exception)
         raise MetadataExtractionException(
-            METADATA_EXTRACTION_FAILED_ERROR,
+            METADATA_EXTRACTION_FAILED_ERROR
         ) from exception

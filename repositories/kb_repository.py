@@ -1,5 +1,7 @@
 from typing import Optional
 
+from httpx import ConnectError
+from qdrant_client.http.exceptions import ResponseHandlingException
 from qdrant_client.models import (
     FieldCondition,
     Filter,
@@ -7,21 +9,24 @@ from qdrant_client.models import (
     MatchValue,
 )
 
+from common.collection_utils import get_kb_collection_name
 from common.custom_exceptions import DatabaseException
-from exceptions.contentkosh_exception import ContentKoshException
 from common.logger import logger
-
 from configuration.config import (
     SCROLL_LIMIT,
     SEARCH_LIMIT,
+    SEARCH_SCORE_THRESHOLD,
 )
-
-from dto.knowledge_base_record_dto import (
-    KnowledgeBaseRecordDto,
-)
-from configuration.config import SEARCH_SCORE_THRESHOLD
-
 from configuration.constants import (
+    CLEAR_KB_FAILED_LOG,
+    CLEAR_KB_LOG,
+    DELETE_DOCUMENT_FAILED_LOG,
+    DELETE_DOCUMENT_LOG,
+    DOCUMENT_NOT_FOUND_LOG,
+    FETCH_DOCUMENTS_FAILED_LOG,
+    FETCH_DOCUMENTS_LOG,
+    FETCH_RECORDS_FAILED_LOG,
+    FETCH_RECORDS_LOG,
     METADATA_BUSINESS_ID,
     METADATA_COURSE_ID,
     METADATA_DOCUMENT_ID,
@@ -32,38 +37,23 @@ from configuration.constants import (
     METADATA_TAG,
     METADATA_TEXT,
     METADATA_TITLE,
-    DELETE_DOCUMENT_LOG,
-    DELETE_DOCUMENT_FAILED_LOG,
-    DOCUMENT_NOT_FOUND_LOG,
-    CLEAR_KB_LOG,
-    CLEAR_KB_FAILED_LOG,
-    FETCH_DOCUMENTS_FAILED_LOG,
-    FETCH_DOCUMENTS_LOG,
-    FETCH_RECORDS_FAILED_LOG,
-    FETCH_RECORDS_LOG,
     SEMANTIC_SEARCH_FAILED_LOG,
     SEMANTIC_SEARCH_LOG,
     VECTOR_INSERTION_FAILED_LOG,
     VECTOR_INSERTION_LOG,
 )
-
 from configuration.error_constants import (
+    DATABASE_CLEAR_ERROR_MESSAGE,
+    DATABASE_DELETE_ERROR_MESSAGE,
+    DATABASE_FETCH_ERROR_MESSAGE,
     DATABASE_INSERT_ERROR_MESSAGE,
     DATABASE_SEARCH_ERROR_MESSAGE,
-    DATABASE_FETCH_ERROR_MESSAGE,
-    DATABASE_DELETE_ERROR_MESSAGE,
-    DATABASE_CLEAR_ERROR_MESSAGE,
 )
-
-from database.qdrant_client_manager import client
 from database.collection_setup import create_collection_if_missing
-
-from common.collection_utils import (
-    get_kb_collection_name,
-)
-
+from database.qdrant_client_manager import client
 from dto.file_response_dto import UploadedDocumentDto
-
+from dto.knowledge_base_record_dto import KnowledgeBaseRecordDto
+from exceptions.contentkosh_exception import ContentKoshException
 from exceptions.qdrant_exception import (
     QdrantConnectionException,
     QdrantDeleteException,
@@ -72,24 +62,19 @@ from exceptions.qdrant_exception import (
     QdrantSearchException,
 )
 
-from httpx import ConnectError
-from qdrant_client.http.exceptions import ResponseHandlingException
-
-# ==========================================================
-# Internal Helper
-# ==========================================================
-
 
 def _scrollRecords(
     collectionName: str,
     queryFilter: Optional[Filter] = None,
 ) -> list:
-    """
-    Return all records from a business-specific Qdrant
-    collection, paginating through the full collection.
-    """
     allRecords: list = []
     nextOffset = None
+    pageCount = 0
+
+    logger.info(
+        "Qdrant scroll started. Collection=%s",
+        collectionName,
+    )
 
     while True:
         records, nextOffset = client.scroll(
@@ -101,9 +86,17 @@ def _scrollRecords(
         )
 
         allRecords.extend(records)
+        pageCount += 1
 
         if nextOffset is None:
             break
+
+    logger.info(
+        "Qdrant scroll completed. Collection=%s | records=%d | pages=%d",
+        collectionName,
+        len(allRecords),
+        pageCount,
+    )
 
     return allRecords
 
@@ -111,15 +104,21 @@ def _scrollRecords(
 def ensureCollection(
     businessId: str,
 ) -> str:
-    """
-    Return the Knowledge Base collection for a business
-    and create it if it does not already exist.
-    """
     collectionName = get_kb_collection_name(
         businessId,
     )
 
+    logger.info(
+        "Ensuring Knowledge Base collection exists: %s",
+        collectionName,
+    )
+
     create_collection_if_missing(
+        collectionName,
+    )
+
+    logger.info(
+        "Knowledge Base collection ready: %s",
         collectionName,
     )
 
@@ -129,9 +128,6 @@ def ensureCollection(
 def buildUploadedDocument(
     payload: dict,
 ) -> UploadedDocumentDto:
-    """
-    Build document metadata.
-    """
     return UploadedDocumentDto(
         document_id=payload.get(
             METADATA_DOCUMENT_ID,
@@ -157,9 +153,6 @@ def buildUploadedDocument(
 def buildKnowledgeBaseRecord(
     payload: dict,
 ) -> KnowledgeBaseRecordDto:
-    """
-    Build a Knowledge Base record from a Qdrant payload.
-    """
     return KnowledgeBaseRecordDto(
         document_id=payload.get(
             METADATA_DOCUMENT_ID,
@@ -188,17 +181,9 @@ def buildKnowledgeBaseRecord(
     )
 
 
-# ==========================================================
-# Detect Qdrant Connection Failure
-# ==========================================================
-
-
 def isQdrantConnectionError(
     exception: Exception,
 ) -> bool:
-    """
-    Return True when the Qdrant server is unreachable.
-    """
     return isinstance(
         exception,
         ResponseHandlingException,
@@ -212,24 +197,21 @@ def isQdrantConnectionError(
     )
 
 
-# ==========================================================
-# Save Chunks
-# ==========================================================
-
-
 def saveChunks(
     points: list,
     businessId: str,
 ) -> None:
-    """
-    Save vectors into the business-specific Knowledge Base
-    collection.
-    """
     collectionName = ensureCollection(
         businessId,
     )
 
     try:
+        logger.info(
+            "Qdrant vector insertion started. Collection=%s | points=%d",
+            collectionName,
+            len(points),
+        )
+
         client.upsert(
             collection_name=collectionName,
             points=points,
@@ -262,9 +244,6 @@ def _buildMetadataFilter(
     courseIds: Optional[list[str]] = None,
     tag: Optional[str] = None,
 ) -> Optional[Filter]:
-    """
-    Build a Qdrant filter using optional metadata fields.
-    """
     mustConditions = []
 
     if courseIds:
@@ -287,12 +266,13 @@ def _buildMetadataFilter(
             ),
         )
 
-    return Filter(must=mustConditions) if mustConditions else None
-
-
-# ==========================================================
-# Semantic Search
-# ==========================================================
+    return (
+        Filter(
+            must=mustConditions,
+        )
+        if mustConditions
+        else None
+    )
 
 
 def searchChunks(
@@ -302,21 +282,23 @@ def searchChunks(
     limit: int = SEARCH_LIMIT,
     scoreThreshold: Optional[float] = SEARCH_SCORE_THRESHOLD,
 ):
-    """
-    Search similar chunks within a specific business and
-    courses.
-
-    The business determines the Qdrant collection.
-    The courses determine the payload filter.
-    """
     collectionName = ensureCollection(
         businessId,
     )
 
     try:
+        logger.info(
+            "Qdrant semantic search started. Collection=%s | courses=%s | limit=%d | score_threshold=%s",
+            collectionName,
+            courseIds,
+            limit,
+            scoreThreshold,
+        )
+
         queryFilter = _buildMetadataFilter(
             courseIds=courseIds,
         )
+
         searchResult = client.query_points(
             collection_name=collectionName,
             query=queryEmbedding,
@@ -330,6 +312,12 @@ def searchChunks(
             SEMANTIC_SEARCH_LOG,
             len(searchResult.points),
         )
+
+        if searchResult.points:
+            logger.info(
+                "Qdrant semantic search scores: %s",
+                [round(point.score, 4) for point in searchResult.points],
+            )
 
         return searchResult.points
 
@@ -352,26 +340,23 @@ def searchChunks(
         ) from ex
 
 
-# ==========================================================
-# Get All Records
-# ==========================================================
-
-
 def getAllRecords(
     businessId: str,
     courseIds: Optional[list[str]] = None,
     tag: Optional[str] = None,
 ) -> list[KnowledgeBaseRecordDto]:
-    """
-    Retrieve stored chunks for a specific business.
-
-    Optionally filter by courses and tag.
-    """
     collectionName = ensureCollection(
         businessId,
     )
 
     try:
+        logger.info(
+            "Fetching Knowledge Base records. Collection=%s | courses=%s | tag=%s",
+            collectionName,
+            courseIds,
+            tag,
+        )
+
         queryFilter = _buildMetadataFilter(
             courseIds=courseIds,
             tag=tag,
@@ -416,24 +401,21 @@ def getAllRecords(
         ) from ex
 
 
-# ==========================================================
-# Get Uploaded Files
-# ==========================================================
-
-
 def getUploadedFiles(
     businessId: str,
     courseIds: list[str],
 ) -> list[UploadedDocumentDto]:
-    """
-    Return one entry per uploaded document for a specific
-    business and courses.
-    """
     collectionName = ensureCollection(
         businessId,
     )
 
     try:
+        logger.info(
+            "Fetching uploaded documents. Collection=%s | courses=%s",
+            collectionName,
+            courseIds,
+        )
+
         courseFilter = _buildMetadataFilter(
             courseIds=courseIds,
         )
@@ -487,24 +469,22 @@ def getUploadedFiles(
         ) from ex
 
 
-# ==========================================================
-# Get Course IDs For Document
-# ==========================================================
-
-
 def getCourseIdsForDocument(
     *,
     documentId: str,
     businessId: str,
 ) -> list[str] | None:
-    """
-    Retrieve the course IDs associated with a document.
-    """
     collectionName = ensureCollection(
         businessId,
     )
 
     try:
+        logger.info(
+            "Retrieving course IDs for document. Collection=%s | document_id=%s",
+            collectionName,
+            documentId,
+        )
+
         documentFilter = Filter(
             must=[
                 FieldCondition(
@@ -524,6 +504,10 @@ def getCourseIdsForDocument(
         )
 
         if not existing:
+            logger.info(
+                "No Knowledge Base record found for document: %s",
+                documentId,
+            )
             return None
 
         payload = existing[0].payload or {}
@@ -532,11 +516,25 @@ def getCourseIdsForDocument(
         )
 
         if isinstance(courseIds, list):
+            logger.info(
+                "Course IDs retrieved for document %s: %s",
+                documentId,
+                courseIds,
+            )
             return courseIds
 
         if courseIds is not None:
+            logger.info(
+                "Single course ID retrieved for document %s: %s",
+                documentId,
+                courseIds,
+            )
             return [courseIds]
 
+        logger.info(
+            "Document %s has no course IDs.",
+            documentId,
+        )
         return None
 
     except Exception as ex:
@@ -558,24 +556,21 @@ def getCourseIdsForDocument(
         ) from ex
 
 
-# ==========================================================
-# Delete One Document
-# ==========================================================
-
-
 def deleteDocument(
     documentId: str,
     businessId: str,
 ) -> bool:
-    """
-    Delete all chunks belonging to one document inside
-    a specific business collection.
-    """
     collectionName = ensureCollection(
         businessId,
     )
 
     try:
+        logger.info(
+            "Document deletion started. Collection=%s | document_id=%s",
+            collectionName,
+            documentId,
+        )
+
         documentFilter = Filter(
             must=[
                 FieldCondition(
@@ -634,22 +629,19 @@ def deleteDocument(
         ) from ex
 
 
-# ==========================================================
-# Delete Entire Knowledge Base
-# ==========================================================
-
-
 def deleteAllDocuments(
     businessId: str,
 ) -> bool:
-    """
-    Remove every vector from one business's Knowledge Base.
-    """
     collectionName = ensureCollection(
         businessId,
     )
 
     try:
+        logger.info(
+            "Knowledge Base deletion started. Collection=%s",
+            collectionName,
+        )
+
         client.delete(
             collection_name=collectionName,
             points_selector=Filter(),

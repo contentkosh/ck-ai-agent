@@ -1,11 +1,7 @@
 import uuid
 from contextvars import ContextVar
 
-# ==========================================================
-# REQUEST CONTEXT
-# ==========================================================
-
-request_id_context: ContextVar[str] = ContextVar(
+request_id_context: ContextVar[str | None] = ContextVar(
     "request_id",
     default=None,
 )
@@ -18,7 +14,12 @@ class RequestContext:
     """
 
     def __init__(self) -> None:
-        self.request_id = self.generate_request_id()
+        request_id = self.get_request_id()
+
+        if request_id is None:
+            request_id = self.generate_request_id()
+
+        self.request_id = request_id
 
     @staticmethod
     def generate_request_id() -> str:
@@ -30,16 +31,12 @@ class RequestContext:
         return request_id
 
     @staticmethod
-    def get_request_id() -> str:
+    def get_request_id() -> str | None:
         """
         Return the current request ID.
         """
         return request_id_context.get()
 
-
-# ==========================================================
-# KNOWLEDGE BASE QUESTION ANSWERING PROMPT
-# ==========================================================
 
 KNOWLEDGE_BASE_QA_PROMPT = """
 You are an AI Knowledge Base Assistant.
@@ -61,15 +58,15 @@ INSTRUCTIONS
    - Fabricated information
 
 3. If the answer cannot be found completely or confidently
-   from the provided context, respond EXACTLY with:
+from the provided context, respond EXACTLY with:
 
 Answer not found in the Knowledge Base.
 
 4. Never guess or infer missing information.
 
 5. If multiple context sections are provided,
-   combine only the relevant information required
-   to answer the user's question.
+combine only the relevant information required
+to answer the user's question.
 
 6. Ignore irrelevant context.
 
@@ -112,10 +109,6 @@ FINAL ANSWER
 ==================================================
 """
 
-
-# ==========================================================
-# DOCUMENT METADATA EXTRACTION PROMPT
-# ==========================================================
 
 DOCUMENT_METADATA_EXTRACTION_PROMPT = """
 You are an intelligent document metadata extraction assistant.
@@ -221,7 +214,8 @@ GENERAL RULES
 2. Do not hallucinate information.
 
 3. If information is unavailable,
-   return the closest valid value according
+return the closest valid value according to the
+field definitions above.
 
 4. Ensure the response is valid JSON.
 
@@ -236,12 +230,12 @@ GENERAL RULES
 9. Use double quotes for every string value.
 
 10. Escape any double quotes that appear inside
-    string values.
+string values.
 
 11. Do not include trailing commas.
 
 12. Do not include newlines or extra text
-    outside the JSON object.
+outside the JSON object.
 
 13. The response must start with {{ and end with }}.
 

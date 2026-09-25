@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -39,9 +40,7 @@ LLM_MODEL_NAME = os.getenv(
     "LLM_MODEL_NAME",
     "Llama-3.2-3B-Instruct",
 )
-
 LLM_MAX_NEW_TOKENS = int(os.getenv("LLM_MAX_NEW_TOKENS", 512))
-
 LLM_REPETITION_PENALTY = float(os.getenv("LLM_REPETITION_PENALTY", 1.05))
 
 # METADATA EXTRACTION
@@ -57,10 +56,7 @@ DEFAULT_MAX_FILE_SIZE = 150 * 1024 * 1024
 MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE", DEFAULT_MAX_FILE_SIZE))
 
 # LOGGING
-LOG_FILE_PATH = os.getenv(
-    "LOG_FILE_PATH",
-    "logs/application.log",
-)
+LOG_FILE_PATH = os.getenv("LOG_FILE_PATH", "logs/application.log")
 LOG_MAX_BYTES = int(os.getenv("LOG_MAX_BYTES", 10 * 1024 * 1024))
 LOG_BACKUP_COUNT = int(os.getenv("LOG_BACKUP_COUNT", 5))
 
