@@ -13,6 +13,20 @@ from configuration.constants import (
     QUERY_RECEIVED_LOG,
     RETRIEVED_CHUNKS_LOG,
     TOP_MATCHING_SOURCE_LOG,
+    QUERY_EMBEDDING_STARTED_LOG,
+    QUERY_EMBEDDING_COMPLETED_LOG,
+    CACHE_LOOKUP_STARTED_LOG,
+    CACHE_HIT_LOG,
+    CACHE_MISS_LOG,
+    QDRANT_SEARCH_STARTED_LOG,
+    QDRANT_SEARCH_COMPLETED_LOG,
+    CONTEXT_BUILD_STARTED_LOG,
+    CONTEXT_BUILD_COMPLETED_LOG,
+    LLM_GENERATION_STARTED_LOG,
+    LLM_GENERATION_COMPLETED_LOG,
+    CACHE_WRITE_STARTED_LOG,
+    CACHE_WRITE_COMPLETED_LOG,
+    CACHE_WRITE_SKIPPED_LOG,
 )
 from configuration.context import KNOWLEDGE_BASE_QA_PROMPT
 from configuration.error_constants import (
@@ -62,6 +76,7 @@ def ask_question(
     query: str,
     business_id: str,
     course_ids: list[str],
+    job_id: str,
 ) -> QueryResponse:
     total_start = time.perf_counter()
 
@@ -70,8 +85,10 @@ def ask_question(
             QUERY_RECEIVED_LOG,
             query,
         )
+
         logger.info(
-            "Query processing started. Business ID=%s | Course IDs=%s",
+            "Query processing started. job_id=%s Business ID=%s | Course IDs=%s",
+            job_id,
             business_id,
             course_ids,
         )
@@ -79,13 +96,20 @@ def ask_question(
         embedding_start = time.perf_counter()
 
         logger.info(
-            "Query embedding generation started.",
+            QUERY_EMBEDDING_STARTED_LOG,
+            job_id,
         )
 
         queryEmbedding = get_embedding_model().encode(query).tolist()
 
         logger.info(
-            "Query embedding generation completed. Dimensions=%d | duration=%.4fs",
+            QUERY_EMBEDDING_COMPLETED_LOG,
+            job_id,
+        )
+
+        logger.info(
+            "Query embedding generation completed. job_id=%s Dimensions=%d | duration=%.4fs",
+            job_id,
             len(queryEmbedding),
             time.perf_counter() - embedding_start,
         )
@@ -93,7 +117,8 @@ def ask_question(
         cache_start = time.perf_counter()
 
         logger.info(
-            "Cache lookup started.",
+            CACHE_LOOKUP_STARTED_LOG,
+            job_id,
         )
 
         cached = get_cached_answer(
@@ -106,14 +131,19 @@ def ask_question(
 
         if cached:
             logger.info(
-                "Cache hit. Returning cached answer.",
+                CACHE_HIT_LOG,
+                job_id,
             )
+
             logger.info(
-                "Cache lookup completed. duration=%.4fs",
+                "Cache lookup completed. job_id=%s duration=%.4fs",
+                job_id,
                 cache_duration,
             )
+
             logger.info(
-                "Query completed successfully from cache. total=%.4fs",
+                "Query completed successfully from cache. job_id=%s total=%.4fs",
+                job_id,
                 time.perf_counter() - total_start,
             )
 
@@ -129,17 +159,26 @@ def ask_question(
             )
 
         logger.info(
-            "Cache miss. Continuing with Knowledge Base retrieval.",
+            CACHE_MISS_LOG,
+            job_id,
         )
+
         logger.info(
-            "Cache lookup completed. duration=%.4fs",
+            "Cache lookup completed. job_id=%s duration=%.4fs",
+            job_id,
             cache_duration,
         )
 
         retrieval_start = time.perf_counter()
 
         logger.info(
-            "Qdrant retrieval started. Limit=%d",
+            QDRANT_SEARCH_STARTED_LOG,
+            job_id,
+        )
+
+        logger.info(
+            "Qdrant retrieval started. job_id=%s Limit=%d",
+            job_id,
             SEARCH_LIMIT,
         )
 
@@ -150,6 +189,7 @@ def ask_question(
                 courseIds=course_ids,
                 limit=SEARCH_LIMIT,
             )
+
         except ContentKoshException as exception:
             logger.exception(
                 CHAT_SERVICE_FAILED_LOG,
@@ -167,7 +207,14 @@ def ask_question(
         retrieval_duration = time.perf_counter() - retrieval_start
 
         logger.info(
-            "Qdrant retrieval completed. duration=%.4fs",
+            QDRANT_SEARCH_COMPLETED_LOG,
+            job_id,
+            len(searchResults),
+        )
+
+        logger.info(
+            "Qdrant retrieval completed. job_id=%s duration=%.4fs",
+            job_id,
             retrieval_duration,
         )
 
@@ -175,8 +222,10 @@ def ask_question(
             logger.warning(
                 NO_RELEVANT_CHUNKS_LOG,
             )
+
             logger.info(
-                "Query completed without relevant chunks. total=%.4fs",
+                "Query completed without relevant chunks. job_id=%s total=%.4fs",
+                job_id,
                 time.perf_counter() - total_start,
             )
 
@@ -198,7 +247,8 @@ def ask_question(
 
         for index, searchResult in enumerate(searchResults, start=1):
             logger.info(
-                "[RETRIEVAL] Chunk %d | score=%.4f | source=%s | page=%s",
+                "[%s] [RETRIEVAL] Chunk %d | score=%.4f | source=%s | page=%s",
+                job_id,
                 index,
                 searchResult.score,
                 searchResult.payload.get("source"),
@@ -215,14 +265,26 @@ def ask_question(
         context_start = time.perf_counter()
 
         logger.info(
-            "Context building started. Chunks=%d",
+            CONTEXT_BUILD_STARTED_LOG,
+            job_id,
+        )
+
+        logger.info(
+            "Context building started. job_id=%s Chunks=%d",
+            job_id,
             len(searchResults),
         )
 
         contextText = build_context(searchResults)
 
         logger.info(
-            "Context building completed. Characters=%d | duration=%.4fs",
+            CONTEXT_BUILD_COMPLETED_LOG,
+            job_id,
+        )
+
+        logger.info(
+            "Context building completed. job_id=%s Characters=%d | duration=%.4fs",
+            job_id,
             len(contextText),
             time.perf_counter() - context_start,
         )
@@ -230,7 +292,8 @@ def ask_question(
         prompt_start = time.perf_counter()
 
         logger.info(
-            "Prompt building started.",
+            "[%s] Prompt building started.",
+            job_id,
         )
 
         prompt = build_prompt(
@@ -239,7 +302,8 @@ def ask_question(
         )
 
         logger.info(
-            "Prompt building completed. Characters=%d | duration=%.4fs",
+            "[%s] Prompt building completed. Characters=%d | duration=%.4fs",
+            job_id,
             len(prompt),
             time.perf_counter() - prompt_start,
         )
@@ -247,21 +311,34 @@ def ask_question(
         llm_start = time.perf_counter()
 
         logger.info(
-            "Knowledge Base LLM generation started.",
+            LLM_GENERATION_STARTED_LOG,
+            job_id,
+        )
+
+        logger.info(
+            "Knowledge Base LLM generation started. job_id=%s",
+            job_id,
         )
 
         try:
             llmResponse = get_llm().invoke(prompt)
+
         except Exception as exception:
             logger.exception(
-                "%s: %s",
                 LLM_INVOCATION_FAILED_LOG,
                 exception,
             )
+
             raise LLMResponseException() from exception
 
         logger.info(
-            "Knowledge Base LLM generation completed. Response characters=%d | duration=%.4fs",
+            LLM_GENERATION_COMPLETED_LOG,
+            job_id,
+        )
+
+        logger.info(
+            "Knowledge Base LLM generation completed. job_id=%s Response characters=%d | duration=%.4fs",
+            job_id,
             len(llmResponse.content),
             time.perf_counter() - llm_start,
         )
@@ -270,10 +347,13 @@ def ask_question(
 
         if ANSWER_NOT_FOUND_MESSAGE.lower() in answer.lower():
             logger.info(
-                "LLM returned the configured no-answer response.",
+                "[%s] LLM returned the configured no-answer response.",
+                job_id,
             )
+
             logger.info(
-                "Query completed without an answer. total=%.4fs",
+                "Query completed without an answer. job_id=%s total=%.4fs",
+                job_id,
                 time.perf_counter() - total_start,
             )
 
@@ -289,14 +369,21 @@ def ask_question(
             )
 
         logger.info(
-            "Answer generated successfully. Characters=%d",
+            "[%s] Answer generated successfully. Characters=%d",
+            job_id,
             len(answer),
         )
 
         cache_start = time.perf_counter()
 
         logger.info(
-            "Cache write started.",
+            CACHE_WRITE_STARTED_LOG,
+            job_id,
+        )
+
+        logger.info(
+            "Cache write started. job_id=%s",
+            job_id,
         )
 
         cache_answer(
@@ -310,12 +397,19 @@ def ask_question(
         )
 
         logger.info(
-            "Cache write completed. duration=%.4fs",
+            CACHE_WRITE_COMPLETED_LOG,
+            job_id,
+        )
+
+        logger.info(
+            "Cache write completed. job_id=%s duration=%.4fs",
+            job_id,
             time.perf_counter() - cache_start,
         )
 
         logger.info(
-            "Query completed successfully. total=%.4fs",
+            "Query completed successfully. job_id=%s total=%.4fs",
+            job_id,
             time.perf_counter() - total_start,
         )
 
@@ -326,25 +420,32 @@ def ask_question(
 
     except LLMResponseException:
         logger.info(
-            "Query failed during LLM processing. total=%.4fs",
+            "Query failed during LLM processing. job_id=%s total=%.4fs",
+            job_id,
             time.perf_counter() - total_start,
         )
         raise
+
     except KnowledgeBaseException:
         logger.info(
-            "Query failed during Knowledge Base processing. total=%.4fs",
+            "Query failed during Knowledge Base processing. job_id=%s total=%.4fs",
+            job_id,
             time.perf_counter() - total_start,
         )
         raise
+
     except Exception as exception:
         logger.exception(
             CHAT_SERVICE_FAILED_LOG,
             exception,
         )
+
         logger.info(
-            "Query failed unexpectedly. total=%.4fs",
+            "Query failed unexpectedly. job_id=%s total=%.4fs",
+            job_id,
             time.perf_counter() - total_start,
         )
+
         raise KnowledgeBaseException(
             CHAT_SERVICE_ERROR_MESSAGE,
         ) from exception

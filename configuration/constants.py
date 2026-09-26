@@ -108,7 +108,7 @@ COLLECTION_SETUP_FAILED_LOG = "Failed to verify or create Qdrant collection."
 LLM_INVOCATION_FAILED_LOG = "LLM invocation failed."
 METADATA_EXTRACTION_STARTED_LOG = "Extracting document metadata."
 METADATA_EXTRACTION_COMPLETED_LOG = "Metadata extracted successfully."
-METADATA_EXTRACTION_FAILED_LOG = ("Document metadata extraction failed: %s")
+METADATA_EXTRACTION_FAILED_LOG = "Document metadata extraction failed: %s"
 
 # ==========================================================
 # DATABASE LOGS
@@ -141,7 +141,9 @@ DOCUMENT_PROCESSING_STARTED_LOG = "Processing document: %s"
 DOCUMENT_PROCESSED_LOG = "Processed %s (%d chunks)."
 DOCUMENT_PROCESSING_FAILED_LOG = "Document processing failed: %s"
 KB_INGESTION_STARTED_LOG = "Knowledge Base ingestion started."
-KB_INGESTION_COMPLETED_LOG = ("Knowledge Base ingestion completed. Documents=%d Chunks=%d")
+KB_INGESTION_COMPLETED_LOG = (
+    "Knowledge Base ingestion completed. Documents=%d Chunks=%d"
+)
 KB_INGESTION_FAILED_LOG = "Knowledge Base ingestion failed: %s"
 FILE_PROCESSING_STARTED_LOG = "Processing file: %s"
 FILE_PROCESSING_COMPLETED_LOG = "Successfully processed '%s'."
@@ -152,9 +154,7 @@ PAGE_CHUNK_GENERATION_LOG = "Page %d generated %d chunks."
 # QUERY SERVICE LOGS
 # ==========================================================
 
-QUERY_LENGTH_ERROR = (
-    "Query cannot exceed {} characters."
-)
+QUERY_LENGTH_ERROR = "Query cannot exceed {} characters."
 
 QUERY_RECEIVED_LOG = "Received query: %s"
 NO_RELEVANT_CHUNKS_LOG = "No relevant chunks found."
@@ -167,9 +167,7 @@ CHAT_SERVICE_FAILED_LOG = "Chat service failed: %s"
 # ==========================================================
 
 TEMP_FILE_DELETED_LOG = "Deleted temporary upload file: %s"
-TEMP_FILE_DELETE_FAILED_LOG = (
-    "Failed to delete temporary upload file '%s': %s"
-)
+TEMP_FILE_DELETE_FAILED_LOG = "Failed to delete temporary upload file '%s': %s"
 
 # ==========================================================
 # API LOGS
@@ -183,12 +181,8 @@ QUERY_SUCCESS_LOG = "[%s] Question answered successfully."
 UPLOAD_REQUEST_LOG = "[%s] Upload request received."
 UPLOAD_SUCCESS_LOG = "[%s] Uploaded %d document(s) successfully."
 FETCH_UPLOADED_DOCUMENTS_LOG = "[%s] Fetching uploaded documents."
-FETCH_UPLOADED_DOCUMENTS_SUCCESS_LOG = (
-    "[%s] Retrieved %d uploaded document(s)."
-)
-DELETE_DOCUMENT_REQUEST_LOG = (
-    "[%s] Delete request received. Document ID=%s"
-)
+FETCH_UPLOADED_DOCUMENTS_SUCCESS_LOG = "[%s] Retrieved %d uploaded document(s)."
+DELETE_DOCUMENT_REQUEST_LOG = "[%s] Delete request received. Document ID=%s"
 DELETE_DOCUMENT_SUCCESS_LOG = "[%s] Document deleted successfully."
 CLEAR_KB_REQUEST_LOG = "[%s] Clearing Knowledge Base."
 CLEAR_KB_SUCCESS_LOG = "[%s] Knowledge Base cleared successfully."
@@ -197,42 +191,22 @@ CLEAR_KB_SUCCESS_LOG = "[%s] Knowledge Base cleared successfully."
 # QDRANT CLIENT LOGS
 # ==========================================================
 
-QDRANT_CLIENT_INITIALIZING_LOG = (
-    "Initializing Qdrant client. host=%s port=%s"
-)
-QDRANT_CLIENT_INITIALIZED_LOG = (
-    "Qdrant client initialized successfully."
-)
+QDRANT_CLIENT_INITIALIZING_LOG = "Initializing Qdrant client. host=%s port=%s"
+QDRANT_CLIENT_INITIALIZED_LOG = "Qdrant client initialized successfully."
 
 # ==========================================================
 # COLLECTION SCRIPTS
 # ==========================================================
 
 DOCUMENTS_HEADER_LOG = "========== DOCUMENTS =========="
-DOCUMENT_DETAILS_LOG = (
-    "Title=%s | Type=%s | Tag=%s | Source=%s | Page=%s"
-)
-DOCUMENT_SEPARATOR_LOG = (
-    "----------------------------------------"
-)
-COLLECTION_STATS_HEADER_LOG = (
-    "========== Collection Statistics =========="
-)
-COLLECTION_STATS_LOG = (
-    "Name=%s | Vectors=%s | Status=%s"
-)
-COLLECTION_CREATED_SUCCESS_LOG = (
-    "Collection created successfully."
-)
-COLLECTION_ALREADY_EXISTS_SCRIPT_LOG = (
-    "Collection already exists."
-)
-COLLECTION_CREATION_FAILED_LOG = (
-    "Failed to create collection."
-)
-COLLECTION_DELETED_SUCCESS_LOG = (
-    "Collection '%s' deleted successfully."
-)
+DOCUMENT_DETAILS_LOG = "Title=%s | Type=%s | Tag=%s | Source=%s | Page=%s"
+DOCUMENT_SEPARATOR_LOG = "----------------------------------------"
+COLLECTION_STATS_HEADER_LOG = "========== Collection Statistics =========="
+COLLECTION_STATS_LOG = "Name=%s | Vectors=%s | Status=%s"
+COLLECTION_CREATED_SUCCESS_LOG = "Collection created successfully."
+COLLECTION_ALREADY_EXISTS_SCRIPT_LOG = "Collection already exists."
+COLLECTION_CREATION_FAILED_LOG = "Failed to create collection."
+COLLECTION_DELETED_SUCCESS_LOG = "Collection '%s' deleted successfully."
 
 # ==========================================================
 # GLOBAL LOGS
@@ -240,23 +214,15 @@ COLLECTION_DELETED_SUCCESS_LOG = (
 
 UNHANDLED_EXCEPTION_LOG = "Unhandled Exception: %s"
 
-FETCH_UPLOADED_DOCUMENTS_FAILED_LOG = (
-    "Failed to fetch uploaded documents: %s"
-)
-CLEAR_KNOWLEDGE_BASE_FAILED_LOG = (
-    "Failed to clear Knowledge Base: %s"
-)
+FETCH_UPLOADED_DOCUMENTS_FAILED_LOG = "Failed to fetch uploaded documents: %s"
+CLEAR_KNOWLEDGE_BASE_FAILED_LOG = "Failed to clear Knowledge Base: %s"
 
 # ==========================================================
 # File Utility Logs
 # ==========================================================
 
-DELETE_TEMP_FILE_SUCCESS_LOG = (
-    "Temporary file deleted successfully: %s"
-)
-DELETE_TEMP_FILE_FAILED_LOG = (
-    "Failed to delete temporary file: %s"
-)
+DELETE_TEMP_FILE_SUCCESS_LOG = "Temporary file deleted successfully: %s"
+DELETE_TEMP_FILE_FAILED_LOG = "Failed to delete temporary file: %s"
 
 # ==========================================================
 # File Validation Constants
@@ -292,5 +258,33 @@ COURSE_ID_REQUIRED_ERROR = "Course ID is required."
 
 BUSINESS_ID_NORMALIZATION_PATTERN = r"[^a-zA-Z0-9_]+"
 
-CACHE_DOCUMENT_INVALIDATION_FAILED_LOG = ("Failed to invalidate cache for document %s: %s")
-CACHE_CLEAR_FAILED_LOG = ("Failed to clear cache for business %s: %s")
+CACHE_DOCUMENT_INVALIDATION_FAILED_LOG = (
+    "Failed to invalidate cache for document %s: %s"
+)
+CACHE_CLEAR_FAILED_LOG = "Failed to clear cache for business %s: %s"
+
+# ==========================================
+# QUERY JOB
+# ==========================================
+
+QUERY_JOB_CREATED_LOG = "Query job created. job_id=%s"
+QUERY_JOB_STARTED_LOG = "Query job started. job_id=%s"
+QUERY_JOB_COMPLETED_LOG = "Query job completed. job_id=%s"
+QUERY_JOB_CANCELLED_LOG = "Query job cancelled. job_id=%s"
+QUERY_JOB_FAILED_LOG = "Query job failed. job_id=%s error=%s"
+QUERY_CANCEL_REQUESTED_LOG = "Query cancellation requested. job_id=%s"
+QUERY_CANCEL_REJECTED_LOG = "Query cancellation rejected. job_id=%s status=%s"
+QUERY_EMBEDDING_STARTED_LOG = "Query embedding started. job_id=%s"
+QUERY_EMBEDDING_COMPLETED_LOG = "Query embedding completed. job_id=%s"
+CACHE_LOOKUP_STARTED_LOG = "Cache lookup started. job_id=%s"
+CACHE_HIT_LOG = "Cache hit. job_id=%s"
+CACHE_MISS_LOG = "Cache miss. job_id=%s"
+QDRANT_SEARCH_STARTED_LOG = "Qdrant search started. job_id=%s"
+QDRANT_SEARCH_COMPLETED_LOG = "Qdrant search completed. job_id=%s chunks=%s"
+CONTEXT_BUILD_STARTED_LOG = "Context construction started. job_id=%s"
+CONTEXT_BUILD_COMPLETED_LOG = "Context construction completed. job_id=%s"
+LLM_GENERATION_STARTED_LOG = "LLM generation started. job_id=%s"
+LLM_GENERATION_COMPLETED_LOG = "LLM generation completed. job_id=%s"
+CACHE_WRITE_STARTED_LOG = "Cache write started. job_id=%s"
+CACHE_WRITE_COMPLETED_LOG = "Cache write completed. job_id=%s"
+CACHE_WRITE_SKIPPED_LOG = "Cache write skipped because query was cancelled. job_id=%s"

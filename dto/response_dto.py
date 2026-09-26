@@ -58,6 +58,22 @@ class QueryResponse(BaseModel):
 
 
 # ==========================================================
+# Query Job Response
+# ==========================================================
+
+
+class QueryJobResponse(BaseModel):
+    """
+    Response returned for a query job.
+    """
+
+    job_id: str
+    status: str
+    result: Optional[QueryResponse] = None
+    error: Optional[str] = None
+
+
+# ==========================================================
 # Get Knowledge Base Response
 # ==========================================================
 
@@ -71,6 +87,7 @@ class KnowledgeBaseResponse(BaseModel):
     total_records: int
     records: list[KnowledgeBaseRecordDto]
     similarity_score: Optional[float] = None
+
 
 # ==========================================================
 # Cache Response

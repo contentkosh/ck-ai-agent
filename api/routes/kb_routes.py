@@ -1,7 +1,7 @@
 import time
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 
 from api.dependencies import get_request_context
 from common.logger import logger
@@ -15,9 +15,9 @@ from configuration.constants import (
 )
 from configuration.context import RequestContext
 from dto.request_dto import QueryRequest
-from dto.response_dto import KnowledgeBaseResponse, QueryResponse
-from services.kb_query_service import ask_question
+from dto.response_dto import KnowledgeBaseResponse, QueryJobResponse, QueryResponse
 from services.kb_service import get_knowledge_base_records
+from services.query_job_manager import query_job_manager
 from validators.query_validator import validate_query
 from validators.tag_validator import validate_tag
 
@@ -146,24 +146,56 @@ def query_knowledge_base(
             time.perf_counter() - validation_start,
         )
 
-        service_start = time.perf_counter()
-
         logger.info(
-            "[%s] KB query service started.",
+            "[%s] Query job creation started.",
             context.request_id,
         )
 
-        result = ask_question(
+        job_id = query_job_manager.create_job(
             query=request.query,
             business_id=request.business_id,
             course_ids=request.course_ids,
         )
 
         logger.info(
-            "[%s] KB query service completed. Duration=%.4f seconds",
+            "[%s] Query job created successfully. job_id=%s",
             context.request_id,
-            time.perf_counter() - service_start,
+            job_id,
         )
+
+        logger.info(
+            "[%s] Waiting for query job result. job_id=%s",
+            context.request_id,
+            job_id,
+        )
+
+        result = query_job_manager.wait_for_result(job_id)
+
+        job_status = query_job_manager.get_status(job_id)
+
+        if job_status is None:
+            raise HTTPException(
+                status_code=500,
+                detail="Query job was lost.",
+            )
+
+        if job_status["status"] == "cancelled":
+            raise HTTPException(
+                status_code=409,
+                detail=f"Query job cancelled. job_id={job_id}",
+            )
+
+        if job_status["status"] == "failed":
+            raise HTTPException(
+                status_code=500,
+                detail=job_status["error"] or "Query job failed.",
+            )
+
+        if result is None:
+            raise HTTPException(
+                status_code=500,
+                detail="Query job completed without a result.",
+            )
 
         logger.info(
             QUERY_SUCCESS_LOG,
@@ -171,12 +203,16 @@ def query_knowledge_base(
         )
 
         logger.info(
-            "[%s] API query request completed. Total duration=%.4f seconds",
+            "[%s] API query request completed. job_id=%s Total duration=%.4f seconds",
             context.request_id,
+            job_id,
             time.perf_counter() - request_start,
         )
 
         return result
+
+    except HTTPException:
+        raise
 
     except Exception:
         logger.exception(
@@ -185,3 +221,27 @@ def query_knowledge_base(
             time.perf_counter() - request_start,
         )
         raise
+
+
+@router.post(
+    "/query/{job_id}/stop",
+    response_model=QueryJobResponse,
+)
+def stop_query_job(
+    job_id: str,
+) -> QueryJobResponse:
+    """Stop a running Knowledge Base query job."""
+
+    result = query_job_manager.get_status(job_id)
+
+    if result is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Query job not found",
+        )
+
+    query_job_manager.stop_job(job_id)
+
+    result = query_job_manager.get_status(job_id)
+
+    return QueryJobResponse(**result)

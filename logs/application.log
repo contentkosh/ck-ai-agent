@@ -1,418 +1,138 @@
-2026-09-25 11:01:14,210 | INFO | Embedding model initialized successfully. Model=sentence-transformers/all-MiniLM-L6-v2
-2026-09-25 11:01:14,403 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:14,404 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:14,405 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:01:14,405 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:01:14,410 | INFO | Qdrant collection does not exist. Creation started: kb_mukund_upadhyay
-2026-09-25 11:01:14,526 | INFO | Qdrant collection created successfully.: kb_mukund_upadhyay
-2026-09-25 11:01:14,526 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:01:14,526 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-09-25 11:01:14,560 | INFO | Inserted 32 vectors.
-2026-09-25 11:01:14,560 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:14,561 | INFO | Page 5 generated 5 chunks.
-2026-09-25 11:01:14,561 | INFO | Page 6 generated 4 chunks.
-2026-09-25 11:01:14,561 | INFO | Page 7 generated 5 chunks.
-2026-09-25 11:01:14,561 | INFO | Page 8 generated 9 chunks.
-2026-09-25 11:01:14,561 | INFO | Page 9 generated 8 chunks.
-2026-09-25 11:01:14,561 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:14,583 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:14,584 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:14,584 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:01:14,585 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:01:14,596 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:01:14,596 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:01:14,596 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-09-25 11:01:14,637 | INFO | Inserted 32 vectors.
-2026-09-25 11:01:14,638 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:14,638 | INFO | Page 10 generated 8 chunks.
-2026-09-25 11:01:14,638 | INFO | Page 11 generated 6 chunks.
-2026-09-25 11:01:14,638 | INFO | Page 12 generated 3 chunks.
-2026-09-25 11:01:14,638 | INFO | Page 13 generated 5 chunks.
-2026-09-25 11:01:14,638 | INFO | Page 14 generated 7 chunks.
-2026-09-25 11:01:14,639 | INFO | Page 15 generated 2 chunks.
-2026-09-25 11:01:14,639 | INFO | Page 16 generated 9 chunks.
-2026-09-25 11:01:14,639 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:14,663 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:14,664 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:14,664 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:01:14,664 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:01:14,690 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:01:14,690 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:01:14,691 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-09-25 11:01:14,727 | INFO | Inserted 32 vectors.
-2026-09-25 11:01:14,727 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:14,728 | INFO | Page 17 generated 7 chunks.
-2026-09-25 11:01:14,728 | INFO | Page 18 generated 9 chunks.
-2026-09-25 11:01:14,728 | INFO | Page 19 generated 7 chunks.
-2026-09-25 11:01:14,728 | INFO | Page 20 generated 6 chunks.
-2026-09-25 11:01:14,729 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:14,755 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:14,755 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:14,755 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:01:14,756 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:01:14,768 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:01:14,768 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:01:14,769 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-09-25 11:01:14,788 | INFO | Inserted 32 vectors.
-2026-09-25 11:01:14,788 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:14,789 | INFO | Page 21 generated 1 chunks.
-2026-09-25 11:01:14,789 | INFO | Page 22 generated 5 chunks.
-2026-09-25 11:01:14,789 | INFO | Page 23 generated 4 chunks.
-2026-09-25 11:01:14,789 | INFO | Page 24 generated 8 chunks.
-2026-09-25 11:01:14,789 | INFO | Page 25 generated 3 chunks.
-2026-09-25 11:01:14,789 | INFO | Page 26 generated 1 chunks.
-2026-09-25 11:01:14,790 | INFO | Page 27 generated 7 chunks.
-2026-09-25 11:01:14,790 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:14,810 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:14,811 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:14,811 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:01:14,811 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:01:14,831 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:01:14,832 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:01:14,832 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-09-25 11:01:14,908 | INFO | Inserted 32 vectors.
-2026-09-25 11:01:14,908 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:14,908 | INFO | Page 28 generated 6 chunks.
-2026-09-25 11:01:14,908 | INFO | Page 29 generated 4 chunks.
-2026-09-25 11:01:14,908 | INFO | Page 30 generated 3 chunks.
-2026-09-25 11:01:14,909 | INFO | Page 31 generated 5 chunks.
-2026-09-25 11:01:14,909 | INFO | Page 32 generated 7 chunks.
-2026-09-25 11:01:14,909 | INFO | Page 33 generated 4 chunks.
-2026-09-25 11:01:14,909 | INFO | Page 34 generated 4 chunks.
-2026-09-25 11:01:14,909 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:14,930 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:14,931 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:14,931 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:01:14,931 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:01:14,955 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:01:14,955 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:01:14,955 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-09-25 11:01:15,039 | INFO | Inserted 32 vectors.
-2026-09-25 11:01:15,040 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:15,040 | INFO | Page 35 generated 1 chunks.
-2026-09-25 11:01:15,040 | INFO | Page 36 generated 5 chunks.
-2026-09-25 11:01:15,040 | INFO | Page 37 generated 10 chunks.
-2026-09-25 11:01:15,040 | INFO | Page 38 generated 8 chunks.
-2026-09-25 11:01:15,040 | INFO | Page 39 generated 1 chunks.
-2026-09-25 11:01:15,041 | INFO | Page 40 generated 6 chunks.
-2026-09-25 11:01:15,041 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:15,061 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:15,062 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:15,062 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:01:15,062 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:01:15,067 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:01:15,067 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:01:15,067 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-09-25 11:01:15,085 | INFO | Inserted 32 vectors.
-2026-09-25 11:01:15,085 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:15,085 | INFO | Page 41 generated 6 chunks.
-2026-09-25 11:01:15,086 | INFO | Page 42 generated 8 chunks.
-2026-09-25 11:01:15,086 | INFO | Page 43 generated 4 chunks.
-2026-09-25 11:01:15,086 | INFO | Page 44 generated 2 chunks.
-2026-09-25 11:01:15,086 | INFO | Page 45 generated 5 chunks.
-2026-09-25 11:01:15,086 | INFO | Page 46 generated 1 chunks.
-2026-09-25 11:01:15,086 | INFO | Page 47 generated 7 chunks.
-2026-09-25 11:01:15,086 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:15,108 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:15,108 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:15,109 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:01:15,109 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:01:15,112 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:01:15,112 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:01:15,112 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-09-25 11:01:15,147 | INFO | Inserted 32 vectors.
-2026-09-25 11:01:15,148 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:15,148 | INFO | Page 48 generated 8 chunks.
-2026-09-25 11:01:15,148 | INFO | Page 49 generated 8 chunks.
-2026-09-25 11:01:15,148 | INFO | Page 50 generated 8 chunks.
-2026-09-25 11:01:15,148 | INFO | Page 51 generated 10 chunks.
-2026-09-25 11:01:15,148 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:15,171 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:15,171 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:15,171 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:01:15,171 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:01:15,188 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:01:15,189 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:01:15,189 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-09-25 11:01:15,282 | INFO | Inserted 32 vectors.
-2026-09-25 11:01:15,283 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:15,283 | INFO | Page 52 generated 5 chunks.
-2026-09-25 11:01:15,283 | INFO | Page 53 generated 4 chunks.
-2026-09-25 11:01:15,283 | INFO | Page 54 generated 5 chunks.
-2026-09-25 11:01:15,284 | INFO | Page 55 generated 7 chunks.
-2026-09-25 11:01:15,284 | INFO | Page 56 generated 7 chunks.
-2026-09-25 11:01:15,284 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:15,306 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:15,306 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:15,307 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:01:15,307 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:01:15,310 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:01:15,310 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:01:15,310 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-09-25 11:01:15,364 | INFO | Inserted 32 vectors.
-2026-09-25 11:01:15,364 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:15,365 | INFO | Page 57 generated 8 chunks.
-2026-09-25 11:01:15,365 | INFO | Page 58 generated 9 chunks.
-2026-09-25 11:01:15,365 | INFO | Page 59 generated 5 chunks.
-2026-09-25 11:01:15,365 | INFO | Page 60 generated 3 chunks.
-2026-09-25 11:01:15,365 | INFO | Page 61 generated 6 chunks.
-2026-09-25 11:01:15,365 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:15,387 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:15,387 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:15,388 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:01:15,388 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:01:15,404 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:01:15,404 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:01:15,404 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-09-25 11:01:15,458 | INFO | Inserted 32 vectors.
-2026-09-25 11:01:15,460 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:15,460 | INFO | Page 62 generated 5 chunks.
-2026-09-25 11:01:15,460 | INFO | Page 63 generated 6 chunks.
-2026-09-25 11:01:15,460 | INFO | Page 64 generated 4 chunks.
-2026-09-25 11:01:15,461 | INFO | Page 65 generated 6 chunks.
-2026-09-25 11:01:15,461 | INFO | Page 66 generated 8 chunks.
-2026-09-25 11:01:15,461 | INFO | Page 67 generated 4 chunks.
-2026-09-25 11:01:15,461 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:15,482 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:15,482 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:15,483 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:01:15,483 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:01:15,497 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:01:15,497 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:01:15,498 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-09-25 11:01:15,554 | INFO | Inserted 32 vectors.
-2026-09-25 11:01:15,554 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:15,555 | INFO | Page 68 generated 8 chunks.
-2026-09-25 11:01:15,555 | INFO | Page 69 generated 3 chunks.
-2026-09-25 11:01:15,555 | INFO | Page 70 generated 4 chunks.
-2026-09-25 11:01:15,555 | INFO | Page 71 generated 8 chunks.
-2026-09-25 11:01:15,555 | INFO | Page 72 generated 8 chunks.
-2026-09-25 11:01:15,555 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:15,581 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-09-25 11:01:15,581 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:15,581 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:01:15,581 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:01:15,605 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:01:15,605 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:01:15,606 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-09-25 11:01:15,707 | INFO | Inserted 32 vectors.
-2026-09-25 11:01:15,707 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-09-25 11:01:15,708 | INFO | Page 73 generated 6 chunks.
-2026-09-25 11:01:15,708 | INFO | Page 74 generated 10 chunks.
-2026-09-25 11:01:15,708 | INFO | Page 75 generated 6 chunks.
-2026-09-25 11:01:15,708 | INFO | Page 76 generated 5 chunks.
-2026-09-25 11:01:15,708 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=27
-2026-09-25 11:01:15,728 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=27
-2026-09-25 11:01:15,729 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=27
-2026-09-25 11:01:15,729 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:01:15,729 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:01:15,734 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:01:15,734 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:01:15,734 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=27
-2026-09-25 11:01:15,792 | INFO | Inserted 27 vectors.
-2026-09-25 11:01:15,792 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=27
-2026-09-25 11:01:15,792 | INFO | Generated 443 vectors.
-2026-09-25 11:01:15,792 | INFO | Chunking and vector generation completed. File=Geography_compressed.pdf | chunks=443
-2026-09-25 11:01:15,793 | INFO | Processed Geography_compressed.pdf (443 chunks).
-2026-09-25 11:01:15,793 | INFO | PDF stream closed: Geography_compressed.pdf
-2026-09-25 11:01:15,793 | INFO | Temporary file cleanup started: uploads\91f9a0228cbf471e873272747b02e301_Geography_compressed.pdf
-2026-09-25 11:01:15,794 | INFO | Temporary file deleted successfully: uploads\91f9a0228cbf471e873272747b02e301_Geography_compressed.pdf
-2026-09-25 11:01:15,794 | INFO | Temporary upload file deleted: Geography_compressed.pdf
-2026-09-25 11:01:15,794 | INFO | Successfully processed 'Geography_compressed.pdf'.
-2026-09-25 11:01:15,794 | INFO | Knowledge Base ingestion completed. Documents=1 Chunks=443
-2026-09-25 11:01:15,794 | INFO | [b52a8735-2fb5-4726-8322-98cde8140c47] Uploaded 1 document(s) successfully.
-2026-09-25 11:01:15,795 | INFO | [b52a8735-2fb5-4726-8322-98cde8140c47] Request completed: POST /llm/upload | status=200 | duration=10.992s
-2026-09-25 11:01:45,397 | INFO | [6de93c98-6bf1-44f3-b935-f6567135416b] Request started: GET /llm/files
-2026-09-25 11:01:45,398 | INFO | [6de93c98-6bf1-44f3-b935-f6567135416b] Fetching uploaded documents.
-2026-09-25 11:01:45,398 | INFO | [6de93c98-6bf1-44f3-b935-f6567135416b] Uploaded document retrieval started. Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
-2026-09-25 11:01:45,398 | INFO | Fetching uploaded documents started. Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
-2026-09-25 11:01:45,399 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:01:45,399 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:01:45,417 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:01:45,418 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:01:45,418 | INFO | Fetching uploaded documents. Collection=kb_mukund_upadhyay | courses=['ncert_2022']
-2026-09-25 11:01:45,418 | INFO | Qdrant scroll started. Collection=kb_mukund_upadhyay
-2026-09-25 11:01:45,437 | INFO | Qdrant scroll completed. Collection=kb_mukund_upadhyay | records=443 | pages=1
-2026-09-25 11:01:45,437 | INFO | Found %d document(s).: 1
-2026-09-25 11:01:45,438 | INFO | Fetching uploaded documents completed. Business ID=Mukund Upadhyay | Documents=1
-2026-09-25 11:01:45,438 | INFO | [6de93c98-6bf1-44f3-b935-f6567135416b] Uploaded document retrieval completed. Documents=1
-2026-09-25 11:01:45,438 | INFO | [6de93c98-6bf1-44f3-b935-f6567135416b] Retrieved 1 uploaded document(s).
-2026-09-25 11:01:45,439 | INFO | [6de93c98-6bf1-44f3-b935-f6567135416b] Request completed: GET /llm/files | status=200 | duration=0.042s
-2026-09-25 11:03:12,856 | INFO | [f56bde63-18e1-46e5-b603-41fc7652cb45] Request started: GET /llm/kb
-2026-09-25 11:03:12,857 | INFO | [f56bde63-18e1-46e5-b603-41fc7652cb45] Fetching Knowledge Base.
-2026-09-25 11:03:12,857 | INFO | [f56bde63-18e1-46e5-b603-41fc7652cb45] Knowledge Base retrieval started. Business ID=Mukund Upadhyay | Course IDs=['jee_2022'] | Tag=None
-2026-09-25 11:03:12,857 | INFO | [f56bde63-18e1-46e5-b603-41fc7652cb45] Knowledge Base tag validation started.
-2026-09-25 11:03:12,857 | INFO | [f56bde63-18e1-46e5-b603-41fc7652cb45] Knowledge Base tag validation completed.
-2026-09-25 11:03:12,857 | INFO | [f56bde63-18e1-46e5-b603-41fc7652cb45] Knowledge Base service call started.
-2026-09-25 11:03:12,857 | INFO | Knowledge Base record retrieval started. Business ID=Mukund Upadhyay | Course IDs=['jee_2022'] | Tag=None
-2026-09-25 11:03:12,857 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:03:12,857 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:03:12,863 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:03:12,863 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:03:12,864 | INFO | Fetching Knowledge Base records. Collection=kb_mukund_upadhyay | courses=['jee_2022'] | tag=None
-2026-09-25 11:03:12,864 | INFO | Qdrant scroll started. Collection=kb_mukund_upadhyay
-2026-09-25 11:03:12,892 | INFO | Qdrant scroll completed. Collection=kb_mukund_upadhyay | records=443 | pages=1
-2026-09-25 11:03:12,893 | INFO | Fetched %d records.: 443
-2026-09-25 11:03:12,894 | INFO | Knowledge Base record retrieval completed. Business ID=Mukund Upadhyay | Records=443
-2026-09-25 11:03:12,894 | INFO | [f56bde63-18e1-46e5-b603-41fc7652cb45] Knowledge Base service call completed. Records=443
-2026-09-25 11:03:12,894 | INFO | [f56bde63-18e1-46e5-b603-41fc7652cb45] Retrieved 443 record(s).
-2026-09-25 11:03:12,899 | INFO | [f56bde63-18e1-46e5-b603-41fc7652cb45] Request completed: GET /llm/kb | status=200 | duration=0.043s
-2026-09-25 11:03:33,204 | INFO | [0ba7436f-ba18-46ed-a802-e9b5afae847d] Request started: GET /
-2026-09-25 11:03:33,206 | INFO | [Knowledge Base API] Health API called.
-2026-09-25 11:03:33,206 | INFO | [0ba7436f-ba18-46ed-a802-e9b5afae847d] Request completed: GET / | status=200 | duration=0.002s
-2026-09-25 11:04:16,538 | INFO | [49e73d78-48fc-4c47-98ba-40a970abb2ad] Request started: POST /llm/kb/query
-2026-09-25 11:04:16,540 | INFO | [49e73d78-48fc-4c47-98ba-40a970abb2ad] Question received.
-2026-09-25 11:04:16,540 | INFO | [49e73d78-48fc-4c47-98ba-40a970abb2ad] Knowledge Base query started. Business ID=Mukund Upadhyay | Course IDs=['jee_2022']
-2026-09-25 11:04:16,540 | INFO | [49e73d78-48fc-4c47-98ba-40a970abb2ad] Query validation started.
-2026-09-25 11:04:16,540 | INFO | [49e73d78-48fc-4c47-98ba-40a970abb2ad] Query validation completed.
-2026-09-25 11:04:16,541 | INFO | [49e73d78-48fc-4c47-98ba-40a970abb2ad] Query validation duration: 0.0004 seconds
-2026-09-25 11:04:16,541 | INFO | [49e73d78-48fc-4c47-98ba-40a970abb2ad] KB query service started.
-2026-09-25 11:04:16,542 | INFO | Received query: What is PASTORALISM
-2026-09-25 11:04:16,542 | INFO | Query processing started. Business ID=Mukund Upadhyay | Course IDs=['jee_2022']
-2026-09-25 11:04:16,542 | INFO | Query embedding generation started.
-2026-09-25 11:04:16,639 | INFO | Query embedding generation completed. Dimensions=384 | duration=0.0972s
-2026-09-25 11:04:16,639 | INFO | Cache lookup started.
-2026-09-25 11:04:16,639 | INFO | Cache search started. Business ID=Mukund Upadhyay | Course IDs=['jee_2022']
-2026-09-25 11:04:16,640 | INFO | Ensuring cache collection exists: cache_mukund_upadhyay
-2026-09-25 11:04:16,640 | INFO | Checking Qdrant collection: cache_mukund_upadhyay
-2026-09-25 11:04:16,661 | INFO | Qdrant collection does not exist. Creation started: cache_mukund_upadhyay
-2026-09-25 11:04:16,780 | INFO | Qdrant collection created successfully.: cache_mukund_upadhyay
-2026-09-25 11:04:16,781 | INFO | Cache collection ready: cache_mukund_upadhyay
-2026-09-25 11:04:16,781 | INFO | Cache Qdrant search started. Collection=cache_mukund_upadhyay | limit=1
-2026-09-25 11:04:16,790 | INFO | Cache Qdrant search completed. Collection=cache_mukund_upadhyay | results=0
-2026-09-25 11:04:16,790 | INFO | Cache miss. No similar question found.
-2026-09-25 11:04:16,790 | INFO | Cache miss. Continuing with Knowledge Base retrieval.
-2026-09-25 11:04:16,790 | INFO | Cache lookup completed. duration=0.1510s
-2026-09-25 11:04:16,791 | INFO | Qdrant retrieval started. Limit=5
-2026-09-25 11:04:16,791 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:04:16,791 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:04:16,815 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:04:16,816 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:04:16,816 | INFO | Qdrant semantic search started. Collection=kb_mukund_upadhyay | courses=['jee_2022'] | limit=5 | score_threshold=0.5
-2026-09-25 11:04:16,834 | INFO | Retrieved %d chunks.: 1
-2026-09-25 11:04:16,834 | INFO | Qdrant semantic search scores: [0.548]
-2026-09-25 11:04:16,834 | INFO | Qdrant retrieval completed. duration=0.0428s
-2026-09-25 11:04:16,834 | INFO | Retrieved 1 chunk(s).
-2026-09-25 11:04:16,834 | INFO | [RETRIEVAL] Chunk 1 | score=0.5480 | source=Geography_compressed.pdf | page=24
-2026-09-25 11:04:16,834 | INFO | Top matching source: Geography_compressed.pdf
-2026-09-25 11:04:16,835 | INFO | Context building started. Chunks=1
-2026-09-25 11:04:16,835 | INFO | Context building completed. Characters=573 | duration=0.0001s
-2026-09-25 11:04:16,835 | INFO | Prompt building started.
-2026-09-25 11:04:16,835 | INFO | Prompt building completed. Characters=2290 | duration=0.0001s
-2026-09-25 11:04:16,835 | INFO | Knowledge Base LLM generation started.
-2026-09-25 11:04:16,835 | INFO | LLM generation started. Model=LFM2-1.2B-RAG | device=cuda
-2026-09-25 11:04:16,838 | INFO | LLM input prepared. Tokens=516
-2026-09-25 11:04:16,838 | INFO | LLM model generation started. Max new tokens=256
-2026-09-25 11:04:18,412 | INFO | LLM generation completed. Generated tokens=41 | duration=1.578s
-2026-09-25 11:04:18,413 | INFO | Knowledge Base LLM generation completed. Response characters=192 | duration=1.5781s
-2026-09-25 11:04:18,413 | INFO | Answer generated successfully. Characters=192
-2026-09-25 11:04:18,413 | INFO | Cache write started.
-2026-09-25 11:04:18,413 | INFO | Cache write started. Business ID=Mukund Upadhyay | Course IDs=['jee_2022']
-2026-09-25 11:04:18,413 | INFO | Ensuring cache collection exists: cache_mukund_upadhyay
-2026-09-25 11:04:18,413 | INFO | Checking Qdrant collection: cache_mukund_upadhyay
-2026-09-25 11:04:18,437 | INFO | Qdrant collection already exists.: cache_mukund_upadhyay
-2026-09-25 11:04:18,437 | INFO | Cache collection ready: cache_mukund_upadhyay
-2026-09-25 11:04:18,437 | INFO | Cache Qdrant write started. Collection=cache_mukund_upadhyay
-2026-09-25 11:04:18,457 | INFO | Cache Qdrant write completed successfully. Collection=cache_mukund_upadhyay
-2026-09-25 11:04:18,457 | INFO | Cache write completed successfully.
-2026-09-25 11:04:18,457 | INFO | Cache write completed. duration=0.0440s
-2026-09-25 11:04:18,457 | INFO | Query completed successfully. total=1.9155s
-2026-09-25 11:04:18,457 | INFO | [49e73d78-48fc-4c47-98ba-40a970abb2ad] KB query service completed. Duration=1.9161 seconds
-2026-09-25 11:04:18,458 | INFO | [49e73d78-48fc-4c47-98ba-40a970abb2ad] Question answered successfully.
-2026-09-25 11:04:18,458 | INFO | [49e73d78-48fc-4c47-98ba-40a970abb2ad] API query request completed. Total duration=1.9173 seconds
-2026-09-25 11:04:18,458 | INFO | [49e73d78-48fc-4c47-98ba-40a970abb2ad] Request completed: POST /llm/kb/query | status=200 | duration=1.920s
-2026-09-25 11:04:49,869 | INFO | [89825fcd-eabf-48b8-9378-55295d289740] Request started: POST /llm/kb/query
-2026-09-25 11:04:49,870 | INFO | [89825fcd-eabf-48b8-9378-55295d289740] Question received.
-2026-09-25 11:04:49,870 | INFO | [89825fcd-eabf-48b8-9378-55295d289740] Knowledge Base query started. Business ID=Mukund Upadhyay | Course IDs=['jee_2022']
-2026-09-25 11:04:49,870 | INFO | [89825fcd-eabf-48b8-9378-55295d289740] Query validation started.
-2026-09-25 11:04:49,870 | INFO | [89825fcd-eabf-48b8-9378-55295d289740] Query validation completed.
-2026-09-25 11:04:49,870 | INFO | [89825fcd-eabf-48b8-9378-55295d289740] Query validation duration: 0.0002 seconds
-2026-09-25 11:04:49,870 | INFO | [89825fcd-eabf-48b8-9378-55295d289740] KB query service started.
-2026-09-25 11:04:49,870 | INFO | Received query: Explain Intensive Subsistence Agriculture
-2026-09-25 11:04:49,870 | INFO | Query processing started. Business ID=Mukund Upadhyay | Course IDs=['jee_2022']
-2026-09-25 11:04:49,870 | INFO | Query embedding generation started.
-2026-09-25 11:04:49,881 | INFO | Query embedding generation completed. Dimensions=384 | duration=0.0095s
-2026-09-25 11:04:49,881 | INFO | Cache lookup started.
-2026-09-25 11:04:49,881 | INFO | Cache search started. Business ID=Mukund Upadhyay | Course IDs=['jee_2022']
-2026-09-25 11:04:49,881 | INFO | Ensuring cache collection exists: cache_mukund_upadhyay
-2026-09-25 11:04:49,882 | INFO | Checking Qdrant collection: cache_mukund_upadhyay
-2026-09-25 11:04:49,885 | INFO | Qdrant collection already exists.: cache_mukund_upadhyay
-2026-09-25 11:04:49,885 | INFO | Cache collection ready: cache_mukund_upadhyay
-2026-09-25 11:04:49,885 | INFO | Cache Qdrant search started. Collection=cache_mukund_upadhyay | limit=1
-2026-09-25 11:04:49,893 | INFO | Cache Qdrant search completed. Collection=cache_mukund_upadhyay | results=1
-2026-09-25 11:04:49,893 | INFO | Cache similarity score: 0.263 | threshold=0.850
-2026-09-25 11:04:49,893 | INFO | Cache miss. Similarity 0.263 is below threshold 0.850.
-2026-09-25 11:04:49,893 | INFO | Cache miss. Continuing with Knowledge Base retrieval.
-2026-09-25 11:04:49,894 | INFO | Cache lookup completed. duration=0.0129s
-2026-09-25 11:04:49,894 | INFO | Qdrant retrieval started. Limit=5
-2026-09-25 11:04:49,894 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-09-25 11:04:49,894 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-09-25 11:04:49,897 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-09-25 11:04:49,898 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-09-25 11:04:49,898 | INFO | Qdrant semantic search started. Collection=kb_mukund_upadhyay | courses=['jee_2022'] | limit=5 | score_threshold=0.5
-2026-09-25 11:04:49,925 | INFO | Retrieved %d chunks.: 5
-2026-09-25 11:04:49,925 | INFO | Qdrant semantic search scores: [0.7025, 0.6364, 0.6179, 0.5836, 0.5736]
-2026-09-25 11:04:49,925 | INFO | Qdrant retrieval completed. duration=0.0323s
-2026-09-25 11:04:49,925 | INFO | Retrieved 5 chunk(s).
-2026-09-25 11:04:49,927 | INFO | [RETRIEVAL] Chunk 1 | score=0.7025 | source=Geography_compressed.pdf | page=25
-2026-09-25 11:04:49,927 | INFO | [RETRIEVAL] Chunk 2 | score=0.6364 | source=Geography_compressed.pdf | page=27
-2026-09-25 11:04:49,927 | INFO | [RETRIEVAL] Chunk 3 | score=0.6179 | source=Geography_compressed.pdf | page=28
-2026-09-25 11:04:49,927 | INFO | [RETRIEVAL] Chunk 4 | score=0.5836 | source=Geography_compressed.pdf | page=25
-2026-09-25 11:04:49,927 | INFO | [RETRIEVAL] Chunk 5 | score=0.5736 | source=Geography_compressed.pdf | page=27
-2026-09-25 11:04:49,927 | INFO | Top matching source: Geography_compressed.pdf
-2026-09-25 11:04:49,927 | INFO | Context building started. Chunks=5
-2026-09-25 11:04:49,928 | INFO | Context building completed. Characters=2724 | duration=0.0002s
-2026-09-25 11:04:49,928 | INFO | Prompt building started.
-2026-09-25 11:04:49,928 | INFO | Prompt building completed. Characters=4463 | duration=0.0002s
-2026-09-25 11:04:49,928 | INFO | Knowledge Base LLM generation started.
-2026-09-25 11:04:49,928 | INFO | LLM generation started. Model=LFM2-1.2B-RAG | device=cuda
-2026-09-25 11:04:49,932 | INFO | LLM input prepared. Tokens=1073
-2026-09-25 11:04:49,933 | INFO | LLM model generation started. Max new tokens=256
-2026-09-25 11:04:52,424 | INFO | LLM generation completed. Generated tokens=91 | duration=2.496s
-2026-09-25 11:04:52,424 | INFO | Knowledge Base LLM generation completed. Response characters=481 | duration=2.4967s
-2026-09-25 11:04:52,424 | INFO | Answer generated successfully. Characters=481
-2026-09-25 11:04:52,424 | INFO | Cache write started.
-2026-09-25 11:04:52,424 | INFO | Cache write started. Business ID=Mukund Upadhyay | Course IDs=['jee_2022']
-2026-09-25 11:04:52,425 | INFO | Ensuring cache collection exists: cache_mukund_upadhyay
-2026-09-25 11:04:52,425 | INFO | Checking Qdrant collection: cache_mukund_upadhyay
-2026-09-25 11:04:52,441 | INFO | Qdrant collection already exists.: cache_mukund_upadhyay
-2026-09-25 11:04:52,441 | INFO | Cache collection ready: cache_mukund_upadhyay
-2026-09-25 11:04:52,441 | INFO | Cache Qdrant write started. Collection=cache_mukund_upadhyay
-2026-09-25 11:04:52,460 | INFO | Cache Qdrant write completed successfully. Collection=cache_mukund_upadhyay
-2026-09-25 11:04:52,460 | INFO | Cache write completed successfully.
-2026-09-25 11:04:52,460 | INFO | Cache write completed. duration=0.0353s
-2026-09-25 11:04:52,460 | INFO | Query completed successfully. total=2.5894s
-2026-09-25 11:04:52,461 | INFO | [89825fcd-eabf-48b8-9378-55295d289740] KB query service completed. Duration=2.5896 seconds
-2026-09-25 11:04:52,461 | INFO | [89825fcd-eabf-48b8-9378-55295d289740] Question answered successfully.
-2026-09-25 11:04:52,461 | INFO | [89825fcd-eabf-48b8-9378-55295d289740] API query request completed. Total duration=2.5903 seconds
-2026-09-25 11:04:52,461 | INFO | [89825fcd-eabf-48b8-9378-55295d289740] Request completed: POST /llm/kb/query | status=200 | duration=2.592s
-2026-09-25 11:05:23,364 | INFO | [cc2033f9-45ca-4362-865e-d327585d31da] Request started: POST /llm/kb/query
-2026-09-25 11:05:23,367 | INFO | [cc2033f9-45ca-4362-865e-d327585d31da] Question received.
-2026-09-25 11:05:23,367 | INFO | [cc2033f9-45ca-4362-865e-d327585d31da] Knowledge Base query started. Business ID=Mukund Upadhyay | Course IDs=['jee_2022']
-2026-09-25 11:05:23,367 | INFO | [cc2033f9-45ca-4362-865e-d327585d31da] Query validation started.
-2026-09-25 11:05:23,367 | INFO | [cc2033f9-45ca-4362-865e-d327585d31da] Query validation completed.
-2026-09-25 11:05:23,367 | INFO | [cc2033f9-45ca-4362-865e-d327585d31da] Query validation duration: 0.0003 seconds
-2026-09-25 11:05:23,367 | INFO | [cc2033f9-45ca-4362-865e-d327585d31da] KB query service started.
-2026-09-25 11:05:23,367 | INFO | Received query: Explain the term PASTORALISM
-2026-09-25 11:05:23,368 | INFO | Query processing started. Business ID=Mukund Upadhyay | Course IDs=['jee_2022']
-2026-09-25 11:05:23,368 | INFO | Query embedding generation started.
-2026-09-25 11:05:23,378 | INFO | Query embedding generation completed. Dimensions=384 | duration=0.0108s
-2026-09-25 11:05:23,378 | INFO | Cache lookup started.
-2026-09-25 11:05:23,378 | INFO | Cache search started. Business ID=Mukund Upadhyay | Course IDs=['jee_2022']
-2026-09-25 11:05:23,379 | INFO | Ensuring cache collection exists: cache_mukund_upadhyay
-2026-09-25 11:05:23,379 | INFO | Checking Qdrant collection: cache_mukund_upadhyay
-2026-09-25 11:05:23,384 | INFO | Qdrant collection already exists.: cache_mukund_upadhyay
-2026-09-25 11:05:23,385 | INFO | Cache collection ready: cache_mukund_upadhyay
-2026-09-25 11:05:23,385 | INFO | Cache Qdrant search started. Collection=cache_mukund_upadhyay | limit=1
-2026-09-25 11:05:23,408 | INFO | Cache Qdrant search completed. Collection=cache_mukund_upadhyay | results=1
-2026-09-25 11:05:23,408 | INFO | Cache similarity score: 0.931 | threshold=0.850
-2026-09-25 11:05:23,408 | INFO | Cache hit. Similarity=0.931
-2026-09-25 11:05:23,408 | INFO | Cache hit. Returning cached answer.
-2026-09-25 11:05:23,408 | INFO | Cache lookup completed. duration=0.0288s
-2026-09-25 11:05:23,408 | INFO | Query completed successfully from cache. total=0.0406s
-2026-09-25 11:05:23,409 | INFO | [cc2033f9-45ca-4362-865e-d327585d31da] KB query service completed. Duration=0.0409 seconds
-2026-09-25 11:05:23,409 | INFO | [cc2033f9-45ca-4362-865e-d327585d31da] Question answered successfully.
-2026-09-25 11:05:23,409 | INFO | [cc2033f9-45ca-4362-865e-d327585d31da] API query request completed. Total duration=0.0421 seconds
-2026-09-25 11:05:23,410 | INFO | [cc2033f9-45ca-4362-865e-d327585d31da] Request completed: POST /llm/kb/query | status=200 | duration=0.045s
-2026-09-25 11:05:43,823 | INFO | FastAPI application shutdown completed
-2026-09-25 11:05:45,761 | INFO | CK AI Agent application stopped
+2026-09-26 12:09:51,239 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-26 12:09:51,945 | INFO | Qdrant client initialized successfully.
+2026-09-26 12:10:06,968 | INFO | FastAPI application configured successfully
+2026-09-26 12:10:06,969 | INFO | Starting CK AI Agent application
+2026-09-26 12:10:06,970 | INFO | Server configuration: host=0.0.0.0, port=8000, reload=True
+2026-09-26 12:10:08,809 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-26 12:10:09,450 | INFO | Qdrant client initialized successfully.
+2026-09-26 12:10:29,829 | INFO | FastAPI application configured successfully
+2026-09-26 12:10:29,992 | INFO | FastAPI application startup initiated
+2026-09-26 12:11:53,255 | INFO | [c2fb4883-11e7-447a-bf38-58feae0e13da] Request started: GET /docs
+2026-09-26 12:11:53,256 | INFO | [c2fb4883-11e7-447a-bf38-58feae0e13da] Request completed: GET /docs | status=200 | duration=0.001s
+2026-09-26 12:11:53,358 | INFO | [e8250a8c-6501-4532-a606-e392e2cb3b64] Request started: GET /openapi.json
+2026-09-26 12:11:53,386 | INFO | [e8250a8c-6501-4532-a606-e392e2cb3b64] Request completed: GET /openapi.json | status=200 | duration=0.029s
+2026-09-26 12:12:44,634 | INFO | [81f0e312-f779-41a7-a779-2a5a684ce792] Request started: POST /llm/kb/query
+2026-09-26 12:12:44,644 | INFO | [81f0e312-f779-41a7-a779-2a5a684ce792] Question received.
+2026-09-26 12:12:44,647 | INFO | [81f0e312-f779-41a7-a779-2a5a684ce792] Knowledge Base query started. Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
+2026-09-26 12:12:44,650 | INFO | [81f0e312-f779-41a7-a779-2a5a684ce792] Query validation started.
+2026-09-26 12:12:44,651 | INFO | [81f0e312-f779-41a7-a779-2a5a684ce792] Query validation completed.
+2026-09-26 12:12:44,656 | INFO | [81f0e312-f779-41a7-a779-2a5a684ce792] Query validation duration: 0.0062 seconds
+2026-09-26 12:12:44,659 | INFO | [81f0e312-f779-41a7-a779-2a5a684ce792] Query job creation started.
+2026-09-26 12:12:44,665 | INFO | Query job created. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:12:44,727 | INFO | Query job started. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:12:44,746 | INFO | [81f0e312-f779-41a7-a779-2a5a684ce792] Query job created successfully. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:12:44,749 | INFO | [81f0e312-f779-41a7-a779-2a5a684ce792] Waiting for query job result. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:12:46,536 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-26 12:12:47,120 | INFO | Qdrant client initialized successfully.
+2026-09-26 12:12:55,463 | INFO | FastAPI application configured successfully
+2026-09-26 12:12:55,464 | INFO | Received query: Explain Nomadic Herding
+2026-09-26 12:12:55,464 | INFO | Query processing started. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
+2026-09-26 12:12:55,464 | INFO | Query embedding started. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:12:55,465 | INFO | Embedding model initialization started. Model=sentence-transformers/all-MiniLM-L6-v2
+2026-09-26 12:12:59,861 | INFO | Embedding model initialized successfully. Model=sentence-transformers/all-MiniLM-L6-v2
+2026-09-26 12:13:01,594 | INFO | Query embedding completed. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:13:01,596 | INFO | Query embedding generation completed. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e Dimensions=384 | duration=6.1314s
+2026-09-26 12:13:01,597 | INFO | Cache lookup started. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:13:01,597 | INFO | Cache search started. Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
+2026-09-26 12:13:01,598 | INFO | Ensuring cache collection exists: cache_mukund_upadhyay
+2026-09-26 12:13:01,598 | INFO | Checking Qdrant collection: cache_mukund_upadhyay
+2026-09-26 12:13:01,634 | INFO | Qdrant collection already exists.: cache_mukund_upadhyay
+2026-09-26 12:13:01,634 | INFO | Cache collection ready: cache_mukund_upadhyay
+2026-09-26 12:13:01,635 | INFO | Cache Qdrant search started. Collection=cache_mukund_upadhyay | limit=1
+2026-09-26 12:13:01,654 | INFO | Cache Qdrant search completed. Collection=cache_mukund_upadhyay | results=0
+2026-09-26 12:13:01,655 | INFO | Cache miss. No similar question found.
+2026-09-26 12:13:01,655 | INFO | Cache miss. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:13:01,655 | INFO | Cache lookup completed. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e duration=0.0587s
+2026-09-26 12:13:01,656 | INFO | Qdrant search started. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:13:01,656 | INFO | Qdrant retrieval started. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e Limit=5
+2026-09-26 12:13:01,657 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-09-26 12:13:01,660 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-09-26 12:13:01,691 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-09-26 12:13:01,692 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-09-26 12:13:01,692 | INFO | Qdrant semantic search started. Collection=kb_mukund_upadhyay | courses=['ncert_2022'] | limit=5 | score_threshold=0.5
+2026-09-26 12:13:01,703 | INFO | Retrieved %d chunks.: 4
+2026-09-26 12:13:01,705 | INFO | Qdrant semantic search scores: [0.7501, 0.6788, 0.5852, 0.5299]
+2026-09-26 12:13:01,706 | INFO | Qdrant search completed. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e chunks=4
+2026-09-26 12:13:01,706 | INFO | Qdrant retrieval completed. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e duration=0.0501s
+2026-09-26 12:13:01,707 | INFO | Retrieved 4 chunk(s).
+2026-09-26 12:13:01,708 | INFO | [73d24d90-5bab-41f7-887f-80aee0c9189e] [RETRIEVAL] Chunk 1 | score=0.7501 | source=Geography_compressed.pdf | page=24
+2026-09-26 12:13:01,709 | INFO | [73d24d90-5bab-41f7-887f-80aee0c9189e] [RETRIEVAL] Chunk 2 | score=0.6788 | source=Geography_compressed.pdf | page=24
+2026-09-26 12:13:01,709 | INFO | [73d24d90-5bab-41f7-887f-80aee0c9189e] [RETRIEVAL] Chunk 3 | score=0.5852 | source=Geography_compressed.pdf | page=24
+2026-09-26 12:13:01,710 | INFO | [73d24d90-5bab-41f7-887f-80aee0c9189e] [RETRIEVAL] Chunk 4 | score=0.5299 | source=Geography_compressed.pdf | page=24
+2026-09-26 12:13:01,715 | INFO | Top matching source: Geography_compressed.pdf
+2026-09-26 12:13:01,716 | INFO | Context construction started. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:13:01,718 | INFO | Context building started. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e Chunks=4
+2026-09-26 12:13:01,721 | INFO | Context construction completed. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:13:01,722 | INFO | Context building completed. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e Characters=2285 | duration=0.0055s
+2026-09-26 12:13:01,723 | INFO | [73d24d90-5bab-41f7-887f-80aee0c9189e] Prompt building started.
+2026-09-26 12:13:01,724 | INFO | [73d24d90-5bab-41f7-887f-80aee0c9189e] Prompt building completed. Characters=4006 | duration=0.0007s
+2026-09-26 12:13:01,725 | INFO | LLM generation started. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:13:01,729 | INFO | Knowledge Base LLM generation started. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:13:01,732 | INFO | Local LLM initialization started. Model=LFM2-1.2B-RAG | device=cuda
+2026-09-26 12:13:01,735 | INFO | Loading tokenizer for local LLM 'LFM2-1.2B-RAG'.
+2026-09-26 12:13:02,125 | INFO | Tokenizer loaded successfully.
+2026-09-26 12:13:02,126 | INFO | Loading local LLM model 'LFM2-1.2B-RAG'.
+2026-09-26 12:13:06,091 | INFO | Local LLM model loaded successfully.
+2026-09-26 12:13:06,093 | INFO | Local LLM 'LFM2-1.2B-RAG' initialized successfully on cuda.
+2026-09-26 12:13:06,094 | INFO | LLM generation started. Model=LFM2-1.2B-RAG | device=cuda
+2026-09-26 12:13:06,125 | INFO | LLM input prepared. Tokens=934
+2026-09-26 12:13:06,126 | INFO | LLM model generation started. Max new tokens=256
+2026-09-26 12:13:09,840 | INFO | LLM generation completed. Generated tokens=71 | duration=3.747s
+2026-09-26 12:13:09,840 | INFO | LLM generation completed. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:13:09,841 | INFO | Knowledge Base LLM generation completed. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e Response characters=418 | duration=8.1162s
+2026-09-26 12:13:09,841 | INFO | [73d24d90-5bab-41f7-887f-80aee0c9189e] Answer generated successfully. Characters=418
+2026-09-26 12:13:09,841 | INFO | Cache write started. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:13:09,841 | INFO | Cache write started. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:13:09,841 | INFO | Cache write started. Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
+2026-09-26 12:13:09,841 | INFO | Ensuring cache collection exists: cache_mukund_upadhyay
+2026-09-26 12:13:09,841 | INFO | Checking Qdrant collection: cache_mukund_upadhyay
+2026-09-26 12:13:09,859 | INFO | Qdrant collection already exists.: cache_mukund_upadhyay
+2026-09-26 12:13:09,859 | INFO | Cache collection ready: cache_mukund_upadhyay
+2026-09-26 12:13:09,860 | INFO | Cache Qdrant write started. Collection=cache_mukund_upadhyay
+2026-09-26 12:13:09,885 | INFO | Cache Qdrant write completed successfully. Collection=cache_mukund_upadhyay
+2026-09-26 12:13:09,885 | INFO | Cache write completed successfully.
+2026-09-26 12:13:09,885 | INFO | Cache write completed. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:13:09,886 | INFO | Cache write completed. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e duration=0.0442s
+2026-09-26 12:13:09,886 | INFO | Query completed successfully. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e total=14.4216s
+2026-09-26 12:13:09,887 | INFO | Query job completed. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e
+2026-09-26 12:13:09,888 | INFO | [81f0e312-f779-41a7-a779-2a5a684ce792] Question answered successfully.
+2026-09-26 12:13:09,888 | INFO | [81f0e312-f779-41a7-a779-2a5a684ce792] API query request completed. job_id=73d24d90-5bab-41f7-887f-80aee0c9189e Total duration=25.2439 seconds
+2026-09-26 12:13:09,889 | INFO | [81f0e312-f779-41a7-a779-2a5a684ce792] Request completed: POST /llm/kb/query | status=200 | duration=25.255s
+2026-09-26 12:13:34,316 | INFO | [467f4fea-7b2b-4552-80a8-4e76bf331b33] Request started: POST /llm/kb/query
+2026-09-26 12:13:34,318 | INFO | [467f4fea-7b2b-4552-80a8-4e76bf331b33] Question received.
+2026-09-26 12:13:34,319 | INFO | [467f4fea-7b2b-4552-80a8-4e76bf331b33] Knowledge Base query started. Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
+2026-09-26 12:13:34,319 | INFO | [467f4fea-7b2b-4552-80a8-4e76bf331b33] Query validation started.
+2026-09-26 12:13:34,319 | INFO | [467f4fea-7b2b-4552-80a8-4e76bf331b33] Query validation completed.
+2026-09-26 12:13:34,319 | INFO | [467f4fea-7b2b-4552-80a8-4e76bf331b33] Query validation duration: 0.0007 seconds
+2026-09-26 12:13:34,319 | INFO | [467f4fea-7b2b-4552-80a8-4e76bf331b33] Query job creation started.
+2026-09-26 12:13:34,322 | INFO | Query job created. job_id=d4ce541a-e2e7-4fd5-b496-f0f177776cf8
+2026-09-26 12:13:34,349 | INFO | Query job started. job_id=d4ce541a-e2e7-4fd5-b496-f0f177776cf8
+2026-09-26 12:13:34,364 | INFO | [467f4fea-7b2b-4552-80a8-4e76bf331b33] Query job created successfully. job_id=d4ce541a-e2e7-4fd5-b496-f0f177776cf8
+2026-09-26 12:13:34,365 | INFO | [467f4fea-7b2b-4552-80a8-4e76bf331b33] Waiting for query job result. job_id=d4ce541a-e2e7-4fd5-b496-f0f177776cf8
+2026-09-26 12:13:35,925 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-09-26 12:13:36,514 | INFO | Qdrant client initialized successfully.
+2026-09-26 12:13:44,169 | INFO | FastAPI application configured successfully
+2026-09-26 12:13:44,170 | INFO | Received query: What does the term: Nomadic Herding mean??
+2026-09-26 12:13:44,170 | INFO | Query processing started. job_id=d4ce541a-e2e7-4fd5-b496-f0f177776cf8 Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
+2026-09-26 12:13:44,170 | INFO | Query embedding started. job_id=d4ce541a-e2e7-4fd5-b496-f0f177776cf8
+2026-09-26 12:13:44,170 | INFO | Embedding model initialization started. Model=sentence-transformers/all-MiniLM-L6-v2
+2026-09-26 12:13:48,227 | INFO | Embedding model initialized successfully. Model=sentence-transformers/all-MiniLM-L6-v2
+2026-09-26 12:13:48,995 | INFO | Query embedding completed. job_id=d4ce541a-e2e7-4fd5-b496-f0f177776cf8
+2026-09-26 12:13:48,995 | INFO | Query embedding generation completed. job_id=d4ce541a-e2e7-4fd5-b496-f0f177776cf8 Dimensions=384 | duration=4.8253s
+2026-09-26 12:13:48,995 | INFO | Cache lookup started. job_id=d4ce541a-e2e7-4fd5-b496-f0f177776cf8
+2026-09-26 12:13:48,996 | INFO | Cache search started. Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
+2026-09-26 12:13:48,996 | INFO | Ensuring cache collection exists: cache_mukund_upadhyay
+2026-09-26 12:13:48,996 | INFO | Checking Qdrant collection: cache_mukund_upadhyay
+2026-09-26 12:13:49,014 | INFO | Qdrant collection already exists.: cache_mukund_upadhyay
+2026-09-26 12:13:49,014 | INFO | Cache collection ready: cache_mukund_upadhyay
+2026-09-26 12:13:49,014 | INFO | Cache Qdrant search started. Collection=cache_mukund_upadhyay | limit=1
+2026-09-26 12:13:49,051 | INFO | Cache Qdrant search completed. Collection=cache_mukund_upadhyay | results=1
+2026-09-26 12:13:49,051 | INFO | Cache similarity score: 0.875 | threshold=0.850
+2026-09-26 12:13:49,052 | INFO | Cache hit. Similarity=0.875
+2026-09-26 12:13:49,052 | INFO | Cache hit. job_id=d4ce541a-e2e7-4fd5-b496-f0f177776cf8
+2026-09-26 12:13:49,053 | INFO | Cache lookup completed. job_id=d4ce541a-e2e7-4fd5-b496-f0f177776cf8 duration=0.0571s
+2026-09-26 12:13:49,053 | INFO | Query completed successfully from cache. job_id=d4ce541a-e2e7-4fd5-b496-f0f177776cf8 total=4.8834s
+2026-09-26 12:13:49,055 | INFO | Query job completed. job_id=d4ce541a-e2e7-4fd5-b496-f0f177776cf8
+2026-09-26 12:13:49,055 | INFO | [467f4fea-7b2b-4552-80a8-4e76bf331b33] Question answered successfully.
+2026-09-26 12:13:49,056 | INFO | [467f4fea-7b2b-4552-80a8-4e76bf331b33] API query request completed. job_id=d4ce541a-e2e7-4fd5-b496-f0f177776cf8 Total duration=14.7374 seconds
+2026-09-26 12:13:49,057 | INFO | [467f4fea-7b2b-4552-80a8-4e76bf331b33] Request completed: POST /llm/kb/query | status=200 | duration=14.741s
