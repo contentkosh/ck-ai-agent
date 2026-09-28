@@ -52,8 +52,6 @@ CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", 50))
 
 # FILE STORAGE
 UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "uploads")
-DEFAULT_MAX_FILE_SIZE = 150 * 1024 * 1024
-MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE", DEFAULT_MAX_FILE_SIZE))
 
 # LOGGING
 LOG_FILE_PATH = os.getenv("LOG_FILE_PATH", "logs/application.log")

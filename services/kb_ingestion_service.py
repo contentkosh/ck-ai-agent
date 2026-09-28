@@ -1,5 +1,5 @@
 import uuid
-from typing import Any, TypedDict
+from typing import TypedDict
 
 from fastapi import UploadFile
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -19,7 +19,6 @@ from configuration.constants import (
     FILE_PROCESSING_STARTED_LOG,
     FILE_SAVE_LOG,
     GENERATED_VECTORS_LOG,
-    KB_INGESTION_COMPLETED_LOG,
     KB_INGESTION_FAILED_LOG,
     KB_INGESTION_STARTED_LOG,
     METADATA_BUSINESS_ID,
@@ -39,7 +38,6 @@ from configuration.constants import (
     PAGE_READ_FAILED_LOG,
     PAGES_EXTRACTED_LOG,
     PDF_READ_FAILED_LOG,
-    SUCCESS_STATUS,
 )
 
 from configuration.error_constants import (
@@ -48,7 +46,11 @@ from configuration.error_constants import (
     DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE,
 )
 from dto.document_metadata_dto import DocumentMetadataDto
-from dto.file_response_dto import UploadedDocumentDto, UploadedDocumentsResponse
+from dto.file_response_dto import (
+    UploadedDocumentDto,
+    UploadedDocumentErrorDto,
+    UploadedDocumentsResponse,
+)
 from dto.processed_document_dto import ProcessedDocumentDto
 from exceptions.contentkosh_exception import ContentKoshException
 from exceptions.document_exception import (
@@ -517,71 +519,37 @@ def ingest_documents(
     files: list[UploadFile],
     business_id: str,
     course_ids: list[str],
-) -> dict[str, Any]:
+) -> UploadedDocumentsResponse:
     validate_upload(files)
 
-    try:
-        logger.info(
-            KB_INGESTION_STARTED_LOG,
-        )
-        logger.info(
-            "Ingestion request details. Files=%d | business_id=%s | course_ids=%s",
-            len(files),
-            business_id,
-            course_ids,
-        )
+    logger.info(KB_INGESTION_STARTED_LOG)
+    logger.info(
+        "Ingestion request details. Files=%d | business_id=%s | course_ids=%s",
+        len(files),
+        business_id,
+        course_ids,
+    )
 
-        documents: list[UploadedDocumentDto] = []
-        total_chunks = 0
+    documents: list[UploadedDocumentDto] = []
+    errors: list[UploadedDocumentErrorDto] = []
+    total_chunks = 0
 
-        for file in files:
-            logger.info(
-                FILE_PROCESSING_STARTED_LOG,
-                file.filename,
-            )
+    for file in files:
+        filename = file.filename
+        saved_file_path = None
+        pdf = None
 
+        logger.info(FILE_PROCESSING_STARTED_LOG, filename)
+
+        try:
             pdf, saved_file_path = read_pdf(file)
 
-            try:
-                document = process_document(
-                    pdf=pdf,
-                    filename=file.filename,
-                    business_id=business_id,
-                    course_ids=course_ids,
-                )
-            finally:
-                try:
-                    stream = getattr(
-                        pdf,
-                        "stream",
-                        None,
-                    )
-
-                    if stream is not None and not stream.closed:
-                        stream.close()
-                        logger.info(
-                            "PDF stream closed: %s",
-                            file.filename,
-                        )
-                except Exception:
-                    logger.exception(
-                        "Failed to close PDF stream: %s",
-                        file.filename,
-                    )
-
-                del pdf
-
-                try:
-                    delete_saved_file(saved_file_path)
-                    logger.info(
-                        "Temporary upload file deleted: %s",
-                        file.filename,
-                    )
-                except Exception:
-                    logger.exception(
-                        "Failed to delete temporary upload file: %s",
-                        file.filename,
-                    )
+            document = process_document(
+                pdf=pdf,
+                filename=filename,
+                business_id=business_id,
+                course_ids=course_ids,
+            )
 
             total_chunks += document.chunks
 
@@ -592,39 +560,83 @@ def ingest_documents(
                     document_type=document.metadata.document_type,
                     tag=document.metadata.tag,
                     summary=document.metadata.summary,
-                    source=file.filename,
+                    source=filename,
                 )
             )
 
             logger.info(
                 FILE_PROCESSING_COMPLETED_LOG,
-                file.filename,
+                filename,
             )
 
-        logger.info(
-            KB_INGESTION_COMPLETED_LOG,
-            len(documents),
-            total_chunks,
-        )
+        except Exception as ex:
+            logger.exception(
+                "File processing failed: %s | error=%s",
+                filename,
+                ex,
+            )
 
-        return UploadedDocumentsResponse(
-            status=SUCCESS_STATUS,
-            documents_processed=len(documents),
-            chunks_inserted=total_chunks,
-            documents=documents,
-        )
-    except (
-        EmptyDocumentException,
-        NoReadableTextException,
-        DocumentProcessingException,
-        PDFProcessingException,
-        KnowledgeBaseException,
-        QdrantConnectionException,
-    ):
-        raise
-    except Exception as ex:
-        logger.exception(
-            KB_INGESTION_FAILED_LOG,
-            ex,
-        )
-        raise
+            errors.append(
+                UploadedDocumentErrorDto(
+                    source=filename,
+                    error=str(ex),
+                )
+            )
+
+        finally:
+            if pdf is not None:
+                try:
+                    stream = getattr(pdf, "stream", None)
+
+                    if stream is not None and not stream.closed:
+                        stream.close()
+                        logger.info(
+                            "PDF stream closed: %s",
+                            filename,
+                        )
+                except Exception:
+                    logger.exception(
+                        "Failed to close PDF stream: %s",
+                        filename,
+                    )
+
+                del pdf
+
+            if saved_file_path is not None:
+                try:
+                    delete_saved_file(saved_file_path)
+                    logger.info(
+                        "Temporary upload file deleted: %s",
+                        filename,
+                    )
+                except Exception:
+                    logger.exception(
+                        "Failed to delete temporary upload file: %s",
+                        filename,
+                    )
+
+    documents_processed = len(documents)
+    documents_failed = len(errors)
+
+    if documents_failed == 0:
+        status = "success"
+        message = "All documents got in successfully."
+    elif documents_processed == 0:
+        status = "failed"
+        message = "No documents could be uploaded."
+    else:
+        status = "partial_success"
+        message = "Some documents were uploaded successfully."
+
+    response = UploadedDocumentsResponse(
+        status=status,
+        message=message,
+        documents_processed=documents_processed,
+        documents_failed=documents_failed,
+        chunks_inserted=total_chunks,
+        documents=documents,
+        errors=errors,
+    )
+
+    logger.info("Knowledge Base ingestion response: %s", response.model_dump())
+    return response

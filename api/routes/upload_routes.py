@@ -8,7 +8,6 @@ from common.logger import logger
 from configuration.constants import (
     UPLOAD_DOCUMENTS_ROUTE,
     UPLOAD_REQUEST_LOG,
-    UPLOAD_SUCCESS_LOG,
 )
 from configuration.context import RequestContext
 from services.kb_ingestion_service import ingest_documents
@@ -38,21 +37,15 @@ def upload_documents(
     files: Annotated[List[UploadFile], File(...)],
     context: RequestContext = Depends(get_request_context),
 ):
-    logger.info(
-        UPLOAD_REQUEST_LOG,
-        context.request_id,
-    )
+    logger.info(UPLOAD_REQUEST_LOG, context.request_id)
 
     try:
         logger.info(
-            "[%s] Upload validation started. Files=%d",
-            context.request_id,
-            len(files),
+            "[%s] Upload validation started. Files=%d", context.request_id, len(files)
         )
         validate_upload(files)
         logger.info(
-            "[%s] Upload validation completed successfully.",
-            context.request_id,
+            "[%s] Upload validation completed successfully.", context.request_id
         )
 
         normalized_course_ids = normalize_course_ids(course_ids)
@@ -63,9 +56,7 @@ def upload_documents(
         )
 
         logger.info(
-            "[%s] Document ingestion started. Files=%d",
-            context.request_id,
-            len(files),
+            "[%s] Document ingestion started. Files=%d", context.request_id, len(files)
         )
         result = ingest_documents(
             files=files,
@@ -73,19 +64,12 @@ def upload_documents(
             course_ids=normalized_course_ids,
         )
 
-        logger.info(
-            UPLOAD_SUCCESS_LOG,
-            context.request_id,
-            len(files),
-        )
+        logger.info("[%s] Upload response: %s", context.request_id, result.model_dump())
 
         return {
             "request_id": context.request_id,
-            "message": result,
+            **result.model_dump(),
         }
     except Exception:
-        logger.exception(
-            "[%s] Upload request failed.",
-            context.request_id,
-        )
+        logger.exception("[%s] Upload request failed.", context.request_id)
         raise
