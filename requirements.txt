@@ -12,3 +12,4 @@ pypdf==6.0.0
 numpy>=1.26.0
 pytest
 pageindex==0.2.10
+pandas==2.2.3

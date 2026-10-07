@@ -30,6 +30,7 @@ from configuration.constants import (
     METADATA_EXTRACTION_STARTED_LOG,
     METADATA_PAGE,
     METADATA_SOURCE,
+    METADATA_SUBJECT_ID,
     METADATA_SUMMARY,
     METADATA_TAG,
     METADATA_TEXT,
@@ -98,6 +99,7 @@ def build_payload(
     page_number: int,
     business_id: str,
     course_ids: list[str],
+    subject_id: str,
 ) -> dict:
     return {
         METADATA_DOCUMENT_ID: document_id,
@@ -110,6 +112,7 @@ def build_payload(
         METADATA_PAGE: page_number,
         METADATA_BUSINESS_ID: business_id,
         METADATA_COURSE_ID: course_ids,
+        METADATA_SUBJECT_ID: subject_id,
     }
 
 
@@ -244,6 +247,7 @@ def process_embedding_batch(
     document_id: str,
     business_id: str,
     course_ids: list[str],
+    subject_id: str,
 ) -> int:
     chunk_texts = [chunk for chunk, _ in chunk_batch]
 
@@ -290,6 +294,7 @@ def process_embedding_batch(
                     page_number=page_number,
                     business_id=business_id,
                     course_ids=course_ids,
+                    subject_id=subject_id,
                 ),
             )
         )
@@ -335,6 +340,7 @@ def build_vectors(
     document_id: str,
     business_id: str,
     course_ids: list[str],
+    subject_id: str,
 ) -> int:
     splitter = get_text_splitter()
     chunk_batch: list[tuple[str, int]] = []
@@ -385,6 +391,7 @@ def build_vectors(
                         document_id=document_id,
                         business_id=business_id,
                         course_ids=course_ids,
+                        subject_id=subject_id,
                     )
                     chunk_batch.clear()
 
@@ -396,6 +403,7 @@ def build_vectors(
                 document_id=document_id,
                 business_id=business_id,
                 course_ids=course_ids,
+                subject_id=subject_id,
             )
     except Exception as ex:
         logger.exception(
@@ -442,6 +450,7 @@ def process_document(
     filename: str,
     business_id: str,
     course_ids: list[str],
+    subject_id: str,
 ) -> ProcessedDocumentDto:
     try:
         logger.info(
@@ -484,6 +493,7 @@ def process_document(
             document_id=document_id,
             business_id=business_id,
             course_ids=course_ids,
+            subject_id=subject_id,
         )
 
         logger.info(
@@ -519,27 +529,29 @@ def ingest_documents(
     files: list[UploadFile],
     business_id: str,
     course_ids: list[str],
+    subject_ids: list[str],
 ) -> UploadedDocumentsResponse:
-    validate_upload(files)
 
     logger.info(KB_INGESTION_STARTED_LOG)
     logger.info(
-        "Ingestion request details. Files=%d | business_id=%s | course_ids=%s",
+        "Ingestion request details. Files=%d | business_id=%s | course_ids=%s | subject_ids=%s",
         len(files),
         business_id,
         course_ids,
+        subject_ids,
     )
 
     documents: list[UploadedDocumentDto] = []
     errors: list[UploadedDocumentErrorDto] = []
     total_chunks = 0
 
-    for file in files:
+    for file, subject_id in zip(files, subject_ids):
         filename = file.filename
         saved_file_path = None
         pdf = None
 
         logger.info(FILE_PROCESSING_STARTED_LOG, filename)
+        logger.info("[%s] Processing document with subject_id=%s", filename, subject_id)
 
         try:
             pdf, saved_file_path = read_pdf(file)
@@ -549,6 +561,7 @@ def ingest_documents(
                 filename=filename,
                 business_id=business_id,
                 course_ids=course_ids,
+                subject_id=subject_id,
             )
 
             total_chunks += document.chunks

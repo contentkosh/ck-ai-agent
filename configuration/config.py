@@ -63,7 +63,7 @@ MAX_TAG_LENGTH = int(os.getenv("MAX_TAG_LENGTH", 100))
 
 # CACHE
 CACHE_ENABLED = os.getenv("CACHE_ENABLED", "True").lower() == "true"
-CACHE_SIMILARITY_THRESHOLD = float(os.getenv("CACHE_SIMILARITY_THRESHOLD", 0.85))
+CACHE_SIMILARITY_THRESHOLD = float(os.getenv("CACHE_SIMILARITY_THRESHOLD", 0.70))
 CACHE_TOP_K = int(os.getenv("CACHE_TOP_K", 1))
 MAX_CACHE_SIZE = int(os.getenv("MAX_CACHE_SIZE", 5000))
 
