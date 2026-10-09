@@ -1,470 +1,511 @@
-2026-10-07 12:57:57,327 | INFO | Initializing Qdrant client. host=localhost port=6333
-2026-10-07 12:57:58,765 | INFO | Qdrant client initialized successfully.
-2026-10-07 12:58:19,424 | INFO | FastAPI application configured successfully
-2026-10-07 12:58:19,424 | INFO | Starting CK AI Agent application
-2026-10-07 12:58:19,424 | INFO | Server configuration: host=0.0.0.0, port=8000, reload=True
-2026-10-07 12:58:20,453 | INFO | Initializing Qdrant client. host=localhost port=6333
-2026-10-07 12:58:20,822 | INFO | Qdrant client initialized successfully.
-2026-10-07 12:58:34,238 | INFO | FastAPI application configured successfully
-2026-10-07 12:58:34,338 | INFO | FastAPI application startup initiated
-2026-10-07 12:58:41,241 | INFO | [e88d98ea-d928-4e16-ac35-8eb9a1e6ab41] Request started: GET /docs
-2026-10-07 12:58:41,244 | INFO | [e88d98ea-d928-4e16-ac35-8eb9a1e6ab41] Request completed: GET /docs | status=200 | duration=0.003s
-2026-10-07 12:58:41,918 | INFO | [468cf639-d23c-4701-b4af-a7434f85db99] Request started: GET /openapi.json
-2026-10-07 12:58:41,991 | INFO | [468cf639-d23c-4701-b4af-a7434f85db99] Request completed: GET /openapi.json | status=200 | duration=0.073s
-2026-10-07 12:59:29,212 | INFO | [0621461c-0e52-410d-8d1a-1bb792f14644] Request started: GET /llm/files
-2026-10-07 12:59:29,235 | INFO | [0621461c-0e52-410d-8d1a-1bb792f14644] Fetching uploaded documents.
-2026-10-07 12:59:29,247 | INFO | [0621461c-0e52-410d-8d1a-1bb792f14644] Uploaded document retrieval started. Business ID=Mukund Upadhyay | Course IDs=['mejkfn']
-2026-10-07 12:59:29,277 | INFO | Fetching uploaded documents started. Business ID=Mukund Upadhyay | Course IDs=['mejkfn']
-2026-10-07 12:59:29,309 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 12:59:29,334 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 12:59:29,405 | INFO | Qdrant collection does not exist. Creation started: kb_mukund_upadhyay
-2026-10-07 12:59:29,658 | INFO | Qdrant collection created successfully.: kb_mukund_upadhyay
-2026-10-07 12:59:29,661 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 12:59:29,662 | INFO | Fetching uploaded documents. Collection=kb_mukund_upadhyay | courses=['mejkfn']
-2026-10-07 12:59:29,663 | INFO | Qdrant scroll started. Collection=kb_mukund_upadhyay
-2026-10-07 12:59:29,708 | INFO | Qdrant scroll completed. Collection=kb_mukund_upadhyay | records=0 | pages=1
-2026-10-07 12:59:29,710 | INFO | Found %d document(s).: 0
-2026-10-07 12:59:29,711 | INFO | Fetching uploaded documents completed. Business ID=Mukund Upadhyay | Documents=0
-2026-10-07 12:59:29,712 | INFO | [0621461c-0e52-410d-8d1a-1bb792f14644] Uploaded document retrieval completed. Documents=0
-2026-10-07 12:59:29,714 | INFO | [0621461c-0e52-410d-8d1a-1bb792f14644] Retrieved 0 uploaded document(s).
-2026-10-07 12:59:29,717 | INFO | [0621461c-0e52-410d-8d1a-1bb792f14644] Request completed: GET /llm/files | status=200 | duration=0.505s
-2026-10-07 13:10:49,232 | INFO | [712f1c70-b90b-4a22-8e79-2b56550dd54b] Request started: POST /llm/upload
-2026-10-07 13:10:49,365 | INFO | [712f1c70-b90b-4a22-8e79-2b56550dd54b] Upload request received.
-2026-10-07 13:10:49,365 | INFO | [712f1c70-b90b-4a22-8e79-2b56550dd54b] Upload validation started. Files=1
-2026-10-07 13:10:49,365 | INFO | [712f1c70-b90b-4a22-8e79-2b56550dd54b] Upload validation completed successfully.
-2026-10-07 13:10:49,367 | INFO | [712f1c70-b90b-4a22-8e79-2b56550dd54b] Course IDs normalized. Count=1
-2026-10-07 13:10:49,368 | INFO | [712f1c70-b90b-4a22-8e79-2b56550dd54b] Subject IDs received. Count=1
-2026-10-07 13:10:49,370 | INFO | [712f1c70-b90b-4a22-8e79-2b56550dd54b] Document ingestion started. Files=1
-2026-10-07 13:10:49,371 | INFO | Knowledge Base ingestion started.
-2026-10-07 13:10:49,373 | INFO | Ingestion request details. Files=1 | business_id=Mukund Upadhyay | course_ids=['ncert_2022'] | subject_ids=['Geography']
-2026-10-07 13:10:49,374 | INFO | Processing file: Geography_compressed.pdf
-2026-10-07 13:10:49,374 | INFO | [Geography_compressed.pdf] Processing document with subject_id=Geography
-2026-10-07 13:10:49,377 | INFO | PDF processing started: Geography_compressed.pdf
-2026-10-07 13:10:49,378 | INFO | Saving file: Geography_compressed.pdf
-2026-10-07 13:10:49,379 | INFO | File save started. Filename=Geography_compressed.pdf | Destination=uploads\c99480ec23b44e5b82000afd84899a15_Geography_compressed.pdf
-2026-10-07 13:10:49,396 | INFO | File save completed successfully. Filename=Geography_compressed.pdf | Destination=uploads\c99480ec23b44e5b82000afd84899a15_Geography_compressed.pdf
-2026-10-07 13:10:49,397 | INFO | PDF saved successfully: Geography_compressed.pdf
-2026-10-07 13:10:49,398 | INFO | PDF validation completed successfully: Geography_compressed.pdf
-2026-10-07 13:10:49,475 | INFO | PDF loaded successfully: Geography_compressed.pdf | pages=76
-2026-10-07 13:10:49,475 | INFO | Processing document: Geography_compressed.pdf
-2026-10-07 13:10:49,477 | INFO | Document ID generated. File=Geography_compressed.pdf | document_id=b174964e-cd3b-4877-acc0-7a133eaeec6f
-2026-10-07 13:10:49,477 | INFO | PDF text extraction started. Pages=76
-2026-10-07 13:10:49,514 | INFO | Page 1 text extracted. Characters=2372
-2026-10-07 13:10:49,549 | INFO | Page 2 text extracted. Characters=3880
-2026-10-07 13:10:49,581 | INFO | Page 3 text extracted. Characters=4361
-2026-10-07 13:10:49,611 | INFO | Page 4 text extracted. Characters=3435
-2026-10-07 13:10:49,644 | INFO | Page 5 text extracted. Characters=1933
-2026-10-07 13:10:49,666 | INFO | Page 6 text extracted. Characters=1660
-2026-10-07 13:10:51,666 | INFO | Page 7 text extracted. Characters=1920
-2026-10-07 13:10:51,686 | INFO | Page 8 text extracted. Characters=3512
-2026-10-07 13:10:51,707 | INFO | Page 9 text extracted. Characters=3204
-2026-10-07 13:10:51,722 | INFO | Page 10 text extracted. Characters=3104
-2026-10-07 13:10:51,733 | INFO | Page 11 text extracted. Characters=2607
-2026-10-07 13:10:51,738 | INFO | Page 12 text extracted. Characters=1000
-2026-10-07 13:10:51,750 | INFO | Page 13 text extracted. Characters=1802
-2026-10-07 13:10:51,759 | INFO | Page 14 text extracted. Characters=2768
-2026-10-07 13:10:51,764 | INFO | Page 15 text extracted. Characters=584
-2026-10-07 13:10:51,772 | INFO | Page 16 text extracted. Characters=3982
-2026-10-07 13:10:51,783 | INFO | Page 17 text extracted. Characters=3114
-2026-10-07 13:10:51,799 | INFO | Page 18 text extracted. Characters=3634
-2026-10-07 13:10:51,810 | INFO | Page 19 text extracted. Characters=2687
-2026-10-07 13:10:51,818 | INFO | Page 20 text extracted. Characters=2604
-2026-10-07 13:10:51,822 | INFO | Page 21 text extracted. Characters=340
-2026-10-07 13:10:51,834 | INFO | Page 22 text extracted. Characters=1870
-2026-10-07 13:10:51,841 | INFO | Page 23 text extracted. Characters=1368
-2026-10-07 13:10:51,850 | INFO | Page 24 text extracted. Characters=3549
-2026-10-07 13:10:51,855 | INFO | Page 25 text extracted. Characters=1304
-2026-10-07 13:10:51,859 | INFO | Page 26 text extracted. Characters=151
-2026-10-07 13:10:51,866 | INFO | Page 27 text extracted. Characters=2696
-2026-10-07 13:10:51,873 | INFO | Page 28 text extracted. Characters=2407
-2026-10-07 13:10:51,878 | INFO | Page 29 text extracted. Characters=1553
-2026-10-07 13:10:51,882 | INFO | Page 30 text extracted. Characters=1019
-2026-10-07 13:10:51,886 | INFO | Page 31 text extracted. Characters=2059
-2026-10-07 13:10:51,895 | INFO | Page 32 text extracted. Characters=2800
-2026-10-07 13:10:52,125 | INFO | Page 33 text extracted. Characters=1546
-2026-10-07 13:10:52,132 | INFO | Page 34 text extracted. Characters=1700
-2026-10-07 13:10:52,136 | INFO | Page 35 text extracted. Characters=456
-2026-10-07 13:10:52,145 | INFO | Page 36 text extracted. Characters=2012
-2026-10-07 13:10:52,158 | INFO | Page 37 text extracted. Characters=4089
-2026-10-07 13:10:52,168 | INFO | Page 38 text extracted. Characters=3313
-2026-10-07 13:10:52,172 | INFO | Page 39 text extracted. Characters=86
-2026-10-07 13:10:52,179 | INFO | Page 40 text extracted. Characters=2326
-2026-10-07 13:10:52,187 | INFO | Page 41 text extracted. Characters=2477
-2026-10-07 13:10:52,196 | INFO | Page 42 text extracted. Characters=3116
-2026-10-07 13:10:52,204 | INFO | Page 43 text extracted. Characters=1613
-2026-10-07 13:10:52,208 | INFO | Page 44 text extracted. Characters=844
-2026-10-07 13:10:52,216 | INFO | Page 45 text extracted. Characters=2192
-2026-10-07 13:10:52,586 | INFO | Page 46 text extracted. Characters=75
-2026-10-07 13:10:52,595 | INFO | Page 47 text extracted. Characters=2780
-2026-10-07 13:10:52,607 | INFO | Page 48 text extracted. Characters=3445
-2026-10-07 13:10:52,616 | INFO | Page 49 text extracted. Characters=3375
-2026-10-07 13:10:52,624 | INFO | Page 50 text extracted. Characters=3231
-2026-10-07 13:10:52,634 | INFO | Page 51 text extracted. Characters=4045
-2026-10-07 13:10:52,641 | INFO | Page 52 text extracted. Characters=2047
-2026-10-07 13:10:52,647 | INFO | Page 53 text extracted. Characters=1850
-2026-10-07 13:10:52,656 | INFO | Page 54 text extracted. Characters=2077
-2026-10-07 13:10:52,670 | INFO | Page 55 text extracted. Characters=3050
-2026-10-07 13:10:52,677 | INFO | Page 56 text extracted. Characters=2895
-2026-10-07 13:10:52,687 | INFO | Page 57 text extracted. Characters=3325
-2026-10-07 13:10:52,694 | INFO | Page 58 text extracted. Characters=3604
-2026-10-07 13:10:52,700 | INFO | Page 59 text extracted. Characters=2111
-2026-10-07 13:10:52,706 | INFO | Page 60 text extracted. Characters=1381
-2026-10-07 13:10:52,713 | INFO | Page 61 text extracted. Characters=2251
-2026-10-07 13:10:52,721 | INFO | Page 62 text extracted. Characters=1991
-2026-10-07 13:10:52,726 | INFO | Page 63 text extracted. Characters=2713
-2026-10-07 13:10:52,733 | INFO | Page 64 text extracted. Characters=1661
-2026-10-07 13:10:52,739 | INFO | Page 65 text extracted. Characters=2442
-2026-10-07 13:10:52,746 | INFO | Page 66 text extracted. Characters=3445
-2026-10-07 13:10:52,752 | INFO | Page 67 text extracted. Characters=1606
-2026-10-07 13:10:52,763 | INFO | Page 68 text extracted. Characters=3379
-2026-10-07 13:10:52,768 | INFO | Page 69 text extracted. Characters=1411
-2026-10-07 13:10:52,776 | INFO | Page 70 text extracted. Characters=1549
-2026-10-07 13:10:52,788 | INFO | Page 71 text extracted. Characters=3211
-2026-10-07 13:10:52,797 | INFO | Page 72 text extracted. Characters=3559
-2026-10-07 13:10:52,804 | INFO | Page 73 text extracted. Characters=2417
-2026-10-07 13:10:52,814 | INFO | Page 74 text extracted. Characters=4136
-2026-10-07 13:10:52,824 | INFO | Page 75 text extracted. Characters=2434
-2026-10-07 13:10:52,832 | INFO | Page 76 text extracted. Characters=2036
-2026-10-07 13:10:52,832 | INFO | Extracted 76 pages.
-2026-10-07 13:10:52,832 | INFO | PDF text extraction completed. Characters=180656
-2026-10-07 13:10:52,833 | INFO | Readable document text confirmed. File=Geography_compressed.pdf
-2026-10-07 13:10:52,833 | INFO | Extracting document metadata.
-2026-10-07 13:10:52,833 | INFO | Extracting document metadata.
-2026-10-07 13:10:52,833 | INFO | Metadata extraction input prepared. Characters=10615
-2026-10-07 13:10:52,833 | INFO | Metadata extraction prompt prepared. Characters=6555
-2026-10-07 13:10:52,833 | INFO | Metadata LLM invocation started.
-2026-10-07 13:10:52,865 | INFO | Local LLM initialization started. Model=LFM2-1.2B-RAG | device=cuda
-2026-10-07 13:10:52,865 | INFO | Loading tokenizer for local LLM 'LFM2-1.2B-RAG'.
-2026-10-07 13:10:53,045 | INFO | Tokenizer loaded successfully.
-2026-10-07 13:10:53,045 | INFO | Loading local LLM model 'LFM2-1.2B-RAG'.
-2026-10-07 13:10:57,148 | INFO | Local LLM model loaded successfully.
-2026-10-07 13:10:57,149 | INFO | Local LLM 'LFM2-1.2B-RAG' initialized successfully on cuda.
-2026-10-07 13:10:57,149 | INFO | LLM generation started. Model=LFM2-1.2B-RAG | device=cuda
-2026-10-07 13:10:57,168 | INFO | LLM input prepared. Tokens=1513
-2026-10-07 13:10:57,168 | INFO | LLM model generation started. Max new tokens=256
-2026-10-07 13:11:01,557 | INFO | LLM generation completed. Generated tokens=67 | duration=4.408s
-2026-10-07 13:11:01,558 | INFO | Metadata LLM invocation completed. Response characters=300
-2026-10-07 13:11:01,558 | INFO | Metadata JSON parsing started.
-2026-10-07 13:11:01,559 | INFO | Metadata JSON parsing completed. Fields=4
-2026-10-07 13:11:01,559 | INFO | Metadata extracted successfully.
-2026-10-07 13:11:01,559 | INFO | Metadata extracted successfully.
-2026-10-07 13:11:01,559 | INFO | Document metadata processing completed. File=Geography_compressed.pdf
-2026-10-07 13:11:01,560 | INFO | Chunking started. File=Geography_compressed.pdf | pages=76 | chunk_size=500 | overlap=50
-2026-10-07 13:11:01,560 | INFO | Page 1 generated 6 chunks.
-2026-10-07 13:11:01,561 | INFO | Page 2 generated 9 chunks.
-2026-10-07 13:11:01,561 | INFO | Page 3 generated 10 chunks.
-2026-10-07 13:11:01,561 | INFO | Page 4 generated 8 chunks.
-2026-10-07 13:11:01,561 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:01,562 | INFO | Embedding model initialization started. Model=sentence-transformers/all-MiniLM-L6-v2
-2026-10-07 13:11:05,669 | INFO | Embedding model initialized successfully. Model=sentence-transformers/all-MiniLM-L6-v2
-2026-10-07 13:11:05,955 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:05,956 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:05,956 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 13:11:05,956 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 13:11:05,979 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-10-07 13:11:05,979 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 13:11:05,979 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-10-07 13:11:06,063 | INFO | Inserted 32 vectors.
-2026-10-07 13:11:06,063 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,064 | INFO | Page 5 generated 5 chunks.
-2026-10-07 13:11:06,064 | INFO | Page 6 generated 4 chunks.
-2026-10-07 13:11:06,064 | INFO | Page 7 generated 5 chunks.
-2026-10-07 13:11:06,066 | INFO | Page 8 generated 9 chunks.
-2026-10-07 13:11:06,066 | INFO | Page 9 generated 8 chunks.
-2026-10-07 13:11:06,066 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,095 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,096 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,096 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 13:11:06,096 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 13:11:06,104 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-10-07 13:11:06,104 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 13:11:06,105 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-10-07 13:11:06,132 | INFO | Inserted 32 vectors.
-2026-10-07 13:11:06,133 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,133 | INFO | Page 10 generated 8 chunks.
-2026-10-07 13:11:06,134 | INFO | Page 11 generated 6 chunks.
-2026-10-07 13:11:06,134 | INFO | Page 12 generated 3 chunks.
-2026-10-07 13:11:06,134 | INFO | Page 13 generated 5 chunks.
-2026-10-07 13:11:06,135 | INFO | Page 14 generated 7 chunks.
-2026-10-07 13:11:06,135 | INFO | Page 15 generated 2 chunks.
-2026-10-07 13:11:06,135 | INFO | Page 16 generated 9 chunks.
-2026-10-07 13:11:06,135 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,165 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,166 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,167 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 13:11:06,167 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 13:11:06,195 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-10-07 13:11:06,196 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 13:11:06,196 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-10-07 13:11:06,240 | INFO | Inserted 32 vectors.
-2026-10-07 13:11:06,240 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,241 | INFO | Page 17 generated 7 chunks.
-2026-10-07 13:11:06,241 | INFO | Page 18 generated 9 chunks.
-2026-10-07 13:11:06,241 | INFO | Page 19 generated 7 chunks.
-2026-10-07 13:11:06,242 | INFO | Page 20 generated 6 chunks.
-2026-10-07 13:11:06,242 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,273 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,274 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,275 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 13:11:06,275 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 13:11:06,288 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-10-07 13:11:06,289 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 13:11:06,289 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-10-07 13:11:06,372 | INFO | Inserted 32 vectors.
-2026-10-07 13:11:06,373 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,373 | INFO | Page 21 generated 1 chunks.
-2026-10-07 13:11:06,373 | INFO | Page 22 generated 5 chunks.
-2026-10-07 13:11:06,374 | INFO | Page 23 generated 4 chunks.
-2026-10-07 13:11:06,374 | INFO | Page 24 generated 8 chunks.
-2026-10-07 13:11:06,374 | INFO | Page 25 generated 3 chunks.
-2026-10-07 13:11:06,374 | INFO | Page 26 generated 1 chunks.
-2026-10-07 13:11:06,375 | INFO | Page 27 generated 7 chunks.
-2026-10-07 13:11:06,375 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,398 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,399 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,399 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 13:11:06,399 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 13:11:06,404 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-10-07 13:11:06,405 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 13:11:06,405 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-10-07 13:11:06,469 | INFO | Inserted 32 vectors.
-2026-10-07 13:11:06,469 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,470 | INFO | Page 28 generated 6 chunks.
-2026-10-07 13:11:06,470 | INFO | Page 29 generated 4 chunks.
-2026-10-07 13:11:06,471 | INFO | Page 30 generated 3 chunks.
-2026-10-07 13:11:06,471 | INFO | Page 31 generated 5 chunks.
-2026-10-07 13:11:06,471 | INFO | Page 32 generated 7 chunks.
-2026-10-07 13:11:06,471 | INFO | Page 33 generated 4 chunks.
-2026-10-07 13:11:06,471 | INFO | Page 34 generated 4 chunks.
-2026-10-07 13:11:06,471 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,495 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,496 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,496 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 13:11:06,496 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 13:11:06,502 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-10-07 13:11:06,503 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 13:11:06,503 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-10-07 13:11:06,547 | INFO | Inserted 32 vectors.
-2026-10-07 13:11:06,547 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,547 | INFO | Page 35 generated 1 chunks.
-2026-10-07 13:11:06,548 | INFO | Page 36 generated 5 chunks.
-2026-10-07 13:11:06,548 | INFO | Page 37 generated 10 chunks.
-2026-10-07 13:11:06,548 | INFO | Page 38 generated 8 chunks.
-2026-10-07 13:11:06,548 | INFO | Page 39 generated 1 chunks.
-2026-10-07 13:11:06,549 | INFO | Page 40 generated 6 chunks.
-2026-10-07 13:11:06,549 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,575 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,576 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,576 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 13:11:06,576 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 13:11:06,599 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-10-07 13:11:06,599 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 13:11:06,600 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-10-07 13:11:06,640 | INFO | Inserted 32 vectors.
-2026-10-07 13:11:06,641 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,641 | INFO | Page 41 generated 6 chunks.
-2026-10-07 13:11:06,641 | INFO | Page 42 generated 8 chunks.
-2026-10-07 13:11:06,641 | INFO | Page 43 generated 4 chunks.
-2026-10-07 13:11:06,642 | INFO | Page 44 generated 2 chunks.
-2026-10-07 13:11:06,642 | INFO | Page 45 generated 5 chunks.
-2026-10-07 13:11:06,642 | INFO | Page 46 generated 1 chunks.
-2026-10-07 13:11:06,642 | INFO | Page 47 generated 7 chunks.
-2026-10-07 13:11:06,642 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,666 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,668 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,668 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 13:11:06,669 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 13:11:06,691 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-10-07 13:11:06,691 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 13:11:06,692 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-10-07 13:11:06,735 | INFO | Inserted 32 vectors.
-2026-10-07 13:11:06,735 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,736 | INFO | Page 48 generated 8 chunks.
-2026-10-07 13:11:06,736 | INFO | Page 49 generated 8 chunks.
-2026-10-07 13:11:06,738 | INFO | Page 50 generated 8 chunks.
-2026-10-07 13:11:06,738 | INFO | Page 51 generated 10 chunks.
-2026-10-07 13:11:06,738 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,766 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,768 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,768 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 13:11:06,768 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 13:11:06,784 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-10-07 13:11:06,784 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 13:11:06,784 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-10-07 13:11:06,825 | INFO | Inserted 32 vectors.
-2026-10-07 13:11:06,825 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,826 | INFO | Page 52 generated 5 chunks.
-2026-10-07 13:11:06,826 | INFO | Page 53 generated 4 chunks.
-2026-10-07 13:11:06,826 | INFO | Page 54 generated 5 chunks.
-2026-10-07 13:11:06,826 | INFO | Page 55 generated 7 chunks.
-2026-10-07 13:11:06,826 | INFO | Page 56 generated 7 chunks.
-2026-10-07 13:11:06,826 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,855 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,856 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,856 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 13:11:06,856 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 13:11:06,878 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-10-07 13:11:06,878 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 13:11:06,878 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-10-07 13:11:06,961 | INFO | Inserted 32 vectors.
-2026-10-07 13:11:06,961 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,962 | INFO | Page 57 generated 8 chunks.
-2026-10-07 13:11:06,962 | INFO | Page 58 generated 9 chunks.
-2026-10-07 13:11:06,962 | INFO | Page 59 generated 5 chunks.
-2026-10-07 13:11:06,962 | INFO | Page 60 generated 3 chunks.
-2026-10-07 13:11:06,963 | INFO | Page 61 generated 6 chunks.
-2026-10-07 13:11:06,963 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,988 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:06,989 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:06,989 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 13:11:06,989 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 13:11:07,017 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-10-07 13:11:07,018 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 13:11:07,018 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-10-07 13:11:07,060 | INFO | Inserted 32 vectors.
-2026-10-07 13:11:07,060 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:07,061 | INFO | Page 62 generated 5 chunks.
-2026-10-07 13:11:07,061 | INFO | Page 63 generated 6 chunks.
-2026-10-07 13:11:07,061 | INFO | Page 64 generated 4 chunks.
-2026-10-07 13:11:07,062 | INFO | Page 65 generated 6 chunks.
-2026-10-07 13:11:07,062 | INFO | Page 66 generated 8 chunks.
-2026-10-07 13:11:07,062 | INFO | Page 67 generated 4 chunks.
-2026-10-07 13:11:07,062 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:07,086 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:07,087 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:07,087 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 13:11:07,087 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 13:11:07,109 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-10-07 13:11:07,110 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 13:11:07,110 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-10-07 13:11:07,152 | INFO | Inserted 32 vectors.
-2026-10-07 13:11:07,152 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:07,153 | INFO | Page 68 generated 8 chunks.
-2026-10-07 13:11:07,153 | INFO | Page 69 generated 3 chunks.
-2026-10-07 13:11:07,153 | INFO | Page 70 generated 4 chunks.
-2026-10-07 13:11:07,153 | INFO | Page 71 generated 8 chunks.
-2026-10-07 13:11:07,154 | INFO | Page 72 generated 8 chunks.
-2026-10-07 13:11:07,154 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:07,181 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
-2026-10-07 13:11:07,183 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:07,183 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 13:11:07,183 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 13:11:07,189 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-10-07 13:11:07,189 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 13:11:07,189 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
-2026-10-07 13:11:07,216 | INFO | Inserted 32 vectors.
-2026-10-07 13:11:07,216 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
-2026-10-07 13:11:07,216 | INFO | Page 73 generated 6 chunks.
-2026-10-07 13:11:07,218 | INFO | Page 74 generated 10 chunks.
-2026-10-07 13:11:07,218 | INFO | Page 75 generated 6 chunks.
-2026-10-07 13:11:07,218 | INFO | Page 76 generated 5 chunks.
-2026-10-07 13:11:07,219 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=27
-2026-10-07 13:11:07,241 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=27
-2026-10-07 13:11:07,241 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=27
-2026-10-07 13:11:07,242 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 13:11:07,242 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 13:11:07,262 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-10-07 13:11:07,264 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 13:11:07,264 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=27
-2026-10-07 13:11:07,347 | INFO | Inserted 27 vectors.
-2026-10-07 13:11:07,348 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=27
-2026-10-07 13:11:07,348 | INFO | Generated 443 vectors.
-2026-10-07 13:11:07,349 | INFO | Chunking and vector generation completed. File=Geography_compressed.pdf | chunks=443
-2026-10-07 13:11:07,349 | INFO | Processed Geography_compressed.pdf (443 chunks).
-2026-10-07 13:11:07,349 | INFO | Successfully processed 'Geography_compressed.pdf'.
-2026-10-07 13:11:07,350 | INFO | PDF stream closed: Geography_compressed.pdf
-2026-10-07 13:11:07,351 | INFO | Temporary file cleanup started: uploads\c99480ec23b44e5b82000afd84899a15_Geography_compressed.pdf
-2026-10-07 13:11:07,353 | INFO | Temporary file deleted successfully: uploads\c99480ec23b44e5b82000afd84899a15_Geography_compressed.pdf
-2026-10-07 13:11:07,353 | INFO | Temporary upload file deleted: Geography_compressed.pdf
-2026-10-07 13:11:07,353 | INFO | Knowledge Base ingestion response: {'status': 'success', 'message': 'All documents got in successfully.', 'documents_processed': 1, 'documents_failed': 0, 'chunks_inserted': 443, 'documents': [{'title': 'Human Geography', 'document_type': 'Unit-I Unit-IUnit-I Unit-I', 'document_id': 'b174964e-cd3b-4877-acc0-7a133eaeec6f', 'tag': 'human_geography', 'summary': "Human Geography explores the relationship between human societies and the Earth's surface, focusing on the interplay between physical and socio-cultural environments.", 'source': 'Geography_compressed.pdf'}], 'errors': []}
-2026-10-07 13:11:07,354 | INFO | [712f1c70-b90b-4a22-8e79-2b56550dd54b] Upload response: {'status': 'success', 'message': 'All documents got in successfully.', 'documents_processed': 1, 'documents_failed': 0, 'chunks_inserted': 443, 'documents': [{'title': 'Human Geography', 'document_type': 'Unit-I Unit-IUnit-I Unit-I', 'document_id': 'b174964e-cd3b-4877-acc0-7a133eaeec6f', 'tag': 'human_geography', 'summary': "Human Geography explores the relationship between human societies and the Earth's surface, focusing on the interplay between physical and socio-cultural environments.", 'source': 'Geography_compressed.pdf'}], 'errors': []}
-2026-10-07 13:11:07,357 | INFO | [712f1c70-b90b-4a22-8e79-2b56550dd54b] Request completed: POST /llm/upload | status=200 | duration=18.125s
-2026-10-07 13:12:02,237 | INFO | [32ebc2bd-6695-4ff0-b251-a6c91950d916] Request started: POST /llm/kb/query
-2026-10-07 13:12:02,242 | INFO | [32ebc2bd-6695-4ff0-b251-a6c91950d916] Question received.
-2026-10-07 13:12:02,245 | INFO | [32ebc2bd-6695-4ff0-b251-a6c91950d916] Knowledge Base query started. Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
-2026-10-07 13:12:02,247 | INFO | [32ebc2bd-6695-4ff0-b251-a6c91950d916] Query validation started.
-2026-10-07 13:12:02,248 | INFO | [32ebc2bd-6695-4ff0-b251-a6c91950d916] Query validation completed.
-2026-10-07 13:12:02,253 | INFO | [32ebc2bd-6695-4ff0-b251-a6c91950d916] Query validation duration: 0.0051 seconds
-2026-10-07 13:12:02,254 | INFO | [32ebc2bd-6695-4ff0-b251-a6c91950d916] Query job creation started.
-2026-10-07 13:12:02,256 | INFO | Query job created. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:02,290 | INFO | Query job started. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:02,294 | INFO | [32ebc2bd-6695-4ff0-b251-a6c91950d916] Query job created successfully. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:02,303 | INFO | [32ebc2bd-6695-4ff0-b251-a6c91950d916] Waiting for query job result. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:04,175 | INFO | Initializing Qdrant client. host=localhost port=6333
-2026-10-07 13:12:04,829 | INFO | Qdrant client initialized successfully.
-2026-10-07 13:12:12,600 | INFO | FastAPI application configured successfully
-2026-10-07 13:12:12,600 | INFO | Received query: What is the digital divide??
-2026-10-07 13:12:12,600 | INFO | Query processing started. job_id=579634cc-b0a0-4801-800f-f3f724c85feb Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
-2026-10-07 13:12:12,601 | INFO | Query embedding started. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:12,601 | INFO | Embedding model initialization started. Model=sentence-transformers/all-MiniLM-L6-v2
-2026-10-07 13:12:16,532 | INFO | Embedding model initialized successfully. Model=sentence-transformers/all-MiniLM-L6-v2
-2026-10-07 13:12:17,515 | INFO | Query embedding completed. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:17,515 | INFO | Query embedding generation completed. job_id=579634cc-b0a0-4801-800f-f3f724c85feb Dimensions=384 | duration=4.9149s
-2026-10-07 13:12:17,516 | INFO | Cache lookup started. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:17,516 | INFO | Cache search started. Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
-2026-10-07 13:12:17,516 | INFO | Ensuring cache collection exists: cache_mukund_upadhyay
-2026-10-07 13:12:17,516 | INFO | Checking Qdrant collection: cache_mukund_upadhyay
-2026-10-07 13:12:17,541 | INFO | Qdrant collection does not exist. Creation started: cache_mukund_upadhyay
-2026-10-07 13:12:17,710 | INFO | Qdrant collection created successfully.: cache_mukund_upadhyay
-2026-10-07 13:12:17,710 | INFO | Cache collection ready: cache_mukund_upadhyay
-2026-10-07 13:12:17,710 | INFO | Cache Qdrant search started. Collection=cache_mukund_upadhyay | limit=1
-2026-10-07 13:12:17,771 | INFO | Cache Qdrant search completed. Collection=cache_mukund_upadhyay | results=0
-2026-10-07 13:12:17,771 | INFO | Cache miss. No similar question found.
-2026-10-07 13:12:17,772 | INFO | Cache miss. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:17,773 | INFO | Cache lookup completed. job_id=579634cc-b0a0-4801-800f-f3f724c85feb duration=0.2560s
-2026-10-07 13:12:17,773 | INFO | Qdrant search started. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:17,775 | INFO | Qdrant retrieval started. job_id=579634cc-b0a0-4801-800f-f3f724c85feb Limit=5
-2026-10-07 13:12:17,776 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
-2026-10-07 13:12:17,778 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
-2026-10-07 13:12:17,795 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
-2026-10-07 13:12:17,796 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
-2026-10-07 13:12:17,797 | INFO | Qdrant semantic search started. Collection=kb_mukund_upadhyay | courses=['ncert_2022'] | limit=5 | score_threshold=0.5
-2026-10-07 13:12:17,840 | INFO | Retrieved %d chunks.: 3
-2026-10-07 13:12:17,840 | INFO | Qdrant semantic search scores: [0.614, 0.5715, 0.5027]
-2026-10-07 13:12:17,841 | INFO | Qdrant search completed. job_id=579634cc-b0a0-4801-800f-f3f724c85feb chunks=3
-2026-10-07 13:12:17,842 | INFO | Qdrant retrieval completed. job_id=579634cc-b0a0-4801-800f-f3f724c85feb duration=0.0664s
-2026-10-07 13:12:17,842 | INFO | Retrieved 3 chunk(s).
-2026-10-07 13:12:17,844 | INFO | [579634cc-b0a0-4801-800f-f3f724c85feb] [RETRIEVAL] Chunk 1 | score=0.6140 | source=Geography_compressed.pdf | page=53
-2026-10-07 13:12:17,844 | INFO | [579634cc-b0a0-4801-800f-f3f724c85feb] [RETRIEVAL] Chunk 2 | score=0.5715 | source=Geography_compressed.pdf | page=52
-2026-10-07 13:12:17,845 | INFO | [579634cc-b0a0-4801-800f-f3f724c85feb] [RETRIEVAL] Chunk 3 | score=0.5027 | source=Geography_compressed.pdf | page=52
-2026-10-07 13:12:17,846 | INFO | Top matching source: Geography_compressed.pdf
-2026-10-07 13:12:17,846 | INFO | Context construction started. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:17,847 | INFO | Context building started. job_id=579634cc-b0a0-4801-800f-f3f724c85feb Chunks=3
-2026-10-07 13:12:17,847 | INFO | Context construction completed. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:17,848 | INFO | Context building completed. job_id=579634cc-b0a0-4801-800f-f3f724c85feb Characters=1618 | duration=0.0015s
-2026-10-07 13:12:17,848 | INFO | [579634cc-b0a0-4801-800f-f3f724c85feb] Prompt building started.
-2026-10-07 13:12:17,848 | INFO | [579634cc-b0a0-4801-800f-f3f724c85feb] Prompt building completed. Characters=3344 | duration=0.0006s
-2026-10-07 13:12:17,849 | INFO | LLM generation started. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:17,849 | INFO | Knowledge Base LLM generation started. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:17,850 | INFO | Local LLM initialization started. Model=LFM2-1.2B-RAG | device=cuda
-2026-10-07 13:12:17,851 | INFO | Loading tokenizer for local LLM 'LFM2-1.2B-RAG'.
-2026-10-07 13:12:18,039 | INFO | Tokenizer loaded successfully.
-2026-10-07 13:12:18,039 | INFO | Loading local LLM model 'LFM2-1.2B-RAG'.
-2026-10-07 13:12:19,816 | INFO | Local LLM model loaded successfully.
-2026-10-07 13:12:19,818 | INFO | Local LLM 'LFM2-1.2B-RAG' initialized successfully on cuda.
-2026-10-07 13:12:19,818 | INFO | LLM generation started. Model=LFM2-1.2B-RAG | device=cuda
-2026-10-07 13:12:19,829 | INFO | LLM input prepared. Tokens=776
-2026-10-07 13:12:19,829 | INFO | LLM model generation started. Max new tokens=256
-2026-10-07 13:12:23,522 | INFO | LLM generation completed. Generated tokens=103 | duration=3.705s
-2026-10-07 13:12:23,522 | INFO | LLM generation completed. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:23,523 | INFO | Knowledge Base LLM generation completed. job_id=579634cc-b0a0-4801-800f-f3f724c85feb Response characters=607 | duration=5.6733s
-2026-10-07 13:12:23,523 | INFO | [579634cc-b0a0-4801-800f-f3f724c85feb] Answer generated successfully. Characters=607
-2026-10-07 13:12:23,523 | INFO | Cache write started. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:23,523 | INFO | Cache write started. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:23,523 | INFO | Cache write started. Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
-2026-10-07 13:12:23,523 | INFO | Ensuring cache collection exists: cache_mukund_upadhyay
-2026-10-07 13:12:23,523 | INFO | Checking Qdrant collection: cache_mukund_upadhyay
-2026-10-07 13:12:23,540 | INFO | Qdrant collection already exists.: cache_mukund_upadhyay
-2026-10-07 13:12:23,541 | INFO | Cache collection ready: cache_mukund_upadhyay
-2026-10-07 13:12:23,541 | INFO | Cache Qdrant write started. Collection=cache_mukund_upadhyay
-2026-10-07 13:12:23,571 | INFO | Cache Qdrant write completed successfully. Collection=cache_mukund_upadhyay
-2026-10-07 13:12:23,572 | INFO | Cache write completed successfully.
-2026-10-07 13:12:23,573 | INFO | Cache write completed. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:23,573 | INFO | Cache write completed. job_id=579634cc-b0a0-4801-800f-f3f724c85feb duration=0.0501s
-2026-10-07 13:12:23,573 | INFO | Query completed successfully. job_id=579634cc-b0a0-4801-800f-f3f724c85feb total=10.9731s
-2026-10-07 13:12:23,576 | INFO | Query job completed. job_id=579634cc-b0a0-4801-800f-f3f724c85feb
-2026-10-07 13:12:23,576 | INFO | [32ebc2bd-6695-4ff0-b251-a6c91950d916] Question answered successfully.
-2026-10-07 13:12:23,576 | INFO | [32ebc2bd-6695-4ff0-b251-a6c91950d916] API query request completed. job_id=579634cc-b0a0-4801-800f-f3f724c85feb Total duration=21.3357 seconds
-2026-10-07 13:12:23,579 | INFO | [32ebc2bd-6695-4ff0-b251-a6c91950d916] Request completed: POST /llm/kb/query | status=200 | duration=21.342s
-2026-10-07 13:12:41,488 | INFO | FastAPI application shutdown completed
-2026-10-07 13:12:45,726 | INFO | CK AI Agent application stopped
+2026-10-09 20:54:13,534 | INFO | FastAPI application shutdown completed
+2026-10-09 20:54:51,490 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-10-09 20:54:52,230 | INFO | Qdrant client initialized successfully.
+2026-10-09 20:55:01,103 | INFO | FastAPI application configured successfully
+2026-10-09 20:55:01,104 | INFO | Starting CK AI Agent application
+2026-10-09 20:55:01,104 | INFO | Server configuration: host=0.0.0.0, port=8000, reload=True
+2026-10-09 20:55:02,777 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-10-09 20:55:03,379 | INFO | Qdrant client initialized successfully.
+2026-10-09 20:55:10,678 | INFO | FastAPI application configured successfully
+2026-10-09 20:55:10,716 | INFO | FastAPI application startup initiated
+2026-10-09 20:55:16,667 | INFO | [d0174ba6-69e6-4343-acef-29dea73acbcc] Request started: GET /docs
+2026-10-09 20:55:16,670 | INFO | [d0174ba6-69e6-4343-acef-29dea73acbcc] Request completed: GET /docs | status=200 | duration=0.003s
+2026-10-09 20:55:17,041 | INFO | [2bd4dc19-eb3f-4fd4-9a60-6d30c51ef850] Request started: GET /openapi.json
+2026-10-09 20:55:17,099 | INFO | [2bd4dc19-eb3f-4fd4-9a60-6d30c51ef850] Request completed: GET /openapi.json | status=200 | duration=0.058s
+2026-10-09 20:56:04,038 | INFO | [e49fcace-58c1-413b-934a-d93793eba094] Request started: POST /llm/upload
+2026-10-09 20:56:04,212 | INFO | [e49fcace-58c1-413b-934a-d93793eba094] Upload request received.
+2026-10-09 20:56:04,212 | INFO | [e49fcace-58c1-413b-934a-d93793eba094] Upload validation started. Files=1
+2026-10-09 20:56:04,212 | INFO | [e49fcace-58c1-413b-934a-d93793eba094] Upload validation completed successfully.
+2026-10-09 20:56:04,214 | INFO | [e49fcace-58c1-413b-934a-d93793eba094] Course IDs normalized. Count=1
+2026-10-09 20:56:04,214 | INFO | [e49fcace-58c1-413b-934a-d93793eba094] Subject IDs received. Count=1
+2026-10-09 20:56:04,215 | INFO | [e49fcace-58c1-413b-934a-d93793eba094] Document ingestion started. Files=1
+2026-10-09 20:56:04,217 | INFO | Knowledge Base ingestion started.
+2026-10-09 20:56:04,218 | INFO | Ingestion request details. Files=1 | business_id=Mukund Upadhyay | course_ids=['ncert_2022'] | subject_ids=['geography']
+2026-10-09 20:56:04,219 | INFO | Processing file: Geography_compressed.pdf
+2026-10-09 20:56:04,219 | INFO | [Geography_compressed.pdf] Processing document with subject_id=geography
+2026-10-09 20:56:04,220 | INFO | PDF processing started: Geography_compressed.pdf
+2026-10-09 20:56:04,220 | INFO | Saving file: Geography_compressed.pdf
+2026-10-09 20:56:04,222 | INFO | File save started. Filename=Geography_compressed.pdf | Destination=uploads\058c31e9fed1414d8f23a065e7a80de0_Geography_compressed.pdf
+2026-10-09 20:56:04,244 | INFO | File save completed successfully. Filename=Geography_compressed.pdf | Destination=uploads\058c31e9fed1414d8f23a065e7a80de0_Geography_compressed.pdf
+2026-10-09 20:56:04,245 | INFO | PDF saved successfully: Geography_compressed.pdf
+2026-10-09 20:56:04,253 | INFO | PDF validation completed successfully: Geography_compressed.pdf
+2026-10-09 20:56:04,327 | INFO | PDF loaded successfully: Geography_compressed.pdf | pages=76
+2026-10-09 20:56:04,328 | INFO | Processing document: Geography_compressed.pdf
+2026-10-09 20:56:04,329 | INFO | Document ID generated. File=Geography_compressed.pdf | document_id=206b5478-8ae2-4ab5-827f-4348283d75e2
+2026-10-09 20:56:04,329 | INFO | PDF text extraction started. Pages=76
+2026-10-09 20:56:04,370 | INFO | Page 1 text extracted. Characters=2372
+2026-10-09 20:56:04,410 | INFO | Page 2 text extracted. Characters=3880
+2026-10-09 20:56:04,467 | INFO | Page 3 text extracted. Characters=4361
+2026-10-09 20:56:04,498 | INFO | Page 4 text extracted. Characters=3435
+2026-10-09 20:56:04,522 | INFO | Page 5 text extracted. Characters=1933
+2026-10-09 20:56:04,545 | INFO | Page 6 text extracted. Characters=1660
+2026-10-09 20:56:06,650 | INFO | Page 7 text extracted. Characters=1920
+2026-10-09 20:56:06,675 | INFO | Page 8 text extracted. Characters=3512
+2026-10-09 20:56:06,696 | INFO | Page 9 text extracted. Characters=3204
+2026-10-09 20:56:06,710 | INFO | Page 10 text extracted. Characters=3104
+2026-10-09 20:56:06,720 | INFO | Page 11 text extracted. Characters=2607
+2026-10-09 20:56:06,725 | INFO | Page 12 text extracted. Characters=1000
+2026-10-09 20:56:06,736 | INFO | Page 13 text extracted. Characters=1802
+2026-10-09 20:56:06,744 | INFO | Page 14 text extracted. Characters=2768
+2026-10-09 20:56:06,751 | INFO | Page 15 text extracted. Characters=584
+2026-10-09 20:56:06,760 | INFO | Page 16 text extracted. Characters=3982
+2026-10-09 20:56:06,770 | INFO | Page 17 text extracted. Characters=3114
+2026-10-09 20:56:06,786 | INFO | Page 18 text extracted. Characters=3634
+2026-10-09 20:56:06,796 | INFO | Page 19 text extracted. Characters=2687
+2026-10-09 20:56:06,806 | INFO | Page 20 text extracted. Characters=2604
+2026-10-09 20:56:06,810 | INFO | Page 21 text extracted. Characters=340
+2026-10-09 20:56:06,820 | INFO | Page 22 text extracted. Characters=1870
+2026-10-09 20:56:06,829 | INFO | Page 23 text extracted. Characters=1368
+2026-10-09 20:56:06,838 | INFO | Page 24 text extracted. Characters=3549
+2026-10-09 20:56:06,844 | INFO | Page 25 text extracted. Characters=1304
+2026-10-09 20:56:06,846 | INFO | Page 26 text extracted. Characters=151
+2026-10-09 20:56:06,856 | INFO | Page 27 text extracted. Characters=2696
+2026-10-09 20:56:06,863 | INFO | Page 28 text extracted. Characters=2407
+2026-10-09 20:56:06,869 | INFO | Page 29 text extracted. Characters=1553
+2026-10-09 20:56:06,874 | INFO | Page 30 text extracted. Characters=1019
+2026-10-09 20:56:06,879 | INFO | Page 31 text extracted. Characters=2059
+2026-10-09 20:56:06,887 | INFO | Page 32 text extracted. Characters=2800
+2026-10-09 20:56:07,122 | INFO | Page 33 text extracted. Characters=1546
+2026-10-09 20:56:07,128 | INFO | Page 34 text extracted. Characters=1700
+2026-10-09 20:56:07,132 | INFO | Page 35 text extracted. Characters=456
+2026-10-09 20:56:07,140 | INFO | Page 36 text extracted. Characters=2012
+2026-10-09 20:56:07,154 | INFO | Page 37 text extracted. Characters=4089
+2026-10-09 20:56:07,163 | INFO | Page 38 text extracted. Characters=3313
+2026-10-09 20:56:07,167 | INFO | Page 39 text extracted. Characters=86
+2026-10-09 20:56:07,173 | INFO | Page 40 text extracted. Characters=2326
+2026-10-09 20:56:07,181 | INFO | Page 41 text extracted. Characters=2477
+2026-10-09 20:56:07,189 | INFO | Page 42 text extracted. Characters=3116
+2026-10-09 20:56:07,196 | INFO | Page 43 text extracted. Characters=1613
+2026-10-09 20:56:07,200 | INFO | Page 44 text extracted. Characters=844
+2026-10-09 20:56:07,209 | INFO | Page 45 text extracted. Characters=2192
+2026-10-09 20:56:07,641 | INFO | Page 46 text extracted. Characters=75
+2026-10-09 20:56:07,650 | INFO | Page 47 text extracted. Characters=2780
+2026-10-09 20:56:07,661 | INFO | Page 48 text extracted. Characters=3445
+2026-10-09 20:56:07,672 | INFO | Page 49 text extracted. Characters=3375
+2026-10-09 20:56:07,679 | INFO | Page 50 text extracted. Characters=3231
+2026-10-09 20:56:07,689 | INFO | Page 51 text extracted. Characters=4045
+2026-10-09 20:56:07,696 | INFO | Page 52 text extracted. Characters=2047
+2026-10-09 20:56:07,702 | INFO | Page 53 text extracted. Characters=1850
+2026-10-09 20:56:07,714 | INFO | Page 54 text extracted. Characters=2077
+2026-10-09 20:56:07,727 | INFO | Page 55 text extracted. Characters=3050
+2026-10-09 20:56:07,734 | INFO | Page 56 text extracted. Characters=2895
+2026-10-09 20:56:07,745 | INFO | Page 57 text extracted. Characters=3325
+2026-10-09 20:56:07,751 | INFO | Page 58 text extracted. Characters=3604
+2026-10-09 20:56:07,758 | INFO | Page 59 text extracted. Characters=2111
+2026-10-09 20:56:07,765 | INFO | Page 60 text extracted. Characters=1381
+2026-10-09 20:56:07,780 | INFO | Page 61 text extracted. Characters=2251
+2026-10-09 20:56:07,794 | INFO | Page 62 text extracted. Characters=1991
+2026-10-09 20:56:07,805 | INFO | Page 63 text extracted. Characters=2713
+2026-10-09 20:56:07,814 | INFO | Page 64 text extracted. Characters=1661
+2026-10-09 20:56:07,824 | INFO | Page 65 text extracted. Characters=2442
+2026-10-09 20:56:07,832 | INFO | Page 66 text extracted. Characters=3445
+2026-10-09 20:56:07,838 | INFO | Page 67 text extracted. Characters=1606
+2026-10-09 20:56:07,849 | INFO | Page 68 text extracted. Characters=3379
+2026-10-09 20:56:07,854 | INFO | Page 69 text extracted. Characters=1411
+2026-10-09 20:56:07,863 | INFO | Page 70 text extracted. Characters=1549
+2026-10-09 20:56:07,871 | INFO | Page 71 text extracted. Characters=3211
+2026-10-09 20:56:07,882 | INFO | Page 72 text extracted. Characters=3559
+2026-10-09 20:56:07,891 | INFO | Page 73 text extracted. Characters=2417
+2026-10-09 20:56:07,902 | INFO | Page 74 text extracted. Characters=4136
+2026-10-09 20:56:07,912 | INFO | Page 75 text extracted. Characters=2434
+2026-10-09 20:56:07,919 | INFO | Page 76 text extracted. Characters=2036
+2026-10-09 20:56:07,920 | INFO | Extracted 76 pages.
+2026-10-09 20:56:07,920 | INFO | PDF text extraction completed. Characters=180656
+2026-10-09 20:56:07,920 | INFO | Readable document text confirmed. File=Geography_compressed.pdf
+2026-10-09 20:56:07,921 | INFO | Extracting document metadata.
+2026-10-09 20:56:07,921 | INFO | Extracting document metadata.
+2026-10-09 20:56:07,921 | INFO | Metadata extraction input prepared. Characters=10615
+2026-10-09 20:56:07,921 | INFO | Metadata extraction prompt prepared. Characters=4847
+2026-10-09 20:56:07,921 | INFO | Metadata LLM invocation started.
+2026-10-09 20:56:07,961 | INFO | Local LLM initialization started. Model=LFM2-1.2B-RAG | device=cuda
+2026-10-09 20:56:07,962 | INFO | Loading tokenizer for local LLM 'LFM2-1.2B-RAG'.
+2026-10-09 20:56:08,136 | INFO | Tokenizer loaded successfully.
+2026-10-09 20:56:08,136 | INFO | Loading local LLM model 'LFM2-1.2B-RAG'.
+2026-10-09 20:56:10,175 | INFO | Local LLM model loaded successfully.
+2026-10-09 20:56:10,176 | INFO | Local LLM 'LFM2-1.2B-RAG' initialized successfully on cuda.
+2026-10-09 20:56:10,176 | INFO | LLM generation started. Model=LFM2-1.2B-RAG | device=cuda
+2026-10-09 20:56:10,191 | INFO | LLM input prepared. Tokens=1132
+2026-10-09 20:56:10,191 | INFO | LLM model generation started. Max new tokens=256
+2026-10-09 20:56:14,314 | INFO | LLM generation completed. Generated tokens=82 | duration=4.137s
+2026-10-09 20:56:14,314 | INFO | Metadata LLM invocation completed. Response characters=418
+2026-10-09 20:56:14,314 | INFO | Metadata JSON parsing started.
+2026-10-09 20:56:14,315 | INFO | Metadata JSON parsing completed. Fields=4
+2026-10-09 20:56:14,315 | INFO | Metadata extracted successfully.
+2026-10-09 20:56:14,315 | INFO | Metadata extracted successfully.
+2026-10-09 20:56:14,315 | INFO | Document metadata processing completed. File=Geography_compressed.pdf
+2026-10-09 20:56:14,315 | INFO | Chunking started. File=Geography_compressed.pdf | pages=76 | chunk_size=500 | overlap=50
+2026-10-09 20:56:14,315 | INFO | Page 1 generated 6 chunks.
+2026-10-09 20:56:14,316 | INFO | Page 2 generated 9 chunks.
+2026-10-09 20:56:14,316 | INFO | Page 3 generated 10 chunks.
+2026-10-09 20:56:14,316 | INFO | Page 4 generated 8 chunks.
+2026-10-09 20:56:14,316 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:14,316 | INFO | OpenRouter embedding client initialization started. Model=liquid/lfm-2.5-embedding-350m:free
+2026-10-09 20:56:14,317 | INFO | OpenRouter embedding client initialized successfully. Model=liquid/lfm-2.5-embedding-350m:free
+2026-10-09 20:56:14,317 | INFO | OpenRouter embedding request started. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:18,212 | INFO | OpenRouter embedding request completed. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:18,214 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:18,215 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:18,216 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:56:18,216 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:56:18,223 | INFO | Qdrant collection does not exist. Creation started: kb_mukund_upadhyay
+2026-10-09 20:56:18,469 | INFO | Qdrant collection created successfully.: kb_mukund_upadhyay
+2026-10-09 20:56:18,470 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:56:18,470 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
+2026-10-09 20:56:18,698 | INFO | Inserted 32 vectors.
+2026-10-09 20:56:18,698 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:18,699 | INFO | Page 5 generated 5 chunks.
+2026-10-09 20:56:18,699 | INFO | Page 6 generated 4 chunks.
+2026-10-09 20:56:18,699 | INFO | Page 7 generated 5 chunks.
+2026-10-09 20:56:18,699 | INFO | Page 8 generated 9 chunks.
+2026-10-09 20:56:18,700 | INFO | Page 9 generated 8 chunks.
+2026-10-09 20:56:18,700 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:18,700 | INFO | OpenRouter embedding request started. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:21,979 | INFO | OpenRouter embedding request completed. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:21,982 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:21,983 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:21,983 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:56:21,983 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:56:21,988 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:56:21,988 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:56:21,988 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
+2026-10-09 20:56:22,061 | INFO | Inserted 32 vectors.
+2026-10-09 20:56:22,061 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:22,062 | INFO | Page 10 generated 8 chunks.
+2026-10-09 20:56:22,062 | INFO | Page 11 generated 6 chunks.
+2026-10-09 20:56:22,062 | INFO | Page 12 generated 3 chunks.
+2026-10-09 20:56:22,062 | INFO | Page 13 generated 5 chunks.
+2026-10-09 20:56:22,062 | INFO | Page 14 generated 7 chunks.
+2026-10-09 20:56:22,062 | INFO | Page 15 generated 2 chunks.
+2026-10-09 20:56:22,063 | INFO | Page 16 generated 9 chunks.
+2026-10-09 20:56:22,063 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:22,063 | INFO | OpenRouter embedding request started. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:25,465 | INFO | OpenRouter embedding request completed. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:25,467 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:25,469 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:25,469 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:56:25,469 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:56:25,476 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:56:25,476 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:56:25,477 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
+2026-10-09 20:56:25,551 | INFO | Inserted 32 vectors.
+2026-10-09 20:56:25,552 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:25,552 | INFO | Page 17 generated 7 chunks.
+2026-10-09 20:56:25,554 | INFO | Page 18 generated 9 chunks.
+2026-10-09 20:56:25,554 | INFO | Page 19 generated 7 chunks.
+2026-10-09 20:56:25,554 | INFO | Page 20 generated 6 chunks.
+2026-10-09 20:56:25,554 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:25,555 | INFO | OpenRouter embedding request started. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:28,592 | INFO | OpenRouter embedding request completed. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:28,593 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:28,594 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:28,594 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:56:28,595 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:56:28,601 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:56:28,602 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:56:28,602 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
+2026-10-09 20:56:28,654 | INFO | Inserted 32 vectors.
+2026-10-09 20:56:28,655 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:28,655 | INFO | Page 21 generated 1 chunks.
+2026-10-09 20:56:28,656 | INFO | Page 22 generated 5 chunks.
+2026-10-09 20:56:28,656 | INFO | Page 23 generated 4 chunks.
+2026-10-09 20:56:28,656 | INFO | Page 24 generated 8 chunks.
+2026-10-09 20:56:28,656 | INFO | Page 25 generated 3 chunks.
+2026-10-09 20:56:28,656 | INFO | Page 26 generated 1 chunks.
+2026-10-09 20:56:28,657 | INFO | Page 27 generated 7 chunks.
+2026-10-09 20:56:28,657 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:28,657 | INFO | OpenRouter embedding request started. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:31,490 | INFO | OpenRouter embedding request completed. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:31,493 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:31,494 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:31,495 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:56:31,495 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:56:31,513 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:56:31,514 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:56:31,514 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
+2026-10-09 20:56:31,578 | INFO | Inserted 32 vectors.
+2026-10-09 20:56:31,578 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:31,579 | INFO | Page 28 generated 6 chunks.
+2026-10-09 20:56:31,579 | INFO | Page 29 generated 4 chunks.
+2026-10-09 20:56:31,579 | INFO | Page 30 generated 3 chunks.
+2026-10-09 20:56:31,581 | INFO | Page 31 generated 5 chunks.
+2026-10-09 20:56:31,581 | INFO | Page 32 generated 7 chunks.
+2026-10-09 20:56:31,581 | INFO | Page 33 generated 4 chunks.
+2026-10-09 20:56:31,582 | INFO | Page 34 generated 4 chunks.
+2026-10-09 20:56:31,582 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:31,582 | INFO | OpenRouter embedding request started. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:34,746 | INFO | OpenRouter embedding request completed. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:34,750 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:34,751 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:34,751 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:56:34,751 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:56:34,757 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:56:34,757 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:56:34,757 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
+2026-10-09 20:56:34,831 | INFO | Inserted 32 vectors.
+2026-10-09 20:56:34,831 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:34,832 | INFO | Page 35 generated 1 chunks.
+2026-10-09 20:56:34,832 | INFO | Page 36 generated 5 chunks.
+2026-10-09 20:56:34,832 | INFO | Page 37 generated 10 chunks.
+2026-10-09 20:56:34,832 | INFO | Page 38 generated 8 chunks.
+2026-10-09 20:56:34,832 | INFO | Page 39 generated 1 chunks.
+2026-10-09 20:56:34,833 | INFO | Page 40 generated 6 chunks.
+2026-10-09 20:56:34,833 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:34,833 | INFO | OpenRouter embedding request started. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:37,342 | INFO | OpenRouter embedding request completed. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:37,343 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:37,344 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:37,345 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:56:37,345 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:56:37,352 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:56:37,352 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:56:37,352 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
+2026-10-09 20:56:37,422 | INFO | Inserted 32 vectors.
+2026-10-09 20:56:37,423 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:37,423 | INFO | Page 41 generated 6 chunks.
+2026-10-09 20:56:37,424 | INFO | Page 42 generated 8 chunks.
+2026-10-09 20:56:37,424 | INFO | Page 43 generated 4 chunks.
+2026-10-09 20:56:37,424 | INFO | Page 44 generated 2 chunks.
+2026-10-09 20:56:37,425 | INFO | Page 45 generated 5 chunks.
+2026-10-09 20:56:37,425 | INFO | Page 46 generated 1 chunks.
+2026-10-09 20:56:37,425 | INFO | Page 47 generated 7 chunks.
+2026-10-09 20:56:37,425 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:37,425 | INFO | OpenRouter embedding request started. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:41,575 | INFO | OpenRouter embedding request completed. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:41,578 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:41,579 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:41,579 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:56:41,579 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:56:41,604 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:56:41,604 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:56:41,605 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
+2026-10-09 20:56:41,685 | INFO | Inserted 32 vectors.
+2026-10-09 20:56:41,685 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:41,686 | INFO | Page 48 generated 8 chunks.
+2026-10-09 20:56:41,686 | INFO | Page 49 generated 8 chunks.
+2026-10-09 20:56:41,687 | INFO | Page 50 generated 8 chunks.
+2026-10-09 20:56:41,687 | INFO | Page 51 generated 10 chunks.
+2026-10-09 20:56:41,688 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:41,688 | INFO | OpenRouter embedding request started. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:44,460 | INFO | OpenRouter embedding request completed. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:44,463 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:44,464 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:44,465 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:56:44,465 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:56:44,469 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:56:44,469 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:56:44,470 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
+2026-10-09 20:56:44,580 | INFO | Inserted 32 vectors.
+2026-10-09 20:56:44,580 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:44,580 | INFO | Page 52 generated 5 chunks.
+2026-10-09 20:56:44,580 | INFO | Page 53 generated 4 chunks.
+2026-10-09 20:56:44,580 | INFO | Page 54 generated 5 chunks.
+2026-10-09 20:56:44,582 | INFO | Page 55 generated 7 chunks.
+2026-10-09 20:56:44,582 | INFO | Page 56 generated 7 chunks.
+2026-10-09 20:56:44,582 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:44,582 | INFO | OpenRouter embedding request started. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:48,539 | INFO | OpenRouter embedding request completed. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:48,543 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:48,546 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:48,547 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:56:48,548 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:56:48,558 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:56:48,558 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:56:48,559 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
+2026-10-09 20:56:48,724 | INFO | Inserted 32 vectors.
+2026-10-09 20:56:48,724 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:48,726 | INFO | Page 57 generated 8 chunks.
+2026-10-09 20:56:48,727 | INFO | Page 58 generated 9 chunks.
+2026-10-09 20:56:48,727 | INFO | Page 59 generated 5 chunks.
+2026-10-09 20:56:48,728 | INFO | Page 60 generated 3 chunks.
+2026-10-09 20:56:48,743 | INFO | Page 61 generated 6 chunks.
+2026-10-09 20:56:48,760 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:48,779 | INFO | OpenRouter embedding request started. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:52,653 | INFO | OpenRouter embedding request completed. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:52,655 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:52,657 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:52,657 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:56:52,657 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:56:52,685 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:56:52,685 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:56:52,687 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
+2026-10-09 20:56:52,800 | INFO | Inserted 32 vectors.
+2026-10-09 20:56:52,800 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:52,802 | INFO | Page 62 generated 5 chunks.
+2026-10-09 20:56:52,803 | INFO | Page 63 generated 6 chunks.
+2026-10-09 20:56:52,804 | INFO | Page 64 generated 4 chunks.
+2026-10-09 20:56:52,805 | INFO | Page 65 generated 6 chunks.
+2026-10-09 20:56:52,806 | INFO | Page 66 generated 8 chunks.
+2026-10-09 20:56:52,806 | INFO | Page 67 generated 4 chunks.
+2026-10-09 20:56:52,807 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:52,807 | INFO | OpenRouter embedding request started. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:55,399 | INFO | OpenRouter embedding request completed. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:55,401 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:55,404 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:55,404 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:56:55,404 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:56:55,425 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:56:55,425 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:56:55,426 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
+2026-10-09 20:56:55,514 | INFO | Inserted 32 vectors.
+2026-10-09 20:56:55,514 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:55,515 | INFO | Page 68 generated 8 chunks.
+2026-10-09 20:56:55,515 | INFO | Page 69 generated 3 chunks.
+2026-10-09 20:56:55,516 | INFO | Page 70 generated 4 chunks.
+2026-10-09 20:56:55,516 | INFO | Page 71 generated 8 chunks.
+2026-10-09 20:56:55,516 | INFO | Page 72 generated 8 chunks.
+2026-10-09 20:56:55,516 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:55,516 | INFO | OpenRouter embedding request started. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:58,426 | INFO | OpenRouter embedding request completed. Model=liquid/lfm-2.5-embedding-350m:free | Batch=32
+2026-10-09 20:56:58,428 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-10-09 20:56:58,430 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:58,430 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:56:58,430 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:56:58,444 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:56:58,444 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:56:58,445 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=32
+2026-10-09 20:56:58,492 | INFO | Inserted 32 vectors.
+2026-10-09 20:56:58,492 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-10-09 20:56:58,492 | INFO | Page 73 generated 6 chunks.
+2026-10-09 20:56:58,493 | INFO | Page 74 generated 10 chunks.
+2026-10-09 20:56:58,493 | INFO | Page 75 generated 6 chunks.
+2026-10-09 20:56:58,493 | INFO | Page 76 generated 5 chunks.
+2026-10-09 20:56:58,493 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=27
+2026-10-09 20:56:58,493 | INFO | OpenRouter embedding request started. Model=liquid/lfm-2.5-embedding-350m:free | Batch=27
+2026-10-09 20:57:04,413 | INFO | OpenRouter embedding request completed. Model=liquid/lfm-2.5-embedding-350m:free | Batch=27
+2026-10-09 20:57:04,416 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=27
+2026-10-09 20:57:04,417 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=27
+2026-10-09 20:57:04,418 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:57:04,418 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:57:04,441 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:57:04,441 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:57:04,441 | INFO | Qdrant vector insertion started. Collection=kb_mukund_upadhyay | points=27
+2026-10-09 20:57:04,497 | INFO | Inserted 27 vectors.
+2026-10-09 20:57:04,497 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=27
+2026-10-09 20:57:04,497 | INFO | Generated 443 vectors.
+2026-10-09 20:57:04,497 | INFO | Chunking and vector generation completed. File=Geography_compressed.pdf | chunks=443
+2026-10-09 20:57:04,497 | INFO | Processed Geography_compressed.pdf (443 chunks).
+2026-10-09 20:57:04,498 | INFO | Successfully processed 'Geography_compressed.pdf'.
+2026-10-09 20:57:04,498 | INFO | PDF stream closed: Geography_compressed.pdf
+2026-10-09 20:57:04,498 | INFO | Temporary file cleanup started: uploads\058c31e9fed1414d8f23a065e7a80de0_Geography_compressed.pdf
+2026-10-09 20:57:04,500 | INFO | Temporary file deleted successfully: uploads\058c31e9fed1414d8f23a065e7a80de0_Geography_compressed.pdf
+2026-10-09 20:57:04,500 | INFO | Temporary upload file deleted: Geography_compressed.pdf
+2026-10-09 20:57:04,500 | INFO | Knowledge Base ingestion response: {'status': 'success', 'message': 'All documents got in successfully.', 'documents_processed': 1, 'documents_failed': 0, 'chunks_inserted': 443, 'documents': [{'title': 'Human Geography', 'document_type': 'Book', 'document_id': '206b5478-8ae2-4ab5-827f-4348283d75e2', 'tag': 'general', 'summary': 'This document discusses the nature and scope of human geography, emphasizing its integrative, empirical, and practical approach. It covers the relationship between the physical and human worlds, the spatial distributions of human phenomena, and the social and economic differences between different parts of the world.', 'source': 'Geography_compressed.pdf'}], 'errors': []}
+2026-10-09 20:57:04,500 | INFO | [e49fcace-58c1-413b-934a-d93793eba094] Upload response: {'status': 'success', 'message': 'All documents got in successfully.', 'documents_processed': 1, 'documents_failed': 0, 'chunks_inserted': 443, 'documents': [{'title': 'Human Geography', 'document_type': 'Book', 'document_id': '206b5478-8ae2-4ab5-827f-4348283d75e2', 'tag': 'general', 'summary': 'This document discusses the nature and scope of human geography, emphasizing its integrative, empirical, and practical approach. It covers the relationship between the physical and human worlds, the spatial distributions of human phenomena, and the social and economic differences between different parts of the world.', 'source': 'Geography_compressed.pdf'}], 'errors': []}
+2026-10-09 20:57:04,503 | INFO | [e49fcace-58c1-413b-934a-d93793eba094] Request completed: POST /llm/upload | status=200 | duration=60.465s
+2026-10-09 20:57:29,011 | INFO | [6c47e44a-a5ec-45c4-b8bd-ea97e6e731dc] Request started: GET /llm/files
+2026-10-09 20:57:29,015 | INFO | [6c47e44a-a5ec-45c4-b8bd-ea97e6e731dc] Fetching uploaded documents.
+2026-10-09 20:57:29,025 | INFO | [6c47e44a-a5ec-45c4-b8bd-ea97e6e731dc] Uploaded document retrieval started. Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
+2026-10-09 20:57:29,025 | INFO | Fetching uploaded documents started. Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
+2026-10-09 20:57:29,026 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:57:29,032 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:57:29,102 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:57:29,104 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:57:29,110 | INFO | Fetching uploaded documents. Collection=kb_mukund_upadhyay | courses=['ncert_2022']
+2026-10-09 20:57:29,114 | INFO | Qdrant scroll started. Collection=kb_mukund_upadhyay
+2026-10-09 20:57:29,164 | INFO | Qdrant scroll completed. Collection=kb_mukund_upadhyay | records=443 | pages=1
+2026-10-09 20:57:29,166 | INFO | Found %d document(s).: 1
+2026-10-09 20:57:29,168 | INFO | Fetching uploaded documents completed. Business ID=Mukund Upadhyay | Documents=1
+2026-10-09 20:57:29,170 | INFO | [6c47e44a-a5ec-45c4-b8bd-ea97e6e731dc] Uploaded document retrieval completed. Documents=1
+2026-10-09 20:57:29,171 | INFO | [6c47e44a-a5ec-45c4-b8bd-ea97e6e731dc] Retrieved 1 uploaded document(s).
+2026-10-09 20:57:29,178 | INFO | [6c47e44a-a5ec-45c4-b8bd-ea97e6e731dc] Request completed: GET /llm/files | status=200 | duration=0.168s
+2026-10-09 20:58:18,130 | INFO | [736e4b73-9950-4965-b246-012cecf9ea52] Request started: POST /llm/kb/query
+2026-10-09 20:58:18,148 | INFO | [736e4b73-9950-4965-b246-012cecf9ea52] Question received.
+2026-10-09 20:58:18,156 | INFO | [736e4b73-9950-4965-b246-012cecf9ea52] Knowledge Base query started. Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
+2026-10-09 20:58:18,202 | INFO | [736e4b73-9950-4965-b246-012cecf9ea52] Query validation started.
+2026-10-09 20:58:18,223 | INFO | [736e4b73-9950-4965-b246-012cecf9ea52] Query validation completed.
+2026-10-09 20:58:18,254 | INFO | [736e4b73-9950-4965-b246-012cecf9ea52] Query validation duration: 0.0536 seconds
+2026-10-09 20:58:18,286 | INFO | [736e4b73-9950-4965-b246-012cecf9ea52] Query job creation started.
+2026-10-09 20:58:18,309 | INFO | Query job created. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:18,404 | INFO | Query job started. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:18,408 | INFO | [736e4b73-9950-4965-b246-012cecf9ea52] Query job created successfully. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:18,410 | INFO | [736e4b73-9950-4965-b246-012cecf9ea52] Waiting for query job result. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:20,378 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-10-09 20:58:21,079 | INFO | Qdrant client initialized successfully.
+2026-10-09 20:58:28,251 | INFO | FastAPI application configured successfully
+2026-10-09 20:58:28,253 | INFO | Received query: Explain what is Tourism
+2026-10-09 20:58:28,253 | INFO | Query processing started. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758 Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
+2026-10-09 20:58:28,254 | INFO | Query embedding started. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:28,254 | INFO | OpenRouter embedding client initialization started. Model=liquid/lfm-2.5-embedding-350m:free
+2026-10-09 20:58:28,254 | INFO | OpenRouter embedding client initialized successfully. Model=liquid/lfm-2.5-embedding-350m:free
+2026-10-09 20:58:28,254 | INFO | OpenRouter embedding request started. Model=liquid/lfm-2.5-embedding-350m:free | Batch=1
+2026-10-09 20:58:29,469 | INFO | OpenRouter embedding request completed. Model=liquid/lfm-2.5-embedding-350m:free | Batch=1
+2026-10-09 20:58:29,470 | INFO | Query embedding completed. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:29,470 | INFO | Query embedding generation completed. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758 Dimensions=1024 | duration=1.2164s
+2026-10-09 20:58:29,470 | INFO | Cache lookup started. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:29,470 | INFO | Cache search started. Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
+2026-10-09 20:58:29,471 | INFO | Ensuring cache collection exists: cache_mukund_upadhyay
+2026-10-09 20:58:29,471 | INFO | Checking Qdrant collection: cache_mukund_upadhyay
+2026-10-09 20:58:29,487 | INFO | Qdrant collection does not exist. Creation started: cache_mukund_upadhyay
+2026-10-09 20:58:29,660 | INFO | Qdrant collection created successfully.: cache_mukund_upadhyay
+2026-10-09 20:58:29,660 | INFO | Cache collection ready: cache_mukund_upadhyay
+2026-10-09 20:58:29,661 | INFO | Cache Qdrant search started. Collection=cache_mukund_upadhyay | limit=1
+2026-10-09 20:58:29,692 | INFO | Cache Qdrant search completed. Collection=cache_mukund_upadhyay | results=0
+2026-10-09 20:58:29,694 | INFO | Cache miss. No similar question found.
+2026-10-09 20:58:29,694 | INFO | Cache miss. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:29,694 | INFO | Cache lookup completed. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758 duration=0.2238s
+2026-10-09 20:58:29,694 | INFO | Subject classification started. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:29,694 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:58:29,695 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:58:29,718 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:58:29,718 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:58:29,718 | INFO | Fetching available subject IDs. Collection=kb_mukund_upadhyay | courses=['ncert_2022']
+2026-10-09 20:58:29,719 | INFO | Qdrant scroll started. Collection=kb_mukund_upadhyay
+2026-10-09 20:58:29,757 | INFO | Qdrant scroll completed. Collection=kb_mukund_upadhyay | records=443 | pages=1
+2026-10-09 20:58:29,758 | INFO | Available subject IDs retrieved. Count=1 | subjects=['geography']
+2026-10-09 20:58:29,758 | INFO | Only one subject available. Skipping classification: geography
+2026-10-09 20:58:29,758 | INFO | Subject classification completed. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758 Available=['geography'] | Selected=['geography'] | duration=0.0637s
+2026-10-09 20:58:29,758 | INFO | Qdrant search started. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:29,759 | INFO | Qdrant retrieval started. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758 Subjects=['geography'] Limit=5
+2026-10-09 20:58:29,759 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_upadhyay
+2026-10-09 20:58:29,759 | INFO | Checking Qdrant collection: kb_mukund_upadhyay
+2026-10-09 20:58:29,779 | INFO | Qdrant collection already exists.: kb_mukund_upadhyay
+2026-10-09 20:58:29,780 | INFO | Knowledge Base collection ready: kb_mukund_upadhyay
+2026-10-09 20:58:29,780 | INFO | Qdrant semantic search started. Collection=kb_mukund_upadhyay | courses=['ncert_2022'] | subjects=['geography'] | limit=5 | score_threshold=0.5
+2026-10-09 20:58:29,788 | INFO | Retrieved %d chunks.: 2
+2026-10-09 20:58:29,789 | INFO | Qdrant semantic search scores: [0.619, 0.5323]
+2026-10-09 20:58:29,789 | INFO | Qdrant search completed. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758 chunks=2
+2026-10-09 20:58:29,789 | INFO | Qdrant retrieval completed. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758 duration=0.0313s
+2026-10-09 20:58:29,789 | INFO | Retrieved 2 chunk(s).
+2026-10-09 20:58:29,790 | INFO | [3e581069-f900-41d1-a8fc-1c003b3e4758] [RETRIEVAL] Chunk 1 | score=0.6190 | source=Geography_compressed.pdf | page=50
+2026-10-09 20:58:29,790 | INFO | [3e581069-f900-41d1-a8fc-1c003b3e4758] [RETRIEVAL] Chunk 2 | score=0.5323 | source=Geography_compressed.pdf | page=50
+2026-10-09 20:58:29,790 | INFO | Top matching source: Geography_compressed.pdf
+2026-10-09 20:58:29,790 | INFO | Context construction started. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:29,790 | INFO | Context building started. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758 Chunks=2
+2026-10-09 20:58:29,790 | INFO | Context construction completed. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:29,790 | INFO | Context building completed. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758 Characters=1115 | duration=0.0005s
+2026-10-09 20:58:29,790 | INFO | [3e581069-f900-41d1-a8fc-1c003b3e4758] Prompt building started.
+2026-10-09 20:58:29,790 | INFO | [3e581069-f900-41d1-a8fc-1c003b3e4758] Prompt building completed. Characters=1675 | duration=0.0001s
+2026-10-09 20:58:29,790 | INFO | LLM generation started. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:29,792 | INFO | Knowledge Base LLM generation started. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:29,826 | INFO | Local LLM initialization started. Model=LFM2-1.2B-RAG | device=cuda
+2026-10-09 20:58:29,827 | INFO | Loading tokenizer for local LLM 'LFM2-1.2B-RAG'.
+2026-10-09 20:58:29,992 | INFO | Tokenizer loaded successfully.
+2026-10-09 20:58:29,992 | INFO | Loading local LLM model 'LFM2-1.2B-RAG'.
+2026-10-09 20:58:32,650 | INFO | Local LLM model loaded successfully.
+2026-10-09 20:58:32,651 | INFO | Local LLM 'LFM2-1.2B-RAG' initialized successfully on cuda.
+2026-10-09 20:58:32,651 | INFO | LLM generation started. Model=LFM2-1.2B-RAG | device=cuda
+2026-10-09 20:58:32,664 | INFO | LLM input prepared. Tokens=398
+2026-10-09 20:58:32,664 | INFO | LLM model generation started. Max new tokens=256
+2026-10-09 20:58:35,755 | INFO | LLM generation completed. Generated tokens=44 | duration=3.104s
+2026-10-09 20:58:35,755 | INFO | LLM generation completed. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:35,756 | INFO | Knowledge Base LLM generation completed. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758 Response characters=225 | duration=5.9643s
+2026-10-09 20:58:35,756 | INFO | [3e581069-f900-41d1-a8fc-1c003b3e4758] Answer generated successfully. Characters=225
+2026-10-09 20:58:35,756 | INFO | Cache write started. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:35,756 | INFO | Cache write started. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:35,756 | INFO | Cache write started. Business ID=Mukund Upadhyay | Course IDs=['ncert_2022']
+2026-10-09 20:58:35,756 | INFO | Ensuring cache collection exists: cache_mukund_upadhyay
+2026-10-09 20:58:35,756 | INFO | Checking Qdrant collection: cache_mukund_upadhyay
+2026-10-09 20:58:35,782 | INFO | Qdrant collection already exists.: cache_mukund_upadhyay
+2026-10-09 20:58:35,782 | INFO | Cache collection ready: cache_mukund_upadhyay
+2026-10-09 20:58:35,783 | INFO | Cache Qdrant write started. Collection=cache_mukund_upadhyay
+2026-10-09 20:58:35,825 | INFO | Cache Qdrant write completed successfully. Collection=cache_mukund_upadhyay
+2026-10-09 20:58:35,826 | INFO | Cache write completed successfully.
+2026-10-09 20:58:35,826 | INFO | Cache write completed. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:35,826 | INFO | Cache write completed. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758 duration=0.0701s
+2026-10-09 20:58:35,826 | INFO | Query completed successfully. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758 total=7.5736s
+2026-10-09 20:58:35,827 | INFO | Query job completed. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758
+2026-10-09 20:58:35,828 | INFO | [736e4b73-9950-4965-b246-012cecf9ea52] Question answered successfully.
+2026-10-09 20:58:35,828 | INFO | [736e4b73-9950-4965-b246-012cecf9ea52] API query request completed. job_id=3e581069-f900-41d1-a8fc-1c003b3e4758 Total duration=17.6807 seconds
+2026-10-09 20:58:35,829 | INFO | [736e4b73-9950-4965-b246-012cecf9ea52] Request completed: POST /llm/kb/query | status=200 | duration=17.699s
+2026-10-09 21:00:14,736 | INFO | FastAPI application shutdown completed
+2026-10-09 21:00:27,178 | INFO | CK AI Agent application stopped

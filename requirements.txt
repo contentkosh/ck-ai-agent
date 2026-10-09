@@ -13,3 +13,5 @@ numpy>=1.26.0
 pytest
 pageindex==0.2.10
 pandas==2.2.3
+huggingface_hub==0.34.4
+requests==2.32.4

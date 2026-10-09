@@ -33,6 +33,7 @@ from configuration.constants import (
     METADATA_DOCUMENT_TYPE,
     METADATA_PAGE,
     METADATA_SOURCE,
+    METADATA_SUBJECT_ID,
     METADATA_SUMMARY,
     METADATA_TAG,
     METADATA_TEXT,
@@ -242,6 +243,7 @@ def saveChunks(
 
 def _buildMetadataFilter(
     courseIds: Optional[list[str]] = None,
+    subjectIds: Optional[list[str]] = None,
     tag: Optional[str] = None,
 ) -> Optional[Filter]:
     mustConditions = []
@@ -252,6 +254,16 @@ def _buildMetadataFilter(
                 key=METADATA_COURSE_ID,
                 match=MatchAny(
                     any=courseIds,
+                ),
+            ),
+        )
+
+    if subjectIds:
+        mustConditions.append(
+            FieldCondition(
+                key=METADATA_SUBJECT_ID,
+                match=MatchAny(
+                    any=subjectIds,
                 ),
             ),
         )
@@ -279,6 +291,7 @@ def searchChunks(
     queryEmbedding: list[float],
     businessId: str,
     courseIds: list[str],
+    subjectIds: Optional[list[str]] = None,
     limit: int = SEARCH_LIMIT,
     scoreThreshold: Optional[float] = SEARCH_SCORE_THRESHOLD,
 ):
@@ -288,15 +301,17 @@ def searchChunks(
 
     try:
         logger.info(
-            "Qdrant semantic search started. Collection=%s | courses=%s | limit=%d | score_threshold=%s",
+            "Qdrant semantic search started. Collection=%s | courses=%s | subjects=%s | limit=%d | score_threshold=%s",
             collectionName,
             courseIds,
+            subjectIds,
             limit,
             scoreThreshold,
         )
 
         queryFilter = _buildMetadataFilter(
             courseIds=courseIds,
+            subjectIds=subjectIds,
         )
 
         searchResult = client.query_points(
@@ -325,6 +340,64 @@ def searchChunks(
         logger.exception(
             "%s: %s",
             SEMANTIC_SEARCH_FAILED_LOG,
+            ex,
+        )
+
+        if isQdrantConnectionError(ex):
+            raise ContentKoshException(
+                DATABASE_SEARCH_ERROR_MESSAGE,
+                cause=QdrantConnectionException(),
+            ) from ex
+
+        raise ContentKoshException(
+            DATABASE_SEARCH_ERROR_MESSAGE,
+            cause=QdrantSearchException(),
+        ) from ex
+
+
+def getSubjectIds(
+    businessId: str,
+    courseIds: list[str],
+) -> list[str]:
+    collectionName = ensureCollection(
+        businessId,
+    )
+
+    try:
+        logger.info(
+            "Fetching available subject IDs. Collection=%s | courses=%s",
+            collectionName,
+            courseIds,
+        )
+
+        queryFilter = _buildMetadataFilter(
+            courseIds=courseIds,
+        )
+
+        records = _scrollRecords(
+            collectionName,
+            queryFilter,
+        )
+
+        subjectIds = {
+            point.payload.get(METADATA_SUBJECT_ID)
+            for point in records
+            if point.payload.get(METADATA_SUBJECT_ID)
+        }
+
+        result = sorted(subjectIds)
+
+        logger.info(
+            "Available subject IDs retrieved. Count=%d | subjects=%s",
+            len(result),
+            result,
+        )
+
+        return result
+
+    except Exception as ex:
+        logger.exception(
+            "Failed to retrieve subject IDs: %s",
             ex,
         )
 

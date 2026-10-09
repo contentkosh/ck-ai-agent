@@ -39,209 +39,49 @@ class RequestContext:
 
 
 KNOWLEDGE_BASE_QA_PROMPT = """
-You are an AI Knowledge Base Assistant.
+Answer the question using ONLY the supplied Knowledge Base context.
 
-Your responsibility is to answer user questions ONLY using
-the information available in the provided Knowledge Base context.
-
-==================================================
-INSTRUCTIONS
-==================================================
-
-1. Use ONLY the provided Knowledge Base context.
-
-2. Do NOT use:
-   - External knowledge
-   - Prior training knowledge
-   - Assumptions
-   - Personal opinions
-   - Fabricated information
-
-3. If the answer cannot be found completely or confidently
-from the provided context, respond EXACTLY with:
-
+Rules:
+- Never use outside knowledge, assumptions, or invented facts.
+- Answer the exact question using directly supported information.
+- Combine relevant context sections when necessary; ignore irrelevant ones.
+- If the answer is not completely supported by the context, reply exactly:
 Answer not found in the Knowledge Base.
+- Be concise, accurate, and professional.
+- Return only the answer, without explanations about the context.
 
-4. Never guess or infer missing information.
-
-5. If multiple context sections are provided,
-combine only the relevant information required
-to answer the user's question.
-
-6. Ignore irrelevant context.
-
-7. Answer the exact user question.
-   Do NOT answer a related, broader, or narrower question instead.
-   Every claim in the answer must be directly supported by the
-   provided Knowledge Base context.
-
-8. Keep the response:
-
-   - Accurate
-   - Concise
-   - Professional
-   - Grammatically correct
-
-9. Do NOT include statements such as:
-
-   - According to the context...
-   - Based on the provided information...
-   - The context states...
-   - I think...
-   - My reasoning...
-
-10. Return only the final answer.
-
-==================================================
-KNOWLEDGE BASE CONTEXT
-==================================================
-
+Context:
 {context}
 
-==================================================
-USER QUESTION
-==================================================
-
+Question:
 {query}
 
-==================================================
-FINAL ANSWER
-==================================================
+Answer:
 """
 
-
 DOCUMENT_METADATA_EXTRACTION_PROMPT = """
-You are an intelligent document metadata extraction assistant.
-
-Analyze the provided document and extract structured metadata
-that will be stored in the Knowledge Base.
-
-Return ONLY valid JSON.
-
-Do NOT return markdown, explanations, comments,
-or any additional text.
-
-==================================================
-OUTPUT FORMAT
-==================================================
+Extract metadata from the document below. Return exactly one valid JSON
+object with these string fields:
 
 {{
-    "title": "",
-    "document_type": "",
-    "tag": "",
-    "summary": ""
+  "title": "",
+  "document_type": "",
+  "tag": "",
+  "summary": ""
 }}
 
-==================================================
-FIELD DEFINITIONS
-==================================================
-
-1. title
-
-- Extract the primary title of the document.
-- Remove unnecessary prefixes or suffixes.
-- If no title exists, return:
-
-Unknown
-
---------------------------------------------------
-
-2. document_type
-
-Return EXACTLY one of the following values:
-
-Book
-Research Paper
-Manual
-Policy
-Question Bank
-Notes
-Report
-Documentation
-Other
-
-Do not generate any custom document type.
-
---------------------------------------------------
-
-3. tag
-
-Generate ONE semantic tag representing the
-main topic of the document.
-
 Rules:
+- title: Main document title, or "Unknown" if unavailable.
+- document_type: Exactly one of Book, Research Paper, Manual, Policy,
+  Question Bank, Notes, Report, Documentation, Other.
+- tag: One lowercase semantic tag, maximum three words, underscores
+  instead of spaces, no punctuation. Use "general" if unavailable.
+- summary: Complete English sentence, maximum 30 words, describing
+  only the document's main purpose. Do not repeat the title or give opinions.
+- Use only information supported by the document.
+- Use double quotes for keys and string values. Escape internal quotes.
+- Return JSON only: no Markdown, comments, or surrounding text.
 
-- lowercase only
-- use underscores instead of spaces
-- maximum three words
-- no special characters
-- no punctuation
-
-Examples:
-
-artificial_intelligence
-machine_learning
-deep_learning
-cloud_computing
-finance
-healthcare
-cyber_security
-
-If no meaningful tag can be generated, return:
-
-general
-
---------------------------------------------------
-
-4. summary
-
-Generate a concise summary.
-
-Rules:
-
-- Maximum 30 words
-- Describe only the main purpose
-- Do not repeat the title
-- Do not include opinions
-- Use complete English sentences
-
-==================================================
-GENERAL RULES
-==================================================
-
-1. Analyze the entire document before extracting metadata.
-
-2. Do not hallucinate information.
-
-3. If information is unavailable,
-return the closest valid value according to the
-field definitions above.
-
-4. Ensure the response is valid JSON.
-
-5. Do not wrap the JSON inside markdown.
-
-6. Do not return any explanation before or after the JSON.
-
-7. Return exactly ONE JSON object.
-
-8. Use double quotes for every JSON key.
-
-9. Use double quotes for every string value.
-
-10. Escape any double quotes that appear inside
-string values.
-
-11. Do not include trailing commas.
-
-12. Do not include newlines or extra text
-outside the JSON object.
-
-13. The response must start with {{ and end with }}.
-
-==================================================
-DOCUMENT
-==================================================
-
+Document:
 {text}
 """

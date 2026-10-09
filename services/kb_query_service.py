@@ -38,7 +38,8 @@ from exceptions.contentkosh_exception import ContentKoshException
 from exceptions.knowledge_base_exception import KnowledgeBaseException
 from exceptions.llm_exception import LLMResponseException
 from exceptions.qdrant_exception import QdrantConnectionException
-from repositories.kb_repository import searchChunks
+from repositories.kb_repository import getSubjectIds, searchChunks
+from services.subject_router import classify_subjects
 from services.cache_service import cache_answer, get_cached_answer
 
 
@@ -169,6 +170,51 @@ def ask_question(
             cache_duration,
         )
 
+        subject_start = time.perf_counter()
+
+        logger.info(
+            "Subject classification started. job_id=%s",
+            job_id,
+        )
+
+        available_subject_ids = getSubjectIds(
+            businessId=business_id,
+            courseIds=course_ids,
+        )
+
+        if not available_subject_ids:
+            logger.warning(
+                "No subject IDs found for requested business and courses. job_id=%s",
+                job_id,
+            )
+
+            raise KnowledgeBaseException(
+                "No subjects available for the requested business and courses."
+            )
+
+        subject_results = classify_subjects(
+            query=query,
+            subject_ids=available_subject_ids,
+        )
+
+        selected_subject_ids = [result["subject_id"] for result in subject_results]
+
+        if not selected_subject_ids:
+            logger.warning(
+                "No subjects matched the query. job_id=%s",
+                job_id,
+            )
+
+            raise KnowledgeBaseException("No relevant subject found for the query.")
+
+        logger.info(
+            "Subject classification completed. job_id=%s Available=%s | Selected=%s | duration=%.4fs",
+            job_id,
+            available_subject_ids,
+            selected_subject_ids,
+            time.perf_counter() - subject_start,
+        )
+
         retrieval_start = time.perf_counter()
 
         logger.info(
@@ -177,8 +223,9 @@ def ask_question(
         )
 
         logger.info(
-            "Qdrant retrieval started. job_id=%s Limit=%d",
+            "Qdrant retrieval started. job_id=%s Subjects=%s Limit=%d",
             job_id,
+            selected_subject_ids,
             SEARCH_LIMIT,
         )
 
@@ -187,6 +234,7 @@ def ask_question(
                 queryEmbedding=queryEmbedding,
                 businessId=business_id,
                 courseIds=course_ids,
+                subjectIds=selected_subject_ids,
                 limit=SEARCH_LIMIT,
             )
 
