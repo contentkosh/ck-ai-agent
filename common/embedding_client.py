@@ -38,34 +38,50 @@ class OpenRouterEmbeddingClient:
                 len(batch),
             )
 
-            response = requests.post(
-                OPENROUTER_API_URL,
-                headers={
-                    "Authorization": f"Bearer {self.api_key}",
-                    "Content-Type": "application/json",
-                },
-                json={
-                    "model": self.model,
-                    "input": batch,
-                    "encoding_format": "float",
-                },
-                timeout=120,
-            )
+            try:
+                response = requests.post(
+                    OPENROUTER_API_URL,
+                    headers={
+                        "Authorization": f"Bearer {self.api_key}",
+                        "Content-Type": "application/json",
+                    },
+                    json={
+                        "model": self.model,
+                        "input": batch,
+                        "encoding_format": "float",
+                    },
+                    timeout=120,
+                )
 
-            response.raise_for_status()
-            data = response.json()["data"]
-            data.sort(key=lambda item: item["index"])
-            batch_embeddings = [item["embedding"] for item in data]
+                if not response.ok:
+                    logger.error(
+                        "OpenRouter embedding request failed. Status=%d | Body=%s",
+                        response.status_code,
+                        response.text[:2000],
+                    )
+                    response.raise_for_status()
 
-            if len(batch_embeddings) != len(batch):
-                raise ValueError("Embedding response count does not match input count.")
+                data = response.json()["data"]
+                data.sort(key=lambda item: item["index"])
+                batch_embeddings = [item["embedding"] for item in data]
 
-            embeddings.extend(batch_embeddings)
-            logger.info(
-                "OpenRouter embedding request completed. Model=%s | Batch=%d",
-                self.model,
-                len(batch_embeddings),
-            )
+                if len(batch_embeddings) != len(batch):
+                    raise ValueError(
+                        "Embedding response count does not match input count."
+                    )
+
+                embeddings.extend(batch_embeddings)
+                logger.info(
+                    "OpenRouter embedding request completed. Model=%s | Batch=%d",
+                    self.model,
+                    len(batch_embeddings),
+                )
+
+            except requests.RequestException:
+                logger.exception(
+                    "OpenRouter embedding HTTP request failed. Model=%s", self.model
+                )
+                raise
 
         result = np.asarray(embeddings, dtype=np.float32)
 
