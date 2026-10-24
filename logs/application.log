@@ -1720,3 +1720,20 @@ common.custom_exceptions.EmbeddingException: Failed to generate embedding.
 2026-10-22 13:50:15,365 | INFO | [0fbdf25a-87a0-4010-b398-e9e77d34fe8c] Request completed: POST /llm/upload | status=200 | duration=8.755s
 2026-10-22 13:55:37,402 | INFO | FastAPI application shutdown completed
 2026-10-22 13:55:41,913 | INFO | CK AI Agent application stopped
+2026-10-24 11:55:36,955 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-10-24 11:55:42,078 | INFO | Qdrant client initialized successfully.
+2026-10-24 11:55:58,503 | INFO | FastAPI application configured successfully
+2026-10-24 11:55:58,503 | INFO | Starting CK AI Agent application
+2026-10-24 11:55:58,503 | INFO | Server configuration: host=0.0.0.0, port=8000, reload=True
+2026-10-24 11:56:00,576 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-10-24 11:56:01,389 | INFO | Qdrant client initialized successfully.
+2026-10-24 11:56:09,997 | INFO | FastAPI application configured successfully
+2026-10-24 11:56:10,131 | INFO | FastAPI application startup initiated
+2026-10-24 11:56:13,823 | INFO | [4b28d032-652f-46c1-8a6c-33d78bc17dd1] Request started: GET /docs
+2026-10-24 11:56:13,824 | INFO | [4b28d032-652f-46c1-8a6c-33d78bc17dd1] Request completed: GET /docs | status=200 | duration=0.004s
+2026-10-24 11:56:15,584 | INFO | [333ffae8-61cf-4458-bdbc-7314f35cf06f] Request started: GET /docs
+2026-10-24 11:56:15,596 | INFO | [333ffae8-61cf-4458-bdbc-7314f35cf06f] Request completed: GET /docs | status=200 | duration=0.028s
+2026-10-24 11:56:16,289 | INFO | [5f95c917-55cc-4771-a513-4d33d73e7916] Request started: GET /openapi.json
+2026-10-24 11:56:16,399 | INFO | [5f95c917-55cc-4771-a513-4d33d73e7916] Request completed: GET /openapi.json | status=200 | duration=0.114s
+2026-10-24 12:27:45,298 | INFO | FastAPI application shutdown completed
+2026-10-24 12:27:50,207 | INFO | CK AI Agent application stopped

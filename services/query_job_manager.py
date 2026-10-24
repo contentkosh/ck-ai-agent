@@ -2,7 +2,6 @@ import multiprocessing
 import threading
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
-from uuid import uuid4
 
 from common.logger import logger
 from configuration.constants import (
@@ -78,11 +77,11 @@ class QueryJobManager:
 
     def create_job(
         self,
+        job_id: str,
         query: str,
         business_id: str,
         course_ids: List[str],
     ) -> str:
-        job_id = str(uuid4())
         result_queue = multiprocessing.Queue()
 
         job = QueryJob(
@@ -108,6 +107,8 @@ class QueryJobManager:
         job.process = process
 
         with self.jobs_lock:
+            if job_id in self.jobs:
+                raise ValueError(f"Duplicate job_id: {job_id}")
             self.jobs[job_id] = job
 
         logger.info(QUERY_JOB_CREATED_LOG, job_id)

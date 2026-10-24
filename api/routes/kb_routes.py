@@ -1,6 +1,5 @@
 import time
 from typing import List, Optional
-
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from api.dependencies import get_request_context
@@ -151,11 +150,15 @@ def query_knowledge_base(
             context.request_id,
         )
 
-        job_id = query_job_manager.create_job(
-            query=request.query,
-            business_id=request.business_id,
-            course_ids=request.course_ids,
-        )
+        try:
+            job_id = query_job_manager.create_job(
+                job_id=request.job_id,
+                query=request.query,
+                business_id=request.business_id,
+                course_ids=request.course_ids,
+            )
+        except ValueError as exception:
+            raise HTTPException(status_code=409, detail=str(exception)) from exception
 
         logger.info(
             "[%s] Query job created successfully. job_id=%s",
