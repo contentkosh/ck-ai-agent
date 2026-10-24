@@ -1,5 +1,5 @@
 import re
-from typing import Annotated, List
+from typing import Annotated, List, Optional
 
 from fastapi import APIRouter, Depends, File, Form, UploadFile
 
@@ -35,8 +35,8 @@ def normalize_subject_ids(subject_ids: List[str]) -> List[str]:
 def upload_documents(
     business_id: Annotated[str, Form(...)],
     course_ids: Annotated[List[str], Form(...)],
-    subject_ids: Annotated[List[str], Form(...)],
     files: Annotated[List[UploadFile], File(...)],
+    subject_ids: Annotated[Optional[List[str]], Form()] = None,
     context: RequestContext = Depends(get_request_context),
 ):
     logger.info(UPLOAD_REQUEST_LOG, context.request_id)
@@ -44,7 +44,7 @@ def upload_documents(
         logger.info(
             "[%s] Upload validation started. Files=%d", context.request_id, len(files)
         )
-        normalized_subject_ids = normalize_subject_ids(subject_ids)
+        normalized_subject_ids = normalize_subject_ids(subject_ids or [])
         validate_upload(files, normalized_subject_ids)
         logger.info(
             "[%s] Upload validation completed successfully.", context.request_id

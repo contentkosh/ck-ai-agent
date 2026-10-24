@@ -545,7 +545,8 @@ def ingest_documents(
     errors: list[UploadedDocumentErrorDto] = []
     total_chunks = 0
 
-    for file, subject_id in zip(files, subject_ids):
+    for index, file in enumerate(files):
+        subject_id = subject_ids[index] if index < len(subject_ids) else ""
         filename = file.filename
         saved_file_path = None
         pdf = None
