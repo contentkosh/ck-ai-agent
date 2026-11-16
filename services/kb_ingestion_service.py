@@ -2,7 +2,6 @@ import uuid
 from typing import TypedDict
 
 from fastapi import UploadFile
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pypdf import PdfReader
 from qdrant_client.models import PointStruct
 
@@ -30,7 +29,6 @@ from configuration.constants import (
     METADATA_EXTRACTION_STARTED_LOG,
     METADATA_PAGE,
     METADATA_SOURCE,
-    METADATA_SUBJECT_ID,
     METADATA_SUMMARY,
     METADATA_TAG,
     METADATA_TEXT,
@@ -40,11 +38,10 @@ from configuration.constants import (
     PAGES_EXTRACTED_LOG,
     PDF_READ_FAILED_LOG,
 )
-
 from configuration.error_constants import (
+    DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE,
     EMBEDDING_GENERATION_FAILED_MESSAGE,
     PDF_READ_FAILED_MESSAGE,
-    DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE,
 )
 from dto.document_metadata_dto import DocumentMetadataDto
 from dto.file_response_dto import (
@@ -64,7 +61,6 @@ from exceptions.qdrant_exception import QdrantConnectionException
 from repositories.kb_repository import deleteDocument, saveChunks
 from services.document_metadata_service import extract_document_metadata
 from validators.file_validator import validate_saved_file
-from validators.upload_validator import validate_upload
 
 
 class Page(TypedDict):
@@ -72,12 +68,92 @@ class Page(TypedDict):
     text: str
 
 
+class RecursiveCharacterTextSplitter:
+    def __init__(self, chunk_size: int, chunk_overlap: int):
+        if chunk_size <= 0 or chunk_overlap < 0 or chunk_overlap >= chunk_size:
+            raise ValueError("Invalid chunk size or overlap.")
+        self.chunk_size = chunk_size
+        self.chunk_overlap = chunk_overlap
+        self.separators = ["\n\n", "\n", " ", ""]
+
+    def _merge_splits(self, splits: list[str]) -> list[str]:
+        chunks = []
+        current = []
+        total_length = 0
+
+        for split in splits:
+            split_length = len(split)
+
+            if current and total_length + split_length > self.chunk_size:
+                chunk = "".join(current).strip()
+                if chunk:
+                    chunks.append(chunk)
+
+                while current and (
+                    total_length > self.chunk_overlap
+                    or total_length + split_length > self.chunk_size
+                ):
+                    total_length -= len(current.pop(0))
+
+            current.append(split)
+            total_length += split_length
+
+        chunk = "".join(current).strip()
+        if chunk:
+            chunks.append(chunk)
+
+        return chunks
+
+    def _split_text(self, text: str, separators: list[str]) -> list[str]:
+        if not text:
+            return []
+
+        if len(text) <= self.chunk_size:
+            return [text]
+
+        if not separators:
+            return self._merge_splits(list(text))
+
+        separator = separators[0]
+        remaining_separators = separators[1:]
+
+        if separator and separator not in text:
+            return self._split_text(text, remaining_separators)
+
+        if separator:
+            parts = text.split(separator)
+            splits = [part + separator for part in parts[:-1]] + [parts[-1]]
+        else:
+            splits = list(text)
+
+        chunks = []
+        current = []
+
+        for split in splits:
+            if len(split) <= self.chunk_size:
+                current.append(split)
+                continue
+
+            if current:
+                chunks.extend(self._merge_splits(current))
+                current = []
+
+            chunks.extend(self._split_text(split, remaining_separators))
+
+        if current:
+            chunks.extend(self._merge_splits(current))
+
+        return chunks
+
+    def split_text(self, text: str) -> list[str]:
+        return self._split_text(text, self.separators)
+
+
 _text_splitter: RecursiveCharacterTextSplitter | None = None
 
 
 def get_text_splitter() -> RecursiveCharacterTextSplitter:
     global _text_splitter
-
     if _text_splitter is None:
         _text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=CHUNK_SIZE,
@@ -99,7 +175,6 @@ def build_payload(
     page_number: int,
     business_id: str,
     course_ids: list[str],
-    subject_id: str,
 ) -> dict:
     return {
         METADATA_DOCUMENT_ID: document_id,
@@ -112,7 +187,6 @@ def build_payload(
         METADATA_PAGE: page_number,
         METADATA_BUSINESS_ID: business_id,
         METADATA_COURSE_ID: course_ids,
-        METADATA_SUBJECT_ID: subject_id,
     }
 
 
@@ -123,119 +197,64 @@ def read_pdf(file: UploadFile) -> tuple[PdfReader, str]:
     try:
         logger.info("PDF processing started: %s", filename)
         logger.info(FILE_SAVE_LOG, filename)
-
         saved_file = save_uploaded_file(file)
         logger.info("PDF saved successfully: %s", filename)
-
         validate_saved_file(saved_file)
         logger.info("PDF validation completed successfully: %s", filename)
-
         pdf = PdfReader(saved_file)
-        logger.info(
-            "PDF loaded successfully: %s | pages=%d",
-            filename,
-            len(pdf.pages),
-        )
-
+        logger.info("PDF loaded successfully: %s | pages=%d", filename, len(pdf.pages))
         return pdf, saved_file
-    except Exception as ex:
-        logger.exception(
-            PDF_READ_FAILED_LOG,
-            filename,
-            ex,
-        )
 
+    except Exception as ex:
+        logger.exception(PDF_READ_FAILED_LOG, filename, ex)
         if saved_file is not None:
             try:
                 delete_saved_file(saved_file)
                 logger.info("Temporary PDF deleted after read failure: %s", filename)
             except Exception:
                 logger.exception(
-                    "Failed to delete temporary PDF after read failure: %s",
-                    filename,
+                    "Failed to delete temporary PDF after read failure: %s", filename
                 )
-
-        raise PDFProcessingException(
-            PDF_READ_FAILED_MESSAGE.format(filename),
-        ) from ex
+        raise PDFProcessingException(PDF_READ_FAILED_MESSAGE.format(filename)) from ex
 
 
-def extract_document_text(
-    pdf: PdfReader,
-) -> tuple[str, list[Page]]:
+def extract_document_text(pdf: PdfReader) -> tuple[str, list[Page]]:
     pages: list[Page] = []
     document_text: list[str] = []
 
-    logger.info(
-        "PDF text extraction started. Pages=%d",
-        len(pdf.pages),
-    )
+    logger.info("PDF text extraction started. Pages=%d", len(pdf.pages))
 
     for page_number, page in enumerate(pdf.pages, start=1):
         try:
             page_text = page.extract_text() or ""
             logger.info(
-                "Page %d text extracted. Characters=%d",
-                page_number,
-                len(page_text),
+                "Page %d text extracted. Characters=%d", page_number, len(page_text)
             )
         except Exception as ex:
-            logger.warning(
-                PAGE_READ_FAILED_LOG,
-                page_number,
-                ex,
-            )
+            logger.warning(PAGE_READ_FAILED_LOG, page_number, ex)
             page_text = ""
 
-        pages.append(
-            {
-                "page": page_number,
-                "text": page_text,
-            }
-        )
+        pages.append({"page": page_number, "text": page_text})
         document_text.append(page_text)
 
     full_text = "\n".join(document_text)
-
-    logger.info(
-        PAGES_EXTRACTED_LOG,
-        len(pages),
-    )
-    logger.info(
-        "PDF text extraction completed. Characters=%d",
-        len(full_text),
-    )
-
+    logger.info(PAGES_EXTRACTED_LOG, len(pages))
+    logger.info("PDF text extraction completed. Characters=%d", len(full_text))
     return full_text, pages
 
 
-def get_document_metadata(
-    pages: list[Page],
-) -> DocumentMetadataDto:
+def get_document_metadata(pages: list[Page]) -> DocumentMetadataDto:
     try:
         metadata_source = "\n".join(page["text"] for page in pages[:3])
-
-        logger.info(
-            METADATA_EXTRACTION_STARTED_LOG,
-        )
-
-        metadata = extract_document_metadata(
-            metadata_source,
-        )
-
-        logger.info(
-            METADATA_EXTRACTION_COMPLETED_LOG,
-        )
-
+        logger.info(METADATA_EXTRACTION_STARTED_LOG)
+        metadata = extract_document_metadata(metadata_source)
+        logger.info(METADATA_EXTRACTION_COMPLETED_LOG)
         return metadata
-    except Exception as ex:
-        logger.exception(
-            METADATA_EXTRACTION_FAILED_LOG,
-            ex,
-        )
 
+    except Exception as ex:
+        logger.exception(METADATA_EXTRACTION_FAILED_LOG, ex)
         raise DocumentProcessingException(
-            DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE,
+            DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE
         ) from ex
 
 
@@ -247,14 +266,10 @@ def process_embedding_batch(
     document_id: str,
     business_id: str,
     course_ids: list[str],
-    subject_id: str,
 ) -> int:
     chunk_texts = [chunk for chunk, _ in chunk_batch]
-
     logger.info(
-        "Embedding batch started. File=%s | chunks=%d",
-        filename,
-        len(chunk_batch),
+        "Embedding batch started. File=%s | chunks=%d", filename, len(chunk_batch)
     )
 
     try:
@@ -262,71 +277,54 @@ def process_embedding_batch(
             chunk_texts,
             batch_size=EMBEDDING_BATCH_SIZE,
         )
+        if len(embeddings) != len(chunk_batch):
+            raise ValueError(
+                "Embedding count does not match the number of input chunks."
+            )
+
         logger.info(
             "Embedding batch generated successfully. File=%s | chunks=%d",
             filename,
             len(chunk_batch),
         )
+
     except Exception as ex:
-        logger.exception(
-            "Embedding generation failed: %s",
-            ex,
-        )
-        raise EmbeddingException(
-            EMBEDDING_GENERATION_FAILED_MESSAGE,
-        ) from ex
+        logger.exception("Embedding generation failed: %s", ex)
+        raise EmbeddingException(EMBEDDING_GENERATION_FAILED_MESSAGE) from ex
 
-    points: list[PointStruct] = []
-
-    for (chunk, page_number), embedding in zip(
-        chunk_batch,
-        embeddings,
-    ):
-        points.append(
-            PointStruct(
-                id=generate_uuid(),
-                vector=embedding.tolist(),
-                payload=build_payload(
-                    chunk=chunk,
-                    metadata=metadata,
-                    filename=filename,
-                    document_id=document_id,
-                    page_number=page_number,
-                    business_id=business_id,
-                    course_ids=course_ids,
-                    subject_id=subject_id,
-                ),
-            )
+    points = [
+        PointStruct(
+            id=generate_uuid(),
+            vector=embedding.tolist(),
+            payload=build_payload(
+                chunk=chunk,
+                metadata=metadata,
+                filename=filename,
+                document_id=document_id,
+                page_number=page_number,
+                business_id=business_id,
+                course_ids=course_ids,
+            ),
         )
+        for (chunk, page_number), embedding in zip(chunk_batch, embeddings)
+    ]
 
     logger.info(
-        "Qdrant vector insertion started. File=%s | vectors=%d",
-        filename,
-        len(points),
+        "Qdrant vector insertion started. File=%s | vectors=%d", filename, len(points)
     )
 
     try:
-        saveChunks(
-            points,
-            business_id,
-        )
+        saveChunks(points, business_id)
         logger.info(
             "Qdrant vector insertion completed. File=%s | vectors=%d",
             filename,
             len(points),
         )
+
     except ContentKoshException as ex:
-        logger.exception(
-            KB_INGESTION_FAILED_LOG,
-            ex,
-        )
-
-        if isinstance(
-            ex.cause,
-            QdrantConnectionException,
-        ):
+        logger.exception(KB_INGESTION_FAILED_LOG, ex)
+        if isinstance(ex.cause, QdrantConnectionException):
             raise ex.cause
-
         raise KnowledgeBaseException() from ex
 
     return len(points)
@@ -340,7 +338,6 @@ def build_vectors(
     document_id: str,
     business_id: str,
     course_ids: list[str],
-    subject_id: str,
 ) -> int:
     splitter = get_text_splitter()
     chunk_batch: list[tuple[str, int]] = []
@@ -357,7 +354,6 @@ def build_vectors(
     try:
         for page in pages:
             page_text = page["text"]
-
             if not page_text.strip():
                 logger.info(
                     "Page %d skipped because it contains no readable text.",
@@ -366,22 +362,11 @@ def build_vectors(
                 continue
 
             page_number = page["page"]
-
             chunks = splitter.split_text(page_text)
-
-            logger.info(
-                PAGE_CHUNK_GENERATION_LOG,
-                page_number,
-                len(chunks),
-            )
+            logger.info(PAGE_CHUNK_GENERATION_LOG, page_number, len(chunks))
 
             for chunk in chunks:
-                chunk_batch.append(
-                    (
-                        chunk,
-                        page_number,
-                    )
-                )
+                chunk_batch.append((chunk, page_number))
 
                 if len(chunk_batch) >= EMBEDDING_BATCH_SIZE:
                     total_chunks += process_embedding_batch(
@@ -391,7 +376,6 @@ def build_vectors(
                         document_id=document_id,
                         business_id=business_id,
                         course_ids=course_ids,
-                        subject_id=subject_id,
                     )
                     chunk_batch.clear()
 
@@ -403,45 +387,24 @@ def build_vectors(
                 document_id=document_id,
                 business_id=business_id,
                 course_ids=course_ids,
-                subject_id=subject_id,
             )
+
     except Exception as ex:
-        logger.exception(
-            DOCUMENT_PROCESSING_FAILED_LOG,
-            ex,
-        )
-
+        logger.exception(DOCUMENT_PROCESSING_FAILED_LOG, ex)
         try:
-            logger.info(
-                "Document rollback started. Document ID=%s",
-                document_id,
-            )
-            deleteDocument(
-                documentId=document_id,
-                businessId=business_id,
-            )
-            logger.info(
-                "Document rollback completed. Document ID=%s",
-                document_id,
-            )
+            logger.info("Document rollback started. Document ID=%s", document_id)
+            deleteDocument(documentId=document_id, businessId=business_id)
+            logger.info("Document rollback completed. Document ID=%s", document_id)
         except Exception:
-            logger.exception(
-                "Failed to rollback document %s",
-                document_id,
-            )
-
+            logger.exception("Failed to rollback document %s", document_id)
         raise
 
-    logger.info(
-        GENERATED_VECTORS_LOG,
-        total_chunks,
-    )
+    logger.info(GENERATED_VECTORS_LOG, total_chunks)
     logger.info(
         "Chunking and vector generation completed. File=%s | chunks=%d",
         filename,
         total_chunks,
     )
-
     return total_chunks
 
 
@@ -450,41 +413,22 @@ def process_document(
     filename: str,
     business_id: str,
     course_ids: list[str],
-    subject_id: str,
 ) -> ProcessedDocumentDto:
     try:
-        logger.info(
-            DOCUMENT_PROCESSING_STARTED_LOG,
-            filename,
-        )
-
+        logger.info(DOCUMENT_PROCESSING_STARTED_LOG, filename)
         document_id = generate_uuid()
         logger.info(
-            "Document ID generated. File=%s | document_id=%s",
-            filename,
-            document_id,
+            "Document ID generated. File=%s | document_id=%s", filename, document_id
         )
 
         full_text, pages = extract_document_text(pdf)
-
         if not full_text.strip():
-            logger.error(
-                "Document contains no readable text: %s",
-                filename,
-            )
+            logger.error("Document contains no readable text: %s", filename)
             raise NoReadableTextException()
 
-        logger.info(
-            "Readable document text confirmed. File=%s",
-            filename,
-        )
-
+        logger.info("Readable document text confirmed. File=%s", filename)
         metadata = get_document_metadata(pages)
-
-        logger.info(
-            "Document metadata processing completed. File=%s",
-            filename,
-        )
+        logger.info("Document metadata processing completed. File=%s", filename)
 
         total_chunks = build_vectors(
             pages=pages,
@@ -493,20 +437,15 @@ def process_document(
             document_id=document_id,
             business_id=business_id,
             course_ids=course_ids,
-            subject_id=subject_id,
         )
 
-        logger.info(
-            DOCUMENT_PROCESSED_LOG,
-            filename,
-            total_chunks,
-        )
-
+        logger.info(DOCUMENT_PROCESSED_LOG, filename, total_chunks)
         return ProcessedDocumentDto(
             document_id=document_id,
             metadata=metadata,
             chunks=total_chunks,
         )
+
     except (
         EmptyDocumentException,
         NoReadableTextException,
@@ -516,11 +455,9 @@ def process_document(
         QdrantConnectionException,
     ):
         raise
-    except Exception as ex:
-        logger.exception(
-            DOCUMENT_PROCESSING_FAILED_LOG,
-            ex,
-        )
+
+    except Exception:
+        logger.exception(DOCUMENT_PROCESSING_FAILED_LOG)
         raise
 
 
@@ -529,42 +466,51 @@ def ingest_documents(
     files: list[UploadFile],
     business_id: str,
     course_ids: list[str],
-    subject_ids: list[str],
 ) -> UploadedDocumentsResponse:
-
     logger.info(KB_INGESTION_STARTED_LOG)
+
+    normalized_course_ids = list(
+        dict.fromkeys(
+            course_id.strip()
+            for course_id in course_ids
+            if course_id and course_id.strip()
+        )
+    )
+
+    if not normalized_course_ids:
+        raise ValueError("At least one valid course ID must be provided.")
+
     logger.info(
-        "Ingestion request details. Files=%d | business_id=%s | course_ids=%s | subject_ids=%s",
+        "Ingestion request details. Files=%d | business_id=%s | course_ids=%s",
         len(files),
         business_id,
-        course_ids,
-        subject_ids,
+        normalized_course_ids,
     )
 
     documents: list[UploadedDocumentDto] = []
     errors: list[UploadedDocumentErrorDto] = []
     total_chunks = 0
 
-    for index, file in enumerate(files):
-        subject_id = subject_ids[index] if index < len(subject_ids) else ""
+    for file in files:
         filename = file.filename
         saved_file_path = None
         pdf = None
 
         logger.info(FILE_PROCESSING_STARTED_LOG, filename)
-        logger.info("[%s] Processing document with subject_id=%s", filename, subject_id)
+        logger.info(
+            "Applying course IDs to document. File=%s | course_ids=%s",
+            filename,
+            normalized_course_ids,
+        )
 
         try:
             pdf, saved_file_path = read_pdf(file)
-
             document = process_document(
-                pdf=pdf,
-                filename=filename,
-                business_id=business_id,
-                course_ids=course_ids,
-                subject_id=subject_id,
+                pdf,
+                filename,
+                business_id,
+                normalized_course_ids,
             )
-
             total_chunks += document.chunks
 
             documents.append(
@@ -578,55 +524,30 @@ def ingest_documents(
                 )
             )
 
-            logger.info(
-                FILE_PROCESSING_COMPLETED_LOG,
-                filename,
-            )
+            logger.info(FILE_PROCESSING_COMPLETED_LOG, filename)
 
         except Exception as ex:
-            logger.exception(
-                "File processing failed: %s | error=%s",
-                filename,
-                ex,
-            )
-
-            errors.append(
-                UploadedDocumentErrorDto(
-                    source=filename,
-                    error=str(ex),
-                )
-            )
+            logger.exception("File processing failed: %s | error=%s", filename, ex)
+            errors.append(UploadedDocumentErrorDto(source=filename, error=str(ex)))
 
         finally:
             if pdf is not None:
                 try:
                     stream = getattr(pdf, "stream", None)
-
                     if stream is not None and not stream.closed:
                         stream.close()
-                        logger.info(
-                            "PDF stream closed: %s",
-                            filename,
-                        )
+                        logger.info("PDF stream closed: %s", filename)
                 except Exception:
-                    logger.exception(
-                        "Failed to close PDF stream: %s",
-                        filename,
-                    )
-
+                    logger.exception("Failed to close PDF stream: %s", filename)
                 del pdf
 
             if saved_file_path is not None:
                 try:
                     delete_saved_file(saved_file_path)
-                    logger.info(
-                        "Temporary upload file deleted: %s",
-                        filename,
-                    )
+                    logger.info("Temporary upload file deleted: %s", filename)
                 except Exception:
                     logger.exception(
-                        "Failed to delete temporary upload file: %s",
-                        filename,
+                        "Failed to delete temporary upload file: %s", filename
                     )
 
     documents_processed = len(documents)

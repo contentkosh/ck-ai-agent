@@ -12,57 +12,54 @@ from database.qdrant_client_manager import client
 from exceptions.contentkosh_exception import ContentKoshException
 
 
-def create_collection_if_missing(
-    collection_name: str,
-) -> None:
-    """
-    Create the specified Qdrant collection if it does not
-    already exist.
-    """
-    logger.info(
-        "Checking Qdrant collection: %s",
-        collection_name,
-    )
+def create_collection_if_missing(collection_name: str) -> None:
+    """Create the specified Qdrant collection if missing and validate its vector dimension."""
+    logger.info("Checking Qdrant collection: %s", collection_name)
 
     try:
         collections = client.get_collections()
-
-        existingCollections = [
+        existing_collections = [
             collection.name for collection in collections.collections
         ]
 
-        if collection_name not in existingCollections:
+        if collection_name not in existing_collections:
             logger.info(
                 "Qdrant collection does not exist. Creation started: %s",
                 collection_name,
             )
-
             client.create_collection(
                 collection_name=collection_name,
                 vectors_config=VectorParams(
-                    size=EMBEDDING_DIMENSION,
-                    distance=Distance.COSINE,
+                    size=EMBEDDING_DIMENSION, distance=Distance.COSINE
                 ),
             )
+            logger.info("%s: %s", COLLECTION_CREATED_LOG, collection_name)
+            return
 
-            logger.info(
-                "%s: %s",
-                COLLECTION_CREATED_LOG,
-                collection_name,
+        collection_info = client.get_collection(collection_name)
+        vectors_config = collection_info.config.params.vectors
+
+        if isinstance(vectors_config, dict):
+            raise ValueError(
+                f"Collection '{collection_name}' uses named vectors. Expected a single unnamed vector of dimension {EMBEDDING_DIMENSION}."
             )
-        else:
-            logger.info(
-                "%s: %s",
-                COLLECTION_ALREADY_EXISTS_LOG,
-                collection_name,
+
+        existing_dimension = vectors_config.size
+
+        if existing_dimension != EMBEDDING_DIMENSION:
+            raise ValueError(
+                f"Collection '{collection_name}' has vector dimension {existing_dimension}, "
+                f"but the configured embedding model requires {EMBEDDING_DIMENSION}. "
+                "Recreate the collection and re-ingest its documents."
             )
+
+        logger.info(
+            "%s: %s | Vector dimension: %d",
+            COLLECTION_ALREADY_EXISTS_LOG,
+            collection_name,
+            existing_dimension,
+        )
 
     except Exception as exception:
-        logger.exception(
-            "%s: %s",
-            COLLECTION_SETUP_FAILED_LOG,
-            collection_name,
-        )
-        raise ContentKoshException(
-            QDRANT_CONNECTION_ERROR_MESSAGE,
-        ) from exception
+        logger.exception("%s: %s", COLLECTION_SETUP_FAILED_LOG, collection_name)
+        raise ContentKoshException(QDRANT_CONNECTION_ERROR_MESSAGE) from exception

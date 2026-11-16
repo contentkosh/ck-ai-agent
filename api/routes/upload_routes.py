@@ -1,7 +1,6 @@
-import re
-from typing import Annotated, List, Optional
+from typing import Annotated, List
 
-from fastapi import APIRouter, Depends, File, Form, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 
 from api.dependencies import get_request_context, verify_api_key
 from common.logger import logger
@@ -13,30 +12,11 @@ from validators.upload_validator import validate_upload
 router = APIRouter()
 
 
-def normalize_course_ids(course_ids: List[str]) -> List[str]:
-    normalized_course_ids = []
-    for course_id in course_ids:
-        normalized_course_ids.extend(
-            value for value in re.split(r"[,\s]+", course_id.strip()) if value
-        )
-    return list(dict.fromkeys(normalized_course_ids))
-
-
-def normalize_subject_ids(subject_ids: List[str]) -> List[str]:
-    normalized_subject_ids = []
-    for subject_id in subject_ids:
-        normalized_subject_ids.extend(
-            value for value in re.split(r"[,\s]+", subject_id.strip()) if value
-        )
-    return list(dict.fromkeys(normalized_subject_ids))
-
-
 @router.post(UPLOAD_DOCUMENTS_ROUTE, dependencies=[Depends(verify_api_key)])
 def upload_documents(
     business_id: Annotated[str, Form(...)],
     course_ids: Annotated[List[str], Form(...)],
     files: Annotated[List[UploadFile], File(...)],
-    subject_ids: Annotated[Optional[List[str]], Form()] = None,
     context: RequestContext = Depends(get_request_context),
 ):
     logger.info(UPLOAD_REQUEST_LOG, context.request_id)
@@ -44,33 +24,44 @@ def upload_documents(
         logger.info(
             "[%s] Upload validation started. Files=%d", context.request_id, len(files)
         )
-        normalized_subject_ids = normalize_subject_ids(subject_ids or [])
-        validate_upload(files, normalized_subject_ids)
+        validate_upload(files)
         logger.info(
             "[%s] Upload validation completed successfully.", context.request_id
         )
 
-        normalized_course_ids = normalize_course_ids(course_ids)
-        logger.info(
-            "[%s] Course IDs normalized. Count=%d",
-            context.request_id,
-            len(normalized_course_ids),
+        raw_course_ids = [
+            course_id for value in course_ids for course_id in value.split(",")
+        ]
+        normalized_course_ids = list(
+            dict.fromkeys(
+                course_id.strip() for course_id in raw_course_ids if course_id.strip()
+            )
         )
+
+        if not normalized_course_ids:
+            raise HTTPException(
+                status_code=422, detail="Provide at least one valid course ID."
+            )
+
+        if any(
+            any(char.isspace() for char in course_id)
+            for course_id in normalized_course_ids
+        ):
+            raise HTTPException(
+                status_code=422, detail="Course IDs must not contain whitespace."
+            )
+
         logger.info(
-            "[%s] Subject IDs normalized. Count=%d Values=%s",
+            "[%s] Document ingestion started. Files=%d | Course IDs=%s",
             context.request_id,
-            len(normalized_subject_ids),
-            normalized_subject_ids,
-        )
-        logger.info(
-            "[%s] Document ingestion started. Files=%d", context.request_id, len(files)
+            len(files),
+            normalized_course_ids,
         )
 
         result = ingest_documents(
             files=files,
             business_id=business_id,
             course_ids=normalized_course_ids,
-            subject_ids=normalized_subject_ids,
         )
 
         logger.info("[%s] Upload response: %s", context.request_id, result.model_dump())

@@ -27,10 +27,6 @@ ENV/
 uploads/*
 !uploads/.gitkeep
 
-# Generated reports
-reports/
-*.html
-
 # ==========================================================
 # Qdrant / Vector Database
 # ==========================================================
