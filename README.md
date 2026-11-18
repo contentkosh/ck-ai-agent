@@ -1,40 +1,36 @@
 # CK AI Agent
 
-CK AI Agent is a FastAPI application that lets you upload PDF documents, store their embeddings in Qdrant, and ask questions about those documents using a local language model.
+CK AI Agent is a FastAPI application that allows users to upload PDF documents, store their embeddings in Qdrant, and ask questions about those documents using a locally running language model.
 
-The project uses a Retrieval-Augmented Generation (RAG) pipeline:
+The application uses a Retrieval-Augmented Generation (RAG) pipeline to retrieve relevant information from uploaded documents and generate context-based answers.
 
-1. Upload PDF files.
-2. Extract their text and split it into smaller chunks.
-3. Convert each chunk into an embedding using a local Sentence Transformers model.
-4. Store the embeddings and document metadata in Qdrant.
-5. Embed a user's question and retrieve matching chunks from Qdrant.
-6. Pass the retrieved text to a local LLM.
-7. Return the generated answer and optionally cache it for later queries.
+The complete application supports both CPU-only and NVIDIA GPU execution. An NVIDIA GPU is optional.
 
 ## Current Technology Stack
 
-| Component | Technology | Purpose |
-|---|---|---|
-| Language | Python 3.12 | Runs the backend |
-| API | FastAPI | Provides HTTP endpoints |
-| ASGI server | Uvicorn | Runs the API |
-| Validation | Pydantic | Validates request and response data |
-| Vector database | Qdrant | Stores embeddings and searches for relevant chunks |
-| Database runtime | Docker | Runs Qdrant locally |
-| PDF processing | pypdf | Reads PDF files |
-| Chunking | Project's local text splitter | Splits extracted text into chunks |
-| Embeddings | Sentence Transformers | Converts text into vectors |
-| Embedding model | BAAI/bge-base-en-v1.5 | Generates 768-dimensional embeddings |
-| Deep-learning framework | PyTorch | Runs the embedding model and local LLM |
-| GPU acceleration | CUDA | Accelerates model computations when available |
-| Local LLM | LFM2-1.2B-RAG | Generates answers |
-| Model runtime | Hugging Face Transformers | Loads and runs the local LLM |
-| Cache | Qdrant | Stores semantically similar previous answers |
-| Logging | Python logging | Records application activity and errors |
-| Testing | pytest | Runs automated tests |
+| Component               | Technology                    | Purpose                                            |
+| ----------------------- | ----------------------------- | -------------------------------------------------- |
+| Language                | Python 3.12                   | Runs the backend                                   |
+| API                     | FastAPI                       | Provides HTTP endpoints                            |
+| ASGI server             | Uvicorn                       | Runs the API                                       |
+| Validation              | Pydantic                      | Validates request and response data                |
+| Vector database         | Qdrant                        | Stores embeddings and searches for relevant chunks |
+| Database runtime        | Docker                        | Runs Qdrant locally                                |
+| PDF processing          | pypdf                         | Reads PDF files                                    |
+| Chunking                | Project's local text splitter | Splits extracted text into chunks                  |
+| Embeddings              | Sentence Transformers         | Converts text into vectors                         |
+| Embedding model         | BAAI/bge-base-en-v1.5         | Generates 768-dimensional embeddings               |
+| Deep-learning framework | PyTorch                       | Runs the embedding model and local LLM             |
+| GPU acceleration        | CUDA                          | Optional acceleration for NVIDIA GPUs              |
+| Local LLM               | LiquidAI/LFM2-1.2B-RAG        | Generates answers                                  |
+| Model runtime           | Hugging Face Transformers     | Loads and runs the local LLM                       |
+| Cache                   | Qdrant                        | Stores semantically similar previous answers       |
+| Logging                 | Python logging                | Records application activity and errors            |
+| Testing                 | pytest                        | Runs automated tests                               |
 
-PyTorch is used by both Sentence Transformers and Transformers. FastAPI and Qdrant do not require PyTorch.
+PyTorch is used by both Sentence Transformers and Transformers.
+
+The application supports CPU execution without CUDA. When a compatible NVIDIA GPU and CUDA-enabled PyTorch installation are available, GPU acceleration can be used.
 
 ## RAG Workflow
 
@@ -140,6 +136,8 @@ The project uses two separate local models:
 1. An embedding model for converting text into vectors.
 2. A language model for generating answers.
 
+Both models use PyTorch and can run on a CPU.
+
 ### Embedding Model
 
 The current embedding model is:
@@ -171,7 +169,29 @@ The application loads it from:
 models/LFM2-1.2B-RAG/
 ```
 
-It is loaded using Hugging Face Transformers and PyTorch. The model files must already be present in that directory because the application loads the model locally.
+It is loaded using Hugging Face Transformers and PyTorch.
+
+The model files must already be present in that directory because the application loads the model locally.
+
+The language model does not require an internet connection for inference after its model files have been downloaded, provided all required files are available locally.
+
+### CPU-only Execution
+
+The application can run completely on a CPU-only machine.
+
+In CPU-only mode:
+
+- PDF extraction runs on the CPU.
+- Embedding generation runs on the CPU.
+- Vector retrieval is handled by Qdrant.
+- Local LLM inference runs on the CPU.
+- CUDA is not required.
+
+CPU execution will generally be slower than GPU execution, particularly during embedding generation and language model inference.
+
+The tester should ensure that sufficient system RAM is available for loading both models and processing documents.
+
+Closing unnecessary applications can help when memory is limited.
 
 ## Project Structure
 
@@ -227,16 +247,54 @@ ck-ai-agent/
 
 ## Requirements
 
-- Python 3.12 recommended.
+The following software and resources are required to run the complete application.
+
+- Python 3.12.
 - Docker Desktop or another Docker installation for local Qdrant.
-- NVIDIA GPU and compatible CUDA-enabled PyTorch for GPU acceleration.
+- CPU-compatible PyTorch installation.
+- Sufficient system RAM for the embedding model and local LLM.
+- Internet access during the initial installation and model downloads.
 - Local `LFM2-1.2B-RAG` model files in `models/LFM2-1.2B-RAG/`.
 
-The application can run on CPU, but embedding generation and LLM inference will generally be slower.
+An NVIDIA GPU is optional.
+
+The application can run without CUDA using CPU-compatible PyTorch.
+
+### Hardware Considerations
+
+The complete application loads two local models.
+
+The embedding model is used during document ingestion and question retrieval. The local LLM is used to generate answers.
+
+CPU-only execution is supported, but:
+
+- Initial model loading can take longer.
+- Large PDF files may take longer to process.
+- Embedding generation may be slower.
+- LLM response generation may take longer.
+- Available system RAM can affect whether both models can run comfortably.
+
+The exact performance depends on the processor, available RAM, document size, and number of concurrent requests.
 
 ## Setup
 
-### 1. Create and Activate a Virtual Environment
+### 1. Install Python
+
+Install Python 3.12.
+
+Verify the installation:
+
+```powershell
+python --version
+```
+
+Expected output:
+
+```text
+Python 3.12.x
+```
+
+### 2. Create and Activate a Virtual Environment
 
 Windows PowerShell:
 
@@ -252,55 +310,90 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 2. Install Dependencies
-
-Upgrade pip:
+### 3. Upgrade pip
 
 ```powershell
 python -m pip install --upgrade pip
 ```
 
-Install project dependencies:
+### 4. Install PyTorch
+
+Choose the installation appropriate for the tester's hardware.
+
+#### A. CPU-only installation (recommended for testers without an NVIDIA GPU)
+
+Install CPU-compatible PyTorch:
 
 ```powershell
-python -m pip install -r requirements.txt
+python -m pip install torch==2.8.0 --index-url https://download.pytorch.org/whl/cpu
 ```
 
-For an NVIDIA GPU, install the CUDA-enabled PyTorch build that matches your environment.
+This installation does not require CUDA or an NVIDIA GPU.
 
-The project was tested with PyTorch 2.8.0 and CUDA 12.8 wheels:
+#### B. NVIDIA GPU installation (optional)
+
+For a compatible NVIDIA GPU and CUDA 12.8 environment:
 
 ```powershell
 python -m pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128
 ```
 
-Check whether PyTorch can detect your GPU:
+This step is only necessary when GPU acceleration is desired.
+
+### 5. Install Project Dependencies
+
+After installing the appropriate PyTorch build:
 
 ```powershell
-python -c "import torch; print('PyTorch:', torch.__version__); print('CUDA available:', torch.cuda.is_available()); print('GPU:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU')"
+python -m pip install -r requirements.txt
 ```
 
-### 3. Download the Models
-
-The application uses two models from Hugging Face. Both must be downloaded before running the application for the first time.
-
-Make sure your virtual environment is activated.
-
-The project already uses `huggingface_hub`. If it is not installed, run:
+Check for dependency conflicts:
 
 ```powershell
-python -m pip install huggingface_hub==0.34.4
+python -m pip check
 ```
 
-#### A. Download the Embedding Model
+If the command reports dependency conflicts, resolve them before starting the application.
+
+### 6. Verify PyTorch
+
+Run:
+
+```powershell
+python -c "import torch; print('PyTorch:', torch.__version__); print('CUDA available:', torch.cuda.is_available()); print('Device:', 'CUDA' if torch.cuda.is_available() else 'CPU')"
+```
+
+For a CPU-only machine, expected output should indicate:
+
+```text
+CUDA available: False
+Device: CPU
+```
+
+This is normal and does not indicate an installation problem.
+
+## Download the Models
+
+The application uses two models from Hugging Face.
+
+Both must be downloaded before running the application for the first time.
+
+Make sure the virtual environment is activated.
+
+The project uses `huggingface_hub` for downloading the model files.
+
+### A. Download the Embedding Model
 
 The embedding model is:
 
-`BAAI/bge-base-en-v1.5`
+```text
+BAAI/bge-base-en-v1.5
+```
 
 It converts document chunks and user questions into 768-dimensional vectors.
 
-Run this command to download it:
+Download it using:
 
 ```powershell
 python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='BAAI/bge-base-en-v1.5')"
@@ -314,11 +407,13 @@ Hugging Face repository:
 
 https://huggingface.co/BAAI/bge-base-en-v1.5
 
-#### B. Download the Local LLM
+### B. Download the Local LLM
 
 The language model is:
 
-`LiquidAI/LFM2-1.2B-RAG`
+```text
+LiquidAI/LFM2-1.2B-RAG
+```
 
 Unlike the embedding model, this model must be stored inside your project because the application loads it from a local directory.
 
@@ -359,13 +454,27 @@ If Hugging Face requires authentication, log in using:
 hf auth login
 ```
 
-Follow the instructions to authenticate. Never put your Hugging Face access token directly into your README or commit it to source control.
+Follow the instructions to authenticate.
+
+Never put your Hugging Face access token directly into your README or commit it to source control.
 
 **Important:** The LLM is loaded locally. If the model files are missing from `models/LFM2-1.2B-RAG/`, the application will not be able to initialize the LLM.
 
-### 4. Verify Both Models
+### CPU-only Model Execution
 
-Verify the embedding model:
+On a CPU-only machine, the models will run without CUDA.
+
+The tester does not need to install NVIDIA drivers or CUDA Toolkit.
+
+The initial model download requires internet access, but subsequent inference can use the downloaded model files locally.
+
+## Verify Both Models
+
+Before starting the API, verify that both models can load successfully.
+
+### A. Verify the Embedding Model
+
+Run:
 
 ```powershell
 python -c "from common.embedding_client import get_embedding_model; m=get_embedding_model(); e=m.encode('Testing embedding model'); print('Embedding shape:', e.shape); print('Device:', m.device); print('SUCCESS')"
@@ -377,7 +486,11 @@ Expected embedding shape:
 (768,)
 ```
 
-Verify the local LLM:
+On a CPU-only machine, the device should indicate CPU.
+
+### B. Verify the Local LLM
+
+Run:
 
 ```powershell
 python -c "from common.llm_client import get_llm; llm=get_llm(); print('LLM initialized successfully')"
@@ -385,7 +498,9 @@ python -c "from common.llm_client import get_llm; llm=get_llm(); print('LLM init
 
 If both commands succeed, the models are ready to use.
 
-### 5. Configure Environment Variables
+The LLM initialization may take some time on a CPU-only machine.
+
+## Configure Environment Variables
 
 Create a `.env` file in the project root.
 
@@ -446,16 +561,16 @@ Some settings are optional and use defaults in `configuration/config.py` when om
 
 Current defaults include:
 
-| Setting | Default |
-|---|---:|
-| `SEARCH_LIMIT` | `5` |
-| `SEARCH_SCORE_THRESHOLD` | `0.50` |
-| `LLM_REPETITION_PENALTY` | `1.05` |
-| `METADATA_EXTRACTION_TEXT_LIMIT` | `4000` |
-| `LOG_FILE_PATH` | `logs/application.log` |
-| `LOG_MAX_BYTES` | `10485760` (10 MB) |
-| `LOG_BACKUP_COUNT` | `5` |
-| `MAX_TAG_LENGTH` | `100` |
+| Setting                            |                  Default |
+| ---------------------------------- | -----------------------: |
+| `SEARCH_LIMIT`                   |                    `5` |
+| `SEARCH_SCORE_THRESHOLD`         |                 `0.50` |
+| `LLM_REPETITION_PENALTY`         |                 `1.05` |
+| `METADATA_EXTRACTION_TEXT_LIMIT` |                 `4000` |
+| `LOG_FILE_PATH`                  | `logs/application.log` |
+| `LOG_MAX_BYTES`                  |     `10485760` (10 MB) |
+| `LOG_BACKUP_COUNT`               |                    `5` |
+| `MAX_TAG_LENGTH`                 |                  `100` |
 
 `API_KEY` can be configured if API authentication is enabled. Protected endpoints require the configured key in the `X-API-Key` header.
 
@@ -463,7 +578,7 @@ With `AUTH_ENABLED=False`, API key verification is disabled.
 
 The subject-classification variables are retained in the configuration, but subject classification is not part of the current active question-retrieval flow.
 
-### 6. Start Qdrant Using Docker
+## Start Qdrant Using Docker
 
 Start Docker Desktop first.
 
@@ -499,7 +614,9 @@ http://localhost:6333/dashboard
 
 Do not remove the `qdrant_storage` volume unless you intentionally want to delete the stored Qdrant data.
 
-### 7. Start the API
+Qdrant runs independently of the application's PyTorch device. It does not require an NVIDIA GPU.
+
+## Start the API
 
 From the project root, with the virtual environment activated:
 
@@ -521,20 +638,22 @@ http://127.0.0.1:8000/
 
 Stop the API using `Ctrl+C`.
 
+The first application startup may take longer because the local embedding model and language model need to load into memory.
+
 ## API Endpoints
 
 The exact request and response schemas are available in Swagger UI at `/docs`.
 
-| Method | Endpoint | Purpose |
-|---|---|---|
-| `GET` | `/` | Health check |
-| `POST` | `/llm/upload` | Upload and ingest PDF files |
-| `POST` | `/llm/kb/query` | Ask a question against the Knowledge Base |
-| `GET` | `/llm/kb` | Retrieve Knowledge Base records |
-| `GET` | `/llm/files` | List uploaded documents |
-| `DELETE` | `/llm/files/{document_id}` | Delete a document and its chunks |
-| `DELETE` | `/llm/files` | Clear a business's Knowledge Base |
-| `POST` | `/query/{job_id}/stop` | Request cancellation of a query job |
+| Method     | Endpoint                     | Purpose                                   |
+| ---------- | ---------------------------- | ----------------------------------------- |
+| `GET`    | `/`                        | Health check                              |
+| `POST`   | `/llm/upload`              | Upload and ingest PDF files               |
+| `POST`   | `/llm/kb/query`            | Ask a question against the Knowledge Base |
+| `GET`    | `/llm/kb`                  | Retrieve Knowledge Base records           |
+| `GET`    | `/llm/files`               | List uploaded documents                   |
+| `DELETE` | `/llm/files/{document_id}` | Delete a document and its chunks          |
+| `DELETE` | `/llm/files`               | Clear a business's Knowledge Base         |
+| `POST`   | `/query/{job_id}/stop`     | Request cancellation of a query job       |
 
 ### Upload PDFs
 
@@ -542,9 +661,12 @@ The exact request and response schemas are available in Swagger UI at `/docs`.
 
 - `business_id`: One business identifier.
 - `course_ids`: One or more course IDs.
+- `subject_ids`: One or more subject IDs.
 - `files`: One or more PDF files.
 
 All files in the same upload request receive the same supplied course ID list.
+
+For multiple files, provide multiple `files` entries in the multipart form data.
 
 ### Ask a Question
 
@@ -608,7 +730,46 @@ The current configuration uses:
 - Cache top K: `1`
 - Maximum cache size setting: `5000`
 
-The cache is scoped by business and uses course information during lookup and storage. Cache behavior should be tested when changing course-selection rules to ensure cached answers are not reused across incompatible course selections.
+The cache is scoped by business and uses course information during lookup and storage.
+
+Cache behavior should be tested when changing course-selection rules to ensure cached answers are not reused across incompatible course selections.
+
+## CPU-only Testing Checklist
+
+Before testing the complete application on a machine without an NVIDIA GPU, verify the following:
+
+1. Python 3.12 is installed.
+2. The virtual environment is activated.
+3. CPU-compatible PyTorch is installed.
+4. `torch.cuda.is_available()` returns `False`.
+5. All Python dependencies install successfully.
+6. Both Hugging Face models are downloaded.
+7. The embedding model loads successfully.
+8. The local LLM loads successfully.
+9. Docker Desktop is running.
+10. Qdrant is running and accessible.
+11. The `.env` file is configured.
+12. The FastAPI application starts successfully.
+
+### Functional Testing
+
+After completing setup, test the complete application:
+
+1. Open Swagger UI.
+2. Check the health endpoint.
+3. Upload a PDF document.
+4. Confirm that document text extraction succeeds.
+5. Confirm that metadata extraction succeeds.
+6. Confirm that embeddings are generated.
+7. Confirm that vectors are inserted into Qdrant.
+8. Submit a question about the uploaded document.
+9. Verify that relevant chunks are retrieved.
+10. Verify that the local LLM generates an answer.
+11. Repeat the question to test semantic caching.
+12. Retrieve the uploaded document list.
+13. Test document deletion if required.
+
+The first ingestion and query may take longer because model loading and CPU inference can be slower.
 
 ## Logging and Troubleshooting
 
@@ -627,18 +788,37 @@ Use the request ID and `job_id` to follow the relevant log entries.
 - Make sure Docker Desktop is running.
 - Run `docker ps` and confirm the Qdrant container is running.
 - Check `QDRANT_HOST` and `QDRANT_PORT` in `.env`.
+- Confirm that port `6333` is available.
 
 ### Embedding Model Fails to Load
 
 - Check that `sentence-transformers` and PyTorch are installed in the active virtual environment.
 - Check that the configured embedding model can be loaded.
+- Check whether the model files are available in the Hugging Face cache.
 - Check CUDA with `torch.cuda.is_available()`.
-- The model can fall back to CPU if CUDA is unavailable.
+- CPU execution is supported when CUDA is unavailable.
 
 ### Local LLM Fails to Load
 
 - Confirm that `models/LFM2-1.2B-RAG/` exists and contains the model files.
-- Check available system RAM and GPU memory.
+- Check that Transformers and PyTorch are installed.
+- Check available system RAM.
+- On CPU-only systems, allow additional time for model initialization.
+- Check the application logs for model-loading errors.
+
+### CPU Inference Is Slow
+
+CPU inference is generally slower than GPU inference.
+
+If the application is responding slowly:
+
+- Close unnecessary applications.
+- Check available RAM.
+- Avoid running multiple ingestion or query operations simultaneously during initial testing.
+- Allow sufficient time for local LLM generation.
+- Monitor CPU and memory usage through Windows Task Manager.
+
+Slow CPU inference does not necessarily indicate an application failure.
 
 ### Qdrant Vector Dimension Mismatch
 
@@ -646,20 +826,34 @@ The current embedding model produces 768-dimensional vectors.
 
 The Knowledge Base and cache collections must use the same vector dimension.
 
-If an existing collection has a different dimension, it must be recreated and its documents re-ingested. Back up data and confirm before deleting any collection.
+If an existing collection has a different dimension, it must be recreated and its documents re-ingested.
+
+Back up data and confirm before deleting any collection.
 
 ### API Returns an Internal Server Error
 
 - Check the full traceback in the terminal and `logs/application.log`.
 - Use the request ID and job ID to locate the relevant entries.
+- Confirm that Qdrant and both local models are available.
+
+### Dependency Installation Fails
+
+- Confirm that Python 3.12 is being used.
+- Confirm that the correct virtual environment is activated.
+- Install the CPU-only PyTorch build for CPU-only machines.
+- Run `python -m pip check` to identify dependency conflicts.
+- Avoid installing incompatible OpenAI SDK versions into the same environment.
 
 ## Important Notes
 
 - Start Qdrant before sending ingestion or query requests.
 - Download both models before starting the application for the first time.
-- The embedding model is local BGE (`BAAI/bge-base-en-v1.5`), not an OpenRouter embedding API.
+- The embedding model is local BGE (`BAAI/bge-base-en-v1.5`).
 - The local LLM is `LiquidAI/LFM2-1.2B-RAG`.
-- Both models use PyTorch; CUDA is used when available.
+- Both models use PyTorch.
+- CUDA is optional and is used when a compatible NVIDIA GPU is available.
+- CPU-only execution is supported.
+- CPU inference will generally be slower than GPU inference.
 - Each business has its own Knowledge Base collection and cache collection.
 - Course IDs are payload filters inside a business collection, not separate collections.
 - Re-uploading a PDF does not automatically replace an earlier upload.
