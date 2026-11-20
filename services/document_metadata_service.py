@@ -93,10 +93,12 @@ def extract_document_metadata(text: str) -> DocumentMetadataDto:
         try:
             logger.info("Metadata LLM invocation started.")
             llm_response = get_llm().invoke(prompt)
+            logger.info("RAW METADATA LLM RESPONSE: %s", llm_response.content)
             logger.info(
                 "Metadata LLM invocation completed. Response characters=%d",
                 len(llm_response.content),
             )
+
         except Exception as exception:
             logger.exception(LLM_INVOCATION_FAILED_LOG)
             raise LLMResponseException() from exception

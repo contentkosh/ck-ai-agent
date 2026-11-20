@@ -106,5 +106,3 @@ dist/
 
 # Local LLM models
 models/
-
-venv_dry_run
