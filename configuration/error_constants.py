@@ -7,7 +7,6 @@ PDF_PROCESSING_ERROR_MESSAGE = "Unable to process PDF."
 EMBEDDING_ERROR_MESSAGE = "Embedding generation failed."
 VALIDATION_ERROR_MESSAGE = "Validation failed."
 RESOURCE_NOT_FOUND_MESSAGE = "Resource not found."
-AUTHENTICATION_FAILED_MESSAGE = "Authentication failed."
 INTERNAL_SERVER_ERROR_MESSAGE = "Internal Server Error"
 
 # ==========================================================

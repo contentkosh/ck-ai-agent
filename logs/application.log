@@ -1947,3 +1947,30 @@
 2026-11-21 13:46:34,956 | INFO | [7ffb6a2b-6afe-4701-b005-4953d07c6084] Upload response: {'status': 'success', 'message': 'All documents got in successfully.', 'documents_processed': 1, 'documents_failed': 0, 'chunks_inserted': 1523, 'documents': [{'document_id': '066bdb5a-0525-4a6c-9b6f-f6f25a16249b', 'source': 'UP TGT & PGT .pdf'}], 'errors': []}
 2026-11-21 13:46:34,958 | INFO | [7ffb6a2b-6afe-4701-b005-4953d07c6084] Request completed: POST /llm/upload | status=200 | duration=72.298s
 2026-11-21 13:50:59,949 | INFO | FastAPI application shutdown completed
+2026-11-21 14:45:07,445 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-11-21 14:45:09,723 | INFO | Qdrant client initialized successfully.
+2026-11-21 14:45:26,671 | INFO | FastAPI application configured successfully
+2026-11-21 14:45:26,672 | INFO | FastAPI application startup initiated
+2026-11-21 14:45:33,821 | INFO | [dafc8e34-bf47-49a9-b9b1-8a3d00d55c10] Request started: GET /docs
+2026-11-21 14:45:33,823 | INFO | [dafc8e34-bf47-49a9-b9b1-8a3d00d55c10] Request completed: GET /docs | status=200 | duration=0.001s
+2026-11-21 14:45:34,051 | INFO | [934100f9-41db-4802-8155-a7e70f475e71] Request started: GET /openapi.json
+2026-11-21 14:45:34,111 | INFO | [934100f9-41db-4802-8155-a7e70f475e71] Request completed: GET /openapi.json | status=200 | duration=0.061s
+2026-11-21 14:48:47,968 | INFO | [8d6356d1-5e4c-42e4-907c-927a79cf4b3b] Request started: GET /
+2026-11-21 14:48:47,974 | INFO | [Knowledge Base API] Health API called.
+2026-11-21 14:48:47,980 | INFO | [8d6356d1-5e4c-42e4-907c-927a79cf4b3b] Request completed: GET / | status=200 | duration=0.011s
+2026-11-21 14:48:48,534 | INFO | [3fbdbfb6-ed9e-4a34-aee9-df9431814bc6] Request started: GET /favicon.ico
+2026-11-21 14:48:48,536 | INFO | [3fbdbfb6-ed9e-4a34-aee9-df9431814bc6] Request completed: GET /favicon.ico | status=404 | duration=0.001s
+2026-11-21 14:49:03,682 | INFO | [4c3fb33b-b0dc-44f0-9942-bedc9a0d6592] Request started: GET /health
+2026-11-21 14:49:03,684 | INFO | [4c3fb33b-b0dc-44f0-9942-bedc9a0d6592] Request completed: GET /health | status=404 | duration=0.002s
+2026-11-21 14:49:22,549 | INFO | [cb39c733-7984-4d88-8b14-2040be373017] Request started: GET /
+2026-11-21 14:49:22,550 | INFO | [Knowledge Base API] Health API called.
+2026-11-21 14:49:22,553 | INFO | [cb39c733-7984-4d88-8b14-2040be373017] Request completed: GET / | status=200 | duration=0.004s
+2026-11-21 14:49:46,841 | INFO | [9b78f56d-f13a-4889-95b4-16ad4ed8d78c] Request started: GET /
+2026-11-21 14:49:46,843 | INFO | [Knowledge Base API] Health API called.
+2026-11-21 14:49:46,845 | INFO | [9b78f56d-f13a-4889-95b4-16ad4ed8d78c] Request completed: GET / | status=200 | duration=0.004s
+2026-11-21 14:53:08,823 | INFO | FastAPI application shutdown completed
+2026-11-21 14:53:15,500 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-11-21 14:53:17,468 | INFO | Qdrant client initialized successfully.
+2026-11-21 14:53:31,537 | INFO | FastAPI application configured successfully
+2026-11-21 14:53:31,538 | INFO | FastAPI application startup initiated
+2026-11-21 14:54:05,395 | INFO | FastAPI application shutdown completed

@@ -13,14 +13,6 @@ API_PORT = int(os.getenv("API_PORT", 8000))
 API_RELOAD = os.getenv("API_RELOAD", "True").lower() == "true"
 
 # ==========================================================
-# AUTHENTICATION
-# ==========================================================
-
-API_KEY = os.getenv("API_KEY")
-API_KEY_HEADER_NAME = os.getenv("API_KEY_HEADER_NAME", "X-API-Key")
-AUTH_ENABLED = os.getenv("AUTH_ENABLED", "False").lower() == "true"
-
-# ==========================================================
 # QDRANT
 # ==========================================================
 

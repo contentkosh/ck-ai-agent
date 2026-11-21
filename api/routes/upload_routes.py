@@ -2,7 +2,7 @@ from typing import Annotated, List
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 
-from api.dependencies import get_request_context, verify_api_key
+from api.dependencies import get_request_context
 from common.logger import logger
 from configuration.constants import UPLOAD_DOCUMENTS_ROUTE, UPLOAD_REQUEST_LOG
 from configuration.context import RequestContext
@@ -12,7 +12,7 @@ from validators.upload_validator import validate_upload
 router = APIRouter()
 
 
-@router.post(UPLOAD_DOCUMENTS_ROUTE, dependencies=[Depends(verify_api_key)])
+@router.post(UPLOAD_DOCUMENTS_ROUTE)
 def upload_documents(
     business_id: Annotated[str, Form(...)],
     course_ids: Annotated[List[str], Form(...)],
