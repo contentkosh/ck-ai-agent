@@ -12,3 +12,4 @@ sentence-transformers==5.1.0
 pytest==9.2.0
 langchain-openai==0.3.32
 langchain-text-splitters==0.3.9
+accelerate==1.16.0

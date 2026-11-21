@@ -1,7 +1,9 @@
 from typing import Optional
+
 from httpx import ConnectError
 from qdrant_client.http.exceptions import ResponseHandlingException
 from qdrant_client.models import FieldCondition, Filter, MatchAny, MatchValue
+
 from common.collection_utils import get_kb_collection_name
 from common.logger import logger
 from configuration.config import SCROLL_LIMIT, SEARCH_LIMIT, SEARCH_SCORE_THRESHOLD
@@ -17,13 +19,9 @@ from configuration.constants import (
     FETCH_RECORDS_LOG,
     METADATA_COURSE_ID,
     METADATA_DOCUMENT_ID,
-    METADATA_DOCUMENT_TYPE,
     METADATA_PAGE,
     METADATA_SOURCE,
-    METADATA_SUMMARY,
-    METADATA_TAG,
     METADATA_TEXT,
-    METADATA_TITLE,
     SEMANTIC_SEARCH_FAILED_LOG,
     SEMANTIC_SEARCH_LOG,
     VECTOR_INSERTION_FAILED_LOG,
@@ -55,6 +53,7 @@ def _scrollRecords(collectionName: str, queryFilter: Optional[Filter] = None) ->
     nextOffset = None
     pageCount = 0
     logger.info("Qdrant scroll started. Collection=%s", collectionName)
+
     while True:
         records, nextOffset = client.scroll(
             collection_name=collectionName,
@@ -65,8 +64,10 @@ def _scrollRecords(collectionName: str, queryFilter: Optional[Filter] = None) ->
         )
         allRecords.extend(records)
         pageCount += 1
+
         if nextOffset is None:
             break
+
     logger.info(
         "Qdrant scroll completed. Collection=%s | records=%d | pages=%d",
         collectionName,
@@ -87,10 +88,6 @@ def ensureCollection(businessId: str) -> str:
 def buildUploadedDocument(payload: dict) -> UploadedDocumentDto:
     return UploadedDocumentDto(
         document_id=payload.get(METADATA_DOCUMENT_ID),
-        title=payload.get(METADATA_TITLE),
-        document_type=payload.get(METADATA_DOCUMENT_TYPE),
-        tag=payload.get(METADATA_TAG),
-        summary=payload.get(METADATA_SUMMARY),
         source=payload.get(METADATA_SOURCE),
     )
 
@@ -98,10 +95,6 @@ def buildUploadedDocument(payload: dict) -> UploadedDocumentDto:
 def buildKnowledgeBaseRecord(payload: dict) -> KnowledgeBaseRecordDto:
     return KnowledgeBaseRecordDto(
         document_id=payload.get(METADATA_DOCUMENT_ID),
-        title=payload.get(METADATA_TITLE),
-        document_type=payload.get(METADATA_DOCUMENT_TYPE),
-        tag=payload.get(METADATA_TAG),
-        summary=payload.get(METADATA_SUMMARY),
         source=payload.get(METADATA_SOURCE),
         page=payload.get(METADATA_PAGE),
         text=payload.get(METADATA_TEXT),
@@ -116,6 +109,7 @@ def isQdrantConnectionError(exception: Exception) -> bool:
 
 def saveChunks(points: list, businessId: str) -> None:
     collectionName = ensureCollection(businessId)
+
     try:
         logger.info(
             "Qdrant vector insertion started. Collection=%s | points=%d",
@@ -124,30 +118,27 @@ def saveChunks(points: list, businessId: str) -> None:
         )
         client.upsert(collection_name=collectionName, points=points)
         logger.info(VECTOR_INSERTION_LOG, len(points))
+
     except Exception as exception:
         logger.exception(VECTOR_INSERTION_FAILED_LOG, exception)
+
         if isQdrantConnectionError(exception):
             raise ContentKoshException(
                 DATABASE_INSERT_ERROR_MESSAGE, cause=QdrantConnectionException()
             ) from exception
+
         raise ContentKoshException(
             DATABASE_INSERT_ERROR_MESSAGE, cause=QdrantInsertException()
         ) from exception
 
 
-def _buildMetadataFilter(
-    courseIds: Optional[list[str]] = None, tag: Optional[str] = None
-) -> Optional[Filter]:
-    mustConditions = []
-    if courseIds:
-        mustConditions.append(
-            FieldCondition(key=METADATA_COURSE_ID, match=MatchAny(any=courseIds))
-        )
-    if tag:
-        mustConditions.append(
-            FieldCondition(key=METADATA_TAG, match=MatchValue(value=tag))
-        )
-    return Filter(must=mustConditions) if mustConditions else None
+def _buildMetadataFilter(courseIds: Optional[list[str]] = None) -> Optional[Filter]:
+    if not courseIds:
+        return None
+
+    return Filter(
+        must=[FieldCondition(key=METADATA_COURSE_ID, match=MatchAny(any=courseIds))]
+    )
 
 
 def searchChunks(
@@ -158,6 +149,7 @@ def searchChunks(
     scoreThreshold: Optional[float] = SEARCH_SCORE_THRESHOLD,
 ):
     collectionName = ensureCollection(businessId)
+
     try:
         logger.info(
             "Qdrant semantic search started. Collection=%s | courses=%s | limit=%d | score_threshold=%s",
@@ -167,6 +159,7 @@ def searchChunks(
             scoreThreshold,
         )
         queryFilter = _buildMetadataFilter(courseIds=courseIds)
+
         searchResult = client.query_points(
             collection_name=collectionName,
             query=queryEmbedding,
@@ -174,55 +167,69 @@ def searchChunks(
             limit=limit,
             score_threshold=scoreThreshold,
         )
+
         logger.info("%s: %s", SEMANTIC_SEARCH_LOG, len(searchResult.points))
+
         if searchResult.points:
             logger.info(
                 "Qdrant semantic search scores: %s",
                 [round(point.score, 4) for point in searchResult.points],
             )
+
         return searchResult.points
+
     except Exception as ex:
         logger.exception("%s: %s", SEMANTIC_SEARCH_FAILED_LOG, ex)
+
         if isQdrantConnectionError(ex):
             raise ContentKoshException(
                 DATABASE_SEARCH_ERROR_MESSAGE, cause=QdrantConnectionException()
             ) from ex
+
         raise ContentKoshException(
             DATABASE_SEARCH_ERROR_MESSAGE, cause=QdrantSearchException()
         ) from ex
 
 
 def getAllRecords(
-    businessId: str, courseIds: Optional[list[str]] = None, tag: Optional[str] = None
+    businessId: str,
+    courseIds: Optional[list[str]] = None,
 ) -> list[KnowledgeBaseRecordDto]:
     collectionName = ensureCollection(businessId)
+
     try:
         logger.info(
-            "Fetching Knowledge Base records. Collection=%s | courses=%s | tag=%s",
+            "Fetching Knowledge Base records. Collection=%s | courses=%s",
             collectionName,
             courseIds,
-            tag,
         )
-        queryFilter = _buildMetadataFilter(courseIds=courseIds, tag=tag)
+        queryFilter = _buildMetadataFilter(courseIds=courseIds)
         records = _scrollRecords(collectionName, queryFilter)
-        responseRecords = [buildKnowledgeBaseRecord(point.payload) for point in records]
+        responseRecords = [
+            buildKnowledgeBaseRecord(point.payload or {}) for point in records
+        ]
         logger.info("%s: %s", FETCH_RECORDS_LOG, len(responseRecords))
         return responseRecords
+
     except Exception as ex:
         logger.exception("%s: %s", FETCH_RECORDS_FAILED_LOG, ex)
+
         if isQdrantConnectionError(ex):
             raise ContentKoshException(
                 DATABASE_FETCH_ERROR_MESSAGE, cause=QdrantConnectionException()
             ) from ex
+
         raise ContentKoshException(
             DATABASE_FETCH_ERROR_MESSAGE, cause=QdrantFetchException()
         ) from ex
 
 
 def getUploadedFiles(
-    businessId: str, courseIds: list[str]
+    businessId: str,
+    courseIds: list[str],
 ) -> list[UploadedDocumentDto]:
     collectionName = ensureCollection(businessId)
+
     try:
         logger.info(
             "Fetching uploaded documents. Collection=%s | courses=%s",
@@ -232,21 +239,28 @@ def getUploadedFiles(
         courseFilter = _buildMetadataFilter(courseIds=courseIds)
         records = _scrollRecords(collectionName, courseFilter)
         documents: dict[str, UploadedDocumentDto] = {}
+
         for point in records:
-            payload = point.payload
+            payload = point.payload or {}
             documentId = payload.get(METADATA_DOCUMENT_ID)
+
             if not documentId:
                 continue
+
             if documentId not in documents:
                 documents[documentId] = buildUploadedDocument(payload)
+
         logger.info("%s: %s", FETCH_DOCUMENTS_LOG, len(documents))
         return list(documents.values())
+
     except Exception as ex:
         logger.exception("%s: %s", FETCH_DOCUMENTS_FAILED_LOG, ex)
+
         if isQdrantConnectionError(ex):
             raise ContentKoshException(
                 DATABASE_FETCH_ERROR_MESSAGE, cause=QdrantConnectionException()
             ) from ex
+
         raise ContentKoshException(
             DATABASE_FETCH_ERROR_MESSAGE, cause=QdrantFetchException()
         ) from ex
@@ -254,6 +268,7 @@ def getUploadedFiles(
 
 def getCourseIdsForDocument(*, documentId: str, businessId: str) -> list[str] | None:
     collectionName = ensureCollection(businessId)
+
     try:
         logger.info(
             "Retrieving course IDs for document. Collection=%s | document_id=%s",
@@ -267,37 +282,46 @@ def getCourseIdsForDocument(*, documentId: str, businessId: str) -> list[str] | 
                 )
             ]
         )
+
         existing, _ = client.scroll(
             collection_name=collectionName,
             scroll_filter=documentFilter,
             limit=1,
             with_payload=True,
         )
+
         if not existing:
             logger.info("No Knowledge Base record found for document: %s", documentId)
             return None
+
         payload = existing[0].payload or {}
         courseIds = payload.get(METADATA_COURSE_ID)
+
         if isinstance(courseIds, list):
             logger.info(
                 "Course IDs retrieved for document %s: %s", documentId, courseIds
             )
             return courseIds
+
         if courseIds is not None:
             logger.info(
                 "Single course ID retrieved for document %s: %s", documentId, courseIds
             )
             return [courseIds]
+
         logger.info("Document %s has no course IDs.", documentId)
         return None
+
     except Exception as ex:
         logger.exception(
             "Failed to retrieve course IDs for document %s: %s", documentId, ex
         )
+
         if isQdrantConnectionError(ex):
             raise ContentKoshException(
                 DATABASE_DELETE_ERROR_MESSAGE, cause=QdrantConnectionException()
             ) from ex
+
         raise ContentKoshException(
             DATABASE_DELETE_ERROR_MESSAGE, cause=QdrantDeleteException()
         ) from ex
@@ -305,6 +329,7 @@ def getCourseIdsForDocument(*, documentId: str, businessId: str) -> list[str] | 
 
 def deleteDocument(documentId: str, businessId: str) -> bool:
     collectionName = ensureCollection(businessId)
+
     try:
         logger.info(
             "Document deletion started. Collection=%s | document_id=%s",
@@ -318,24 +343,30 @@ def deleteDocument(documentId: str, businessId: str) -> bool:
                 )
             ]
         )
+
         existing, _ = client.scroll(
             collection_name=collectionName,
             scroll_filter=documentFilter,
             limit=1,
             with_payload=False,
         )
+
         if not existing:
             logger.info("%s: %s", DOCUMENT_NOT_FOUND_LOG, documentId)
             return False
+
         client.delete(collection_name=collectionName, points_selector=documentFilter)
         logger.info("%s: %s", DELETE_DOCUMENT_LOG, documentId)
         return True
+
     except Exception as ex:
         logger.exception("%s: %s", DELETE_DOCUMENT_FAILED_LOG, ex)
+
         if isQdrantConnectionError(ex):
             raise ContentKoshException(
                 DATABASE_DELETE_ERROR_MESSAGE, cause=QdrantConnectionException()
             ) from ex
+
         raise ContentKoshException(
             DATABASE_DELETE_ERROR_MESSAGE, cause=QdrantDeleteException()
         ) from ex
@@ -343,17 +374,21 @@ def deleteDocument(documentId: str, businessId: str) -> bool:
 
 def deleteAllDocuments(businessId: str) -> bool:
     collectionName = ensureCollection(businessId)
+
     try:
         logger.info("Knowledge Base deletion started. Collection=%s", collectionName)
         client.delete(collection_name=collectionName, points_selector=Filter())
         logger.info(CLEAR_KB_LOG)
         return True
+
     except Exception as exception:
         logger.exception("%s: %s", CLEAR_KB_FAILED_LOG, exception)
+
         if isQdrantConnectionError(exception):
             raise ContentKoshException(
                 DATABASE_CLEAR_ERROR_MESSAGE, cause=QdrantConnectionException()
             ) from exception
+
         raise ContentKoshException(
             DATABASE_CLEAR_ERROR_MESSAGE,
             cause=QdrantDeleteException(DATABASE_CLEAR_ERROR_MESSAGE),

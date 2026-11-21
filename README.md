@@ -46,16 +46,13 @@ Validate PDF files
 Extract text page by page
     |
     v
-Extract document metadata
-    |
-    v
 Split text into chunks
     |
     v
 Generate embeddings (BGE, 768 dimensions)
     |
     v
-Save vectors and metadata in Qdrant
+Save vectors and payload in Qdrant
 ```
 
 ### Question Answering
@@ -231,7 +228,6 @@ ck-ai-agent/
 │   └── kb_repository.py
 ├── services/
 │   ├── cache_service.py
-│   ├── document_metadata_service.py
 │   ├── file_service.py
 │   ├── kb_ingestion_service.py
 │   ├── kb_query_service.py
@@ -405,7 +401,7 @@ You do not need to download it again every time you start the application. Sente
 
 Hugging Face repository:
 
-https://huggingface.co/BAAI/bge-base-en-v1.5
+https://huggingface.co/BAAI/bge-base-en-v1.5	
 
 ### B. Download the Local LLM
 
@@ -544,10 +540,6 @@ AUTH_ENABLED=False
 LLM_MODEL_NAME=LFM2-1.2B-RAG
 LLM_MAX_NEW_TOKENS=512
 
-# SUBJECT CLASSIFICATION
-SUBJECT_CLASSIFICATION_THRESHOLD=0.20
-SUBJECT_CLASSIFICATION_TOP_K=2
-
 # CACHE
 CACHE_ENABLED=True
 CACHE_SIMILARITY_THRESHOLD=0.85
@@ -561,22 +553,18 @@ Some settings are optional and use defaults in `configuration/config.py` when om
 
 Current defaults include:
 
-| Setting                            |                  Default |
-| ---------------------------------- | -----------------------: |
-| `SEARCH_LIMIT`                   |                    `5` |
-| `SEARCH_SCORE_THRESHOLD`         |                 `0.50` |
-| `LLM_REPETITION_PENALTY`         |                 `1.05` |
-| `METADATA_EXTRACTION_TEXT_LIMIT` |                 `4000` |
-| `LOG_FILE_PATH`                  | `logs/application.log` |
-| `LOG_MAX_BYTES`                  |     `10485760` (10 MB) |
-| `LOG_BACKUP_COUNT`               |                    `5` |
-| `MAX_TAG_LENGTH`                 |                  `100` |
+| Setting                    |                  Default |
+| -------------------------- | -----------------------: |
+| `SEARCH_LIMIT`           |                    `5` |
+| `SEARCH_SCORE_THRESHOLD` |                 `0.50` |
+| `LLM_REPETITION_PENALTY` |                 `1.05` |
+| `LOG_FILE_PATH`          | `logs/application.log` |
+| `LOG_MAX_BYTES`          |     `10485760` (10 MB) |
+| `LOG_BACKUP_COUNT`       |                    `5` |
 
 `API_KEY` can be configured if API authentication is enabled. Protected endpoints require the configured key in the `X-API-Key` header.
 
 With `AUTH_ENABLED=False`, API key verification is disabled.
-
-The subject-classification variables are retained in the configuration, but subject classification is not part of the current active question-retrieval flow.
 
 ## Start Qdrant Using Docker
 
@@ -661,7 +649,6 @@ The exact request and response schemas are available in Swagger UI at `/docs`.
 
 - `business_id`: One business identifier.
 - `course_ids`: One or more course IDs.
-- `subject_ids`: One or more subject IDs.
 - `files`: One or more PDF files.
 
 All files in the same upload request receive the same supplied course ID list.
@@ -758,8 +745,8 @@ After completing setup, test the complete application:
 1. Open Swagger UI.
 2. Check the health endpoint.
 3. Upload a PDF document.
-4. Confirm that document text extraction succeeds.
-5. Confirm that metadata extraction succeeds.
+4. Confirm that PDF text extraction succeeds.
+5. Confirm that text is split into chunks.
 6. Confirm that embeddings are generated.
 7. Confirm that vectors are inserted into Qdrant.
 8. Submit a question about the uploaded document.

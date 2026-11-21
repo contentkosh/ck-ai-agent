@@ -23,43 +23,32 @@ from configuration.constants import (
     METADATA_BUSINESS_ID,
     METADATA_COURSE_ID,
     METADATA_DOCUMENT_ID,
-    METADATA_DOCUMENT_TYPE,
-    METADATA_EXTRACTION_COMPLETED_LOG,
-    METADATA_EXTRACTION_FAILED_LOG,
-    METADATA_EXTRACTION_STARTED_LOG,
     METADATA_PAGE,
     METADATA_SOURCE,
-    METADATA_SUMMARY,
-    METADATA_TAG,
     METADATA_TEXT,
-    METADATA_TITLE,
     PAGE_CHUNK_GENERATION_LOG,
     PAGE_READ_FAILED_LOG,
     PAGES_EXTRACTED_LOG,
     PDF_READ_FAILED_LOG,
 )
 from configuration.error_constants import (
-    DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE,
     EMBEDDING_GENERATION_FAILED_MESSAGE,
     PDF_READ_FAILED_MESSAGE,
 )
-from dto.document_metadata_dto import DocumentMetadataDto
 from dto.file_response_dto import (
     UploadedDocumentDto,
     UploadedDocumentErrorDto,
     UploadedDocumentsResponse,
 )
 from dto.processed_document_dto import ProcessedDocumentDto
-from exceptions.contentkosh_exception import ContentKoshException
 from exceptions.document_exception import (
-    DocumentProcessingException,
     EmptyDocumentException,
     NoReadableTextException,
 )
 from exceptions.knowledge_base_exception import KnowledgeBaseException
 from exceptions.qdrant_exception import QdrantConnectionException
+from exceptions.contentkosh_exception import ContentKoshException
 from repositories.kb_repository import deleteDocument, saveChunks
-from services.document_metadata_service import extract_document_metadata
 from validators.file_validator import validate_saved_file
 
 
@@ -156,8 +145,7 @@ def get_text_splitter() -> RecursiveCharacterTextSplitter:
     global _text_splitter
     if _text_splitter is None:
         _text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=CHUNK_SIZE,
-            chunk_overlap=CHUNK_OVERLAP,
+            chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP
         )
     return _text_splitter
 
@@ -169,7 +157,6 @@ def generate_uuid() -> str:
 def build_payload(
     *,
     chunk: str,
-    metadata: DocumentMetadataDto,
     filename: str,
     document_id: str,
     page_number: int,
@@ -179,10 +166,6 @@ def build_payload(
     return {
         METADATA_DOCUMENT_ID: document_id,
         METADATA_TEXT: chunk,
-        METADATA_TITLE: metadata.title,
-        METADATA_DOCUMENT_TYPE: metadata.document_type,
-        METADATA_TAG: metadata.tag,
-        METADATA_SUMMARY: metadata.summary,
         METADATA_SOURCE: filename,
         METADATA_PAGE: page_number,
         METADATA_BUSINESS_ID: business_id,
@@ -243,25 +226,9 @@ def extract_document_text(pdf: PdfReader) -> tuple[str, list[Page]]:
     return full_text, pages
 
 
-def get_document_metadata(pages: list[Page]) -> DocumentMetadataDto:
-    try:
-        metadata_source = "\n".join(page["text"] for page in pages[:3])
-        logger.info(METADATA_EXTRACTION_STARTED_LOG)
-        metadata = extract_document_metadata(metadata_source)
-        logger.info(METADATA_EXTRACTION_COMPLETED_LOG)
-        return metadata
-
-    except Exception as ex:
-        logger.exception(METADATA_EXTRACTION_FAILED_LOG, ex)
-        raise DocumentProcessingException(
-            DOCUMENT_METADATA_EXTRACTION_FAILED_MESSAGE
-        ) from ex
-
-
 def process_embedding_batch(
     *,
     chunk_batch: list[tuple[str, int]],
-    metadata: DocumentMetadataDto,
     filename: str,
     document_id: str,
     business_id: str,
@@ -274,14 +241,12 @@ def process_embedding_batch(
 
     try:
         embeddings = get_embedding_model().encode(
-            chunk_texts,
-            batch_size=EMBEDDING_BATCH_SIZE,
+            chunk_texts, batch_size=EMBEDDING_BATCH_SIZE
         )
         if len(embeddings) != len(chunk_batch):
             raise ValueError(
                 "Embedding count does not match the number of input chunks."
             )
-
         logger.info(
             "Embedding batch generated successfully. File=%s | chunks=%d",
             filename,
@@ -298,7 +263,6 @@ def process_embedding_batch(
             vector=embedding.tolist(),
             payload=build_payload(
                 chunk=chunk,
-                metadata=metadata,
                 filename=filename,
                 document_id=document_id,
                 page_number=page_number,
@@ -333,7 +297,6 @@ def process_embedding_batch(
 def build_vectors(
     *,
     pages: list[Page],
-    metadata: DocumentMetadataDto,
     filename: str,
     document_id: str,
     business_id: str,
@@ -371,7 +334,6 @@ def build_vectors(
                 if len(chunk_batch) >= EMBEDDING_BATCH_SIZE:
                     total_chunks += process_embedding_batch(
                         chunk_batch=chunk_batch,
-                        metadata=metadata,
                         filename=filename,
                         document_id=document_id,
                         business_id=business_id,
@@ -382,7 +344,6 @@ def build_vectors(
         if chunk_batch:
             total_chunks += process_embedding_batch(
                 chunk_batch=chunk_batch,
-                metadata=metadata,
                 filename=filename,
                 document_id=document_id,
                 business_id=business_id,
@@ -427,12 +388,9 @@ def process_document(
             raise NoReadableTextException()
 
         logger.info("Readable document text confirmed. File=%s", filename)
-        metadata = get_document_metadata(pages)
-        logger.info("Document metadata processing completed. File=%s", filename)
 
         total_chunks = build_vectors(
             pages=pages,
-            metadata=metadata,
             filename=filename,
             document_id=document_id,
             business_id=business_id,
@@ -440,16 +398,11 @@ def process_document(
         )
 
         logger.info(DOCUMENT_PROCESSED_LOG, filename, total_chunks)
-        return ProcessedDocumentDto(
-            document_id=document_id,
-            metadata=metadata,
-            chunks=total_chunks,
-        )
+        return ProcessedDocumentDto(document_id=document_id, chunks=total_chunks)
 
     except (
         EmptyDocumentException,
         NoReadableTextException,
-        DocumentProcessingException,
         PDFProcessingException,
         KnowledgeBaseException,
         QdrantConnectionException,
@@ -506,24 +459,12 @@ def ingest_documents(
         try:
             pdf, saved_file_path = read_pdf(file)
             document = process_document(
-                pdf,
-                filename,
-                business_id,
-                normalized_course_ids,
+                pdf, filename, business_id, normalized_course_ids
             )
             total_chunks += document.chunks
-
             documents.append(
-                UploadedDocumentDto(
-                    document_id=document.document_id,
-                    title=document.metadata.title,
-                    document_type=document.metadata.document_type,
-                    tag=document.metadata.tag,
-                    summary=document.metadata.summary,
-                    source=filename,
-                )
+                UploadedDocumentDto(document_id=document.document_id, source=filename)
             )
-
             logger.info(FILE_PROCESSING_COMPLETED_LOG, filename)
 
         except Exception as ex:

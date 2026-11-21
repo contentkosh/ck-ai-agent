@@ -8,10 +8,7 @@ request_id_context: ContextVar[str | None] = ContextVar(
 
 
 class RequestContext:
-    """
-    Manages request-specific information throughout the
-    application lifecycle.
-    """
+    """Manages request-specific information throughout the application lifecycle."""
 
     def __init__(self) -> None:
         request_id = self.get_request_id()
@@ -23,18 +20,14 @@ class RequestContext:
 
     @staticmethod
     def generate_request_id() -> str:
-        """
-        Generate and store a unique request ID.
-        """
+        """Generate and store a unique request ID."""
         request_id = str(uuid.uuid4())
         request_id_context.set(request_id)
         return request_id
 
     @staticmethod
     def get_request_id() -> str | None:
-        """
-        Return the current request ID.
-        """
+        """Return the current request ID."""
         return request_id_context.get()
 
 
@@ -57,31 +50,4 @@ Question:
 {query}
 
 Answer:
-"""
-
-DOCUMENT_METADATA_EXTRACTION_PROMPT = """
-Extract metadata from the document below. Return exactly one valid JSON
-object with these string fields:
-
-{{
-  "title": "",
-  "document_type": "",
-  "tag": "",
-  "summary": ""
-}}
-
-Rules:
-- title: Main document title, or "Unknown" if unavailable.
-- document_type: Exactly one of Book, Research Paper, Manual, Policy,
-  Question Bank, Notes, Report, Documentation, Other.
-- tag: One lowercase semantic tag, maximum three words, underscores
-  instead of spaces, no punctuation. Use "general" if unavailable.
-- summary: Complete English sentence, maximum 30 words, describing
-  only the document's main purpose. Do not repeat the title or give opinions.
-- Use only information supported by the document.
-- Use double quotes for keys and string values. Escape internal quotes.
-- Return JSON only: no Markdown, comments, or surrounding text.
-
-Document:
-{text}
 """

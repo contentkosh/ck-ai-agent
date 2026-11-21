@@ -1,43 +1,30 @@
+
 # ==========================================================
-# ==========================================
 # FILE TYPES
-# ==========================================
+# ==========================================================
 
-PDF_MAGIC_BYTES = b"%PDF-"
+PDF_MAGIC_BYTES = b"%PDF"
 
-
-# ==========================================
+# ==========================================================
 # DEFAULT VALUES
 # ==========================================================
 
-UNKNOWN_TAG = "Unknown"
 DEFAULT_ENCODING = "utf-8"
 DEFAULT_CHUNK_SIZE = 500
 DEFAULT_CHUNK_OVERLAP = 50
 BYTES_PER_MB = 1024 * 1024
 
 # ==========================================================
-# REGEX
-# ==========================================================
-
-MARKDOWN_JSON_REGEX = r"^```(?:json)?\s*|\s*```$"
-
-# ==========================================================
 # METADATA KEYS
 # ==========================================================
 
 METADATA_DOCUMENT_ID = "document_id"
-METADATA_TITLE = "title"
-METADATA_DOCUMENT_TYPE = "document_type"
-METADATA_TAG = "tag"
-METADATA_SUMMARY = "summary"
 METADATA_SOURCE = "source"
 METADATA_FILENAME = "filename"
 METADATA_PAGE = "page"
 METADATA_TEXT = "text"
-METADATA_CLASS = "class"
-METADATA_CHAPTER = "chapter"
-METADATA_CHAPTER_NO = "chapter_no"
+METADATA_BUSINESS_ID = "business_id"
+METADATA_COURSE_ID = "course_id"
 
 # ==========================================================
 # VECTOR SEARCH
@@ -55,15 +42,12 @@ FAILED_STATUS = "failed"
 SERVICE_RUNNING_STATUS = "Running"
 API_TITLE = "Knowledge Base API"
 API_VERSION = "1.0.0"
+
 # ==========================================================
 # VALIDATION MESSAGES
 # ==========================================================
 
 EMPTY_QUERY_ERROR = "Query cannot be empty."
-
-# ==========================================
-# CACHE
-# ==========================================
 
 # ==========================================================
 # API ROUTES
@@ -106,9 +90,6 @@ COLLECTION_SETUP_FAILED_LOG = "Failed to verify or create Qdrant collection."
 # ==========================================================
 
 LLM_INVOCATION_FAILED_LOG = "LLM invocation failed."
-METADATA_EXTRACTION_STARTED_LOG = "Extracting document metadata."
-METADATA_EXTRACTION_COMPLETED_LOG = "Metadata extracted successfully."
-METADATA_EXTRACTION_FAILED_LOG = "Document metadata extraction failed: %s"
 
 # ==========================================================
 # DATABASE LOGS
@@ -141,9 +122,7 @@ DOCUMENT_PROCESSING_STARTED_LOG = "Processing document: %s"
 DOCUMENT_PROCESSED_LOG = "Processed %s (%d chunks)."
 DOCUMENT_PROCESSING_FAILED_LOG = "Document processing failed: %s"
 KB_INGESTION_STARTED_LOG = "Knowledge Base ingestion started."
-KB_INGESTION_COMPLETED_LOG = (
-    "Knowledge Base ingestion completed. Documents=%d Chunks=%d"
-)
+KB_INGESTION_COMPLETED_LOG = "Knowledge Base ingestion completed. Documents=%d Chunks=%d"
 KB_INGESTION_FAILED_LOG = "Knowledge Base ingestion failed: %s"
 FILE_PROCESSING_STARTED_LOG = "Processing file: %s"
 FILE_PROCESSING_COMPLETED_LOG = "Successfully processed '%s'."
@@ -155,7 +134,6 @@ PAGE_CHUNK_GENERATION_LOG = "Page %d generated %d chunks."
 # ==========================================================
 
 QUERY_LENGTH_ERROR = "Query cannot exceed {} characters."
-
 QUERY_RECEIVED_LOG = "Received query: %s"
 NO_RELEVANT_CHUNKS_LOG = "No relevant chunks found."
 RETRIEVED_CHUNKS_LOG = "Retrieved %d chunk(s)."
@@ -199,7 +177,6 @@ QDRANT_CLIENT_INITIALIZED_LOG = "Qdrant client initialized successfully."
 # ==========================================================
 
 DOCUMENTS_HEADER_LOG = "========== DOCUMENTS =========="
-DOCUMENT_DETAILS_LOG = "Title=%s | Type=%s | Tag=%s | Source=%s | Page=%s"
 DOCUMENT_SEPARATOR_LOG = "----------------------------------------"
 COLLECTION_STATS_HEADER_LOG = "========== Collection Statistics =========="
 COLLECTION_STATS_LOG = "Name=%s | Vectors=%s | Status=%s"
@@ -213,27 +190,23 @@ COLLECTION_DELETED_SUCCESS_LOG = "Collection '%s' deleted successfully."
 # ==========================================================
 
 UNHANDLED_EXCEPTION_LOG = "Unhandled Exception: %s"
-
 FETCH_UPLOADED_DOCUMENTS_FAILED_LOG = "Failed to fetch uploaded documents: %s"
 CLEAR_KNOWLEDGE_BASE_FAILED_LOG = "Failed to clear Knowledge Base: %s"
 
 # ==========================================================
-# File Utility Logs
+# FILE UTILITY LOGS
 # ==========================================================
 
 DELETE_TEMP_FILE_SUCCESS_LOG = "Temporary file deleted successfully: %s"
 DELETE_TEMP_FILE_FAILED_LOG = "Failed to delete temporary file: %s"
 
 # ==========================================================
-# File Validation Constants
+# FILE VALIDATION CONSTANTS
 # ==========================================================
 
 PDF_EXTENSION = ".pdf"
 SUPPORTED_CONTENT_TYPE = "application/pdf"
-PDF_MAGIC_BYTES = b"%PDF"
-MAX_SCROLL_ITERATIONS_REACHED_LOG = (
-    "Maximum scroll iterations reached while reading Qdrant records."
-)
+MAX_SCROLL_ITERATIONS_REACHED_LOG = "Maximum scroll iterations reached while reading Qdrant records."
 
 # ==========================================================
 # CACHE
@@ -250,22 +223,17 @@ INVALID_CACHE_RESPONSES = [
 
 CACHE_SOURCE = "CACHE"
 
-METADATA_BUSINESS_ID = "business_id"
-METADATA_COURSE_ID = "course_id"
-
 BUSINESS_ID_REQUIRED_ERROR = "Business ID is required."
 COURSE_ID_REQUIRED_ERROR = "Course ID is required."
 
 BUSINESS_ID_NORMALIZATION_PATTERN = r"[^a-zA-Z0-9_]+"
 
-CACHE_DOCUMENT_INVALIDATION_FAILED_LOG = (
-    "Failed to invalidate cache for document %s: %s"
-)
+CACHE_DOCUMENT_INVALIDATION_FAILED_LOG = "Failed to invalidate cache for document %s: %s"
 CACHE_CLEAR_FAILED_LOG = "Failed to clear cache for business %s: %s"
 
-# ==========================================
+# ==========================================================
 # QUERY JOB
-# ==========================================
+# ==========================================================
 
 QUERY_JOB_CREATED_LOG = "Query job created. job_id=%s"
 QUERY_JOB_STARTED_LOG = "Query job started. job_id=%s"

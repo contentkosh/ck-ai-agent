@@ -1,79 +1,91 @@
-import os
 
+import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
+# ==========================================================
 # API SERVER
+# ==========================================================
+
 API_HOST = os.getenv("API_HOST", "0.0.0.0")
 API_PORT = int(os.getenv("API_PORT", 8000))
-API_RELOAD = os.getenv("API_RELOAD", "False").lower() == "true"
+API_RELOAD = os.getenv("API_RELOAD", "True").lower() == "true"
 
+# ==========================================================
 # AUTHENTICATION
+# ==========================================================
+
 API_KEY = os.getenv("API_KEY")
 API_KEY_HEADER_NAME = os.getenv("API_KEY_HEADER_NAME", "X-API-Key")
-AUTH_ENABLED = os.getenv("AUTH_ENABLED", "True").lower() == "true"
+AUTH_ENABLED = os.getenv("AUTH_ENABLED", "False").lower() == "true"
 
+# ==========================================================
 # QDRANT
+# ==========================================================
+
 QDRANT_HOST = os.getenv("QDRANT_HOST", "localhost")
 QDRANT_PORT = int(os.getenv("QDRANT_PORT", 6333))
 KB_COLLECTION_PREFIX = os.getenv("KB_COLLECTION_PREFIX", "kb_")
 CACHE_COLLECTION_PREFIX = os.getenv("CACHE_COLLECTION_PREFIX", "cache_")
 SCROLL_LIMIT = int(os.getenv("SCROLL_LIMIT", 5000))
 
+# ==========================================================
 # SEARCH
+# ==========================================================
+
 SEARCH_LIMIT = int(os.getenv("SEARCH_LIMIT", 5))
 SEARCH_SCORE_THRESHOLD = float(os.getenv("SEARCH_SCORE_THRESHOLD", 0.50))
 
+# ==========================================================
 # EMBEDDINGS
+# ==========================================================
+
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "BAAI/bge-base-en-v1.5")
 EMBEDDING_DIMENSION = int(os.getenv("EMBEDDING_DIMENSION", 768))
+EMBEDDING_BATCH_SIZE = int(os.getenv("EMBEDDING_BATCH_SIZE", 32))
 
+# ==========================================================
 # QUERY VALIDATION
+# ==========================================================
+
 MAX_QUERY_LENGTH = int(os.getenv("MAX_QUERY_LENGTH", 1000))
 
+# ==========================================================
 # LOCAL LLM
-LLM_MODEL_NAME = os.getenv(
-    "LLM_MODEL_NAME",
-    "Llama-3.2-3B-Instruct",
-)
-LLM_MAX_NEW_TOKENS = int(os.getenv("LLM_MAX_NEW_TOKENS", 512))
+# ==========================================================
+
+LLM_MODEL_NAME = os.getenv("LLM_MODEL_NAME", "LFM2-1.2B-RAG")
+LLM_MAX_NEW_TOKENS = int(os.getenv("LLM_MAX_NEW_TOKENS", 1024))
 LLM_REPETITION_PENALTY = float(os.getenv("LLM_REPETITION_PENALTY", 1.05))
 
-# HUGGING FACE SUBJECT CLASSIFIER
-HF_API_KEY = os.getenv("HF_API_KEY")
-HF_SUBJECT_MODEL = os.getenv(
-    "HF_SUBJECT_MODEL",
-    "inception/mercury-decide:free",
-)
-SUBJECT_CLASSIFICATION_THRESHOLD = float(
-    os.getenv("SUBJECT_CLASSIFICATION_THRESHOLD", 0.20)
-)
-SUBJECT_CLASSIFICATION_TOP_K = int(os.getenv("SUBJECT_CLASSIFICATION_TOP_K", 2))
-
-# METADATA EXTRACTION
-METADATA_EXTRACTION_TEXT_LIMIT = int(os.getenv("METADATA_EXTRACTION_TEXT_LIMIT", 4000))
-
+# ==========================================================
 # CHUNKING
+# ==========================================================
+
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", 500))
 CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", 50))
 
+# ==========================================================
 # FILE STORAGE
-UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "uploads")
+# ==========================================================
 
+UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "uploads")
+MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE", 157286400))
+
+# ==========================================================
 # LOGGING
+# ==========================================================
+
 LOG_FILE_PATH = os.getenv("LOG_FILE_PATH", "logs/application.log")
 LOG_MAX_BYTES = int(os.getenv("LOG_MAX_BYTES", 10 * 1024 * 1024))
 LOG_BACKUP_COUNT = int(os.getenv("LOG_BACKUP_COUNT", 5))
 
-# TAG VALIDATION
-MAX_TAG_LENGTH = int(os.getenv("MAX_TAG_LENGTH", 100))
-
+# ==========================================================
 # CACHE
+# ==========================================================
+
 CACHE_ENABLED = os.getenv("CACHE_ENABLED", "True").lower() == "true"
-CACHE_SIMILARITY_THRESHOLD = float(os.getenv("CACHE_SIMILARITY_THRESHOLD", 0.70))
+CACHE_SIMILARITY_THRESHOLD = float(os.getenv("CACHE_SIMILARITY_THRESHOLD", 0.85))
 CACHE_TOP_K = int(os.getenv("CACHE_TOP_K", 1))
 MAX_CACHE_SIZE = int(os.getenv("MAX_CACHE_SIZE", 5000))
-
-# EMBEDDING BATCH
-EMBEDDING_BATCH_SIZE = int(os.getenv("EMBEDDING_BATCH_SIZE", 32))

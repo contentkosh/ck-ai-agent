@@ -1,0 +1,1949 @@
+2026-11-21 13:42:46,794 | INFO | Initializing Qdrant client. host=localhost port=6333
+2026-11-21 13:42:47,592 | INFO | Qdrant client initialized successfully.
+2026-11-21 13:43:02,109 | INFO | FastAPI application configured successfully
+2026-11-21 13:43:02,111 | INFO | FastAPI application startup initiated
+2026-11-21 13:43:06,060 | INFO | [3f5928c3-0a4f-45cb-92ab-3ee0ef814a01] Request started: GET /docs
+2026-11-21 13:43:06,063 | INFO | [3f5928c3-0a4f-45cb-92ab-3ee0ef814a01] Request completed: GET /docs | status=200 | duration=0.003s
+2026-11-21 13:43:06,673 | INFO | [6a79fa11-d703-474a-a71a-bec2ec316509] Request started: GET /openapi.json
+2026-11-21 13:43:06,814 | INFO | [6a79fa11-d703-474a-a71a-bec2ec316509] Request completed: GET /openapi.json | status=200 | duration=0.141s
+2026-11-21 13:43:31,664 | INFO | [d25f5de8-2d20-42dc-b2cc-82aa39b96e25] Request started: POST /llm/upload
+2026-11-21 13:43:31,917 | INFO | [d25f5de8-2d20-42dc-b2cc-82aa39b96e25] Upload request received.
+2026-11-21 13:43:31,918 | INFO | [d25f5de8-2d20-42dc-b2cc-82aa39b96e25] Upload validation started. Files=1
+2026-11-21 13:43:31,923 | INFO | [d25f5de8-2d20-42dc-b2cc-82aa39b96e25] Upload validation completed successfully.
+2026-11-21 13:43:31,932 | INFO | [d25f5de8-2d20-42dc-b2cc-82aa39b96e25] Document ingestion started. Files=1 | Course IDs=['ncert']
+2026-11-21 13:43:31,946 | INFO | Knowledge Base ingestion started.
+2026-11-21 13:43:31,962 | INFO | Ingestion request details. Files=1 | business_id=Mukund | course_ids=['ncert']
+2026-11-21 13:43:31,966 | INFO | Processing file: Geography_compressed.pdf
+2026-11-21 13:43:32,016 | INFO | Applying course IDs to document. File=Geography_compressed.pdf | course_ids=['ncert']
+2026-11-21 13:43:32,065 | INFO | PDF processing started: Geography_compressed.pdf
+2026-11-21 13:43:32,098 | INFO | Saving file: Geography_compressed.pdf
+2026-11-21 13:43:32,173 | INFO | File save started. Filename=Geography_compressed.pdf | Destination=uploads\238f979298834c1996854a9eb645c400_Geography_compressed.pdf
+2026-11-21 13:43:32,275 | INFO | File save completed successfully. Filename=Geography_compressed.pdf | Destination=uploads\238f979298834c1996854a9eb645c400_Geography_compressed.pdf
+2026-11-21 13:43:32,276 | INFO | PDF saved successfully: Geography_compressed.pdf
+2026-11-21 13:43:32,278 | INFO | PDF validation completed successfully: Geography_compressed.pdf
+2026-11-21 13:43:32,330 | INFO | PDF loaded successfully: Geography_compressed.pdf | pages=76
+2026-11-21 13:43:32,330 | INFO | Processing document: Geography_compressed.pdf
+2026-11-21 13:43:32,330 | INFO | Document ID generated. File=Geography_compressed.pdf | document_id=c9257e96-7c94-4d9e-8672-f96ab0163d96
+2026-11-21 13:43:32,331 | INFO | PDF text extraction started. Pages=76
+2026-11-21 13:43:32,350 | INFO | Page 1 text extracted. Characters=2372
+2026-11-21 13:43:32,367 | INFO | Page 2 text extracted. Characters=3880
+2026-11-21 13:43:32,382 | INFO | Page 3 text extracted. Characters=4361
+2026-11-21 13:43:32,396 | INFO | Page 4 text extracted. Characters=3435
+2026-11-21 13:43:32,407 | INFO | Page 5 text extracted. Characters=1933
+2026-11-21 13:43:32,420 | INFO | Page 6 text extracted. Characters=1660
+2026-11-21 13:43:35,088 | INFO | Page 7 text extracted. Characters=1920
+2026-11-21 13:43:35,155 | INFO | Page 8 text extracted. Characters=3512
+2026-11-21 13:43:35,185 | INFO | Page 9 text extracted. Characters=3204
+2026-11-21 13:43:35,206 | INFO | Page 10 text extracted. Characters=3104
+2026-11-21 13:43:35,216 | INFO | Page 11 text extracted. Characters=2607
+2026-11-21 13:43:35,223 | INFO | Page 12 text extracted. Characters=1000
+2026-11-21 13:43:35,243 | INFO | Page 13 text extracted. Characters=1802
+2026-11-21 13:43:35,259 | INFO | Page 14 text extracted. Characters=2768
+2026-11-21 13:43:35,267 | INFO | Page 15 text extracted. Characters=584
+2026-11-21 13:43:35,283 | INFO | Page 16 text extracted. Characters=3982
+2026-11-21 13:43:35,295 | INFO | Page 17 text extracted. Characters=3114
+2026-11-21 13:43:35,311 | INFO | Page 18 text extracted. Characters=3634
+2026-11-21 13:43:35,327 | INFO | Page 19 text extracted. Characters=2687
+2026-11-21 13:43:35,341 | INFO | Page 20 text extracted. Characters=2604
+2026-11-21 13:43:35,346 | INFO | Page 21 text extracted. Characters=340
+2026-11-21 13:43:35,362 | INFO | Page 22 text extracted. Characters=1870
+2026-11-21 13:43:35,371 | INFO | Page 23 text extracted. Characters=1368
+2026-11-21 13:43:35,380 | INFO | Page 24 text extracted. Characters=3549
+2026-11-21 13:43:35,390 | INFO | Page 25 text extracted. Characters=1304
+2026-11-21 13:43:35,393 | INFO | Page 26 text extracted. Characters=151
+2026-11-21 13:43:35,404 | INFO | Page 27 text extracted. Characters=2696
+2026-11-21 13:43:35,418 | INFO | Page 28 text extracted. Characters=2407
+2026-11-21 13:43:35,425 | INFO | Page 29 text extracted. Characters=1553
+2026-11-21 13:43:35,434 | INFO | Page 30 text extracted. Characters=1019
+2026-11-21 13:43:35,448 | INFO | Page 31 text extracted. Characters=2059
+2026-11-21 13:43:35,463 | INFO | Page 32 text extracted. Characters=2800
+2026-11-21 13:43:35,785 | INFO | Page 33 text extracted. Characters=1546
+2026-11-21 13:43:35,792 | INFO | Page 34 text extracted. Characters=1700
+2026-11-21 13:43:35,799 | INFO | Page 35 text extracted. Characters=456
+2026-11-21 13:43:35,815 | INFO | Page 36 text extracted. Characters=2012
+2026-11-21 13:43:35,836 | INFO | Page 37 text extracted. Characters=4089
+2026-11-21 13:43:35,849 | INFO | Page 38 text extracted. Characters=3313
+2026-11-21 13:43:35,852 | INFO | Page 39 text extracted. Characters=86
+2026-11-21 13:43:35,863 | INFO | Page 40 text extracted. Characters=2326
+2026-11-21 13:43:35,872 | INFO | Page 41 text extracted. Characters=2477
+2026-11-21 13:43:35,887 | INFO | Page 42 text extracted. Characters=3116
+2026-11-21 13:43:35,898 | INFO | Page 43 text extracted. Characters=1613
+2026-11-21 13:43:35,903 | INFO | Page 44 text extracted. Characters=844
+2026-11-21 13:43:35,914 | INFO | Page 45 text extracted. Characters=2192
+2026-11-21 13:43:36,351 | INFO | Page 46 text extracted. Characters=75
+2026-11-21 13:43:36,368 | INFO | Page 47 text extracted. Characters=2780
+2026-11-21 13:43:36,384 | INFO | Page 48 text extracted. Characters=3445
+2026-11-21 13:43:36,400 | INFO | Page 49 text extracted. Characters=3375
+2026-11-21 13:43:36,412 | INFO | Page 50 text extracted. Characters=3231
+2026-11-21 13:43:36,426 | INFO | Page 51 text extracted. Characters=4045
+2026-11-21 13:43:36,436 | INFO | Page 52 text extracted. Characters=2047
+2026-11-21 13:43:36,446 | INFO | Page 53 text extracted. Characters=1850
+2026-11-21 13:43:36,463 | INFO | Page 54 text extracted. Characters=2077
+2026-11-21 13:43:36,480 | INFO | Page 55 text extracted. Characters=3050
+2026-11-21 13:43:36,491 | INFO | Page 56 text extracted. Characters=2895
+2026-11-21 13:43:36,505 | INFO | Page 57 text extracted. Characters=3325
+2026-11-21 13:43:36,515 | INFO | Page 58 text extracted. Characters=3604
+2026-11-21 13:43:36,525 | INFO | Page 59 text extracted. Characters=2111
+2026-11-21 13:43:36,532 | INFO | Page 60 text extracted. Characters=1381
+2026-11-21 13:43:36,541 | INFO | Page 61 text extracted. Characters=2251
+2026-11-21 13:43:36,553 | INFO | Page 62 text extracted. Characters=1991
+2026-11-21 13:43:36,566 | INFO | Page 63 text extracted. Characters=2713
+2026-11-21 13:43:36,577 | INFO | Page 64 text extracted. Characters=1661
+2026-11-21 13:43:36,587 | INFO | Page 65 text extracted. Characters=2442
+2026-11-21 13:43:36,598 | INFO | Page 66 text extracted. Characters=3445
+2026-11-21 13:43:36,604 | INFO | Page 67 text extracted. Characters=1606
+2026-11-21 13:43:36,625 | INFO | Page 68 text extracted. Characters=3379
+2026-11-21 13:43:36,636 | INFO | Page 69 text extracted. Characters=1411
+2026-11-21 13:43:36,653 | INFO | Page 70 text extracted. Characters=1549
+2026-11-21 13:43:36,667 | INFO | Page 71 text extracted. Characters=3211
+2026-11-21 13:43:36,680 | INFO | Page 72 text extracted. Characters=3559
+2026-11-21 13:43:36,692 | INFO | Page 73 text extracted. Characters=2417
+2026-11-21 13:43:36,709 | INFO | Page 74 text extracted. Characters=4136
+2026-11-21 13:43:36,719 | INFO | Page 75 text extracted. Characters=2434
+2026-11-21 13:43:36,729 | INFO | Page 76 text extracted. Characters=2036
+2026-11-21 13:43:36,729 | INFO | Extracted 76 pages.
+2026-11-21 13:43:36,730 | INFO | PDF text extraction completed. Characters=180656
+2026-11-21 13:43:36,730 | INFO | Readable document text confirmed. File=Geography_compressed.pdf
+2026-11-21 13:43:36,731 | INFO | Chunking started. File=Geography_compressed.pdf | pages=76 | chunk_size=500 | overlap=50
+2026-11-21 13:43:36,731 | INFO | Page 1 generated 6 chunks.
+2026-11-21 13:43:36,731 | INFO | Page 2 generated 9 chunks.
+2026-11-21 13:43:36,732 | INFO | Page 3 generated 10 chunks.
+2026-11-21 13:43:36,732 | INFO | Page 4 generated 8 chunks.
+2026-11-21 13:43:36,732 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:36,871 | INFO | Local embedding model initialization started. Model=BAAI/bge-base-en-v1.5 | Device=cuda
+2026-11-21 13:43:43,519 | INFO | Local embedding model initialized successfully. Model=BAAI/bge-base-en-v1.5 | Device=cuda | Dimensions=768
+2026-11-21 13:43:43,519 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:43:50,378 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:43:50,378 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:50,381 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:50,382 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:43:50,382 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:43:50,406 | INFO | Qdrant collection does not exist. Creation started: kb_mukund_bge
+2026-11-21 13:43:50,674 | INFO | Qdrant collection created successfully.: kb_mukund_bge
+2026-11-21 13:43:50,674 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:43:50,675 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:43:50,819 | INFO | Inserted 32 vectors.
+2026-11-21 13:43:50,819 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:50,820 | INFO | Page 5 generated 5 chunks.
+2026-11-21 13:43:50,820 | INFO | Page 6 generated 4 chunks.
+2026-11-21 13:43:50,821 | INFO | Page 7 generated 5 chunks.
+2026-11-21 13:43:50,821 | INFO | Page 8 generated 9 chunks.
+2026-11-21 13:43:50,821 | INFO | Page 9 generated 8 chunks.
+2026-11-21 13:43:50,822 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:50,822 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:43:50,991 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:43:50,992 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:50,994 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:50,994 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:43:50,994 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:43:51,020 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:43:51,021 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:43:51,021 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:43:51,115 | INFO | Inserted 32 vectors.
+2026-11-21 13:43:51,115 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:51,115 | INFO | Page 10 generated 8 chunks.
+2026-11-21 13:43:51,117 | INFO | Page 11 generated 6 chunks.
+2026-11-21 13:43:51,117 | INFO | Page 12 generated 3 chunks.
+2026-11-21 13:43:51,117 | INFO | Page 13 generated 5 chunks.
+2026-11-21 13:43:51,118 | INFO | Page 14 generated 7 chunks.
+2026-11-21 13:43:51,118 | INFO | Page 15 generated 2 chunks.
+2026-11-21 13:43:51,118 | INFO | Page 16 generated 9 chunks.
+2026-11-21 13:43:51,118 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:51,119 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:43:51,304 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:43:51,305 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:51,308 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:51,308 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:43:51,309 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:43:51,350 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:43:51,351 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:43:51,351 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:43:51,492 | INFO | Inserted 32 vectors.
+2026-11-21 13:43:51,492 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:51,493 | INFO | Page 17 generated 7 chunks.
+2026-11-21 13:43:51,494 | INFO | Page 18 generated 9 chunks.
+2026-11-21 13:43:51,494 | INFO | Page 19 generated 7 chunks.
+2026-11-21 13:43:51,495 | INFO | Page 20 generated 6 chunks.
+2026-11-21 13:43:51,495 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:51,495 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:43:51,695 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:43:51,695 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:51,699 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:51,699 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:43:51,699 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:43:51,725 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:43:51,725 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:43:51,726 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:43:51,828 | INFO | Inserted 32 vectors.
+2026-11-21 13:43:51,828 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:51,830 | INFO | Page 21 generated 1 chunks.
+2026-11-21 13:43:51,830 | INFO | Page 22 generated 5 chunks.
+2026-11-21 13:43:51,831 | INFO | Page 23 generated 4 chunks.
+2026-11-21 13:43:51,831 | INFO | Page 24 generated 8 chunks.
+2026-11-21 13:43:51,832 | INFO | Page 25 generated 3 chunks.
+2026-11-21 13:43:51,832 | INFO | Page 26 generated 1 chunks.
+2026-11-21 13:43:51,833 | INFO | Page 27 generated 7 chunks.
+2026-11-21 13:43:51,833 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:51,833 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:43:51,993 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:43:51,994 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:51,997 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:51,998 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:43:51,998 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:43:52,063 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:43:52,063 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:43:52,063 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:43:52,200 | INFO | Inserted 32 vectors.
+2026-11-21 13:43:52,201 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:52,203 | INFO | Page 28 generated 6 chunks.
+2026-11-21 13:43:52,203 | INFO | Page 29 generated 4 chunks.
+2026-11-21 13:43:52,204 | INFO | Page 30 generated 3 chunks.
+2026-11-21 13:43:52,205 | INFO | Page 31 generated 5 chunks.
+2026-11-21 13:43:52,206 | INFO | Page 32 generated 7 chunks.
+2026-11-21 13:43:52,207 | INFO | Page 33 generated 4 chunks.
+2026-11-21 13:43:52,207 | INFO | Page 34 generated 4 chunks.
+2026-11-21 13:43:52,208 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:52,208 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:43:52,389 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:43:52,390 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:52,392 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:52,392 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:43:52,392 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:43:52,410 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:43:52,410 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:43:52,411 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:43:52,493 | INFO | Inserted 32 vectors.
+2026-11-21 13:43:52,493 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:52,494 | INFO | Page 35 generated 1 chunks.
+2026-11-21 13:43:52,495 | INFO | Page 36 generated 5 chunks.
+2026-11-21 13:43:52,495 | INFO | Page 37 generated 10 chunks.
+2026-11-21 13:43:52,496 | INFO | Page 38 generated 8 chunks.
+2026-11-21 13:43:52,496 | INFO | Page 39 generated 1 chunks.
+2026-11-21 13:43:52,497 | INFO | Page 40 generated 6 chunks.
+2026-11-21 13:43:52,497 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:52,498 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:43:52,673 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:43:52,674 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:52,676 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:52,676 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:43:52,677 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:43:52,695 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:43:52,695 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:43:52,696 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:43:52,851 | INFO | Inserted 32 vectors.
+2026-11-21 13:43:52,852 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:52,853 | INFO | Page 41 generated 6 chunks.
+2026-11-21 13:43:52,854 | INFO | Page 42 generated 8 chunks.
+2026-11-21 13:43:52,854 | INFO | Page 43 generated 4 chunks.
+2026-11-21 13:43:52,855 | INFO | Page 44 generated 2 chunks.
+2026-11-21 13:43:52,855 | INFO | Page 45 generated 5 chunks.
+2026-11-21 13:43:52,855 | INFO | Page 46 generated 1 chunks.
+2026-11-21 13:43:52,856 | INFO | Page 47 generated 7 chunks.
+2026-11-21 13:43:52,857 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:52,857 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:43:53,024 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:43:53,025 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:53,028 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:53,029 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:43:53,029 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:43:53,051 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:43:53,052 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:43:53,052 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:43:53,136 | INFO | Inserted 32 vectors.
+2026-11-21 13:43:53,136 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:53,137 | INFO | Page 48 generated 8 chunks.
+2026-11-21 13:43:53,137 | INFO | Page 49 generated 8 chunks.
+2026-11-21 13:43:53,138 | INFO | Page 50 generated 8 chunks.
+2026-11-21 13:43:53,138 | INFO | Page 51 generated 10 chunks.
+2026-11-21 13:43:53,138 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:53,139 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:43:53,310 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:43:53,311 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:53,314 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:53,314 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:43:53,315 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:43:53,331 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:43:53,331 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:43:53,331 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:43:53,410 | INFO | Inserted 32 vectors.
+2026-11-21 13:43:53,411 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:53,411 | INFO | Page 52 generated 5 chunks.
+2026-11-21 13:43:53,412 | INFO | Page 53 generated 4 chunks.
+2026-11-21 13:43:53,412 | INFO | Page 54 generated 5 chunks.
+2026-11-21 13:43:53,412 | INFO | Page 55 generated 7 chunks.
+2026-11-21 13:43:53,413 | INFO | Page 56 generated 7 chunks.
+2026-11-21 13:43:53,413 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:53,414 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:43:53,600 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:43:53,600 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:53,602 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:53,602 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:43:53,602 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:43:53,618 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:43:53,618 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:43:53,618 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:43:53,696 | INFO | Inserted 32 vectors.
+2026-11-21 13:43:53,697 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:53,697 | INFO | Page 57 generated 8 chunks.
+2026-11-21 13:43:53,698 | INFO | Page 58 generated 9 chunks.
+2026-11-21 13:43:53,698 | INFO | Page 59 generated 5 chunks.
+2026-11-21 13:43:53,699 | INFO | Page 60 generated 3 chunks.
+2026-11-21 13:43:53,699 | INFO | Page 61 generated 6 chunks.
+2026-11-21 13:43:53,700 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:53,700 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:43:53,891 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:43:53,891 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:53,896 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:53,896 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:43:53,898 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:43:53,912 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:43:53,913 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:43:53,913 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:43:53,995 | INFO | Inserted 32 vectors.
+2026-11-21 13:43:53,995 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:53,997 | INFO | Page 62 generated 5 chunks.
+2026-11-21 13:43:53,998 | INFO | Page 63 generated 6 chunks.
+2026-11-21 13:43:53,998 | INFO | Page 64 generated 4 chunks.
+2026-11-21 13:43:53,999 | INFO | Page 65 generated 6 chunks.
+2026-11-21 13:43:53,999 | INFO | Page 66 generated 8 chunks.
+2026-11-21 13:43:54,000 | INFO | Page 67 generated 4 chunks.
+2026-11-21 13:43:54,000 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:54,000 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:43:54,175 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:43:54,176 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:54,181 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:54,181 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:43:54,182 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:43:54,224 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:43:54,224 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:43:54,225 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:43:54,326 | INFO | Inserted 32 vectors.
+2026-11-21 13:43:54,326 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:54,327 | INFO | Page 68 generated 8 chunks.
+2026-11-21 13:43:54,328 | INFO | Page 69 generated 3 chunks.
+2026-11-21 13:43:54,328 | INFO | Page 70 generated 4 chunks.
+2026-11-21 13:43:54,329 | INFO | Page 71 generated 8 chunks.
+2026-11-21 13:43:54,330 | INFO | Page 72 generated 8 chunks.
+2026-11-21 13:43:54,330 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:54,331 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:43:54,529 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:43:54,529 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=32
+2026-11-21 13:43:54,532 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:54,532 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:43:54,532 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:43:54,568 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:43:54,568 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:43:54,569 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:43:54,649 | INFO | Inserted 32 vectors.
+2026-11-21 13:43:54,649 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=32
+2026-11-21 13:43:54,650 | INFO | Page 73 generated 6 chunks.
+2026-11-21 13:43:54,651 | INFO | Page 74 generated 10 chunks.
+2026-11-21 13:43:54,652 | INFO | Page 75 generated 6 chunks.
+2026-11-21 13:43:54,652 | INFO | Page 76 generated 5 chunks.
+2026-11-21 13:43:54,652 | INFO | Embedding batch started. File=Geography_compressed.pdf | chunks=27
+2026-11-21 13:43:54,652 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=27 | Batch size=32 | Device=cuda
+2026-11-21 13:43:54,817 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=27 | Dimensions=768
+2026-11-21 13:43:54,818 | INFO | Embedding batch generated successfully. File=Geography_compressed.pdf | chunks=27
+2026-11-21 13:43:54,822 | INFO | Qdrant vector insertion started. File=Geography_compressed.pdf | vectors=27
+2026-11-21 13:43:54,823 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:43:54,823 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:43:54,858 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:43:54,859 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:43:54,860 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=27
+2026-11-21 13:43:54,958 | INFO | Inserted 27 vectors.
+2026-11-21 13:43:54,959 | INFO | Qdrant vector insertion completed. File=Geography_compressed.pdf | vectors=27
+2026-11-21 13:43:54,960 | INFO | Generated 443 vectors.
+2026-11-21 13:43:54,960 | INFO | Chunking and vector generation completed. File=Geography_compressed.pdf | chunks=443
+2026-11-21 13:43:54,961 | INFO | Processed Geography_compressed.pdf (443 chunks).
+2026-11-21 13:43:54,962 | INFO | Successfully processed 'Geography_compressed.pdf'.
+2026-11-21 13:43:54,963 | INFO | PDF stream closed: Geography_compressed.pdf
+2026-11-21 13:43:54,963 | INFO | Temporary file cleanup started: uploads\238f979298834c1996854a9eb645c400_Geography_compressed.pdf
+2026-11-21 13:43:54,966 | INFO | Temporary file deleted successfully: uploads\238f979298834c1996854a9eb645c400_Geography_compressed.pdf
+2026-11-21 13:43:54,967 | INFO | Temporary upload file deleted: Geography_compressed.pdf
+2026-11-21 13:43:54,967 | INFO | Knowledge Base ingestion response: {'status': 'success', 'message': 'All documents got in successfully.', 'documents_processed': 1, 'documents_failed': 0, 'chunks_inserted': 443, 'documents': [{'document_id': 'c9257e96-7c94-4d9e-8672-f96ab0163d96', 'source': 'Geography_compressed.pdf'}], 'errors': []}
+2026-11-21 13:43:54,968 | INFO | [d25f5de8-2d20-42dc-b2cc-82aa39b96e25] Upload response: {'status': 'success', 'message': 'All documents got in successfully.', 'documents_processed': 1, 'documents_failed': 0, 'chunks_inserted': 443, 'documents': [{'document_id': 'c9257e96-7c94-4d9e-8672-f96ab0163d96', 'source': 'Geography_compressed.pdf'}], 'errors': []}
+2026-11-21 13:43:54,973 | INFO | [d25f5de8-2d20-42dc-b2cc-82aa39b96e25] Request completed: POST /llm/upload | status=200 | duration=23.309s
+2026-11-21 13:44:42,879 | INFO | [05a85bfa-b42e-48eb-89ca-134bc405cffe] Request started: POST /llm/upload
+2026-11-21 13:44:43,348 | INFO | [05a85bfa-b42e-48eb-89ca-134bc405cffe] Upload request received.
+2026-11-21 13:44:43,348 | INFO | [05a85bfa-b42e-48eb-89ca-134bc405cffe] Upload validation started. Files=1
+2026-11-21 13:44:43,349 | INFO | [05a85bfa-b42e-48eb-89ca-134bc405cffe] Upload validation completed successfully.
+2026-11-21 13:44:43,350 | INFO | [05a85bfa-b42e-48eb-89ca-134bc405cffe] Document ingestion started. Files=1 | Course IDs=['ncert']
+2026-11-21 13:44:43,350 | INFO | Knowledge Base ingestion started.
+2026-11-21 13:44:43,351 | INFO | Ingestion request details. Files=1 | business_id=Mukund | course_ids=['ncert']
+2026-11-21 13:44:43,352 | INFO | Processing file: History_compressed.pdf
+2026-11-21 13:44:43,352 | INFO | Applying course IDs to document. File=History_compressed.pdf | course_ids=['ncert']
+2026-11-21 13:44:43,353 | INFO | PDF processing started: History_compressed.pdf
+2026-11-21 13:44:43,353 | INFO | Saving file: History_compressed.pdf
+2026-11-21 13:44:43,356 | INFO | File save started. Filename=History_compressed.pdf | Destination=uploads\ef7f46922e654cf19f3107a4401309d6_History_compressed.pdf
+2026-11-21 13:44:43,412 | INFO | File save completed successfully. Filename=History_compressed.pdf | Destination=uploads\ef7f46922e654cf19f3107a4401309d6_History_compressed.pdf
+2026-11-21 13:44:43,413 | INFO | PDF saved successfully: History_compressed.pdf
+2026-11-21 13:44:43,416 | INFO | PDF validation completed successfully: History_compressed.pdf
+2026-11-21 13:44:43,595 | INFO | PDF loaded successfully: History_compressed.pdf | pages=115
+2026-11-21 13:44:43,597 | INFO | Processing document: History_compressed.pdf
+2026-11-21 13:44:43,599 | INFO | Document ID generated. File=History_compressed.pdf | document_id=7e40ced5-0bb6-43dc-9840-a15bd88db8ad
+2026-11-21 13:44:43,600 | INFO | PDF text extraction started. Pages=115
+2026-11-21 13:44:43,678 | INFO | Page 1 text extracted. Characters=1866
+2026-11-21 13:44:43,782 | INFO | Page 2 text extracted. Characters=2377
+2026-11-21 13:44:43,920 | INFO | Page 3 text extracted. Characters=2041
+2026-11-21 13:44:44,232 | INFO | Page 4 text extracted. Characters=1963
+2026-11-21 13:44:44,340 | INFO | Page 5 text extracted. Characters=527
+2026-11-21 13:44:44,433 | INFO | Page 6 text extracted. Characters=2566
+2026-11-21 13:44:44,487 | INFO | Page 7 text extracted. Characters=2191
+2026-11-21 13:44:44,506 | INFO | Page 8 text extracted. Characters=1350
+2026-11-21 13:44:44,520 | INFO | Page 9 text extracted. Characters=2226
+2026-11-21 13:44:44,532 | INFO | Page 10 text extracted. Characters=1956
+2026-11-21 13:44:44,539 | INFO | Page 11 text extracted. Characters=2001
+2026-11-21 13:44:44,546 | INFO | Page 12 text extracted. Characters=1982
+2026-11-21 13:44:44,554 | INFO | Page 13 text extracted. Characters=1165
+2026-11-21 13:44:44,562 | INFO | Page 14 text extracted. Characters=1345
+2026-11-21 13:44:44,578 | INFO | Page 15 text extracted. Characters=1982
+2026-11-21 13:44:44,607 | INFO | Page 16 text extracted. Characters=2175
+2026-11-21 13:44:44,655 | INFO | Page 17 text extracted. Characters=2078
+2026-11-21 13:44:44,679 | INFO | Page 18 text extracted. Characters=4657
+2026-11-21 13:44:44,694 | INFO | Page 19 text extracted. Characters=2401
+2026-11-21 13:44:44,705 | INFO | Page 20 text extracted. Characters=2720
+2026-11-21 13:44:44,725 | INFO | Page 21 text extracted. Characters=3301
+2026-11-21 13:44:44,735 | INFO | Page 22 text extracted. Characters=2197
+2026-11-21 13:44:44,754 | INFO | Page 23 text extracted. Characters=2458
+2026-11-21 13:44:44,778 | INFO | Page 24 text extracted. Characters=1921
+2026-11-21 13:44:44,802 | INFO | Page 25 text extracted. Characters=1346
+2026-11-21 13:44:44,811 | INFO | Page 26 text extracted. Characters=776
+2026-11-21 13:44:44,823 | INFO | Page 27 text extracted. Characters=1437
+2026-11-21 13:44:44,846 | INFO | Page 28 text extracted. Characters=2225
+2026-11-21 13:44:44,869 | INFO | Page 29 text extracted. Characters=3333
+2026-11-21 13:44:44,881 | INFO | Page 30 text extracted. Characters=1353
+2026-11-21 13:44:44,892 | INFO | Page 31 text extracted. Characters=1481
+2026-11-21 13:44:44,910 | INFO | Page 32 text extracted. Characters=2591
+2026-11-21 13:44:44,922 | INFO | Page 33 text extracted. Characters=1213
+2026-11-21 13:44:44,933 | INFO | Page 34 text extracted. Characters=3106
+2026-11-21 13:44:44,946 | INFO | Page 35 text extracted. Characters=2922
+2026-11-21 13:44:44,960 | INFO | Page 36 text extracted. Characters=2512
+2026-11-21 13:44:44,971 | INFO | Page 37 text extracted. Characters=1457
+2026-11-21 13:44:44,984 | INFO | Page 38 text extracted. Characters=3332
+2026-11-21 13:44:44,995 | INFO | Page 39 text extracted. Characters=2810
+2026-11-21 13:44:45,007 | INFO | Page 40 text extracted. Characters=3497
+2026-11-21 13:44:45,020 | INFO | Page 41 text extracted. Characters=2268
+2026-11-21 13:44:45,032 | INFO | Page 42 text extracted. Characters=2021
+2026-11-21 13:44:45,046 | INFO | Page 43 text extracted. Characters=1238
+2026-11-21 13:44:45,063 | INFO | Page 44 text extracted. Characters=3433
+2026-11-21 13:44:45,076 | INFO | Page 45 text extracted. Characters=2220
+2026-11-21 13:44:45,087 | INFO | Page 46 text extracted. Characters=1311
+2026-11-21 13:44:45,100 | INFO | Page 47 text extracted. Characters=2436
+2026-11-21 13:44:45,114 | INFO | Page 48 text extracted. Characters=3069
+2026-11-21 13:44:45,120 | INFO | Page 49 text extracted. Characters=1250
+2026-11-21 13:44:45,134 | INFO | Page 50 text extracted. Characters=1407
+2026-11-21 13:44:45,149 | INFO | Page 51 text extracted. Characters=1114
+2026-11-21 13:44:45,166 | INFO | Page 52 text extracted. Characters=2476
+2026-11-21 13:44:45,184 | INFO | Page 53 text extracted. Characters=2088
+2026-11-21 13:44:45,193 | INFO | Page 54 text extracted. Characters=2502
+2026-11-21 13:44:45,203 | INFO | Page 55 text extracted. Characters=2512
+2026-11-21 13:44:45,217 | INFO | Page 56 text extracted. Characters=1552
+2026-11-21 13:44:45,230 | INFO | Page 57 text extracted. Characters=2683
+2026-11-21 13:44:45,247 | INFO | Page 58 text extracted. Characters=3132
+2026-11-21 13:44:45,259 | INFO | Page 59 text extracted. Characters=1292
+2026-11-21 13:44:45,272 | INFO | Page 60 text extracted. Characters=2638
+2026-11-21 13:44:45,285 | INFO | Page 61 text extracted. Characters=2182
+2026-11-21 13:44:45,302 | INFO | Page 62 text extracted. Characters=2368
+2026-11-21 13:44:45,314 | INFO | Page 63 text extracted. Characters=2282
+2026-11-21 13:44:45,328 | INFO | Page 64 text extracted. Characters=2683
+2026-11-21 13:44:45,342 | INFO | Page 65 text extracted. Characters=2111
+2026-11-21 13:44:45,349 | INFO | Page 66 text extracted. Characters=1610
+2026-11-21 13:44:45,369 | INFO | Page 67 text extracted. Characters=2138
+2026-11-21 13:44:45,384 | INFO | Page 68 text extracted. Characters=2779
+2026-11-21 13:44:45,395 | INFO | Page 69 text extracted. Characters=1881
+2026-11-21 13:44:45,412 | INFO | Page 70 text extracted. Characters=2238
+2026-11-21 13:44:45,440 | INFO | Page 71 text extracted. Characters=1484
+2026-11-21 13:44:45,455 | INFO | Page 72 text extracted. Characters=2143
+2026-11-21 13:44:45,475 | INFO | Page 73 text extracted. Characters=1811
+2026-11-21 13:44:45,486 | INFO | Page 74 text extracted. Characters=1178
+2026-11-21 13:44:45,497 | INFO | Page 75 text extracted. Characters=2229
+2026-11-21 13:44:45,517 | INFO | Page 76 text extracted. Characters=2229
+2026-11-21 13:44:45,527 | INFO | Page 77 text extracted. Characters=2130
+2026-11-21 13:44:45,534 | INFO | Page 78 text extracted. Characters=2390
+2026-11-21 13:44:45,554 | INFO | Page 79 text extracted. Characters=1133
+2026-11-21 13:44:45,563 | INFO | Page 80 text extracted. Characters=1802
+2026-11-21 13:44:45,579 | INFO | Page 81 text extracted. Characters=1816
+2026-11-21 13:44:45,601 | INFO | Page 82 text extracted. Characters=2130
+2026-11-21 13:44:45,616 | INFO | Page 83 text extracted. Characters=2130
+2026-11-21 13:44:45,622 | INFO | Page 84 text extracted. Characters=1831
+2026-11-21 13:44:45,633 | INFO | Page 85 text extracted. Characters=2994
+2026-11-21 13:44:45,641 | INFO | Page 86 text extracted. Characters=2083
+2026-11-21 13:44:45,649 | INFO | Page 87 text extracted. Characters=2060
+2026-11-21 13:44:45,661 | INFO | Page 88 text extracted. Characters=1962
+2026-11-21 13:44:45,674 | INFO | Page 89 text extracted. Characters=2441
+2026-11-21 13:44:45,687 | INFO | Page 90 text extracted. Characters=1777
+2026-11-21 13:44:45,695 | INFO | Page 91 text extracted. Characters=1297
+2026-11-21 13:44:45,707 | INFO | Page 92 text extracted. Characters=1962
+2026-11-21 13:44:45,719 | INFO | Page 93 text extracted. Characters=2221
+2026-11-21 13:44:45,735 | INFO | Page 94 text extracted. Characters=1395
+2026-11-21 13:44:45,751 | INFO | Page 95 text extracted. Characters=1728
+2026-11-21 13:44:45,759 | INFO | Page 96 text extracted. Characters=1116
+2026-11-21 13:44:45,775 | INFO | Page 97 text extracted. Characters=2869
+2026-11-21 13:44:45,785 | INFO | Page 98 text extracted. Characters=1380
+2026-11-21 13:44:45,791 | INFO | Page 99 text extracted. Characters=1947
+2026-11-21 13:44:45,798 | INFO | Page 100 text extracted. Characters=2042
+2026-11-21 13:44:45,806 | INFO | Page 101 text extracted. Characters=1121
+2026-11-21 13:44:45,815 | INFO | Page 102 text extracted. Characters=1742
+2026-11-21 13:44:45,822 | INFO | Page 103 text extracted. Characters=1193
+2026-11-21 13:44:45,833 | INFO | Page 104 text extracted. Characters=2051
+2026-11-21 13:44:45,842 | INFO | Page 105 text extracted. Characters=1824
+2026-11-21 13:44:45,852 | INFO | Page 106 text extracted. Characters=1471
+2026-11-21 13:44:45,867 | INFO | Page 107 text extracted. Characters=769
+2026-11-21 13:44:45,875 | INFO | Page 108 text extracted. Characters=1553
+2026-11-21 13:44:45,883 | INFO | Page 109 text extracted. Characters=1744
+2026-11-21 13:44:45,891 | INFO | Page 110 text extracted. Characters=1052
+2026-11-21 13:44:45,901 | INFO | Page 111 text extracted. Characters=1395
+2026-11-21 13:44:45,908 | INFO | Page 112 text extracted. Characters=1044
+2026-11-21 13:44:45,915 | INFO | Page 113 text extracted. Characters=635
+2026-11-21 13:44:45,927 | INFO | Page 114 text extracted. Characters=1697
+2026-11-21 13:44:45,934 | INFO | Page 115 text extracted. Characters=1167
+2026-11-21 13:44:45,934 | INFO | Extracted 115 pages.
+2026-11-21 13:44:45,935 | INFO | PDF text extraction completed. Characters=230033
+2026-11-21 13:44:45,935 | INFO | Readable document text confirmed. File=History_compressed.pdf
+2026-11-21 13:44:45,935 | INFO | Chunking started. File=History_compressed.pdf | pages=115 | chunk_size=500 | overlap=50
+2026-11-21 13:44:45,936 | INFO | Page 1 generated 4 chunks.
+2026-11-21 13:44:45,936 | INFO | Page 2 generated 6 chunks.
+2026-11-21 13:44:45,936 | INFO | Page 3 generated 5 chunks.
+2026-11-21 13:44:45,937 | INFO | Page 4 generated 5 chunks.
+2026-11-21 13:44:45,937 | INFO | Page 5 generated 2 chunks.
+2026-11-21 13:44:45,937 | INFO | Page 6 generated 6 chunks.
+2026-11-21 13:44:45,938 | INFO | Page 7 generated 5 chunks.
+2026-11-21 13:44:45,938 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:45,938 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:46,185 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:46,185 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:46,187 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:46,187 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:46,187 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:46,229 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:46,230 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:46,230 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:46,355 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:46,355 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:46,357 | INFO | Page 8 generated 3 chunks.
+2026-11-21 13:44:46,357 | INFO | Page 9 generated 5 chunks.
+2026-11-21 13:44:46,358 | INFO | Page 10 generated 5 chunks.
+2026-11-21 13:44:46,360 | INFO | Page 11 generated 5 chunks.
+2026-11-21 13:44:46,360 | INFO | Page 12 generated 5 chunks.
+2026-11-21 13:44:46,361 | INFO | Page 13 generated 3 chunks.
+2026-11-21 13:44:46,362 | INFO | Page 14 generated 3 chunks.
+2026-11-21 13:44:46,362 | INFO | Page 15 generated 5 chunks.
+2026-11-21 13:44:46,363 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:46,363 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:46,539 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:46,541 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:46,543 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:46,543 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:46,544 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:46,566 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:46,567 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:46,567 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:46,669 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:46,669 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:46,670 | INFO | Page 16 generated 5 chunks.
+2026-11-21 13:44:46,670 | INFO | Page 17 generated 5 chunks.
+2026-11-21 13:44:46,671 | INFO | Page 18 generated 11 chunks.
+2026-11-21 13:44:46,671 | INFO | Page 19 generated 6 chunks.
+2026-11-21 13:44:46,671 | INFO | Page 20 generated 7 chunks.
+2026-11-21 13:44:46,672 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:46,672 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:46,837 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:46,837 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:46,839 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:46,839 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:46,839 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:46,880 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:46,881 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:46,881 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:47,069 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:47,070 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:47,071 | INFO | Page 21 generated 8 chunks.
+2026-11-21 13:44:47,072 | INFO | Page 22 generated 5 chunks.
+2026-11-21 13:44:47,072 | INFO | Page 23 generated 6 chunks.
+2026-11-21 13:44:47,073 | INFO | Page 24 generated 5 chunks.
+2026-11-21 13:44:47,074 | INFO | Page 25 generated 3 chunks.
+2026-11-21 13:44:47,074 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:47,074 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:47,247 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:47,247 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:47,249 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:47,250 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:47,250 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:47,270 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:47,270 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:47,271 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:47,462 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:47,462 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:47,463 | INFO | Page 26 generated 2 chunks.
+2026-11-21 13:44:47,463 | INFO | Page 27 generated 4 chunks.
+2026-11-21 13:44:47,463 | INFO | Page 28 generated 5 chunks.
+2026-11-21 13:44:47,464 | INFO | Page 29 generated 8 chunks.
+2026-11-21 13:44:47,464 | INFO | Page 30 generated 3 chunks.
+2026-11-21 13:44:47,464 | INFO | Page 31 generated 4 chunks.
+2026-11-21 13:44:47,464 | INFO | Page 32 generated 6 chunks.
+2026-11-21 13:44:47,465 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:47,465 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:47,654 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:47,655 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:47,656 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:47,657 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:47,657 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:47,701 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:47,702 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:47,702 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:47,901 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:47,901 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:47,902 | INFO | Page 33 generated 3 chunks.
+2026-11-21 13:44:47,903 | INFO | Page 34 generated 7 chunks.
+2026-11-21 13:44:47,903 | INFO | Page 35 generated 7 chunks.
+2026-11-21 13:44:47,904 | INFO | Page 36 generated 6 chunks.
+2026-11-21 13:44:47,904 | INFO | Page 37 generated 4 chunks.
+2026-11-21 13:44:47,905 | INFO | Page 38 generated 8 chunks.
+2026-11-21 13:44:47,905 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:47,905 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:48,120 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:48,121 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:48,123 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:48,124 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:48,124 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:48,162 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:48,163 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:48,164 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:48,372 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:48,373 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:48,374 | INFO | Page 39 generated 7 chunks.
+2026-11-21 13:44:48,374 | INFO | Page 40 generated 8 chunks.
+2026-11-21 13:44:48,374 | INFO | Page 41 generated 5 chunks.
+2026-11-21 13:44:48,374 | INFO | Page 42 generated 5 chunks.
+2026-11-21 13:44:48,375 | INFO | Page 43 generated 3 chunks.
+2026-11-21 13:44:48,375 | INFO | Page 44 generated 8 chunks.
+2026-11-21 13:44:48,375 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:48,376 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:48,565 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:48,565 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:48,569 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:48,570 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:48,571 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:48,594 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:48,594 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:48,595 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:48,774 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:48,774 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:48,775 | INFO | Page 45 generated 5 chunks.
+2026-11-21 13:44:48,775 | INFO | Page 46 generated 3 chunks.
+2026-11-21 13:44:48,776 | INFO | Page 47 generated 6 chunks.
+2026-11-21 13:44:48,776 | INFO | Page 48 generated 7 chunks.
+2026-11-21 13:44:48,777 | INFO | Page 49 generated 3 chunks.
+2026-11-21 13:44:48,777 | INFO | Page 50 generated 3 chunks.
+2026-11-21 13:44:48,777 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:48,777 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:48,972 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:48,973 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:48,977 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:48,978 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:48,979 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:49,028 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:49,029 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:49,030 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:49,118 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:49,118 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:49,118 | INFO | Page 51 generated 3 chunks.
+2026-11-21 13:44:49,119 | INFO | Page 52 generated 6 chunks.
+2026-11-21 13:44:49,119 | INFO | Page 53 generated 5 chunks.
+2026-11-21 13:44:49,119 | INFO | Page 54 generated 6 chunks.
+2026-11-21 13:44:49,119 | INFO | Page 55 generated 6 chunks.
+2026-11-21 13:44:49,120 | INFO | Page 56 generated 4 chunks.
+2026-11-21 13:44:49,120 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:49,120 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:49,331 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:49,332 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:49,333 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:49,333 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:49,333 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:49,364 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:49,365 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:49,365 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:49,507 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:49,508 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:49,510 | INFO | Page 57 generated 6 chunks.
+2026-11-21 13:44:49,512 | INFO | Page 58 generated 7 chunks.
+2026-11-21 13:44:49,513 | INFO | Page 59 generated 3 chunks.
+2026-11-21 13:44:49,514 | INFO | Page 60 generated 6 chunks.
+2026-11-21 13:44:49,514 | INFO | Page 61 generated 5 chunks.
+2026-11-21 13:44:49,515 | INFO | Page 62 generated 6 chunks.
+2026-11-21 13:44:49,516 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:49,516 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:49,758 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:49,759 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:49,760 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:49,760 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:49,761 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:49,777 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:49,778 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:49,778 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:49,971 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:49,973 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:49,975 | INFO | Page 63 generated 5 chunks.
+2026-11-21 13:44:49,976 | INFO | Page 64 generated 6 chunks.
+2026-11-21 13:44:49,976 | INFO | Page 65 generated 5 chunks.
+2026-11-21 13:44:49,977 | INFO | Page 66 generated 4 chunks.
+2026-11-21 13:44:49,977 | INFO | Page 67 generated 5 chunks.
+2026-11-21 13:44:49,977 | INFO | Page 68 generated 7 chunks.
+2026-11-21 13:44:49,979 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:49,979 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:50,155 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:50,155 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:50,157 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:50,157 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:50,157 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:50,174 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:50,175 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:50,176 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:50,363 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:50,363 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:50,364 | INFO | Page 69 generated 5 chunks.
+2026-11-21 13:44:50,364 | INFO | Page 70 generated 5 chunks.
+2026-11-21 13:44:50,364 | INFO | Page 71 generated 4 chunks.
+2026-11-21 13:44:50,366 | INFO | Page 72 generated 5 chunks.
+2026-11-21 13:44:50,366 | INFO | Page 73 generated 4 chunks.
+2026-11-21 13:44:50,366 | INFO | Page 74 generated 3 chunks.
+2026-11-21 13:44:50,367 | INFO | Page 75 generated 5 chunks.
+2026-11-21 13:44:50,368 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:50,368 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:50,560 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:50,561 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:50,563 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:50,564 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:50,564 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:50,582 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:50,583 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:50,583 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:50,657 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:50,658 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:50,659 | INFO | Page 76 generated 5 chunks.
+2026-11-21 13:44:50,659 | INFO | Page 77 generated 5 chunks.
+2026-11-21 13:44:50,660 | INFO | Page 78 generated 6 chunks.
+2026-11-21 13:44:50,660 | INFO | Page 79 generated 3 chunks.
+2026-11-21 13:44:50,660 | INFO | Page 80 generated 4 chunks.
+2026-11-21 13:44:50,661 | INFO | Page 81 generated 4 chunks.
+2026-11-21 13:44:50,661 | INFO | Page 82 generated 5 chunks.
+2026-11-21 13:44:50,661 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:50,661 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:50,872 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:50,873 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:50,876 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:50,877 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:50,878 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:50,918 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:50,918 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:50,919 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:51,002 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:51,002 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:51,003 | INFO | Page 83 generated 5 chunks.
+2026-11-21 13:44:51,003 | INFO | Page 84 generated 4 chunks.
+2026-11-21 13:44:51,003 | INFO | Page 85 generated 7 chunks.
+2026-11-21 13:44:51,005 | INFO | Page 86 generated 5 chunks.
+2026-11-21 13:44:51,005 | INFO | Page 87 generated 5 chunks.
+2026-11-21 13:44:51,005 | INFO | Page 88 generated 5 chunks.
+2026-11-21 13:44:51,006 | INFO | Page 89 generated 6 chunks.
+2026-11-21 13:44:51,006 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:51,006 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:51,204 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:51,205 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:51,206 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:51,206 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:51,207 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:51,223 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:51,224 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:51,224 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:51,284 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:51,285 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:51,286 | INFO | Page 90 generated 4 chunks.
+2026-11-21 13:44:51,286 | INFO | Page 91 generated 3 chunks.
+2026-11-21 13:44:51,287 | INFO | Page 92 generated 5 chunks.
+2026-11-21 13:44:51,287 | INFO | Page 93 generated 5 chunks.
+2026-11-21 13:44:51,287 | INFO | Page 94 generated 3 chunks.
+2026-11-21 13:44:51,288 | INFO | Page 95 generated 4 chunks.
+2026-11-21 13:44:51,289 | INFO | Page 96 generated 3 chunks.
+2026-11-21 13:44:51,289 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:51,289 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:51,469 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:51,470 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:51,472 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:51,473 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:51,473 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:51,488 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:51,488 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:51,489 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:51,618 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:51,619 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:51,619 | INFO | Page 97 generated 7 chunks.
+2026-11-21 13:44:51,620 | INFO | Page 98 generated 3 chunks.
+2026-11-21 13:44:51,620 | INFO | Page 99 generated 5 chunks.
+2026-11-21 13:44:51,620 | INFO | Page 100 generated 5 chunks.
+2026-11-21 13:44:51,621 | INFO | Page 101 generated 3 chunks.
+2026-11-21 13:44:51,621 | INFO | Page 102 generated 4 chunks.
+2026-11-21 13:44:51,621 | INFO | Page 103 generated 3 chunks.
+2026-11-21 13:44:51,621 | INFO | Page 104 generated 5 chunks.
+2026-11-21 13:44:51,621 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:51,622 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:51,822 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:51,822 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:51,825 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:51,825 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:51,825 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:51,861 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:51,861 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:51,861 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:51,913 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:51,913 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:51,914 | INFO | Page 105 generated 4 chunks.
+2026-11-21 13:44:51,915 | INFO | Page 106 generated 4 chunks.
+2026-11-21 13:44:51,915 | INFO | Page 107 generated 2 chunks.
+2026-11-21 13:44:51,915 | INFO | Page 108 generated 4 chunks.
+2026-11-21 13:44:51,916 | INFO | Page 109 generated 4 chunks.
+2026-11-21 13:44:51,916 | INFO | Page 110 generated 3 chunks.
+2026-11-21 13:44:51,916 | INFO | Page 111 generated 3 chunks.
+2026-11-21 13:44:51,917 | INFO | Page 112 generated 3 chunks.
+2026-11-21 13:44:51,917 | INFO | Page 113 generated 2 chunks.
+2026-11-21 13:44:51,917 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:51,917 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:44:52,124 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:44:52,124 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=32
+2026-11-21 13:44:52,126 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:52,126 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:52,127 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:52,141 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:52,141 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:52,142 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=32
+2026-11-21 13:44:52,255 | INFO | Inserted 32 vectors.
+2026-11-21 13:44:52,256 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=32
+2026-11-21 13:44:52,257 | INFO | Page 114 generated 4 chunks.
+2026-11-21 13:44:52,259 | INFO | Page 115 generated 3 chunks.
+2026-11-21 13:44:52,259 | INFO | Embedding batch started. File=History_compressed.pdf | chunks=7
+2026-11-21 13:44:52,261 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=7 | Batch size=32 | Device=cuda
+2026-11-21 13:44:52,388 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=7 | Dimensions=768
+2026-11-21 13:44:52,388 | INFO | Embedding batch generated successfully. File=History_compressed.pdf | chunks=7
+2026-11-21 13:44:52,388 | INFO | Qdrant vector insertion started. File=History_compressed.pdf | vectors=7
+2026-11-21 13:44:52,389 | INFO | Ensuring Knowledge Base collection exists: kb_mukund_bge
+2026-11-21 13:44:52,389 | INFO | Checking Qdrant collection: kb_mukund_bge
+2026-11-21 13:44:52,426 | INFO | Qdrant collection already exists.: kb_mukund_bge | Vector dimension: 768
+2026-11-21 13:44:52,427 | INFO | Knowledge Base collection ready: kb_mukund_bge
+2026-11-21 13:44:52,428 | INFO | Qdrant vector insertion started. Collection=kb_mukund_bge | points=7
+2026-11-21 13:44:52,480 | INFO | Inserted 7 vectors.
+2026-11-21 13:44:52,481 | INFO | Qdrant vector insertion completed. File=History_compressed.pdf | vectors=7
+2026-11-21 13:44:52,482 | INFO | Generated 551 vectors.
+2026-11-21 13:44:52,483 | INFO | Chunking and vector generation completed. File=History_compressed.pdf | chunks=551
+2026-11-21 13:44:52,483 | INFO | Processed History_compressed.pdf (551 chunks).
+2026-11-21 13:44:52,484 | INFO | Successfully processed 'History_compressed.pdf'.
+2026-11-21 13:44:52,486 | INFO | PDF stream closed: History_compressed.pdf
+2026-11-21 13:44:52,487 | INFO | Temporary file cleanup started: uploads\ef7f46922e654cf19f3107a4401309d6_History_compressed.pdf
+2026-11-21 13:44:52,492 | INFO | Temporary file deleted successfully: uploads\ef7f46922e654cf19f3107a4401309d6_History_compressed.pdf
+2026-11-21 13:44:52,493 | INFO | Temporary upload file deleted: History_compressed.pdf
+2026-11-21 13:44:52,493 | INFO | Knowledge Base ingestion response: {'status': 'success', 'message': 'All documents got in successfully.', 'documents_processed': 1, 'documents_failed': 0, 'chunks_inserted': 551, 'documents': [{'document_id': '7e40ced5-0bb6-43dc-9840-a15bd88db8ad', 'source': 'History_compressed.pdf'}], 'errors': []}
+2026-11-21 13:44:52,494 | INFO | [05a85bfa-b42e-48eb-89ca-134bc405cffe] Upload response: {'status': 'success', 'message': 'All documents got in successfully.', 'documents_processed': 1, 'documents_failed': 0, 'chunks_inserted': 551, 'documents': [{'document_id': '7e40ced5-0bb6-43dc-9840-a15bd88db8ad', 'source': 'History_compressed.pdf'}], 'errors': []}
+2026-11-21 13:44:52,501 | INFO | [05a85bfa-b42e-48eb-89ca-134bc405cffe] Request completed: POST /llm/upload | status=200 | duration=9.622s
+2026-11-21 13:45:22,660 | INFO | [7ffb6a2b-6afe-4701-b005-4953d07c6084] Request started: POST /llm/upload
+2026-11-21 13:45:23,055 | INFO | [7ffb6a2b-6afe-4701-b005-4953d07c6084] Upload request received.
+2026-11-21 13:45:23,061 | INFO | [7ffb6a2b-6afe-4701-b005-4953d07c6084] Upload validation started. Files=1
+2026-11-21 13:45:23,073 | INFO | [7ffb6a2b-6afe-4701-b005-4953d07c6084] Upload validation completed successfully.
+2026-11-21 13:45:23,096 | INFO | [7ffb6a2b-6afe-4701-b005-4953d07c6084] Document ingestion started. Files=1 | Course IDs=['upsc']
+2026-11-21 13:45:23,096 | INFO | Knowledge Base ingestion started.
+2026-11-21 13:45:23,096 | INFO | Ingestion request details. Files=1 | business_id=Sanjay | course_ids=['upsc']
+2026-11-21 13:45:23,097 | INFO | Processing file: UP TGT & PGT .pdf
+2026-11-21 13:45:23,097 | INFO | Applying course IDs to document. File=UP TGT & PGT .pdf | course_ids=['upsc']
+2026-11-21 13:45:23,097 | INFO | PDF processing started: UP TGT & PGT .pdf
+2026-11-21 13:45:23,097 | INFO | Saving file: UP TGT & PGT .pdf
+2026-11-21 13:45:23,099 | INFO | File save started. Filename=UP TGT & PGT .pdf | Destination=uploads\67017772bc4e4d94ba036871603a7655_UP TGT & PGT .pdf
+2026-11-21 13:45:23,110 | INFO | File save completed successfully. Filename=UP TGT & PGT .pdf | Destination=uploads\67017772bc4e4d94ba036871603a7655_UP TGT & PGT .pdf
+2026-11-21 13:45:23,111 | INFO | PDF saved successfully: UP TGT & PGT .pdf
+2026-11-21 13:45:23,112 | INFO | PDF validation completed successfully: UP TGT & PGT .pdf
+2026-11-21 13:45:23,212 | INFO | PDF loaded successfully: UP TGT & PGT .pdf | pages=246
+2026-11-21 13:45:23,212 | INFO | Processing document: UP TGT & PGT .pdf
+2026-11-21 13:45:23,212 | INFO | Document ID generated. File=UP TGT & PGT .pdf | document_id=066bdb5a-0525-4a6c-9b6f-f6f25a16249b
+2026-11-21 13:45:23,213 | INFO | PDF text extraction started. Pages=246
+2026-11-21 13:45:23,214 | INFO | Page 1 text extracted. Characters=0
+2026-11-21 13:45:23,562 | INFO | Page 2 text extracted. Characters=1378
+2026-11-21 13:45:23,616 | INFO | Page 3 text extracted. Characters=1198
+2026-11-21 13:45:23,662 | INFO | Page 4 text extracted. Characters=932
+2026-11-21 13:45:23,740 | INFO | Page 5 text extracted. Characters=1467
+2026-11-21 13:45:23,847 | INFO | Page 6 text extracted. Characters=2632
+2026-11-21 13:45:24,164 | INFO | Page 7 text extracted. Characters=2630
+2026-11-21 13:45:24,265 | INFO | Page 8 text extracted. Characters=1669
+2026-11-21 13:45:24,371 | INFO | Page 9 text extracted. Characters=1841
+2026-11-21 13:45:24,466 | INFO | Page 10 text extracted. Characters=1626
+2026-11-21 13:45:24,538 | INFO | Page 11 text extracted. Characters=1607
+2026-11-21 13:45:24,645 | INFO | Page 12 text extracted. Characters=2294
+2026-11-21 13:45:24,932 | INFO | Page 13 text extracted. Characters=1993
+2026-11-21 13:45:24,992 | INFO | Page 14 text extracted. Characters=1480
+2026-11-21 13:45:25,122 | INFO | Page 15 text extracted. Characters=3133
+2026-11-21 13:45:25,216 | INFO | Page 16 text extracted. Characters=2201
+2026-11-21 13:45:25,332 | INFO | Page 17 text extracted. Characters=2472
+2026-11-21 13:45:25,688 | INFO | Page 18 text extracted. Characters=2917
+2026-11-21 13:45:25,817 | INFO | Page 19 text extracted. Characters=2948
+2026-11-21 13:45:25,920 | INFO | Page 20 text extracted. Characters=2318
+2026-11-21 13:45:26,033 | INFO | Page 21 text extracted. Characters=2945
+2026-11-21 13:45:26,334 | INFO | Page 22 text extracted. Characters=3368
+2026-11-21 13:45:26,456 | INFO | Page 23 text extracted. Characters=2865
+2026-11-21 13:45:26,539 | INFO | Page 24 text extracted. Characters=2139
+2026-11-21 13:45:26,826 | INFO | Page 25 text extracted. Characters=2902
+2026-11-21 13:45:26,926 | INFO | Page 26 text extracted. Characters=2307
+2026-11-21 13:45:27,039 | INFO | Page 27 text extracted. Characters=2313
+2026-11-21 13:45:27,164 | INFO | Page 28 text extracted. Characters=2975
+2026-11-21 13:45:27,443 | INFO | Page 29 text extracted. Characters=3107
+2026-11-21 13:45:27,592 | INFO | Page 30 text extracted. Characters=3129
+2026-11-21 13:45:27,992 | INFO | Page 31 text extracted. Characters=1845
+2026-11-21 13:45:29,020 | INFO | Page 32 text extracted. Characters=1549
+2026-11-21 13:45:31,766 | INFO | Page 33 text extracted. Characters=3130
+2026-11-21 13:45:32,908 | INFO | Page 34 text extracted. Characters=2400
+2026-11-21 13:45:33,065 | INFO | Page 35 text extracted. Characters=2183
+2026-11-21 13:45:33,196 | INFO | Page 36 text extracted. Characters=2777
+2026-11-21 13:45:33,524 | INFO | Page 37 text extracted. Characters=3053
+2026-11-21 13:45:33,683 | INFO | Page 38 text extracted. Characters=3143
+2026-11-21 13:45:33,792 | INFO | Page 39 text extracted. Characters=2166
+2026-11-21 13:45:33,906 | INFO | Page 40 text extracted. Characters=2560
+2026-11-21 13:45:34,209 | INFO | Page 41 text extracted. Characters=3498
+2026-11-21 13:45:34,350 | INFO | Page 42 text extracted. Characters=3680
+2026-11-21 13:45:34,504 | INFO | Page 43 text extracted. Characters=3696
+2026-11-21 13:45:34,877 | INFO | Page 44 text extracted. Characters=3967
+2026-11-21 13:45:35,000 | INFO | Page 45 text extracted. Characters=3201
+2026-11-21 13:45:35,082 | INFO | Page 46 text extracted. Characters=1844
+2026-11-21 13:45:35,168 | INFO | Page 47 text extracted. Characters=2073
+2026-11-21 13:45:35,247 | INFO | Page 48 text extracted. Characters=2065
+2026-11-21 13:45:35,513 | INFO | Page 49 text extracted. Characters=2151
+2026-11-21 13:45:35,553 | INFO | Page 50 text extracted. Characters=696
+2026-11-21 13:45:35,630 | INFO | Page 51 text extracted. Characters=2067
+2026-11-21 13:45:35,684 | INFO | Page 52 text extracted. Characters=1248
+2026-11-21 13:45:35,718 | INFO | Page 53 text extracted. Characters=821
+2026-11-21 13:45:35,831 | INFO | Page 54 text extracted. Characters=2844
+2026-11-21 13:45:35,927 | INFO | Page 55 text extracted. Characters=2391
+2026-11-21 13:45:36,157 | INFO | Page 56 text extracted. Characters=2255
+2026-11-21 13:45:36,292 | INFO | Page 57 text extracted. Characters=2620
+2026-11-21 13:45:36,383 | INFO | Page 58 text extracted. Characters=2379
+2026-11-21 13:45:36,445 | INFO | Page 59 text extracted. Characters=1754
+2026-11-21 13:45:36,708 | INFO | Page 60 text extracted. Characters=3029
+2026-11-21 13:45:36,847 | INFO | Page 61 text extracted. Characters=3757
+2026-11-21 13:45:36,947 | INFO | Page 62 text extracted. Characters=2881
+2026-11-21 13:45:37,068 | INFO | Page 63 text extracted. Characters=3165
+2026-11-21 13:45:37,291 | INFO | Page 64 text extracted. Characters=1418
+2026-11-21 13:45:37,423 | INFO | Page 65 text extracted. Characters=3664
+2026-11-21 13:45:37,543 | INFO | Page 66 text extracted. Characters=3044
+2026-11-21 13:45:37,827 | INFO | Page 67 text extracted. Characters=2943
+2026-11-21 13:45:37,948 | INFO | Page 68 text extracted. Characters=2975
+2026-11-21 13:45:38,053 | INFO | Page 69 text extracted. Characters=2882
+2026-11-21 13:45:38,141 | INFO | Page 70 text extracted. Characters=1915
+2026-11-21 13:45:38,225 | INFO | Page 71 text extracted. Characters=2047
+2026-11-21 13:45:38,496 | INFO | Page 72 text extracted. Characters=2775
+2026-11-21 13:45:38,604 | INFO | Page 73 text extracted. Characters=2462
+2026-11-21 13:45:38,730 | INFO | Page 74 text extracted. Characters=3177
+2026-11-21 13:45:38,879 | INFO | Page 75 text extracted. Characters=3842
+2026-11-21 13:45:39,193 | INFO | Page 76 text extracted. Characters=3629
+2026-11-21 13:45:39,320 | INFO | Page 77 text extracted. Characters=2954
+2026-11-21 13:45:39,469 | INFO | Page 78 text extracted. Characters=3678
+2026-11-21 13:45:39,765 | INFO | Page 79 text extracted. Characters=2844
+2026-11-21 13:45:39,891 | INFO | Page 80 text extracted. Characters=3134
+2026-11-21 13:45:40,013 | INFO | Page 81 text extracted. Characters=3022
+2026-11-21 13:45:40,319 | INFO | Page 82 text extracted. Characters=3223
+2026-11-21 13:45:40,450 | INFO | Page 83 text extracted. Characters=2971
+2026-11-21 13:45:40,570 | INFO | Page 84 text extracted. Characters=3166
+2026-11-21 13:45:40,671 | INFO | Page 85 text extracted. Characters=2415
+2026-11-21 13:45:40,969 | INFO | Page 86 text extracted. Characters=3744
+2026-11-21 13:45:41,084 | INFO | Page 87 text extracted. Characters=2988
+2026-11-21 13:45:41,161 | INFO | Page 88 text extracted. Characters=1979
+2026-11-21 13:45:41,443 | INFO | Page 89 text extracted. Characters=3256
+2026-11-21 13:45:41,574 | INFO | Page 90 text extracted. Characters=3524
+2026-11-21 13:45:41,709 | INFO | Page 91 text extracted. Characters=3674
+2026-11-21 13:45:41,824 | INFO | Page 92 text extracted. Characters=2924
+2026-11-21 13:45:42,080 | INFO | Page 93 text extracted. Characters=2753
+2026-11-21 13:45:42,196 | INFO | Page 94 text extracted. Characters=3152
+2026-11-21 13:45:42,336 | INFO | Page 95 text extracted. Characters=3491
+2026-11-21 13:45:42,635 | INFO | Page 96 text extracted. Characters=3495
+2026-11-21 13:45:42,766 | INFO | Page 97 text extracted. Characters=3438
+2026-11-21 13:45:42,875 | INFO | Page 98 text extracted. Characters=3292
+2026-11-21 13:45:43,011 | INFO | Page 99 text extracted. Characters=3315
+2026-11-21 13:45:43,313 | INFO | Page 100 text extracted. Characters=3018
+2026-11-21 13:45:43,428 | INFO | Page 101 text extracted. Characters=3053
+2026-11-21 13:45:43,559 | INFO | Page 102 text extracted. Characters=2947
+2026-11-21 13:45:43,810 | INFO | Page 103 text extracted. Characters=3029
+2026-11-21 13:45:43,930 | INFO | Page 104 text extracted. Characters=3360
+2026-11-21 13:45:44,071 | INFO | Page 105 text extracted. Characters=3627
+2026-11-21 13:45:44,340 | INFO | Page 106 text extracted. Characters=2519
+2026-11-21 13:45:44,414 | INFO | Page 107 text extracted. Characters=1489
+2026-11-21 13:45:44,438 | INFO | Page 108 text extracted. Characters=411
+2026-11-21 13:45:44,562 | INFO | Page 109 text extracted. Characters=3196
+2026-11-21 13:45:44,612 | INFO | Page 110 text extracted. Characters=742
+2026-11-21 13:45:44,715 | INFO | Page 111 text extracted. Characters=2745
+2026-11-21 13:45:44,809 | INFO | Page 112 text extracted. Characters=2416
+2026-11-21 13:45:45,030 | INFO | Page 113 text extracted. Characters=1314
+2026-11-21 13:45:45,148 | INFO | Page 114 text extracted. Characters=2864
+2026-11-21 13:45:45,270 | INFO | Page 115 text extracted. Characters=2888
+2026-11-21 13:45:45,326 | INFO | Page 116 text extracted. Characters=1577
+2026-11-21 13:45:45,434 | INFO | Page 117 text extracted. Characters=2846
+2026-11-21 13:45:45,679 | INFO | Page 118 text extracted. Characters=2515
+2026-11-21 13:45:45,815 | INFO | Page 119 text extracted. Characters=2780
+2026-11-21 13:45:45,909 | INFO | Page 120 text extracted. Characters=2252
+2026-11-21 13:45:45,987 | INFO | Page 121 text extracted. Characters=2255
+2026-11-21 13:45:46,229 | INFO | Page 122 text extracted. Characters=2342
+2026-11-21 13:45:46,294 | INFO | Page 123 text extracted. Characters=1485
+2026-11-21 13:45:46,421 | INFO | Page 124 text extracted. Characters=3275
+2026-11-21 13:45:46,555 | INFO | Page 125 text extracted. Characters=2965
+2026-11-21 13:45:46,792 | INFO | Page 126 text extracted. Characters=2209
+2026-11-21 13:45:46,843 | INFO | Page 127 text extracted. Characters=1048
+2026-11-21 13:45:46,922 | INFO | Page 128 text extracted. Characters=1780
+2026-11-21 13:45:47,016 | INFO | Page 129 text extracted. Characters=1948
+2026-11-21 13:45:47,155 | INFO | Page 130 text extracted. Characters=2774
+2026-11-21 13:45:47,252 | INFO | Page 131 text extracted. Characters=2760
+2026-11-21 13:45:47,504 | INFO | Page 132 text extracted. Characters=2052
+2026-11-21 13:45:47,599 | INFO | Page 133 text extracted. Characters=2276
+2026-11-21 13:45:47,701 | INFO | Page 134 text extracted. Characters=2702
+2026-11-21 13:45:47,828 | INFO | Page 135 text extracted. Characters=3128
+2026-11-21 13:45:47,887 | INFO | Page 136 text extracted. Characters=1753
+2026-11-21 13:45:48,139 | INFO | Page 137 text extracted. Characters=2581
+2026-11-21 13:45:48,225 | INFO | Page 138 text extracted. Characters=1944
+2026-11-21 13:45:48,299 | INFO | Page 139 text extracted. Characters=1777
+2026-11-21 13:45:48,432 | INFO | Page 140 text extracted. Characters=3238
+2026-11-21 13:45:48,672 | INFO | Page 141 text extracted. Characters=1959
+2026-11-21 13:45:48,768 | INFO | Page 142 text extracted. Characters=1793
+2026-11-21 13:45:48,807 | INFO | Page 143 text extracted. Characters=738
+2026-11-21 13:45:48,890 | INFO | Page 144 text extracted. Characters=2345
+2026-11-21 13:45:48,972 | INFO | Page 145 text extracted. Characters=2256
+2026-11-21 13:45:49,050 | INFO | Page 146 text extracted. Characters=1758
+2026-11-21 13:45:49,118 | INFO | Page 147 text extracted. Characters=1413
+2026-11-21 13:45:49,339 | INFO | Page 148 text extracted. Characters=1280
+2026-11-21 13:45:49,427 | INFO | Page 149 text extracted. Characters=2125
+2026-11-21 13:45:49,492 | INFO | Page 150 text extracted. Characters=1663
+2026-11-21 13:45:49,607 | INFO | Page 151 text extracted. Characters=2343
+2026-11-21 13:45:49,724 | INFO | Page 152 text extracted. Characters=2690
+2026-11-21 13:45:49,783 | INFO | Page 153 text extracted. Characters=1268
+2026-11-21 13:45:50,076 | INFO | Page 154 text extracted. Characters=3184
+2026-11-21 13:45:50,199 | INFO | Page 155 text extracted. Characters=3062
+2026-11-21 13:45:50,299 | INFO | Page 156 text extracted. Characters=2607
+2026-11-21 13:45:50,400 | INFO | Page 157 text extracted. Characters=2392
+2026-11-21 13:45:50,694 | INFO | Page 158 text extracted. Characters=2578
+2026-11-21 13:45:50,785 | INFO | Page 159 text extracted. Characters=2539
+2026-11-21 13:45:50,880 | INFO | Page 160 text extracted. Characters=2444
+2026-11-21 13:45:50,990 | INFO | Page 161 text extracted. Characters=2235
+2026-11-21 13:45:51,287 | INFO | Page 162 text extracted. Characters=2418
+2026-11-21 13:45:51,425 | INFO | Page 163 text extracted. Characters=3135
+2026-11-21 13:45:51,530 | INFO | Page 164 text extracted. Characters=2508
+2026-11-21 13:45:51,640 | INFO | Page 165 text extracted. Characters=2998
+2026-11-21 13:45:51,954 | INFO | Page 166 text extracted. Characters=3427
+2026-11-21 13:45:52,095 | INFO | Page 167 text extracted. Characters=3956
+2026-11-21 13:45:52,167 | INFO | Page 168 text extracted. Characters=1545
+2026-11-21 13:45:52,309 | INFO | Page 169 text extracted. Characters=3730
+2026-11-21 13:45:52,685 | INFO | Page 170 text extracted. Characters=3554
+2026-11-21 13:45:52,777 | INFO | Page 171 text extracted. Characters=2398
+2026-11-21 13:45:52,919 | INFO | Page 172 text extracted. Characters=3812
+2026-11-21 13:45:53,240 | INFO | Page 173 text extracted. Characters=4216
+2026-11-21 13:45:53,384 | INFO | Page 174 text extracted. Characters=3178
+2026-11-21 13:45:53,463 | INFO | Page 175 text extracted. Characters=2295
+2026-11-21 13:45:53,567 | INFO | Page 176 text extracted. Characters=2718
+2026-11-21 13:45:53,880 | INFO | Page 177 text extracted. Characters=3131
+2026-11-21 13:45:54,002 | INFO | Page 178 text extracted. Characters=2808
+2026-11-21 13:45:54,140 | INFO | Page 179 text extracted. Characters=3818
+2026-11-21 13:45:54,257 | INFO | Page 180 text extracted. Characters=2833
+2026-11-21 13:45:54,589 | INFO | Page 181 text extracted. Characters=4266
+2026-11-21 13:45:54,704 | INFO | Page 182 text extracted. Characters=3162
+2026-11-21 13:45:55,036 | INFO | Page 183 text extracted. Characters=3379
+2026-11-21 13:45:55,117 | INFO | Page 184 text extracted. Characters=1970
+2026-11-21 13:45:55,206 | INFO | Page 185 text extracted. Characters=2268
+2026-11-21 13:45:55,322 | INFO | Page 186 text extracted. Characters=3319
+2026-11-21 13:45:55,432 | INFO | Page 187 text extracted. Characters=2968
+2026-11-21 13:45:55,526 | INFO | Page 188 text extracted. Characters=2479
+2026-11-21 13:45:55,794 | INFO | Page 189 text extracted. Characters=3047
+2026-11-21 13:45:55,904 | INFO | Page 190 text extracted. Characters=2905
+2026-11-21 13:45:56,028 | INFO | Page 191 text extracted. Characters=3030
+2026-11-21 13:45:56,063 | INFO | Page 192 text extracted. Characters=831
+2026-11-21 13:45:56,412 | INFO | Page 193 text extracted. Characters=3368
+2026-11-21 13:45:56,509 | INFO | Page 194 text extracted. Characters=2663
+2026-11-21 13:45:56,596 | INFO | Page 195 text extracted. Characters=2365
+2026-11-21 13:45:56,703 | INFO | Page 196 text extracted. Characters=2188
+2026-11-21 13:45:56,788 | INFO | Page 197 text extracted. Characters=2466
+2026-11-21 13:45:57,093 | INFO | Page 198 text extracted. Characters=2599
+2026-11-21 13:45:57,191 | INFO | Page 199 text extracted. Characters=2775
+2026-11-21 13:45:57,299 | INFO | Page 200 text extracted. Characters=2808
+2026-11-21 13:45:57,582 | INFO | Page 201 text extracted. Characters=2297
+2026-11-21 13:45:57,698 | INFO | Page 202 text extracted. Characters=2564
+2026-11-21 13:45:57,799 | INFO | Page 203 text extracted. Characters=2241
+2026-11-21 13:45:57,850 | INFO | Page 204 text extracted. Characters=1359
+2026-11-21 13:45:57,979 | INFO | Page 205 text extracted. Characters=3096
+2026-11-21 13:45:58,068 | INFO | Page 206 text extracted. Characters=2115
+2026-11-21 13:45:58,309 | INFO | Page 207 text extracted. Characters=2151
+2026-11-21 13:45:58,419 | INFO | Page 208 text extracted. Characters=2488
+2026-11-21 13:45:58,533 | INFO | Page 209 text extracted. Characters=3154
+2026-11-21 13:45:58,648 | INFO | Page 210 text extracted. Characters=3507
+2026-11-21 13:45:58,885 | INFO | Page 211 text extracted. Characters=2158
+2026-11-21 13:45:59,013 | INFO | Page 212 text extracted. Characters=3299
+2026-11-21 13:45:59,116 | INFO | Page 213 text extracted. Characters=2971
+2026-11-21 13:45:59,446 | INFO | Page 214 text extracted. Characters=3255
+2026-11-21 13:45:59,562 | INFO | Page 215 text extracted. Characters=3250
+2026-11-21 13:45:59,699 | INFO | Page 216 text extracted. Characters=3264
+2026-11-21 13:45:59,818 | INFO | Page 217 text extracted. Characters=2979
+2026-11-21 13:46:00,117 | INFO | Page 218 text extracted. Characters=3213
+2026-11-21 13:46:00,229 | INFO | Page 219 text extracted. Characters=3138
+2026-11-21 13:46:00,361 | INFO | Page 220 text extracted. Characters=3103
+2026-11-21 13:46:00,444 | INFO | Page 221 text extracted. Characters=2091
+2026-11-21 13:46:00,738 | INFO | Page 222 text extracted. Characters=3408
+2026-11-21 13:46:00,881 | INFO | Page 223 text extracted. Characters=2999
+2026-11-21 13:46:00,960 | INFO | Page 224 text extracted. Characters=2099
+2026-11-21 13:46:01,078 | INFO | Page 225 text extracted. Characters=3332
+2026-11-21 13:46:01,156 | INFO | Page 226 text extracted. Characters=2392
+2026-11-21 13:46:01,491 | INFO | Page 227 text extracted. Characters=3100
+2026-11-21 13:46:01,599 | INFO | Page 228 text extracted. Characters=2825
+2026-11-21 13:46:01,762 | INFO | Page 229 text extracted. Characters=3704
+2026-11-21 13:46:01,874 | INFO | Page 230 text extracted. Characters=3189
+2026-11-21 13:46:02,099 | INFO | Page 231 text extracted. Characters=1611
+2026-11-21 13:46:02,275 | INFO | Page 232 text extracted. Characters=3875
+2026-11-21 13:46:02,378 | INFO | Page 233 text extracted. Characters=3008
+2026-11-21 13:46:02,689 | INFO | Page 234 text extracted. Characters=3675
+2026-11-21 13:46:02,733 | INFO | Page 235 text extracted. Characters=772
+2026-11-21 13:46:02,787 | INFO | Page 236 text extracted. Characters=1390
+2026-11-21 13:46:02,903 | INFO | Page 237 text extracted. Characters=2932
+2026-11-21 13:46:03,005 | INFO | Page 238 text extracted. Characters=2533
+2026-11-21 13:46:03,121 | INFO | Page 239 text extracted. Characters=2579
+2026-11-21 13:46:03,379 | INFO | Page 240 text extracted. Characters=2591
+2026-11-21 13:46:03,515 | INFO | Page 241 text extracted. Characters=3036
+2026-11-21 13:46:03,639 | INFO | Page 242 text extracted. Characters=2119
+2026-11-21 13:46:03,732 | INFO | Page 243 text extracted. Characters=3271
+2026-11-21 13:46:03,804 | INFO | Page 244 text extracted. Characters=2974
+2026-11-21 13:46:03,863 | INFO | Page 245 text extracted. Characters=1873
+2026-11-21 13:46:03,864 | INFO | Page 246 text extracted. Characters=0
+2026-11-21 13:46:03,865 | INFO | Extracted 246 pages.
+2026-11-21 13:46:03,865 | INFO | PDF text extraction completed. Characters=637990
+2026-11-21 13:46:03,866 | INFO | Readable document text confirmed. File=UP TGT & PGT .pdf
+2026-11-21 13:46:03,866 | INFO | Chunking started. File=UP TGT & PGT .pdf | pages=246 | chunk_size=500 | overlap=50
+2026-11-21 13:46:03,867 | INFO | Page 1 skipped because it contains no readable text.
+2026-11-21 13:46:03,867 | INFO | Page 2 generated 3 chunks.
+2026-11-21 13:46:03,867 | INFO | Page 3 generated 3 chunks.
+2026-11-21 13:46:03,868 | INFO | Page 4 generated 2 chunks.
+2026-11-21 13:46:03,868 | INFO | Page 5 generated 4 chunks.
+2026-11-21 13:46:03,868 | INFO | Page 6 generated 6 chunks.
+2026-11-21 13:46:03,869 | INFO | Page 7 generated 6 chunks.
+2026-11-21 13:46:03,869 | INFO | Page 8 generated 4 chunks.
+2026-11-21 13:46:03,870 | INFO | Page 9 generated 4 chunks.
+2026-11-21 13:46:03,870 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:03,870 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:04,477 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:04,478 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:04,479 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:04,480 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:04,480 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:04,495 | INFO | Qdrant collection does not exist. Creation started: kb_sanjay_bge
+2026-11-21 13:46:04,819 | INFO | Qdrant collection created successfully.: kb_sanjay_bge
+2026-11-21 13:46:04,820 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:04,821 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:04,890 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:04,891 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:04,892 | INFO | Page 10 generated 4 chunks.
+2026-11-21 13:46:04,892 | INFO | Page 11 generated 4 chunks.
+2026-11-21 13:46:04,893 | INFO | Page 12 generated 6 chunks.
+2026-11-21 13:46:04,893 | INFO | Page 13 generated 5 chunks.
+2026-11-21 13:46:04,893 | INFO | Page 14 generated 4 chunks.
+2026-11-21 13:46:04,894 | INFO | Page 15 generated 7 chunks.
+2026-11-21 13:46:04,894 | INFO | Page 16 generated 5 chunks.
+2026-11-21 13:46:04,894 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:04,894 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:05,339 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:05,339 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:05,340 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:05,341 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:05,341 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:05,381 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:05,382 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:05,382 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:05,498 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:05,499 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:05,500 | INFO | Page 17 generated 6 chunks.
+2026-11-21 13:46:05,500 | INFO | Page 18 generated 7 chunks.
+2026-11-21 13:46:05,500 | INFO | Page 19 generated 7 chunks.
+2026-11-21 13:46:05,500 | INFO | Page 20 generated 6 chunks.
+2026-11-21 13:46:05,501 | INFO | Page 21 generated 7 chunks.
+2026-11-21 13:46:05,501 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:05,501 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:05,949 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:05,949 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:05,952 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:05,952 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:05,953 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:05,989 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:05,989 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:05,989 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:06,053 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:06,054 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:06,055 | INFO | Page 22 generated 8 chunks.
+2026-11-21 13:46:06,055 | INFO | Page 23 generated 7 chunks.
+2026-11-21 13:46:06,056 | INFO | Page 24 generated 5 chunks.
+2026-11-21 13:46:06,056 | INFO | Page 25 generated 7 chunks.
+2026-11-21 13:46:06,056 | INFO | Page 26 generated 5 chunks.
+2026-11-21 13:46:06,057 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:06,057 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:06,528 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:06,528 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:06,529 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:06,530 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:06,530 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:06,552 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:06,553 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:06,553 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:06,664 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:06,665 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:06,666 | INFO | Page 27 generated 6 chunks.
+2026-11-21 13:46:06,666 | INFO | Page 28 generated 7 chunks.
+2026-11-21 13:46:06,666 | INFO | Page 29 generated 7 chunks.
+2026-11-21 13:46:06,667 | INFO | Page 30 generated 7 chunks.
+2026-11-21 13:46:06,667 | INFO | Page 31 generated 4 chunks.
+2026-11-21 13:46:06,667 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:06,667 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:07,126 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:07,127 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:07,128 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:07,128 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:07,129 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:07,146 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:07,147 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:07,148 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:07,267 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:07,268 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:07,269 | INFO | Page 32 generated 4 chunks.
+2026-11-21 13:46:07,269 | INFO | Page 33 generated 8 chunks.
+2026-11-21 13:46:07,270 | INFO | Page 34 generated 6 chunks.
+2026-11-21 13:46:07,270 | INFO | Page 35 generated 5 chunks.
+2026-11-21 13:46:07,270 | INFO | Page 36 generated 7 chunks.
+2026-11-21 13:46:07,271 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:07,271 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:07,748 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:07,749 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:07,751 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:07,751 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:07,751 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:07,767 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:07,768 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:07,769 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:07,815 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:07,815 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:07,816 | INFO | Page 37 generated 8 chunks.
+2026-11-21 13:46:07,817 | INFO | Page 38 generated 7 chunks.
+2026-11-21 13:46:07,817 | INFO | Page 39 generated 5 chunks.
+2026-11-21 13:46:07,817 | INFO | Page 40 generated 6 chunks.
+2026-11-21 13:46:07,818 | INFO | Page 41 generated 8 chunks.
+2026-11-21 13:46:07,818 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:07,818 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:08,278 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:08,278 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:08,280 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:08,281 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:08,281 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:08,324 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:08,324 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:08,324 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:08,433 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:08,433 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:08,435 | INFO | Page 42 generated 9 chunks.
+2026-11-21 13:46:08,435 | INFO | Page 43 generated 9 chunks.
+2026-11-21 13:46:08,435 | INFO | Page 44 generated 9 chunks.
+2026-11-21 13:46:08,436 | INFO | Page 45 generated 8 chunks.
+2026-11-21 13:46:08,436 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:08,436 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:08,897 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:08,941 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:08,943 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:08,944 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:08,944 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:08,981 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:08,982 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:08,982 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:09,036 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:09,036 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:09,037 | INFO | Page 46 generated 4 chunks.
+2026-11-21 13:46:09,037 | INFO | Page 47 generated 5 chunks.
+2026-11-21 13:46:09,038 | INFO | Page 48 generated 5 chunks.
+2026-11-21 13:46:09,038 | INFO | Page 49 generated 5 chunks.
+2026-11-21 13:46:09,038 | INFO | Page 50 generated 2 chunks.
+2026-11-21 13:46:09,039 | INFO | Page 51 generated 5 chunks.
+2026-11-21 13:46:09,039 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:09,039 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:09,470 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:09,470 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:09,472 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:09,472 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:09,472 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:09,511 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:09,511 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:09,511 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:09,609 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:09,610 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:09,610 | INFO | Page 52 generated 3 chunks.
+2026-11-21 13:46:09,611 | INFO | Page 53 generated 2 chunks.
+2026-11-21 13:46:09,611 | INFO | Page 54 generated 7 chunks.
+2026-11-21 13:46:09,611 | INFO | Page 55 generated 6 chunks.
+2026-11-21 13:46:09,612 | INFO | Page 56 generated 5 chunks.
+2026-11-21 13:46:09,612 | INFO | Page 57 generated 6 chunks.
+2026-11-21 13:46:09,612 | INFO | Page 58 generated 6 chunks.
+2026-11-21 13:46:09,613 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:09,613 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:10,039 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:10,039 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:10,041 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:10,041 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:10,042 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:10,079 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:10,080 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:10,080 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:10,169 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:10,169 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:10,170 | INFO | Page 59 generated 4 chunks.
+2026-11-21 13:46:10,170 | INFO | Page 60 generated 7 chunks.
+2026-11-21 13:46:10,171 | INFO | Page 61 generated 9 chunks.
+2026-11-21 13:46:10,171 | INFO | Page 62 generated 7 chunks.
+2026-11-21 13:46:10,172 | INFO | Page 63 generated 8 chunks.
+2026-11-21 13:46:10,172 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:10,172 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:10,650 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:10,650 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:10,652 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:10,652 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:10,653 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:10,677 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:10,677 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:10,678 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:10,776 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:10,777 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:10,778 | INFO | Page 64 generated 4 chunks.
+2026-11-21 13:46:10,778 | INFO | Page 65 generated 9 chunks.
+2026-11-21 13:46:10,778 | INFO | Page 66 generated 7 chunks.
+2026-11-21 13:46:10,779 | INFO | Page 67 generated 7 chunks.
+2026-11-21 13:46:10,779 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:10,779 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:11,299 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:11,300 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:11,301 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:11,302 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:11,302 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:11,321 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:11,321 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:11,321 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:11,416 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:11,416 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:11,416 | INFO | Page 68 generated 7 chunks.
+2026-11-21 13:46:11,417 | INFO | Page 69 generated 7 chunks.
+2026-11-21 13:46:11,417 | INFO | Page 70 generated 5 chunks.
+2026-11-21 13:46:11,417 | INFO | Page 71 generated 5 chunks.
+2026-11-21 13:46:11,418 | INFO | Page 72 generated 7 chunks.
+2026-11-21 13:46:11,418 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:11,419 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:11,857 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:11,858 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:11,859 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:11,859 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:11,860 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:11,905 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:11,905 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:11,905 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:12,011 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:12,011 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:12,012 | INFO | Page 73 generated 6 chunks.
+2026-11-21 13:46:12,013 | INFO | Page 74 generated 7 chunks.
+2026-11-21 13:46:12,013 | INFO | Page 75 generated 9 chunks.
+2026-11-21 13:46:12,014 | INFO | Page 76 generated 9 chunks.
+2026-11-21 13:46:12,014 | INFO | Page 77 generated 7 chunks.
+2026-11-21 13:46:12,014 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:12,014 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:12,450 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:12,450 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:12,452 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:12,452 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:12,453 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:12,472 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:12,473 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:12,474 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:12,612 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:12,612 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:12,613 | INFO | Page 78 generated 8 chunks.
+2026-11-21 13:46:12,614 | INFO | Page 79 generated 7 chunks.
+2026-11-21 13:46:12,614 | INFO | Page 80 generated 8 chunks.
+2026-11-21 13:46:12,614 | INFO | Page 81 generated 7 chunks.
+2026-11-21 13:46:12,615 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:12,615 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:13,044 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:13,045 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:13,046 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:13,046 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:13,047 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:13,077 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:13,077 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:13,078 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:13,129 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:13,130 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:13,131 | INFO | Page 82 generated 8 chunks.
+2026-11-21 13:46:13,132 | INFO | Page 83 generated 7 chunks.
+2026-11-21 13:46:13,132 | INFO | Page 84 generated 7 chunks.
+2026-11-21 13:46:13,133 | INFO | Page 85 generated 6 chunks.
+2026-11-21 13:46:13,133 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:13,134 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:14,143 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:14,143 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:14,144 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:14,144 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:14,145 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:14,171 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:14,172 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:14,172 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:14,290 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:14,291 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:14,292 | INFO | Page 86 generated 9 chunks.
+2026-11-21 13:46:14,293 | INFO | Page 87 generated 7 chunks.
+2026-11-21 13:46:14,293 | INFO | Page 88 generated 5 chunks.
+2026-11-21 13:46:14,294 | INFO | Page 89 generated 7 chunks.
+2026-11-21 13:46:14,294 | INFO | Page 90 generated 8 chunks.
+2026-11-21 13:46:14,294 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:14,295 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:15,147 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:15,147 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:15,149 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:15,150 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:15,150 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:15,180 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:15,181 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:15,181 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:15,240 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:15,241 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:15,241 | INFO | Page 91 generated 9 chunks.
+2026-11-21 13:46:15,242 | INFO | Page 92 generated 7 chunks.
+2026-11-21 13:46:15,242 | INFO | Page 93 generated 6 chunks.
+2026-11-21 13:46:15,242 | INFO | Page 94 generated 7 chunks.
+2026-11-21 13:46:15,242 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:15,243 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:15,908 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:15,908 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:15,909 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:15,910 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:15,910 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:15,970 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:15,970 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:15,971 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:16,090 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:16,091 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:16,092 | INFO | Page 95 generated 8 chunks.
+2026-11-21 13:46:16,092 | INFO | Page 96 generated 8 chunks.
+2026-11-21 13:46:16,092 | INFO | Page 97 generated 8 chunks.
+2026-11-21 13:46:16,093 | INFO | Page 98 generated 8 chunks.
+2026-11-21 13:46:16,093 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:16,093 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:16,594 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:16,595 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:16,598 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:16,598 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:16,599 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:16,634 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:16,634 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:16,635 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:16,767 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:16,767 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:16,768 | INFO | Page 99 generated 8 chunks.
+2026-11-21 13:46:16,769 | INFO | Page 100 generated 7 chunks.
+2026-11-21 13:46:16,769 | INFO | Page 101 generated 7 chunks.
+2026-11-21 13:46:16,769 | INFO | Page 102 generated 7 chunks.
+2026-11-21 13:46:16,770 | INFO | Page 103 generated 7 chunks.
+2026-11-21 13:46:16,770 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:16,770 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:17,189 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:17,190 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:17,192 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:17,192 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:17,192 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:17,235 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:17,235 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:17,235 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:17,345 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:17,345 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:17,347 | INFO | Page 104 generated 8 chunks.
+2026-11-21 13:46:17,347 | INFO | Page 105 generated 8 chunks.
+2026-11-21 13:46:17,347 | INFO | Page 106 generated 6 chunks.
+2026-11-21 13:46:17,348 | INFO | Page 107 generated 4 chunks.
+2026-11-21 13:46:17,348 | INFO | Page 108 generated 1 chunks.
+2026-11-21 13:46:17,348 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:17,348 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:17,769 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:17,769 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:17,770 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:17,771 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:17,771 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:17,789 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:17,789 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:17,790 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:17,907 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:17,907 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:17,908 | INFO | Page 109 generated 7 chunks.
+2026-11-21 13:46:17,909 | INFO | Page 110 generated 2 chunks.
+2026-11-21 13:46:17,909 | INFO | Page 111 generated 6 chunks.
+2026-11-21 13:46:17,910 | INFO | Page 112 generated 6 chunks.
+2026-11-21 13:46:17,910 | INFO | Page 113 generated 3 chunks.
+2026-11-21 13:46:17,910 | INFO | Page 114 generated 7 chunks.
+2026-11-21 13:46:17,911 | INFO | Page 115 generated 7 chunks.
+2026-11-21 13:46:17,911 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:17,912 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:18,340 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:18,341 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:18,342 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:18,343 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:18,343 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:18,373 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:18,373 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:18,374 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:18,486 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:18,487 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:18,487 | INFO | Page 116 generated 4 chunks.
+2026-11-21 13:46:18,488 | INFO | Page 117 generated 7 chunks.
+2026-11-21 13:46:18,488 | INFO | Page 118 generated 6 chunks.
+2026-11-21 13:46:18,488 | INFO | Page 119 generated 7 chunks.
+2026-11-21 13:46:18,489 | INFO | Page 120 generated 5 chunks.
+2026-11-21 13:46:18,489 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:18,489 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:19,531 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:19,532 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:19,533 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:19,533 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:19,534 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:19,559 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:19,560 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:19,560 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:19,648 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:19,648 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:19,649 | INFO | Page 121 generated 5 chunks.
+2026-11-21 13:46:19,649 | INFO | Page 122 generated 6 chunks.
+2026-11-21 13:46:19,650 | INFO | Page 123 generated 4 chunks.
+2026-11-21 13:46:19,650 | INFO | Page 124 generated 8 chunks.
+2026-11-21 13:46:19,650 | INFO | Page 125 generated 7 chunks.
+2026-11-21 13:46:19,651 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:19,651 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:20,149 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:20,149 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:20,150 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:20,151 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:20,151 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:20,169 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:20,169 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:20,170 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:20,282 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:20,282 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:20,283 | INFO | Page 126 generated 5 chunks.
+2026-11-21 13:46:20,284 | INFO | Page 127 generated 3 chunks.
+2026-11-21 13:46:20,284 | INFO | Page 128 generated 4 chunks.
+2026-11-21 13:46:20,284 | INFO | Page 129 generated 5 chunks.
+2026-11-21 13:46:20,285 | INFO | Page 130 generated 7 chunks.
+2026-11-21 13:46:20,285 | INFO | Page 131 generated 7 chunks.
+2026-11-21 13:46:20,285 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:20,285 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:20,758 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:20,759 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:20,760 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:20,761 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:20,761 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:20,791 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:20,791 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:20,792 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:20,924 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:20,924 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:20,925 | INFO | Page 132 generated 5 chunks.
+2026-11-21 13:46:20,926 | INFO | Page 133 generated 5 chunks.
+2026-11-21 13:46:20,926 | INFO | Page 134 generated 6 chunks.
+2026-11-21 13:46:20,927 | INFO | Page 135 generated 7 chunks.
+2026-11-21 13:46:20,927 | INFO | Page 136 generated 4 chunks.
+2026-11-21 13:46:20,928 | INFO | Page 137 generated 6 chunks.
+2026-11-21 13:46:20,928 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:20,928 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:21,361 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:21,361 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:21,364 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:21,364 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:21,364 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:21,394 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:21,395 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:21,395 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:21,447 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:21,447 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:21,448 | INFO | Page 138 generated 5 chunks.
+2026-11-21 13:46:21,448 | INFO | Page 139 generated 4 chunks.
+2026-11-21 13:46:21,449 | INFO | Page 140 generated 8 chunks.
+2026-11-21 13:46:21,449 | INFO | Page 141 generated 5 chunks.
+2026-11-21 13:46:21,449 | INFO | Page 142 generated 4 chunks.
+2026-11-21 13:46:21,450 | INFO | Page 143 generated 2 chunks.
+2026-11-21 13:46:21,450 | INFO | Page 144 generated 6 chunks.
+2026-11-21 13:46:21,450 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:21,450 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:21,904 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:21,904 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:21,906 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:21,906 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:21,906 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:21,930 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:21,930 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:21,930 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:22,107 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:22,108 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:22,109 | INFO | Page 145 generated 6 chunks.
+2026-11-21 13:46:22,109 | INFO | Page 146 generated 4 chunks.
+2026-11-21 13:46:22,109 | INFO | Page 147 generated 3 chunks.
+2026-11-21 13:46:22,109 | INFO | Page 148 generated 3 chunks.
+2026-11-21 13:46:22,110 | INFO | Page 149 generated 5 chunks.
+2026-11-21 13:46:22,110 | INFO | Page 150 generated 4 chunks.
+2026-11-21 13:46:22,110 | INFO | Page 151 generated 6 chunks.
+2026-11-21 13:46:22,110 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:22,111 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:22,584 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:22,585 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:22,586 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:22,587 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:22,587 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:22,628 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:22,628 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:22,628 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:22,685 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:22,686 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:22,687 | INFO | Page 152 generated 6 chunks.
+2026-11-21 13:46:22,687 | INFO | Page 153 generated 3 chunks.
+2026-11-21 13:46:22,688 | INFO | Page 154 generated 7 chunks.
+2026-11-21 13:46:22,688 | INFO | Page 155 generated 7 chunks.
+2026-11-21 13:46:22,688 | INFO | Page 156 generated 6 chunks.
+2026-11-21 13:46:22,688 | INFO | Page 157 generated 6 chunks.
+2026-11-21 13:46:22,688 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:22,689 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:23,116 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:23,116 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:23,118 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:23,118 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:23,118 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:23,132 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:23,133 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:23,133 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:23,186 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:23,187 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:23,188 | INFO | Page 158 generated 6 chunks.
+2026-11-21 13:46:23,188 | INFO | Page 159 generated 6 chunks.
+2026-11-21 13:46:23,188 | INFO | Page 160 generated 6 chunks.
+2026-11-21 13:46:23,189 | INFO | Page 161 generated 5 chunks.
+2026-11-21 13:46:23,189 | INFO | Page 162 generated 6 chunks.
+2026-11-21 13:46:23,189 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:23,190 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:23,630 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:23,632 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:23,633 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:23,634 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:23,634 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:23,649 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:23,649 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:23,651 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:23,723 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:23,723 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:23,724 | INFO | Page 163 generated 7 chunks.
+2026-11-21 13:46:23,724 | INFO | Page 164 generated 6 chunks.
+2026-11-21 13:46:23,725 | INFO | Page 165 generated 7 chunks.
+2026-11-21 13:46:23,725 | INFO | Page 166 generated 8 chunks.
+2026-11-21 13:46:23,726 | INFO | Page 167 generated 9 chunks.
+2026-11-21 13:46:23,726 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:23,726 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:24,140 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:24,141 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:24,142 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:24,143 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:24,143 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:24,161 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:24,161 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:24,162 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:24,287 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:24,288 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:24,289 | INFO | Page 168 generated 4 chunks.
+2026-11-21 13:46:24,289 | INFO | Page 169 generated 9 chunks.
+2026-11-21 13:46:24,289 | INFO | Page 170 generated 8 chunks.
+2026-11-21 13:46:24,290 | INFO | Page 171 generated 6 chunks.
+2026-11-21 13:46:24,290 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:24,290 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:24,715 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:24,715 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:24,717 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:24,717 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:24,717 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:24,757 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:24,758 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:24,759 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:24,888 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:24,888 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:24,889 | INFO | Page 172 generated 9 chunks.
+2026-11-21 13:46:24,889 | INFO | Page 173 generated 10 chunks.
+2026-11-21 13:46:24,890 | INFO | Page 174 generated 7 chunks.
+2026-11-21 13:46:24,890 | INFO | Page 175 generated 6 chunks.
+2026-11-21 13:46:24,890 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:24,891 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:25,291 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:25,291 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:25,292 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:25,293 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:25,293 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:25,330 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:25,330 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:25,331 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:25,429 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:25,430 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:25,432 | INFO | Page 176 generated 7 chunks.
+2026-11-21 13:46:25,432 | INFO | Page 177 generated 7 chunks.
+2026-11-21 13:46:25,433 | INFO | Page 178 generated 7 chunks.
+2026-11-21 13:46:25,433 | INFO | Page 179 generated 9 chunks.
+2026-11-21 13:46:25,434 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:25,434 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:25,835 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:25,835 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:25,836 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:25,836 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:25,838 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:25,853 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:25,854 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:25,854 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:25,954 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:25,955 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:25,956 | INFO | Page 180 generated 7 chunks.
+2026-11-21 13:46:25,957 | INFO | Page 181 generated 10 chunks.
+2026-11-21 13:46:25,957 | INFO | Page 182 generated 8 chunks.
+2026-11-21 13:46:25,957 | INFO | Page 183 generated 8 chunks.
+2026-11-21 13:46:25,958 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:25,958 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:26,419 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:26,419 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:26,422 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:26,422 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:26,423 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:26,439 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:26,439 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:26,440 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:26,556 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:26,556 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:26,557 | INFO | Page 184 generated 5 chunks.
+2026-11-21 13:46:26,557 | INFO | Page 185 generated 6 chunks.
+2026-11-21 13:46:26,557 | INFO | Page 186 generated 8 chunks.
+2026-11-21 13:46:26,558 | INFO | Page 187 generated 7 chunks.
+2026-11-21 13:46:26,558 | INFO | Page 188 generated 6 chunks.
+2026-11-21 13:46:26,558 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:26,559 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:27,169 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:27,169 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:27,171 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:27,171 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:27,171 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:27,210 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:27,211 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:27,211 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:27,336 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:27,337 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:27,337 | INFO | Page 189 generated 7 chunks.
+2026-11-21 13:46:27,338 | INFO | Page 190 generated 7 chunks.
+2026-11-21 13:46:27,338 | INFO | Page 191 generated 7 chunks.
+2026-11-21 13:46:27,339 | INFO | Page 192 generated 2 chunks.
+2026-11-21 13:46:27,339 | INFO | Page 193 generated 8 chunks.
+2026-11-21 13:46:27,339 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:27,340 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:27,775 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:27,775 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:27,778 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:27,778 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:27,778 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:27,797 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:27,797 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:27,798 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:27,959 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:27,959 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:27,960 | INFO | Page 194 generated 7 chunks.
+2026-11-21 13:46:27,961 | INFO | Page 195 generated 6 chunks.
+2026-11-21 13:46:27,961 | INFO | Page 196 generated 5 chunks.
+2026-11-21 13:46:27,961 | INFO | Page 197 generated 6 chunks.
+2026-11-21 13:46:27,961 | INFO | Page 198 generated 6 chunks.
+2026-11-21 13:46:27,962 | INFO | Page 199 generated 7 chunks.
+2026-11-21 13:46:27,962 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:27,962 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:28,394 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:28,395 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:28,396 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:28,396 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:28,397 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:28,432 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:28,433 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:28,433 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:28,555 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:28,556 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:28,557 | INFO | Page 200 generated 7 chunks.
+2026-11-21 13:46:28,557 | INFO | Page 201 generated 5 chunks.
+2026-11-21 13:46:28,558 | INFO | Page 202 generated 6 chunks.
+2026-11-21 13:46:28,558 | INFO | Page 203 generated 5 chunks.
+2026-11-21 13:46:28,558 | INFO | Page 204 generated 3 chunks.
+2026-11-21 13:46:28,559 | INFO | Page 205 generated 8 chunks.
+2026-11-21 13:46:28,559 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:28,559 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:28,984 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:28,985 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:28,987 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:28,987 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:28,987 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:29,001 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:29,002 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:29,003 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:29,117 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:29,117 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:29,118 | INFO | Page 206 generated 5 chunks.
+2026-11-21 13:46:29,118 | INFO | Page 207 generated 5 chunks.
+2026-11-21 13:46:29,118 | INFO | Page 208 generated 6 chunks.
+2026-11-21 13:46:29,119 | INFO | Page 209 generated 8 chunks.
+2026-11-21 13:46:29,119 | INFO | Page 210 generated 8 chunks.
+2026-11-21 13:46:29,119 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:29,119 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:30,099 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:30,100 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:30,104 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:30,105 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:30,106 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:30,139 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:30,140 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:30,141 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:30,209 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:30,210 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:30,211 | INFO | Page 211 generated 5 chunks.
+2026-11-21 13:46:30,211 | INFO | Page 212 generated 8 chunks.
+2026-11-21 13:46:30,211 | INFO | Page 213 generated 7 chunks.
+2026-11-21 13:46:30,212 | INFO | Page 214 generated 8 chunks.
+2026-11-21 13:46:30,212 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:30,212 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:30,936 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:30,936 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:30,938 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:30,938 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:30,938 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:30,952 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:30,953 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:30,953 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:31,050 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:31,051 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:31,052 | INFO | Page 215 generated 8 chunks.
+2026-11-21 13:46:31,052 | INFO | Page 216 generated 8 chunks.
+2026-11-21 13:46:31,052 | INFO | Page 217 generated 7 chunks.
+2026-11-21 13:46:31,052 | INFO | Page 218 generated 7 chunks.
+2026-11-21 13:46:31,054 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:31,054 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:31,497 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:31,498 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:31,499 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:31,499 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:31,500 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:31,538 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:31,539 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:31,539 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:31,603 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:31,603 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:31,604 | INFO | Page 219 generated 8 chunks.
+2026-11-21 13:46:31,604 | INFO | Page 220 generated 8 chunks.
+2026-11-21 13:46:31,605 | INFO | Page 221 generated 5 chunks.
+2026-11-21 13:46:31,605 | INFO | Page 222 generated 8 chunks.
+2026-11-21 13:46:31,605 | INFO | Page 223 generated 7 chunks.
+2026-11-21 13:46:31,605 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:31,606 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:32,036 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:32,037 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:32,038 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:32,039 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:32,039 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:32,083 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:32,083 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:32,084 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:32,145 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:32,146 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:32,147 | INFO | Page 224 generated 5 chunks.
+2026-11-21 13:46:32,148 | INFO | Page 225 generated 8 chunks.
+2026-11-21 13:46:32,148 | INFO | Page 226 generated 6 chunks.
+2026-11-21 13:46:32,148 | INFO | Page 227 generated 7 chunks.
+2026-11-21 13:46:32,148 | INFO | Page 228 generated 7 chunks.
+2026-11-21 13:46:32,149 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:32,149 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:32,620 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:32,620 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:32,622 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:32,623 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:32,623 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:32,640 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:32,640 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:32,641 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:32,773 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:32,773 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:32,774 | INFO | Page 229 generated 9 chunks.
+2026-11-21 13:46:32,775 | INFO | Page 230 generated 8 chunks.
+2026-11-21 13:46:32,775 | INFO | Page 231 generated 4 chunks.
+2026-11-21 13:46:32,775 | INFO | Page 232 generated 9 chunks.
+2026-11-21 13:46:32,776 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:32,776 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:33,211 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:33,212 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:33,214 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:33,215 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:33,215 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:33,232 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:33,232 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:33,232 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:33,347 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:33,347 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:33,348 | INFO | Page 233 generated 7 chunks.
+2026-11-21 13:46:33,348 | INFO | Page 234 generated 9 chunks.
+2026-11-21 13:46:33,348 | INFO | Page 235 generated 2 chunks.
+2026-11-21 13:46:33,349 | INFO | Page 236 generated 4 chunks.
+2026-11-21 13:46:33,349 | INFO | Page 237 generated 7 chunks.
+2026-11-21 13:46:33,349 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:33,349 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:33,799 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:33,799 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:33,801 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:33,801 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:33,801 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:33,842 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:33,843 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:33,843 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:33,981 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:33,981 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:33,982 | INFO | Page 238 generated 6 chunks.
+2026-11-21 13:46:33,983 | INFO | Page 239 generated 6 chunks.
+2026-11-21 13:46:33,983 | INFO | Page 240 generated 7 chunks.
+2026-11-21 13:46:33,983 | INFO | Page 241 generated 7 chunks.
+2026-11-21 13:46:33,984 | INFO | Page 242 generated 5 chunks.
+2026-11-21 13:46:33,984 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:33,984 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Batch size=32 | Device=cuda
+2026-11-21 13:46:34,410 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=32 | Dimensions=768
+2026-11-21 13:46:34,410 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=32
+2026-11-21 13:46:34,412 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:34,412 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:34,412 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:34,448 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:34,449 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:34,449 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=32
+2026-11-21 13:46:34,565 | INFO | Inserted 32 vectors.
+2026-11-21 13:46:34,566 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=32
+2026-11-21 13:46:34,567 | INFO | Page 243 generated 8 chunks.
+2026-11-21 13:46:34,567 | INFO | Page 244 generated 7 chunks.
+2026-11-21 13:46:34,568 | INFO | Page 245 generated 4 chunks.
+2026-11-21 13:46:34,568 | INFO | Page 246 skipped because it contains no readable text.
+2026-11-21 13:46:34,568 | INFO | Embedding batch started. File=UP TGT & PGT .pdf | chunks=19
+2026-11-21 13:46:34,568 | INFO | Local embedding generation started. Model=BAAI/bge-base-en-v1.5 | Inputs=19 | Batch size=32 | Device=cuda
+2026-11-21 13:46:34,854 | INFO | Local embedding generation completed. Model=BAAI/bge-base-en-v1.5 | Inputs=19 | Dimensions=768
+2026-11-21 13:46:34,855 | INFO | Embedding batch generated successfully. File=UP TGT & PGT .pdf | chunks=19
+2026-11-21 13:46:34,856 | INFO | Qdrant vector insertion started. File=UP TGT & PGT .pdf | vectors=19
+2026-11-21 13:46:34,856 | INFO | Ensuring Knowledge Base collection exists: kb_sanjay_bge
+2026-11-21 13:46:34,857 | INFO | Checking Qdrant collection: kb_sanjay_bge
+2026-11-21 13:46:34,892 | INFO | Qdrant collection already exists.: kb_sanjay_bge | Vector dimension: 768
+2026-11-21 13:46:34,892 | INFO | Knowledge Base collection ready: kb_sanjay_bge
+2026-11-21 13:46:34,892 | INFO | Qdrant vector insertion started. Collection=kb_sanjay_bge | points=19
+2026-11-21 13:46:34,950 | INFO | Inserted 19 vectors.
+2026-11-21 13:46:34,951 | INFO | Qdrant vector insertion completed. File=UP TGT & PGT .pdf | vectors=19
+2026-11-21 13:46:34,951 | INFO | Generated 1523 vectors.
+2026-11-21 13:46:34,952 | INFO | Chunking and vector generation completed. File=UP TGT & PGT .pdf | chunks=1523
+2026-11-21 13:46:34,952 | INFO | Processed UP TGT & PGT .pdf (1523 chunks).
+2026-11-21 13:46:34,952 | INFO | Successfully processed 'UP TGT & PGT .pdf'.
+2026-11-21 13:46:34,953 | INFO | PDF stream closed: UP TGT & PGT .pdf
+2026-11-21 13:46:34,953 | INFO | Temporary file cleanup started: uploads\67017772bc4e4d94ba036871603a7655_UP TGT & PGT .pdf
+2026-11-21 13:46:34,955 | INFO | Temporary file deleted successfully: uploads\67017772bc4e4d94ba036871603a7655_UP TGT & PGT .pdf
+2026-11-21 13:46:34,955 | INFO | Temporary upload file deleted: UP TGT & PGT .pdf
+2026-11-21 13:46:34,955 | INFO | Knowledge Base ingestion response: {'status': 'success', 'message': 'All documents got in successfully.', 'documents_processed': 1, 'documents_failed': 0, 'chunks_inserted': 1523, 'documents': [{'document_id': '066bdb5a-0525-4a6c-9b6f-f6f25a16249b', 'source': 'UP TGT & PGT .pdf'}], 'errors': []}
+2026-11-21 13:46:34,956 | INFO | [7ffb6a2b-6afe-4701-b005-4953d07c6084] Upload response: {'status': 'success', 'message': 'All documents got in successfully.', 'documents_processed': 1, 'documents_failed': 0, 'chunks_inserted': 1523, 'documents': [{'document_id': '066bdb5a-0525-4a6c-9b6f-f6f25a16249b', 'source': 'UP TGT & PGT .pdf'}], 'errors': []}
+2026-11-21 13:46:34,958 | INFO | [7ffb6a2b-6afe-4701-b005-4953d07c6084] Request completed: POST /llm/upload | status=200 | duration=72.298s
+2026-11-21 13:50:59,949 | INFO | FastAPI application shutdown completed
